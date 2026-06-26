@@ -1,0 +1,19 @@
+{
+  "name": "MoneyCounts · 月度智能记账本",
+  "short_name": "MoneyCounts",
+  "description": "Local-first monthly accounting book with travel mode and multi-currency summaries.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f7f2e8",
+  "theme_color": "#356fd7",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "/pwa-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

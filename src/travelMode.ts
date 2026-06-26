@@ -7,6 +7,33 @@ export type TravelState = {
   targetCurrency: string;
   billName: string | null;
   locationLabel: string | null;
+  participants: TravelParticipant[];
+  entryMeta: Record<string, TravelEntryMeta>;
+  budget: TravelBudgetSettings;
+};
+
+export type TravelParticipant = {
+  id: string;
+  name: string;
+};
+
+export type TravelEntryMeta = {
+  participantIds: string[];
+  locationLabel: string;
+};
+
+export type TravelBudgetSettings = {
+  dailyLimit: number | null;
+  categoryLimits: Record<string, number>;
+};
+
+export type TravelExchangeSnapshot = {
+  from: string;
+  to: string;
+  rate: number;
+  source: string;
+  updatedAt: number;
+  convertedAmount: number;
 };
 
 export type TravelHistoryDetail = {
@@ -16,6 +43,11 @@ export type TravelHistoryDetail = {
   currency: string;
   note: string;
   convertedAmount: number;
+  locationLabel?: string;
+  participantIds?: string[];
+  participantNames?: string[];
+  splitShare?: number;
+  exchangeSnapshot?: TravelExchangeSnapshot;
 };
 
 export type TravelHistoryCategory = {
@@ -35,8 +67,21 @@ export type TravelHistoryRecord = {
   entryCount: number;
   categorySummary: TravelHistoryCategory[];
   details: TravelHistoryDetail[];
+  participants?: TravelParticipant[];
+  splitSummary?: TravelSplitSummary[];
+  budget?: TravelBudgetSettings;
+  localSync?: {
+    mode: "full" | "split";
+    syncedAt: number;
+  };
   savedAt: number;
   mergedFrom?: string[];
+};
+
+export type TravelSplitSummary = {
+  participantId: string;
+  name: string;
+  owed: number;
 };
 
 export type TravelGeoResult = {
@@ -65,6 +110,16 @@ export const DEFAULT_TRAVEL_STATE: TravelState = {
   targetCurrency: "CNY",
   billName: null,
   locationLabel: null,
+  participants: [
+    { id: "person-a", name: "A" },
+    { id: "person-b", name: "B" },
+    { id: "person-c", name: "C" },
+  ],
+  entryMeta: {},
+  budget: {
+    dailyLimit: null,
+    categoryLimits: {},
+  },
 };
 
 const PIE_COLORS = [
@@ -108,6 +163,104 @@ export const buildBillNameFromLocation = (locationLabel: string | null | undefin
 
 export const buildLegacyHistoryName = (record: Pick<TravelHistoryRecord, "startDate" | "destinationCurrency">) =>
   `${record.destinationCurrency}之旅 · ${record.startDate}`;
+
+const normalizePositiveAmount = (value: unknown) => {
+  const parsed = typeof value === "number" ? value : typeof value === "string" ? Number(value) : NaN;
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
+};
+
+export const normalizeTravelParticipants = (value: unknown): TravelParticipant[] => {
+  const participants = Array.isArray(value)
+    ? value
+        .map((item, index) => {
+          if (!item || typeof item !== "object") return null;
+          const participant = item as Partial<TravelParticipant>;
+          const name = typeof participant.name === "string" ? participant.name.trim() : "";
+          if (!name) return null;
+          return {
+            id: typeof participant.id === "string" && participant.id.trim()
+              ? participant.id.trim()
+              : `person-${index + 1}`,
+            name,
+          };
+        })
+        .filter((item): item is TravelParticipant => Boolean(item))
+    : [];
+  return participants.length ? participants : [...DEFAULT_TRAVEL_STATE.participants];
+};
+
+export const reconcileTravelParticipants = (
+  currentParticipants: TravelParticipant[],
+  names: string[],
+  currentEntryMeta: Record<string, TravelEntryMeta>,
+) => {
+  const participants = names
+    .map((name, index) => {
+      const trimmed = name.trim();
+      if (!trimmed) return null;
+      return {
+        id: currentParticipants[index]?.id ?? `person-${index + 1}`,
+        name: trimmed,
+      };
+    })
+    .filter((participant): participant is TravelParticipant => Boolean(participant));
+  const nextParticipants = participants.length ? participants : [...DEFAULT_TRAVEL_STATE.participants];
+  const allowed = new Set(nextParticipants.map((participant) => participant.id));
+  const fallbackIds = nextParticipants.map((participant) => participant.id);
+  const entryMeta = Object.fromEntries(
+    Object.entries(currentEntryMeta).map(([key, meta]) => {
+      const participantIds = meta.participantIds.filter((id) => allowed.has(id));
+      return [
+        key,
+        {
+          ...meta,
+          participantIds: participantIds.length ? participantIds : fallbackIds,
+        },
+      ] as const;
+    }),
+  );
+
+  return { participants: nextParticipants, entryMeta };
+};
+
+export const normalizeTravelBudgetSettings = (value: unknown): TravelBudgetSettings => {
+  const source = value && typeof value === "object" ? value as Partial<TravelBudgetSettings> : {};
+  const rawCategoryLimits =
+    source.categoryLimits && typeof source.categoryLimits === "object"
+      ? source.categoryLimits as Record<string, unknown>
+      : {};
+  return {
+    dailyLimit: normalizePositiveAmount(source.dailyLimit),
+    categoryLimits: Object.fromEntries(
+      Object.entries(rawCategoryLimits)
+        .map(([category, amount]) => [category, normalizePositiveAmount(amount)] as const)
+        .filter((entry): entry is readonly [string, number] => entry[1] !== null),
+    ),
+  };
+};
+
+export const normalizeTravelEntryMeta = (value: unknown, participants: TravelParticipant[]): Record<string, TravelEntryMeta> => {
+  const source = value && typeof value === "object" ? value as Record<string, unknown> : {};
+  const participantIds = new Set(participants.map((item) => item.id));
+  return Object.fromEntries(
+    Object.entries(source)
+      .map(([key, raw]) => {
+        if (!raw || typeof raw !== "object") return null;
+        const meta = raw as Partial<TravelEntryMeta>;
+        const selectedIds = Array.isArray(meta.participantIds)
+          ? meta.participantIds.filter((id): id is string => typeof id === "string" && participantIds.has(id))
+          : [];
+        return [
+          key,
+          {
+            participantIds: selectedIds.length ? selectedIds : participants.map((item) => item.id),
+            locationLabel: typeof meta.locationLabel === "string" ? meta.locationLabel.trim() : "",
+          },
+        ] as const;
+      })
+      .filter((entry): entry is readonly [string, TravelEntryMeta] => Boolean(entry)),
+  );
+};
 
 export const summarizeHistoryCategories = (
   details: TravelHistoryDetail[],
@@ -231,11 +384,13 @@ export const detectTravelGeo = async (
   };
 };
 
-export const readStoredTravelState = (
+export const normalizeStoredTravelState = (
+  value: unknown,
   normalizeCurrencyInput: (value: unknown) => string | null,
 ): TravelState => {
   try {
-    const parsed = JSON.parse(localStorage.getItem(TRAVEL_KEY) ?? "{}") as Partial<TravelState>;
+    const parsed = value && typeof value === "object" ? value as Partial<TravelState> : {};
+    const participants = normalizeTravelParticipants(parsed.participants);
     return {
       ...DEFAULT_TRAVEL_STATE,
       active: parsed.active === true,
@@ -248,7 +403,20 @@ export const readStoredTravelState = (
       billName: typeof parsed.billName === "string" && parsed.billName.trim() ? parsed.billName.trim() : null,
       locationLabel:
         typeof parsed.locationLabel === "string" && parsed.locationLabel.trim() ? parsed.locationLabel.trim() : null,
+      participants,
+      entryMeta: normalizeTravelEntryMeta(parsed.entryMeta, participants),
+      budget: normalizeTravelBudgetSettings(parsed.budget),
     };
+  } catch {
+    return DEFAULT_TRAVEL_STATE;
+  }
+};
+
+export const readStoredTravelState = (
+  normalizeCurrencyInput: (value: unknown) => string | null,
+): TravelState => {
+  try {
+    return normalizeStoredTravelState(JSON.parse(localStorage.getItem(TRAVEL_KEY) ?? "{}"), normalizeCurrencyInput);
   } catch {
     return DEFAULT_TRAVEL_STATE;
   }
@@ -302,6 +470,16 @@ const migrateTravelHistoryRecord = (
           .map((row) => {
             const detail = row as Partial<TravelHistoryDetail>;
             const currency = normalizeCurrencyInput(detail.currency) ?? destinationCurrency;
+            const participantIds = Array.isArray(detail.participantIds)
+              ? detail.participantIds.filter((value): value is string => typeof value === "string")
+              : undefined;
+            const participantNames = Array.isArray(detail.participantNames)
+              ? detail.participantNames.filter((value): value is string => typeof value === "string")
+              : undefined;
+            const exchangeSnapshot =
+              detail.exchangeSnapshot && typeof detail.exchangeSnapshot === "object"
+                ? detail.exchangeSnapshot as Partial<TravelExchangeSnapshot>
+                : null;
             return {
               date: typeof detail.date === "string" ? detail.date : record.startDate!,
               category: typeof detail.category === "string" ? detail.category : "其他",
@@ -309,9 +487,46 @@ const migrateTravelHistoryRecord = (
               currency,
               note: typeof detail.note === "string" ? detail.note : "",
               convertedAmount: Number.isFinite(detail.convertedAmount) ? Number(detail.convertedAmount) : 0,
+              locationLabel: typeof detail.locationLabel === "string" && detail.locationLabel.trim()
+                ? detail.locationLabel.trim()
+                : undefined,
+              participantIds,
+              participantNames,
+              splitShare: Number.isFinite(detail.splitShare) ? Number(detail.splitShare) : undefined,
+              exchangeSnapshot:
+                exchangeSnapshot &&
+                typeof exchangeSnapshot.from === "string" &&
+                typeof exchangeSnapshot.to === "string" &&
+                Number.isFinite(exchangeSnapshot.rate) &&
+                Number.isFinite(exchangeSnapshot.convertedAmount) &&
+                typeof exchangeSnapshot.updatedAt === "number"
+                  ? {
+                      from: exchangeSnapshot.from,
+                      to: exchangeSnapshot.to,
+                      rate: Number(exchangeSnapshot.rate),
+                      source: typeof exchangeSnapshot.source === "string" ? exchangeSnapshot.source : "unknown",
+                      updatedAt: exchangeSnapshot.updatedAt,
+                      convertedAmount: Number(exchangeSnapshot.convertedAmount),
+                    }
+                  : undefined,
             };
           })
       : [],
+    participants: normalizeTravelParticipants(record.participants),
+    splitSummary: Array.isArray(record.splitSummary)
+      ? record.splitSummary
+          .filter((row) => row && typeof row === "object")
+          .map((row) => {
+            const summary = row as Partial<TravelSplitSummary>;
+            return {
+              participantId: typeof summary.participantId === "string" ? summary.participantId : "",
+              name: typeof summary.name === "string" ? summary.name : "同行人",
+              owed: Number.isFinite(summary.owed) ? Number(summary.owed) : 0,
+            };
+          })
+          .filter((row) => row.participantId)
+      : undefined,
+    budget: normalizeTravelBudgetSettings(record.budget),
     savedAt: record.savedAt,
     mergedFrom: Array.isArray(record.mergedFrom)
       ? record.mergedFrom.filter((value): value is string => typeof value === "string")
@@ -325,14 +540,14 @@ export const purgeExpiredPendingDeletes = (
 ): PendingTravelHistoryDelete[] =>
   items.filter((item) => now - item.deletedAt < PENDING_DELETE_TTL_MS);
 
-export const readStoredPendingTravelDeletes = (
+export const normalizeStoredPendingTravelDeletes = (
+  value: unknown,
   normalizeCurrencyInput: (value: unknown) => string | null,
 ): PendingTravelHistoryDelete[] => {
   try {
-    const parsed = JSON.parse(localStorage.getItem(TRAVEL_HISTORY_PENDING_DELETE_KEY) ?? "[]") as unknown;
-    if (!Array.isArray(parsed)) return [];
+    if (!Array.isArray(value)) return [];
     return purgeExpiredPendingDeletes(
-      parsed
+      value
         .map((item) => {
           if (!item || typeof item !== "object") return null;
           const pending = item as Partial<PendingTravelHistoryDelete>;
@@ -353,19 +568,42 @@ export const readStoredPendingTravelDeletes = (
   }
 };
 
-export const readStoredTravelHistory = (
+export const readStoredPendingTravelDeletes = (
+  normalizeCurrencyInput: (value: unknown) => string | null,
+): PendingTravelHistoryDelete[] => {
+  try {
+    return normalizeStoredPendingTravelDeletes(
+      JSON.parse(localStorage.getItem(TRAVEL_HISTORY_PENDING_DELETE_KEY) ?? "[]"),
+      normalizeCurrencyInput,
+    );
+  } catch {
+    return [];
+  }
+};
+
+export const normalizeStoredTravelHistory = (
+  value: unknown,
   normalizeCurrencyInput: (value: unknown) => string | null,
 ): TravelHistoryRecord[] => {
   try {
-    const parsed = JSON.parse(localStorage.getItem(TRAVEL_HISTORY_KEY) ?? "[]") as unknown;
-    if (!Array.isArray(parsed)) return [];
-    return parsed
+    if (!Array.isArray(value)) return [];
+    return value
       .map((item) => {
         if (!item || typeof item !== "object") return null;
         return migrateTravelHistoryRecord(item as Partial<TravelHistoryRecord>, normalizeCurrencyInput);
       })
       .filter((record): record is TravelHistoryRecord => Boolean(record))
       .sort((a, b) => b.savedAt - a.savedAt);
+  } catch {
+    return [];
+  }
+};
+
+export const readStoredTravelHistory = (
+  normalizeCurrencyInput: (value: unknown) => string | null,
+): TravelHistoryRecord[] => {
+  try {
+    return normalizeStoredTravelHistory(JSON.parse(localStorage.getItem(TRAVEL_HISTORY_KEY) ?? "[]"), normalizeCurrencyInput);
   } catch {
     return [];
   }

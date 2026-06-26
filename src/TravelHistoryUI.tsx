@@ -2,15 +2,26 @@ import {
   FormEvent,
   KeyboardEvent,
   RefObject,
+  Suspense,
+  lazy,
   useEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
 import { gsap } from "gsap";
-import { TravelCurrencyBars, TravelPieChart, TravelStatCards } from "./travelCharts";
 import type { TravelHistoryRecord } from "./travelMode";
 import { getHistoryDateBounds, summarizeCurrencyDistribution } from "./travelMode";
+
+const TravelPieChart = lazy(() =>
+  import("./travelCharts").then((module) => ({ default: module.TravelPieChart })),
+);
+const TravelCurrencyBars = lazy(() =>
+  import("./travelCharts").then((module) => ({ default: module.TravelCurrencyBars })),
+);
+const TravelStatCards = lazy(() =>
+  import("./travelCharts").then((module) => ({ default: module.TravelStatCards })),
+);
 
 const prefersReducedMotion = () =>
   typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -345,6 +356,7 @@ export function TravelHistoryPanel({
 type TravelHistoryDetailModalProps = {
   record: TravelHistoryRecord;
   onClose: () => void;
+  onSyncLocal: (id: string, mode: "full" | "split") => void;
   formatMoney: (value: number, currency: string) => string;
   modalRootRef: RefObject<HTMLDivElement | null>;
 };
@@ -352,6 +364,7 @@ type TravelHistoryDetailModalProps = {
 export function TravelHistoryDetailModal({
   record,
   onClose,
+  onSyncLocal,
   formatMoney,
   modalRootRef,
 }: TravelHistoryDetailModalProps) {
@@ -399,34 +412,51 @@ export function TravelHistoryDetailModal({
         </div>
 
         <div className="travel-history-modal-details">
-          <TravelStatCards
-            cards={[
-              {
-                label: "旅游总额",
-                value: formatMoney(record.totalAmount, record.targetCurrency),
-                hint: record.targetCurrency,
-                accent: "#356fd7",
-              },
-              {
-                label: "有效明细",
-                value: `${record.entryCount} 条`,
-                hint: `${dayCount} 天有记录`,
-                accent: "#4cb9ca",
-              },
-              {
-                label: "货币种类",
-                value: `${currencyDistribution.length} 种`,
-                hint: currencyDistribution.map((item) => item.currency).join(" / ") || "—",
-                accent: "#c4a35a",
-              },
-            ]}
-          />
+          <div className="travel-history-sync-actions">
+            <button type="button" onClick={() => onSyncLocal(record.id, "full")}>
+              同步完整账单
+            </button>
+            <button type="button" className="secondary-button" onClick={() => onSyncLocal(record.id, "split")}>
+              同步分账账单
+            </button>
+            {record.localSync ? (
+              <small className="muted">
+                已本地标记同步：{record.localSync.mode === "full" ? "完整账单" : "分账账单"} · {new Date(record.localSync.syncedAt).toLocaleString("zh-CN")}
+              </small>
+            ) : null}
+          </div>
+          <Suspense fallback={<div className="chart-fallback chart-fallback--wide">旅游统计载入中…</div>}>
+            <TravelStatCards
+              cards={[
+                {
+                  label: "旅游总额",
+                  value: formatMoney(record.totalAmount, record.targetCurrency),
+                  hint: record.targetCurrency,
+                  accent: "#356fd7",
+                },
+                {
+                  label: "有效明细",
+                  value: `${record.entryCount} 条`,
+                  hint: `${dayCount} 天有记录`,
+                  accent: "#4cb9ca",
+                },
+                {
+                  label: "货币种类",
+                  value: `${currencyDistribution.length} 种`,
+                  hint: currencyDistribution.map((item) => item.currency).join(" / ") || "—",
+                  accent: "#c4a35a",
+                },
+              ]}
+            />
+          </Suspense>
 
           <div className="travel-history-viz-grid">
             <div className="travel-history-viz-card">
               <h3>分类占比</h3>
               <div className="chart-row">
-                <TravelPieChart summary={categorySummary} title={record.name} />
+                <Suspense fallback={<div className="chart-fallback">图表载入中…</div>}>
+                  <TravelPieChart summary={categorySummary} title={record.name} />
+                </Suspense>
                 <div className="legend">
                   {categorySummary.length ? (
                     categorySummary.map((item) => (
@@ -445,11 +475,13 @@ export function TravelHistoryDetailModal({
 
             <div className="travel-history-viz-card">
               <h3>货币分布</h3>
-              <TravelCurrencyBars
-                items={currencyDistribution}
-                targetCurrency={record.targetCurrency}
-                formatMoney={formatMoney}
-              />
+              <Suspense fallback={<div className="chart-fallback chart-fallback--wide">货币分布载入中…</div>}>
+                <TravelCurrencyBars
+                  items={currencyDistribution}
+                  targetCurrency={record.targetCurrency}
+                  formatMoney={formatMoney}
+                />
+              </Suspense>
             </div>
           </div>
 
@@ -472,6 +504,9 @@ export function TravelHistoryDetailModal({
                   <strong>{formatMoney(entry.convertedAmount, record.targetCurrency)}</strong>
                   <small>
                     {entry.amount} {entry.currency}
+                    {entry.locationLabel ? ` · ${entry.locationLabel}` : ""}
+                    {entry.participantNames?.length ? ` · 分摊：${entry.participantNames.join(" / ")}` : ""}
+                    {entry.exchangeSnapshot ? ` · 快照汇率 ${entry.exchangeSnapshot.rate.toFixed(4)}` : ""}
                     {entry.note ? ` · ${entry.note}` : ""}
                   </small>
                 </div>

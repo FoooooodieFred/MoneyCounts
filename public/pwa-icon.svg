@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">MoneyCounts</title>
+  <defs>
+    <linearGradient id="bg" x1="64" x2="448" y1="64" y2="448" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#356FD7" />
+      <stop offset="1" stop-color="#90DED1" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)" />
+  <path fill="#FFF7E6" d="M142 156c0-28 22-50 50-50h128c28 0 50 22 50 50v200c0 28-22 50-50 50H192c-28 0-50-22-50-50V156Z" opacity=".94" />
+  <path fill="#356FD7" d="M196 174h120v34H196v-34Zm0 70h120v28H196v-28Zm0 62h78v28h-78v-28Z" />
+  <circle cx="334" cy="326" r="46" fill="#F4C2C2" />
+  <path fill="#8B3A4A" d="M318 329c0-16 12-28 29-28 8 0 16 3 22 8l-12 15c-3-3-6-4-10-4-6 0-10 4-10 10 0 7 5 11 13 11 4 0 9-1 13-4l7 17c-7 4-14 6-23 6-17 0-29-12-29-31Z" />
+</svg>
