@@ -1,6 +1,6 @@
-# MoneyCounts · 月度智能记账本
+# MoneyCounts · 轻量化，多币种，本地，自然语言记账本
 
-纯前端月度记账 Web 应用，数据保存在浏览器 LocalStorage，无需后端。
+纯前端记账 Web 应用，数据保存在浏览器 LocalStorage，无需后端。
 
 **在线体验 → [moneycounts.freddyhu2007.workers.dev](https://moneycounts.freddyhu2007.workers.dev/)**
 
@@ -56,9 +56,9 @@ License: ISC
 
 ---
 
-# MoneyCounts · Monthly Smart Ledger
+# MoneyCounts · Lightweight, Multi-Currency, Local, Natural Language Ledger
 
-Client-side monthly ledger. Data lives in browser LocalStorage — no backend required.
+Client-side ledger. Data lives in browser LocalStorage — no backend required.
 
 **Try it → [moneycounts.freddyhu2007.workers.dev](https://moneycounts.freddyhu2007.workers.dev/)**
 
