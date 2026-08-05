@@ -1,3 +1,7 @@
+/**
+ * JSON 完整备份载荷与校验/摘要（`BACKUP_VERSION`）。
+ * 导入须预览确认后再覆盖；扩字段时保持向后兼容，勿 silent 破坏旧备份。
+ */
 import type { AppSettings } from "./appSettings";
 
 export const BACKUP_VERSION = 1;

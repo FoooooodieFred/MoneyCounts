@@ -1,3 +1,9 @@
+/**
+ * 自然语言账本解析入口（中文多句 → 可预览记录）。
+ * 首页快速记账与旅游自然语言录入共用 `parseNaturalLedger`；
+ * 日期/整周工具委托 `dateRange`，分词与金额委托 `expenseParseShared`。
+ * 改动行为前请跑 `npm test`（quickExpenseParser / refactorPreservation）。
+ */
 import {
   CATEGORY_KEYWORDS,
   detectAmount,
@@ -142,6 +148,7 @@ const restoreRecurringDescriptor = (segment: string, note: string) => {
   return clean;
 };
 
+/** 自然语言多句解析主入口；返回 records + warnings，由 UI 预览确认后再写入。 */
 export const parseNaturalLedger = async (
   input: string,
   context: LocalLedgerParseContext,

@@ -1,3 +1,8 @@
+/**
+ * 应用设置：首页区块显隐/排序、预算。LocalStorage key：`APP_SETTINGS_KEY`。
+ * `normalize*` 负责旧版字段迁移；locked/pinned 区块规则勿随意打破。
+ * 备份 JSON 的 settings 字段与此类型对齐，改 schema 需同步 backup。
+ */
 export const APP_SETTINGS_KEY = "monthly-smart-ledger:settings";
 
 export const HOME_SECTION_LABELS = {

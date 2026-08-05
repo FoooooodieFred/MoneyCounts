@@ -1,3 +1,8 @@
+/**
+ * 账本统计与格子索引纯函数（无 IO）。
+ * 分类行切片、跨日收集、可见记录计数、预算可用额等供 App / BudgetOverview 复用。
+ * 格子布局依赖 `maxRecordsPerCategory`；改索引或金额口径须保持行为等价并跑 test。
+ */
 export type LedgerStatsEntry = {
   amount: string;
   currency: string;

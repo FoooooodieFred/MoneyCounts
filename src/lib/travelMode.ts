@@ -1,3 +1,8 @@
+/**
+ * 旅游模式状态 / 历史 / LocalStorage 归一化。
+ * Keys：`TRAVEL_KEY`、`TRAVEL_HISTORY_KEY`、pending-delete；勿随意改名或改 schema。
+ * 读写经 `normalizeStored*` / `readStored*`，导入备份亦依赖此形状。
+ */
 export type TravelState = {
   active: boolean;
   startDate: string | null;
