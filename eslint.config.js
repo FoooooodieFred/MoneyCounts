@@ -15,8 +15,10 @@ export default tseslint.config(
       "react-hooks": reactHooks,
     },
     rules: {
-      ...reactHooks.configs.recommended.rules,
-      // Align with gradual cleanup: warn only; do not block format layer.
+      // Classic hooks rules only — React Compiler-style rules would error on
+      // existing intentional patterns (setState-in-effect, etc.) without behavior change.
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
       "@typescript-eslint/no-unused-vars": [
         "warn",
         {

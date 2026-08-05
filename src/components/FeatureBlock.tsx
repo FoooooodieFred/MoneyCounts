@@ -26,7 +26,7 @@ export function FeatureBlock({
 
   useGsapContext(
     blockRef,
-    (ctx) => {
+    (_ctx) => {
       const el = blockRef.current;
       if (!el) return;
       if (prefersReducedMotion()) {

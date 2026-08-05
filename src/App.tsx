@@ -1,5 +1,4 @@
 import {
-  CSSProperties,
   ChangeEvent,
   KeyboardEvent,
   ReactNode,
@@ -30,7 +29,6 @@ import { SearchPage, SearchableLedgerRecord } from "./pages/SearchPage";
 import type { LedgerBadge, SpendingInsight, WeeklyAchievement } from "./lib/ledgerInsights";
 import type { QuickExpenseResult } from "./lib/quickExpenseParser";
 import {
-  APP_SETTINGS_KEY,
   AppSettings,
   HomeSectionKey,
   normalizeAppSettings,
@@ -451,8 +449,6 @@ const getCurrencyMeta = (currency: Currency) =>
     apiCode: getApiCode(currency),
     symbol: `${currency} `,
   };
-
-const getCurrencyLabel = (currency: Currency) => `${getCurrencyMeta(currency).name} ${currency}`;
 
 const normalizeStoredCustomCurrencies = (items: unknown): Currency[] => {
   if (!Array.isArray(items)) return [];
@@ -909,71 +905,6 @@ const summarizeTravelSplit = (
     owed: owed.get(participant.id) ?? 0,
   }));
 };
-
-const polarToCartesian = (center: number, radius: number, angle: number) => {
-  const radians = ((angle - 90) * Math.PI) / 180;
-  return {
-    x: center + radius * Math.cos(radians),
-    y: center + radius * Math.sin(radians),
-  };
-};
-
-const getPieSlicePath = (center: number, radius: number, startAngle: number, endAngle: number) => {
-  const start = polarToCartesian(center, radius, endAngle);
-  const end = polarToCartesian(center, radius, startAngle);
-  const largeArcFlag = endAngle - startAngle <= 180 ? 0 : 1;
-  return [
-    `M ${center} ${center}`,
-    `L ${start.x} ${start.y}`,
-    `A ${radius} ${radius} 0 ${largeArcFlag} 0 ${end.x} ${end.y}`,
-    "Z",
-  ].join(" ");
-};
-
-function PieChart({ summary, title }: { summary: CategorySummary; title: string }) {
-  const size = 160;
-  const center = size / 2;
-  const radius = 68;
-  const holeRadius = radius * 0.3;
-  let cursor = 0;
-
-  if (!summary.length) {
-    return <div className="pie-chart empty" aria-label={`${title} 类目占比图`} />;
-  }
-
-  return (
-    <svg className="pie-chart" viewBox="0 0 160 160" role="img" aria-label={`${title} 类目占比图`}>
-      {summary.map((item) => {
-        const startAngle = (cursor / 100) * 360;
-        cursor += item.percent;
-        const endAngle = (cursor / 100) * 360;
-        const midAngle = (startAngle + endAngle) / 2;
-        const labelPoint = polarToCartesian(center, radius * 0.72, midAngle);
-        const hoverPoint = polarToCartesian(0, 2, midAngle);
-        const sliceStyle = {
-          "--hover-x": `${hoverPoint.x}px`,
-          "--hover-y": `${hoverPoint.y}px`,
-        } as CSSProperties;
-
-        return (
-          <g key={item.category} className="pie-slice" style={sliceStyle}>
-            {item.percent >= 99.999 ? (
-              <circle cx={center} cy={center} r={radius} fill={item.color} />
-            ) : (
-              <path d={getPieSlicePath(center, radius, startAngle, endAngle)} fill={item.color} />
-            )}
-            {item.percent >= 6 && (
-              <text x={labelPoint.x} y={labelPoint.y} className="pie-label">
-                {item.percent.toFixed(0)}%
-              </text>
-            )}
-          </g>
-        );
-      })}
-      <circle cx={center} cy={center} r={holeRadius} className="pie-hole" />
-    </svg>
-  );
-}
 
 function StatsExpandPanel({ open, children }: { open: boolean; children: ReactNode }) {
   const panelRef = useRef<HTMLDivElement | null>(null);
@@ -2480,48 +2411,6 @@ function App() {
     return { imported, messages, importedEntries };
   };
 
-  const parseNaturalLedgerInput = async () => {
-    setIsParsingNaturalLedger(true);
-    setNaturalLedgerStatus("正在使用本地规则整理自然语言账单...");
-    setNaturalLedgerWarnings([]);
-    try {
-      const result = await parseNaturalLedger(naturalLedgerInput, {
-        selectedDate,
-        defaultCurrency: dailyDefaultCurrency,
-        categories: CATEGORIES,
-        currencies: allCurrencies,
-      });
-      const frontendWarnings = [...result.warnings];
-      const records = result.records
-        .map((record) => {
-          const normalized = normalizeParsedNaturalRecord(record);
-          if (!normalized)
-            frontendWarnings.push(`已跳过金额无效的记录：${record.note || record.amount}`);
-          return normalized;
-        })
-        .filter((record): record is LocalLedgerRecord => Boolean(record));
-      setNaturalLedgerPreview(records);
-      setNaturalLedgerWarnings(frontendWarnings);
-      setNaturalLedgerStatus(
-        records.length
-          ? `已通过本地规则解析整理出 ${records.length} 条待导入记录，可逐条编辑后确认导入。`
-          : "未整理出可导入记录，请补充金额、货币或备注后重试。",
-      );
-    } catch (error) {
-      setNaturalLedgerPreview([]);
-      setNaturalLedgerStatus(`整理失败：${error instanceof Error ? error.message : "未知错误"}`);
-    } finally {
-      setIsParsingNaturalLedger(false);
-    }
-  };
-
-  const clearNaturalLedgerInput = () => {
-    setNaturalLedgerInput("");
-    setNaturalLedgerPreview([]);
-    setNaturalLedgerWarnings([]);
-    setNaturalLedgerStatus("");
-  };
-
   const confirmNaturalLedgerImport = () => {
     if (!naturalLedgerPreview.length) {
       setNaturalLedgerStatus("没有待导入记录。");
@@ -3361,13 +3250,6 @@ function App() {
   const trendValues = trendRows.map((row) => row.value);
   const trendMin = Math.min(0, ...trendValues);
   const trendMax = Math.max(1, ...trendValues);
-  const trendPoints = trendRows
-    .map((row, index) => {
-      const x = trendRows.length === 1 ? 300 : 24 + (index / (trendRows.length - 1)) * 552;
-      const y = 188 - ((row.value - trendMin) / (trendMax - trendMin || 1)) * 156;
-      return `${x},${y}`;
-    })
-    .join(" ");
   const targetRateCurrency = dailyDefaultCurrency === "CNY" ? "HKD" : "CNY";
   const todayRecordCount = selectedEntries.filter(
     (entry) => !entry.hidden && parseAmount(entry.amount) !== 0,

@@ -88,7 +88,7 @@ export function NaturalLanguageInput({
 
   useGsapContext(
     sectionRef,
-    (ctx) => {
+    (_ctx) => {
       const dialog = dialogRef.current;
       if (!dialog) return;
       if (prefersReducedMotion()) {

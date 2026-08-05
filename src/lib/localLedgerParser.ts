@@ -125,7 +125,7 @@ const cleanRecurringNote = (note: string) => {
 };
 
 const restoreRecurringDescriptor = (segment: string, note: string) => {
-  let clean = cleanRecurringNote(note)
+  const clean = cleanRecurringNote(note)
     .replace(/(?:花了|用了|付了|花费|花)$/u, "")
     .trim();
   if (/地铁.*(?:来回|往返)|(?:来回|往返).*地铁/u.test(segment) && clean === "地铁") {

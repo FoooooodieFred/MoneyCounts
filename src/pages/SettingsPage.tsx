@@ -11,7 +11,6 @@ import {
   LOCKED_HOME_SECTIONS,
   PINNED_HOME_SECTIONS,
   TOGGLEABLE_HOME_SECTIONS,
-  isMigratedHomeSection,
   isToggleableHomeSection,
   normalizeHomeSectionOrder,
 } from "../lib/appSettings";

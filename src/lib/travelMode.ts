@@ -448,7 +448,7 @@ export type CurrencyDistributionItem = {
 
 export const summarizeCurrencyDistribution = (
   details: TravelHistoryDetail[],
-  targetCurrency: string,
+  _targetCurrency: string,
 ): CurrencyDistributionItem[] => {
   const buckets = new Map<string, { count: number; nativeTotal: number; convertedTotal: number }>();
   for (const entry of details) {

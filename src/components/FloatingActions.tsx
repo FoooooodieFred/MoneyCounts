@@ -57,7 +57,6 @@ export function FloatingActions({
 
   useEffect(() => {
     pulseTheme();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [themeMode]);
 
   const fabClick = (action: () => void, selector: string) => {
