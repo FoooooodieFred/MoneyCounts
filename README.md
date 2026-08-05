@@ -16,7 +16,7 @@
 - **旅游模式** — 独立行程账单、AA 均分、地点标签、汇率快照
 - **搜索筛选** — 关键词、分类、日期、金额区间
 - **备份** — JSON 完整导出/导入，CSV 账本导入/导出
-- **PWA** — 可安装到桌面，离线打开静态壳层
+- **PWA** — 可安装到桌面
 
 **界面语言**：当前为简体中文 UI；多语言（i18n）计划中。
 
@@ -55,8 +55,6 @@ React 19 · TypeScript · Vite 8 · GSAP · react-router-dom · LocalStorage · 
 | `public/` | PWA manifest、图标、Service Worker |
 | `docs/` | 功能保全说明与 cleanup 盘点 |
 
-开发约定见 `.cursor/rules/project.mdc`；常用 AI 指令模板见 `docs/cleanup/prompt-templates.md`。
-
 ---
 
 ## 数据
@@ -91,7 +89,7 @@ Client-side ledger. Data lives in browser LocalStorage — no backend required.
 - **Travel mode** — Trip bills, equal split, location tags, rate snapshots
 - **Search** — Keyword, category, date range, amount filters
 - **Backup** — Full JSON export/import, CSV ledger import/export
-- **PWA** — Installable, offline static shell
+- **PWA** — Installable
 
 **UI language**: Simplified Chinese only for now. Full i18n planned.
 
@@ -129,8 +127,6 @@ React 19 · TypeScript · Vite 8 · GSAP · react-router-dom · LocalStorage · 
 | `src/styles.css` | Global styles |
 | `public/` | PWA manifest, icon, service worker |
 | `docs/` | Preservation notes & cleanup inventory |
-
-Conventions: `.cursor/rules/project.mdc`. AI prompt templates: `docs/cleanup/prompt-templates.md`.
 
 ---
 
