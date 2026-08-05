@@ -4,7 +4,7 @@ import {
   parseQuickExpenseLines,
   type QuickExpenseResult,
 } from "../lib/quickExpenseParser";
-import type { LocalLedgerRecord } from "../localLedgerParser";
+import type { LocalLedgerRecord } from "../lib/localLedgerParser";
 import { useGsapContext, prefersReducedMotion } from "../hooks/useGsapContext";
 
 function resolveEntryScrollTarget(section: HTMLElement | null) {

@@ -12,7 +12,7 @@ import {
   countVisibleRecords,
   summarizeLedgerStats,
 } from "./ledgerStats";
-import { reconcileTravelParticipants } from "../travelMode";
+import { reconcileTravelParticipants } from "./travelMode";
 
 describe("dateRange recurring helpers", () => {
   it("expands the selected natural week from Monday to Sunday", () => {

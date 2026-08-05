@@ -1,5 +1,5 @@
 import { CSSProperties } from "react";
-import type { CurrencyDistributionItem, TravelHistoryCategory } from "./travelMode";
+import type { CurrencyDistributionItem, TravelHistoryCategory } from "../lib/travelMode";
 
 const polarToCartesian = (center: number, radius: number, angle: number) => {
   const radians = ((angle - 90) * Math.PI) / 180;

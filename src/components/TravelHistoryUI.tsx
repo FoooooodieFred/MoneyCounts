@@ -10,17 +10,17 @@ import {
   useState,
 } from "react";
 import { gsap } from "gsap";
-import type { TravelHistoryRecord } from "./travelMode";
-import { getHistoryDateBounds, summarizeCurrencyDistribution } from "./travelMode";
+import type { TravelHistoryRecord } from "../lib/travelMode";
+import { getHistoryDateBounds, summarizeCurrencyDistribution } from "../lib/travelMode";
 
 const TravelPieChart = lazy(() =>
-  import("./travelCharts").then((module) => ({ default: module.TravelPieChart })),
+  import("./TravelCharts").then((module) => ({ default: module.TravelPieChart })),
 );
 const TravelCurrencyBars = lazy(() =>
-  import("./travelCharts").then((module) => ({ default: module.TravelCurrencyBars })),
+  import("./TravelCharts").then((module) => ({ default: module.TravelCurrencyBars })),
 );
 const TravelStatCards = lazy(() =>
-  import("./travelCharts").then((module) => ({ default: module.TravelStatCards })),
+  import("./TravelCharts").then((module) => ({ default: module.TravelStatCards })),
 );
 
 const prefersReducedMotion = () =>

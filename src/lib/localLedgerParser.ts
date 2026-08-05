@@ -3,7 +3,7 @@ import {
   detectAmount,
   parseExpenseSegment,
   splitExpenseSegments,
-} from "./lib/expenseParseShared";
+} from "./expenseParseShared";
 import {
   buildDateKey,
   formatDateKey,
@@ -11,7 +11,7 @@ import {
   isValidDateKey,
   parseDateKey,
   shiftDateKey,
-} from "./lib/dateRange";
+} from "./dateRange";
 
 export type LocalLedgerRecord = {
   date: string;

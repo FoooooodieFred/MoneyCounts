@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseNaturalLedger } from "../localLedgerParser";
+import { parseNaturalLedger } from "./localLedgerParser";
 import { parseQuickExpense, parseQuickExpenseLines } from "./quickExpenseParser";
 
 const COMPLEX_INPUT =

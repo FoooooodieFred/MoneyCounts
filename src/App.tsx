@@ -4,7 +4,7 @@ import { gsap } from "gsap";
 import {
   LocalLedgerRecord,
   parseNaturalLedger,
-} from "./localLedgerParser";
+} from "./lib/localLedgerParser";
 import { HeroSection } from "./components/HeroSection";
 import { NaturalLanguageInput } from "./components/NaturalLanguageInput";
 import { SettingsModal } from "./components/SettingsModal";
@@ -83,7 +83,7 @@ import {
   TRAVEL_HISTORY_KEY,
   TRAVEL_HISTORY_PENDING_DELETE_KEY,
   TRAVEL_KEY,
-} from "./travelMode";
+} from "./lib/travelMode";
 
 type Currency = string;
 type ApiCurrency = string;

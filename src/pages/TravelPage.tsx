@@ -6,12 +6,12 @@ import {
   TravelHistoryPanel,
   TravelMergeModal,
   buildMergeDefaults,
-} from "../TravelHistoryUI";
+} from "../components/TravelHistoryUI";
 import type {
   PendingTravelHistoryDelete,
   TravelHistoryRecord,
   TravelState,
-} from "../travelMode";
+} from "../lib/travelMode";
 
 type ExchangeCache = {
   base: "USD";
