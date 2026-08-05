@@ -19,32 +19,40 @@ export function FloatingActions({
 }: FloatingActionsProps) {
   const rootRef = useRef<HTMLDivElement | null>(null);
 
-  useGsapContext(rootRef, (ctx) => {
-    if (prefersReducedMotion()) {
-      gsap.set(ctx.selector?.(".fab-btn") ?? [], { clearProps: "opacity,visibility,transform" });
-      return;
-    }
-    gsap.fromTo(
-      ".fab-btn",
-      { autoAlpha: 0, scale: 0.82, y: 12 },
-      {
-        autoAlpha: 1,
-        scale: 1,
-        y: 0,
-        stagger: 0.06,
-        duration: 0.45,
-        ease: "back.out(1.6)",
-        delay: 0.2,
-        clearProps: "transform,opacity,visibility",
-      },
-    );
-  }, []);
+  useGsapContext(
+    rootRef,
+    (ctx) => {
+      if (prefersReducedMotion()) {
+        gsap.set(ctx.selector?.(".fab-btn") ?? [], { clearProps: "opacity,visibility,transform" });
+        return;
+      }
+      gsap.fromTo(
+        ".fab-btn",
+        { autoAlpha: 0, scale: 0.82, y: 12 },
+        {
+          autoAlpha: 1,
+          scale: 1,
+          y: 0,
+          stagger: 0.06,
+          duration: 0.45,
+          ease: "back.out(1.6)",
+          delay: 0.2,
+          clearProps: "transform,opacity,visibility",
+        },
+      );
+    },
+    [],
+  );
 
   const pulseTheme = () => {
     if (prefersReducedMotion()) return;
     const btn = rootRef.current?.querySelector(".floating-theme-toggle");
     if (!btn) return;
-    gsap.fromTo(btn, { rotation: -20, scale: 0.9 }, { rotation: 0, scale: 1, duration: 0.5, ease: "back.out(2)" });
+    gsap.fromTo(
+      btn,
+      { rotation: -20, scale: 0.9 },
+      { rotation: 0, scale: 1, duration: 0.5, ease: "back.out(2)" },
+    );
   };
 
   useEffect(() => {
@@ -56,7 +64,11 @@ export function FloatingActions({
     if (!prefersReducedMotion()) {
       const btn = rootRef.current?.querySelector(selector);
       if (btn) {
-        gsap.fromTo(btn, { scale: 0.88 }, { scale: 1, duration: 0.35, ease: "elastic.out(1, 0.5)" });
+        gsap.fromTo(
+          btn,
+          { scale: 0.88 },
+          { scale: 1, duration: 0.35, ease: "elastic.out(1, 0.5)" },
+        );
       }
     }
     action();

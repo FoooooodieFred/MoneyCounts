@@ -34,7 +34,14 @@ type TravelPageProps = {
   travelDraftEndDate: string;
   travelStatus: string;
   travelRangeLabel: string;
-  travelDetails: Array<{ date: string; category: string; amount: string; currency: string; note: string; travelKey: string }>;
+  travelDetails: Array<{
+    date: string;
+    category: string;
+    amount: string;
+    currency: string;
+    note: string;
+    travelKey: string;
+  }>;
   travelTotals: { converted: Record<string, number> };
   travelCategorySummary: Array<{ category: string; value: number; percent: number; color: string }>;
   travelSplitSummary: Array<{ participantId: string; name: string; owed: number }>;
@@ -58,7 +65,10 @@ type TravelPageProps = {
   convert: (amount: number, from: string, to: string, exchange: ExchangeCache) => number;
   getCurrencyMeta: (currency: string) => { name: string; shortName: string };
   buildFallbackBillName: (currency: string) => string;
-  PieChart: ComponentType<{ summary: Array<{ category: string; value: number; percent: number; color: string }>; title: string }>;
+  PieChart: ComponentType<{
+    summary: Array<{ category: string; value: number; percent: number; color: string }>;
+    title: string;
+  }>;
   onEnableTravel: () => void;
   onEndTravel: () => void;
   onExportBill: () => void;
@@ -69,7 +79,10 @@ type TravelPageProps = {
   setTravelDraftEndDate: (value: string) => void;
   setTravelState: React.Dispatch<React.SetStateAction<TravelState>>;
   updateTravelParticipants: (names: string[]) => void;
-  updateTravelEntryMeta: (travelKey: string, patch: Partial<{ participantIds: string[]; locationLabel: string }>) => void;
+  updateTravelEntryMeta: (
+    travelKey: string,
+    patch: Partial<{ participantIds: string[]; locationLabel: string }>,
+  ) => void;
   updateTravelBudget: (patch: Partial<TravelState["budget"]>) => void;
   switchDailyDefaultCurrency: (currency: string) => void;
   setTravelHistoryRailOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -83,7 +96,11 @@ type TravelPageProps = {
   deleteTravelHistoryRecord: (id: string) => void;
   syncTravelHistoryRecord: (id: string, mode: "full" | "split") => void;
   undoTravelHistoryDelete: (id: string) => void;
-  confirmTravelHistoryMerge: (payload: { name: string; startDate: string; endDate: string }) => void;
+  confirmTravelHistoryMerge: (payload: {
+    name: string;
+    startDate: string;
+    endDate: string;
+  }) => void;
   closeTravelHistoryModal: () => void;
   PENDING_DELETE_TTL_MS: number;
 };
@@ -91,11 +108,7 @@ type TravelPageProps = {
 export function TravelPage(props: TravelPageProps) {
   const pageRef = useRef<HTMLElement | null>(null);
   const [travelQuickInput, setTravelQuickInput] = useState("");
-  const {
-    travelState,
-    travelHistory,
-    PieChart,
-  } = props;
+  const { travelState, travelHistory, PieChart } = props;
 
   useEffect(() => {
     const el = pageRef.current;
@@ -108,18 +121,33 @@ export function TravelPage(props: TravelPageProps) {
       gsap.fromTo(
         el,
         { autoAlpha: 0, y: 24 },
-        { autoAlpha: 1, y: 0, duration: 0.5, ease: "power3.out", clearProps: "transform,opacity,visibility" },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.5,
+          ease: "power3.out",
+          clearProps: "transform,opacity,visibility",
+        },
       );
     }, el);
     return () => ctx.revert();
   }, []);
 
-  const selectedTravelHistory = travelHistory.find((item) => item.id === props.selectedTravelHistoryId) ?? null;
-  const selectedMergeRecords = travelHistory.filter((record) => props.travelHistorySelectedIds.includes(record.id));
-  const mergeDefaults = selectedMergeRecords.length ? buildMergeDefaults(selectedMergeRecords) : null;
+  const selectedTravelHistory =
+    travelHistory.find((item) => item.id === props.selectedTravelHistoryId) ?? null;
+  const selectedMergeRecords = travelHistory.filter((record) =>
+    props.travelHistorySelectedIds.includes(record.id),
+  );
+  const mergeDefaults = selectedMergeRecords.length
+    ? buildMergeDefaults(selectedMergeRecords)
+    : null;
 
   return (
-    <main className="app-shell app-shell--below-nav travel-page" ref={pageRef} data-section="travel-page">
+    <main
+      className="app-shell app-shell--below-nav travel-page"
+      ref={pageRef}
+      data-section="travel-page"
+    >
       <section className="travel-hero" data-section="travel-hero">
         <p className="eyebrow">Travel Mode</p>
         <h1>{travelState.active && travelState.billName ? travelState.billName : "旅游模式"}</h1>
@@ -147,7 +175,11 @@ export function TravelPage(props: TravelPageProps) {
                   <em>{travelHistory.length}</em>
                 </button>
               )}
-              <button type="button" data-action={travelState.active ? "travel-end" : "travel-start"} onClick={travelState.active ? props.onEndTravel : props.onEnableTravel}>
+              <button
+                type="button"
+                data-action={travelState.active ? "travel-end" : "travel-start"}
+                onClick={travelState.active ? props.onEndTravel : props.onEnableTravel}
+              >
                 {travelState.active ? "结束旅游" : "开始旅游记账"}
               </button>
             </div>
@@ -199,7 +231,10 @@ export function TravelPage(props: TravelPageProps) {
                 value={travelState.destinationCurrency}
                 onChange={(event) => {
                   const currency = event.target.value;
-                  props.setTravelState((current) => ({ ...current, destinationCurrency: currency }));
+                  props.setTravelState((current) => ({
+                    ...current,
+                    destinationCurrency: currency,
+                  }));
                   if (travelState.active) props.switchDailyDefaultCurrency(currency);
                 }}
               >
@@ -215,7 +250,10 @@ export function TravelPage(props: TravelPageProps) {
               <select
                 value={travelState.targetCurrency}
                 onChange={(event) =>
-                  props.setTravelState((current) => ({ ...current, targetCurrency: event.target.value }))
+                  props.setTravelState((current) => ({
+                    ...current,
+                    targetCurrency: event.target.value,
+                  }))
                 }
               >
                 {props.allCurrencies.map((currency) => (
@@ -225,7 +263,13 @@ export function TravelPage(props: TravelPageProps) {
                 ))}
               </select>
             </label>
-            <button type="button" className="secondary-button" data-action="travel-export-bill" onClick={props.onExportBill} disabled={!props.travelDetails.length}>
+            <button
+              type="button"
+              className="secondary-button"
+              data-action="travel-export-bill"
+              onClick={props.onExportBill}
+              disabled={!props.travelDetails.length}
+            >
               导出旅游账单
             </button>
           </div>
@@ -235,7 +279,9 @@ export function TravelPage(props: TravelPageProps) {
               <div>
                 <p className="eyebrow">Split</p>
                 <h3>同行人与均分口径</h3>
-                <p className="muted">每笔消费按勾选参与人均分；这里展示每人应承担金额，不追踪谁先垫付。</p>
+                <p className="muted">
+                  每笔消费按勾选参与人均分；这里展示每人应承担金额，不追踪谁先垫付。
+                </p>
               </div>
               <div className="travel-participant-list">
                 {travelState.participants.map((participant, index) => (
@@ -256,7 +302,12 @@ export function TravelPage(props: TravelPageProps) {
                 <button
                   type="button"
                   className="secondary-button"
-                  onClick={() => props.updateTravelParticipants([...travelState.participants.map((item) => item.name), `同行人${travelState.participants.length + 1}`])}
+                  onClick={() =>
+                    props.updateTravelParticipants([
+                      ...travelState.participants.map((item) => item.name),
+                      `同行人${travelState.participants.length + 1}`,
+                    ])
+                  }
                 >
                   添加同行人
                 </button>
@@ -264,7 +315,11 @@ export function TravelPage(props: TravelPageProps) {
                   type="button"
                   className="ghost-button"
                   disabled={travelState.participants.length <= 1}
-                  onClick={() => props.updateTravelParticipants(travelState.participants.slice(0, -1).map((item) => item.name))}
+                  onClick={() =>
+                    props.updateTravelParticipants(
+                      travelState.participants.slice(0, -1).map((item) => item.name),
+                    )
+                  }
                 >
                   移除末位
                 </button>
@@ -283,7 +338,9 @@ export function TravelPage(props: TravelPageProps) {
               <div>
                 <p className="eyebrow">Budget</p>
                 <h3>旅行预算</h3>
-                <p className="muted">按旅行目标货币 {travelState.targetCurrency} 计算，支持每日预算和分类预算预警。</p>
+                <p className="muted">
+                  按旅行目标货币 {travelState.targetCurrency} 计算，支持每日预算和分类预算预警。
+                </p>
               </div>
               <div className="travel-budget-inputs">
                 <label>
@@ -293,7 +350,12 @@ export function TravelPage(props: TravelPageProps) {
                     data-action="travel-budget-daily"
                     value={travelState.budget.dailyLimit ?? ""}
                     placeholder={`例如 500 ${travelState.targetCurrency}`}
-                    onChange={(event) => props.updateTravelBudget({ dailyLimit: Number(event.target.value) > 0 ? Number(event.target.value) : null })}
+                    onChange={(event) =>
+                      props.updateTravelBudget({
+                        dailyLimit:
+                          Number(event.target.value) > 0 ? Number(event.target.value) : null,
+                      })
+                    }
                   />
                 </label>
                 {["餐饮", "交通", "购物", "旅行"].map((category) => (
@@ -319,9 +381,15 @@ export function TravelPage(props: TravelPageProps) {
                   <div className={props.travelBudgetProgress.dailyPercent > 100 ? "is-over" : ""}>
                     <span>{props.travelBudgetProgress.dayCount} 天总预算</span>
                     <strong>
-                      {props.formatMoney(props.travelBudgetProgress.total, travelState.targetCurrency)}
+                      {props.formatMoney(
+                        props.travelBudgetProgress.total,
+                        travelState.targetCurrency,
+                      )}
                       {" / "}
-                      {props.formatMoney(props.travelBudgetProgress.dailyBudget, travelState.targetCurrency)}
+                      {props.formatMoney(
+                        props.travelBudgetProgress.dailyBudget,
+                        travelState.targetCurrency,
+                      )}
                     </strong>
                     <small>{props.travelBudgetProgress.dailyPercent.toFixed(1)}%</small>
                   </div>
@@ -343,7 +411,9 @@ export function TravelPage(props: TravelPageProps) {
             </section>
           </div>
 
-          {props.travelStatus && <p className="status travel-status-banner">{props.travelStatus}</p>}
+          {props.travelStatus && (
+            <p className="status travel-status-banner">{props.travelStatus}</p>
+          )}
 
           {travelState.active && (
             <div className="travel-bill">
@@ -360,7 +430,9 @@ export function TravelPage(props: TravelPageProps) {
                 <div>
                   <p className="eyebrow">AA Quick Entry</p>
                   <h3>整单自然语言分账</h3>
-                  <p className="muted">建议输入整单信息完成记账，例如：和 AB 在 XXX 餐厅吃饭，花了 300Jpy</p>
+                  <p className="muted">
+                    建议输入整单信息完成记账，例如：和 AB 在 XXX 餐厅吃饭，花了 300Jpy
+                  </p>
                 </div>
                 <label>
                   <span className="sr-only">旅游自然语言记账</span>
@@ -371,7 +443,9 @@ export function TravelPage(props: TravelPageProps) {
                     placeholder="和 AB 在 XXX 餐厅吃饭，花了 300Jpy"
                   />
                 </label>
-                <button type="submit" data-action="travel-natural-confirm">写入并分摊</button>
+                <button type="submit" data-action="travel-natural-confirm">
+                  写入并分摊
+                </button>
               </form>
               <div className="totals-grid">
                 <div>
@@ -398,7 +472,8 @@ export function TravelPage(props: TravelPageProps) {
                       <div key={item.category}>
                         <span>{item.category}</span>
                         <strong>
-                          {props.formatMoney(item.value, travelState.targetCurrency)} · {item.percent.toFixed(1)}%
+                          {props.formatMoney(item.value, travelState.targetCurrency)} ·{" "}
+                          {item.percent.toFixed(1)}%
                         </strong>
                       </div>
                     ))
@@ -436,7 +511,11 @@ export function TravelPage(props: TravelPageProps) {
                           data-action="travel-entry-location"
                           value={travelState.entryMeta[entry.travelKey]?.locationLabel ?? ""}
                           placeholder={travelState.locationLabel ?? "例如 东京站 / 机场"}
-                          onChange={(event) => props.updateTravelEntryMeta(entry.travelKey, { locationLabel: event.target.value })}
+                          onChange={(event) =>
+                            props.updateTravelEntryMeta(entry.travelKey, {
+                              locationLabel: event.target.value,
+                            })
+                          }
                         />
                       </label>
                       <div className="travel-entry-participants" aria-label="参与分摊的人">
@@ -449,7 +528,7 @@ export function TravelPage(props: TravelPageProps) {
                             <label key={participant.id}>
                               <input
                                 type="checkbox"
-                                  data-action="travel-entry-participant"
+                                data-action="travel-entry-participant"
                                 checked={checked}
                                 onChange={(event) => {
                                   const nextIds = event.target.checked
@@ -528,7 +607,10 @@ export function TravelPage(props: TravelPageProps) {
                   「{pending.record.name}」已删除，{remainingSec} 秒内可恢复
                 </p>
                 <div className="travel-delete-toast-actions">
-                  <button type="button" onClick={() => props.undoTravelHistoryDelete(pending.record.id)}>
+                  <button
+                    type="button"
+                    onClick={() => props.undoTravelHistoryDelete(pending.record.id)}
+                  >
                     撤销
                   </button>
                 </div>

@@ -34,12 +34,42 @@ describe("parseQuickExpenseLines — multi-clause Chinese", () => {
   it("parses the canonical complex example (HKD default)", () => {
     const results = parseQuickExpenseLines(COMPLEX_INPUT, "HKD");
     expect(results).toHaveLength(6);
-    expect(results[0]).toMatchObject({ category: "餐饮", amount: "65", currency: "USD", note: "午餐" });
-    expect(results[1]).toMatchObject({ category: "娱乐", amount: "33", currency: "HKD", note: "充值" });
-    expect(results[2]).toMatchObject({ category: "交通", amount: "93", currency: "CNY", note: "公交车" });
-    expect(results[3]).toMatchObject({ category: "居住", amount: "78", currency: "HKD", note: "洗衣服" });
-    expect(results[4]).toMatchObject({ category: "餐饮", amount: "300", currency: "HKD", note: "晚餐" });
-    expect(results[5]).toMatchObject({ category: "餐饮", amount: "-85", currency: "HKD", note: "AA" });
+    expect(results[0]).toMatchObject({
+      category: "餐饮",
+      amount: "65",
+      currency: "USD",
+      note: "午餐",
+    });
+    expect(results[1]).toMatchObject({
+      category: "娱乐",
+      amount: "33",
+      currency: "HKD",
+      note: "充值",
+    });
+    expect(results[2]).toMatchObject({
+      category: "交通",
+      amount: "93",
+      currency: "CNY",
+      note: "公交车",
+    });
+    expect(results[3]).toMatchObject({
+      category: "居住",
+      amount: "78",
+      currency: "HKD",
+      note: "洗衣服",
+    });
+    expect(results[4]).toMatchObject({
+      category: "餐饮",
+      amount: "300",
+      currency: "HKD",
+      note: "晚餐",
+    });
+    expect(results[5]).toMatchObject({
+      category: "餐饮",
+      amount: "-85",
+      currency: "HKD",
+      note: "AA",
+    });
   });
 
   it("splits on Chinese and English punctuation in one blob", () => {
@@ -58,8 +88,18 @@ describe("parseQuickExpenseLines — multi-clause Chinese", () => {
   it("extracts two amounts from one clause", () => {
     const results = parseQuickExpenseLines("93元的公交车洗衣服花了78HKD", "CNY");
     expect(results).toHaveLength(2);
-    expect(results[0]).toMatchObject({ category: "交通", amount: "93", currency: "CNY", note: "公交车" });
-    expect(results[1]).toMatchObject({ category: "居住", amount: "78", currency: "HKD", note: "洗衣服" });
+    expect(results[0]).toMatchObject({
+      category: "交通",
+      amount: "93",
+      currency: "CNY",
+      note: "公交车",
+    });
+    expect(results[1]).toMatchObject({
+      category: "居住",
+      amount: "78",
+      currency: "HKD",
+      note: "洗衣服",
+    });
   });
 
   it("treats AA split as negative income", () => {
@@ -82,7 +122,12 @@ describe("parseQuickExpenseLines — multi-clause Chinese", () => {
 
   it("parses English mixed input", () => {
     const result = parseQuickExpense("lunch 50 HKD", "HKD");
-    expect(result).toMatchObject({ category: "餐饮", amount: "50", currency: "HKD", note: "lunch" });
+    expect(result).toMatchObject({
+      category: "餐饮",
+      amount: "50",
+      currency: "HKD",
+      note: "lunch",
+    });
   });
 
   it("infers category from amount-only clause with keyword", () => {
@@ -93,7 +138,12 @@ describe("parseQuickExpenseLines — multi-clause Chinese", () => {
   it("handles 花了X元Y doing Z pattern", () => {
     const results = parseQuickExpenseLines("花了45元买水果", "CNY");
     expect(results).toHaveLength(1);
-    expect(results[0]).toMatchObject({ category: "购物", amount: "45", currency: "CNY", note: "水果" });
+    expect(results[0]).toMatchObject({
+      category: "购物",
+      amount: "45",
+      currency: "CNY",
+      note: "水果",
+    });
   });
 
   it("detects USD amounts", () => {
@@ -147,18 +197,7 @@ describe("parseNaturalLedger relative dates", () => {
   const context = {
     selectedDate: "2026-06-25",
     defaultCurrency: "CNY",
-    categories: [
-      "餐饮",
-      "交通",
-      "购物",
-      "居住",
-      "通讯",
-      "娱乐",
-      "医疗",
-      "教育",
-      "旅行",
-      "其他",
-    ],
+    categories: ["餐饮", "交通", "购物", "居住", "通讯", "娱乐", "医疗", "教育", "旅行", "其他"],
     currencies: ["CNY", "HKD"],
   };
 

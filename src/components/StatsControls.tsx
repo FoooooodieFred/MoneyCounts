@@ -46,7 +46,14 @@ export function StatsCurrencyPicker({
       gsap.fromTo(
         panel,
         { autoAlpha: 0, y: 12, scale: 0.96 },
-        { autoAlpha: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.5)", clearProps: "transform,opacity,visibility" },
+        {
+          autoAlpha: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.32,
+          ease: "back.out(1.5)",
+          clearProps: "transform,opacity,visibility",
+        },
       );
     });
 
@@ -64,7 +71,13 @@ export function StatsCurrencyPicker({
         if (event.target === backdropRef.current) onClose();
       }}
     >
-      <div ref={panelRef} className="stats-currency-popup" role="dialog" aria-label="选择统计货币" onClick={(e) => e.stopPropagation()}>
+      <div
+        ref={panelRef}
+        className="stats-currency-popup"
+        role="dialog"
+        aria-label="选择统计货币"
+        onClick={(e) => e.stopPropagation()}
+      >
         <header>
           <strong>统计货币</strong>
           <button type="button" className="ghost-button" onClick={onClose} aria-label="关闭">
@@ -102,7 +115,11 @@ export function SummaryModeToggle({ mode, onChange }: SummaryModeToggleProps) {
       onChange(next);
       return;
     }
-    gsap.fromTo(trackRef.current, { scale: 0.96 }, { scale: 1, duration: 0.35, ease: "back.out(2)" });
+    gsap.fromTo(
+      trackRef.current,
+      { scale: 0.96 },
+      { scale: 1, duration: 0.35, ease: "back.out(2)" },
+    );
     onChange(next);
   };
 

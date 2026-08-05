@@ -19,12 +19,16 @@ export const isValidDateKey = (date: string) => {
   if (!DATE_KEY_PATTERN.test(date)) return false;
   const parsed = parseDateKey(date);
   const [year, month, day] = date.split("-").map(Number);
-  return parsed.getFullYear() === year && parsed.getMonth() === month - 1 && parsed.getDate() === day;
+  return (
+    parsed.getFullYear() === year && parsed.getMonth() === month - 1 && parsed.getDate() === day
+  );
 };
 
 export const buildDateKey = (year: number, month: number, day: number) => {
   const parsed = new Date(year, month - 1, day);
-  return parsed.getFullYear() === year && parsed.getMonth() === month - 1 && parsed.getDate() === day
+  return parsed.getFullYear() === year &&
+    parsed.getMonth() === month - 1 &&
+    parsed.getDate() === day
     ? formatDateKey(parsed)
     : null;
 };
@@ -67,7 +71,10 @@ export const getWeekRange = (date: string): DateRange => {
 export const getWeekDates = (selectedDate: string, prefix?: string) => {
   const selected = parseDateKey(selectedDate);
   const currentDay = selected.getDay() || 7;
-  const monday = shiftDateKey(selectedDate, 1 - currentDay + (prefix === "上" ? -7 : prefix === "下" ? 7 : 0));
+  const monday = shiftDateKey(
+    selectedDate,
+    1 - currentDay + (prefix === "上" ? -7 : prefix === "下" ? 7 : 0),
+  );
   return Array.from({ length: 7 }, (_, index) => shiftDateKey(monday, index));
 };
 

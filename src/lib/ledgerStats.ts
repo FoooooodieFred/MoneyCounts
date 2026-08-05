@@ -24,8 +24,11 @@ export const parseAmount = (value: string) => {
 export const hasEntryContent = (entry: Pick<LedgerStatsEntry, "amount" | "note">) =>
   Boolean(entry.amount.trim() || entry.note.trim());
 
-export const getEntryIndex = (categoryIndex: number, rowIndex: number, maxRecordsPerCategory: number) =>
-  categoryIndex * maxRecordsPerCategory + rowIndex;
+export const getEntryIndex = (
+  categoryIndex: number,
+  rowIndex: number,
+  maxRecordsPerCategory: number,
+) => categoryIndex * maxRecordsPerCategory + rowIndex;
 
 export const getCategoryEntries = <T extends LedgerStatsEntry>(
   entries: T[],
@@ -83,8 +86,14 @@ export const summarizeLedgerStats = (ledger: LedgerLike) => {
 export const countVisibleRecords = (entries: LedgerStatsEntry[]) =>
   entries.filter((entry) => !entry.hidden && parseAmount(entry.amount) !== 0).length;
 
-export const countRecordedDates = (entries: Array<Pick<CollectedLedgerEntry, "date" | "amount" | "hidden">>) =>
-  new Set(entries.filter((entry) => !entry.hidden && parseAmount(entry.amount) !== 0).map((entry) => entry.date)).size;
+export const countRecordedDates = (
+  entries: Array<Pick<CollectedLedgerEntry, "date" | "amount" | "hidden">>,
+) =>
+  new Set(
+    entries
+      .filter((entry) => !entry.hidden && parseAmount(entry.amount) !== 0)
+      .map((entry) => entry.date),
+  ).size;
 
 export const calculateBudgetAvailability = (
   monthlyLimit: number | null | undefined,

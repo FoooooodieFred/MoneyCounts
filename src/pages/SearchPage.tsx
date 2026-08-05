@@ -48,7 +48,9 @@ export function SearchPage({
       const matchesEnd = !endDate || record.date <= endDate;
       const matchesMin = min === null || (Number.isFinite(min) && amount >= min);
       const matchesMax = max === null || (Number.isFinite(max) && amount <= max);
-      return matchesText && matchesCategory && matchesStart && matchesEnd && matchesMin && matchesMax;
+      return (
+        matchesText && matchesCategory && matchesStart && matchesEnd && matchesMin && matchesMax
+      );
     });
   }, [category, endDate, keyword, maxAmount, minAmount, records, startDate]);
 
@@ -68,30 +70,65 @@ export function SearchPage({
         <div className="search-filter-grid">
           <label>
             关键词
-            <input data-action="search-keyword" value={keyword} onChange={(event) => setKeyword(event.target.value)} placeholder="备注 / 分类 / 金额" />
+            <input
+              data-action="search-keyword"
+              value={keyword}
+              onChange={(event) => setKeyword(event.target.value)}
+              placeholder="备注 / 分类 / 金额"
+            />
           </label>
           <label>
             分类
-            <select data-action="search-category" value={category} onChange={(event) => setCategory(event.target.value)}>
+            <select
+              data-action="search-category"
+              value={category}
+              onChange={(event) => setCategory(event.target.value)}
+            >
               <option value="全部">全部分类</option>
-              {categories.map((item) => <option key={item} value={item}>{item}</option>)}
+              {categories.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
             </select>
           </label>
           <label>
             开始日期
-            <input type="date" data-action="search-start-date" value={startDate} onChange={(event) => setStartDate(event.target.value)} />
+            <input
+              type="date"
+              data-action="search-start-date"
+              value={startDate}
+              onChange={(event) => setStartDate(event.target.value)}
+            />
           </label>
           <label>
             结束日期
-            <input type="date" data-action="search-end-date" value={endDate} onChange={(event) => setEndDate(event.target.value)} />
+            <input
+              type="date"
+              data-action="search-end-date"
+              value={endDate}
+              onChange={(event) => setEndDate(event.target.value)}
+            />
           </label>
           <label>
             最小金额（{currency}）
-            <input inputMode="decimal" data-action="search-min-amount" value={minAmount} onChange={(event) => setMinAmount(event.target.value)} placeholder="0" />
+            <input
+              inputMode="decimal"
+              data-action="search-min-amount"
+              value={minAmount}
+              onChange={(event) => setMinAmount(event.target.value)}
+              placeholder="0"
+            />
           </label>
           <label>
             最大金额（{currency}）
-            <input inputMode="decimal" data-action="search-max-amount" value={maxAmount} onChange={(event) => setMaxAmount(event.target.value)} placeholder="不限" />
+            <input
+              inputMode="decimal"
+              data-action="search-max-amount"
+              value={maxAmount}
+              onChange={(event) => setMaxAmount(event.target.value)}
+              placeholder="不限"
+            />
           </label>
         </div>
         <div className="search-filter-summary">
@@ -103,7 +140,10 @@ export function SearchPage({
       <section className="search-result-list" data-section="search-results">
         {filteredRecords.length ? (
           filteredRecords.map((record, index) => (
-            <article key={`${record.date}-${record.category}-${index}`} className="card search-result-item">
+            <article
+              key={`${record.date}-${record.category}-${index}`}
+              className="card search-result-item"
+            >
               <div>
                 <span>{record.date}</span>
                 <strong>{record.category}</strong>
@@ -111,9 +151,18 @@ export function SearchPage({
               </div>
               <div>
                 <strong>{formatMoney(record.amount, record.currency)}</strong>
-                <small>{record.currency === currency ? "当前口径" : `≈ ${formatMoney(record.convertedAmount, currency)}`}</small>
+                <small>
+                  {record.currency === currency
+                    ? "当前口径"
+                    : `≈ ${formatMoney(record.convertedAmount, currency)}`}
+                </small>
               </div>
-              <button type="button" className="secondary-button" data-action="search-select-date" onClick={() => onSelectDate(record.date)}>
+              <button
+                type="button"
+                className="secondary-button"
+                data-action="search-select-date"
+                onClick={() => onSelectDate(record.date)}
+              >
                 定位日期
               </button>
             </article>

@@ -1,17 +1,14 @@
 import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-import {
-  parseQuickExpenseLines,
-  type QuickExpenseResult,
-} from "../lib/quickExpenseParser";
+import { parseQuickExpenseLines, type QuickExpenseResult } from "../lib/quickExpenseParser";
 import type { LocalLedgerRecord } from "../lib/localLedgerParser";
 import { useGsapContext, prefersReducedMotion } from "../hooks/useGsapContext";
 
 function resolveEntryScrollTarget(section: HTMLElement | null) {
   return (
-    section
-    ?? document.getElementById("entry")
-    ?? document.querySelector<HTMLElement>('[data-section="quick-entry-slot"]')
+    section ??
+    document.getElementById("entry") ??
+    document.querySelector<HTMLElement>('[data-section="quick-entry-slot"]')
   );
 }
 
@@ -33,7 +30,11 @@ type NaturalLanguageInputProps = {
   onSubmit: (results: QuickExpenseResult[], rawInput: string) => void;
   onConfirm: () => void;
   onClearStatus: () => void;
-  onPreviewChange: (index: number, field: keyof Pick<LocalLedgerRecord, "date" | "category" | "amount" | "currency" | "note">, value: string) => void;
+  onPreviewChange: (
+    index: number,
+    field: keyof Pick<LocalLedgerRecord, "date" | "category" | "amount" | "currency" | "note">,
+    value: string,
+  ) => void;
   onPreviewDelete: (index: number) => void;
   onPreviewAdd: () => void;
   previewRecords: LocalLedgerRecord[];
@@ -85,42 +86,50 @@ export function NaturalLanguageInput({
   const [compactVisible, setCompactVisible] = useState(false);
   const [isComposing, setIsComposing] = useState(false);
 
-  useGsapContext(sectionRef, (ctx) => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-    if (prefersReducedMotion()) {
-      gsap.set(dialog, { clearProps: "opacity,visibility,transform" });
-      return;
-    }
-    gsap.fromTo(
-      dialog,
-      { autoAlpha: 0, scale: 0.97, y: 20 },
-      {
-        autoAlpha: 1,
-        scale: 1,
-        y: 0,
-        duration: 0.55,
-        ease: "power3.out",
-        clearProps: "transform,opacity,visibility",
-      },
-    );
-  }, []);
+  useGsapContext(
+    sectionRef,
+    (ctx) => {
+      const dialog = dialogRef.current;
+      if (!dialog) return;
+      if (prefersReducedMotion()) {
+        gsap.set(dialog, { clearProps: "opacity,visibility,transform" });
+        return;
+      }
+      gsap.fromTo(
+        dialog,
+        { autoAlpha: 0, scale: 0.97, y: 20 },
+        {
+          autoAlpha: 1,
+          scale: 1,
+          y: 0,
+          duration: 0.55,
+          ease: "power3.out",
+          clearProps: "transform,opacity,visibility",
+        },
+      );
+    },
+    [],
+  );
 
-  useGsapContext(previewRef, (ctx) => {
-    if (!previews.length || prefersReducedMotion()) return;
-    gsap.fromTo(
-      ctx.selector?.(".nl-preview-row") ?? [],
-      { autoAlpha: 0, x: -8 },
-      {
-        autoAlpha: 1,
-        x: 0,
-        stagger: 0.05,
-        duration: 0.3,
-        ease: "power2.out",
-        clearProps: "transform,opacity,visibility",
-      },
-    );
-  }, [previews.length]);
+  useGsapContext(
+    previewRef,
+    (ctx) => {
+      if (!previews.length || prefersReducedMotion()) return;
+      gsap.fromTo(
+        ctx.selector?.(".nl-preview-row") ?? [],
+        { autoAlpha: 0, x: -8 },
+        {
+          autoAlpha: 1,
+          x: 0,
+          stagger: 0.05,
+          duration: 0.3,
+          ease: "power2.out",
+          clearProps: "transform,opacity,visibility",
+        },
+      );
+    },
+    [previews.length],
+  );
 
   useEffect(() => {
     if (!input.trim()) {
@@ -198,14 +207,18 @@ export function NaturalLanguageInput({
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    if (event.key !== "Enter" || event.shiftKey || isComposing || event.nativeEvent.isComposing) return;
+    if (event.key !== "Enter" || event.shiftKey || isComposing || event.nativeEvent.isComposing)
+      return;
     event.preventDefault();
     event.currentTarget.form?.requestSubmit();
   };
 
   const focusMainInput = () => {
     setExpanded(true);
-    sectionRef.current?.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth", block: "center" });
+    sectionRef.current?.scrollIntoView({
+      behavior: prefersReducedMotion() ? "auto" : "smooth",
+      block: "center",
+    });
     requestAnimationFrame(() => textareaRef.current?.focus());
   };
 
@@ -235,14 +248,21 @@ export function NaturalLanguageInput({
 
   return (
     <>
-      <section ref={sectionRef} className={`nl-section is-visible${expanded ? " is-expanded" : ""}`} id="entry" data-section="quick-entry">
+      <section
+        ref={sectionRef}
+        className={`nl-section is-visible${expanded ? " is-expanded" : ""}`}
+        id="entry"
+        data-section="quick-entry"
+      >
         <div ref={dialogRef} className="nl-dialog">
           <div className="nl-dialog__glow" aria-hidden="true" />
           <header className="nl-dialog__header">
             <div>
               <p className="eyebrow">Quick Entry</p>
               <h2>几句话记几笔</h2>
-              <p className="muted">支持多句混输、相对日期、多币种、AA/退款/到账；按 Enter 确认，Shift+Enter 换行。</p>
+              <p className="muted">
+                支持多句混输、相对日期、多币种、AA/退款/到账；按 Enter 确认，Shift+Enter 换行。
+              </p>
             </div>
             <div className="nl-currency-toggle" role="group" aria-label="默认货币">
               {(["CNY", "HKD"] as const).map((currency) => (
@@ -286,9 +306,16 @@ export function NaturalLanguageInput({
             </label>
             <div className="nl-form__actions">
               <button type="submit" disabled={!previews.length || isParsing}>
-                {isParsing ? "解析中..." : `生成预览${previews.length > 1 ? ` (${previews.length} 笔)` : ""}`}
+                {isParsing
+                  ? "解析中..."
+                  : `生成预览${previews.length > 1 ? ` (${previews.length} 笔)` : ""}`}
               </button>
-              <button type="button" className="secondary-button" data-action="quick-entry-clear" onClick={() => setInput("")}>
+              <button
+                type="button"
+                className="secondary-button"
+                data-action="quick-entry-clear"
+                onClick={() => setInput("")}
+              >
                 清空
               </button>
             </div>
@@ -298,12 +325,20 @@ export function NaturalLanguageInput({
             <div ref={previewRef} className="nl-preview nl-preview--batch" role="status">
               <div className="nl-preview__heading">
                 <span className="nl-preview__count">待确认 {previewRecords.length} 笔</span>
-                <button type="button" className="ghost-button" data-action="preview-add-record" onClick={onPreviewAdd}>
+                <button
+                  type="button"
+                  className="ghost-button"
+                  data-action="preview-add-record"
+                  onClick={onPreviewAdd}
+                >
                   补一笔
                 </button>
               </div>
               {previewRecords.map((preview, index) => (
-                <div key={`${preview.date}-${preview.amount}-${preview.note}-${index}`} className="nl-preview-row nl-preview-row--editable">
+                <div
+                  key={`${preview.date}-${preview.amount}-${preview.note}-${index}`}
+                  className="nl-preview-row nl-preview-row--editable"
+                >
                   <label>
                     日期
                     <input
@@ -314,7 +349,10 @@ export function NaturalLanguageInput({
                   </label>
                   <label>
                     分类
-                    <select value={preview.category} onChange={(event) => onPreviewChange(index, "category", event.target.value)}>
+                    <select
+                      value={preview.category}
+                      onChange={(event) => onPreviewChange(index, "category", event.target.value)}
+                    >
                       {categories.map((category) => (
                         <option key={category} value={category}>
                           {category}
@@ -332,7 +370,10 @@ export function NaturalLanguageInput({
                   </label>
                   <label>
                     货币
-                    <select value={preview.currency} onChange={(event) => onPreviewChange(index, "currency", event.target.value)}>
+                    <select
+                      value={preview.currency}
+                      onChange={(event) => onPreviewChange(index, "currency", event.target.value)}
+                    >
                       {currencies.map((currency) => (
                         <option key={currency} value={currency}>
                           {currency}
@@ -342,13 +383,24 @@ export function NaturalLanguageInput({
                   </label>
                   <label className="nl-preview-row__note">
                     备注
-                    <input value={preview.note} onChange={(event) => onPreviewChange(index, "note", event.target.value)} />
+                    <input
+                      value={preview.note}
+                      onChange={(event) => onPreviewChange(index, "note", event.target.value)}
+                    />
                   </label>
-                  <button type="button" className="delete-record-button" data-action="preview-delete-record" onClick={() => onPreviewDelete(index)} aria-label="删除预览记录">
+                  <button
+                    type="button"
+                    className="delete-record-button"
+                    data-action="preview-delete-record"
+                    onClick={() => onPreviewDelete(index)}
+                    aria-label="删除预览记录"
+                  >
                     ×
                   </button>
                   {previewIssues[index]?.length ? (
-                    <small className="nl-preview-row__issues">{previewIssues[index].join(" / ")}</small>
+                    <small className="nl-preview-row__issues">
+                      {previewIssues[index].join(" / ")}
+                    </small>
                   ) : null}
                 </div>
               ))}
@@ -359,17 +411,27 @@ export function NaturalLanguageInput({
                   ))}
                 </div>
               ) : null}
-              <button type="button" className="nl-confirm-float" data-action="preview-confirm-import" disabled={!canConfirm} onClick={onConfirm}>
+              <button
+                type="button"
+                className="nl-confirm-float"
+                data-action="preview-confirm-import"
+                disabled={!canConfirm}
+                onClick={onConfirm}
+              >
                 确认记账
               </button>
             </div>
           ) : previews.length > 0 ? (
             <div ref={previewRef} className="nl-preview nl-preview--compact" role="status">
-              <span className="nl-preview__count">草稿识别 {previews.length} 笔，按 Enter 生成可编辑预览</span>
+              <span className="nl-preview__count">
+                草稿识别 {previews.length} 笔，按 Enter 生成可编辑预览
+              </span>
               {previews.map((preview, index) => (
                 <div key={`${preview.amount}-${preview.note}-${index}`} className="nl-preview-row">
                   <span>{preview.category}</span>
-                  <strong>{preview.amount} {preview.currency}</strong>
+                  <strong>
+                    {preview.amount} {preview.currency}
+                  </strong>
                   {preview.note ? <em>{preview.note}</em> : null}
                 </div>
               ))}
@@ -384,7 +446,11 @@ export function NaturalLanguageInput({
 
       {compactVisible ? (
         <div className="nl-compact-entry-host">
-          <form className="nl-compact-entry" onSubmit={handleSubmit} data-action="compact-quick-entry-submit">
+          <form
+            className="nl-compact-entry"
+            onSubmit={handleSubmit}
+            data-action="compact-quick-entry-submit"
+          >
             <input
               value={input}
               onChange={(event) => setInput(event.target.value)}
@@ -394,7 +460,11 @@ export function NaturalLanguageInput({
               placeholder="输入一笔，Enter 确认"
               aria-label="底部快速记账输入"
             />
-            <button type="submit" disabled={!previews.length || isParsing} aria-label="生成记账预览">
+            <button
+              type="submit"
+              disabled={!previews.length || isParsing}
+              aria-label="生成记账预览"
+            >
               →
             </button>
           </form>

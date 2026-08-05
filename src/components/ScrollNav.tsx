@@ -64,7 +64,9 @@ export function ScrollNav({ settings, travelAccent = false }: ScrollNavProps) {
 }
 
 export function MobileScrollNav({ settings, travelAccent = false }: ScrollNavProps) {
-  const links = getLinks(settings).filter((link) => link.href !== "/").slice(0, 6);
+  const links = getLinks(settings)
+    .filter((link) => link.href !== "/")
+    .slice(0, 6);
   return (
     <nav
       className={`mobile-scroll-nav journal-mobile-only${travelAccent ? " mobile-scroll-nav--travel" : ""}`}

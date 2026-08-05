@@ -118,7 +118,12 @@ export function SettingsPage({
       gsap.fromTo(
         el,
         { scale: 0.985, boxShadow: "0 0 0 2px rgba(76, 185, 202, 0.42)" },
-        { scale: 1, boxShadow: "0 0 0 0 rgba(76, 185, 202, 0)", duration: 0.42, ease: "power2.out" },
+        {
+          scale: 1,
+          boxShadow: "0 0 0 0 rgba(76, 185, 202, 0)",
+          duration: 0.42,
+          ease: "power2.out",
+        },
       );
     });
   };
@@ -137,7 +142,10 @@ export function SettingsPage({
     const targetIndex = currentIndex + direction;
     if (currentIndex < 0 || targetIndex <= 0 || targetIndex >= sectionOrder.length) return;
     const nextOrder = [...sectionOrder];
-    [nextOrder[currentIndex], nextOrder[targetIndex]] = [nextOrder[targetIndex], nextOrder[currentIndex]];
+    [nextOrder[currentIndex], nextOrder[targetIndex]] = [
+      nextOrder[targetIndex],
+      nextOrder[currentIndex],
+    ];
     updateSectionOrder(nextOrder, key);
   };
 
@@ -201,12 +209,16 @@ export function SettingsPage({
   };
 
   return (
-    <main className="app-shell app-shell--below-nav settings-page-shell" data-section="settings-page">
+    <main
+      className="app-shell app-shell--below-nav settings-page-shell"
+      data-section="settings-page"
+    >
       <section className="settings-hero" data-section="settings-hero">
         <p className="eyebrow">Settings</p>
         <h1>设置与完整备份</h1>
         <p className="muted">
-          调整首页可选卡片显隐，导出完整 JSON 备份，或先预览再覆盖导入。仅趣味小卡片、工具与趋势、本周统计、本月汇总可隐藏；其余核心区块始终显示。
+          调整首页可选卡片显隐，导出完整 JSON
+          备份，或先预览再覆盖导入。仅趣味小卡片、工具与趋势、本周统计、本月汇总可隐藏；其余核心区块始终显示。
         </p>
       </section>
 
@@ -216,7 +228,9 @@ export function SettingsPage({
             <div>
               <p className="eyebrow">Home Layout</p>
               <h2>首页区块显隐与排序</h2>
-              <p className="muted">仅 4 个可选区块可隐藏；核心记账路径始终显示。可拖动排序或使用 ↑↓ 调整顺序。</p>
+              <p className="muted">
+                仅 4 个可选区块可隐藏；核心记账路径始终显示。可拖动排序或使用 ↑↓ 调整顺序。
+              </p>
             </div>
           </div>
           <div className="settings-bulk-actions">
@@ -251,7 +265,9 @@ export function SettingsPage({
                     pinned ? "is-pinned" : "",
                     draggingKey === key ? "is-dragging" : "",
                     dragOverKey === key && draggingKey !== key ? "is-drag-over" : "",
-                  ].filter(Boolean).join(" ")}
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
                   tabIndex={pinned ? -1 : 0}
                   aria-label={`${HOME_SECTION_LABELS[key]}${pinned ? "，固定第一位" : "，可拖动或使用方向键调整顺序"}`}
                   onKeyDown={(event) => handleSectionKeyDown(event, key)}
@@ -356,7 +372,12 @@ export function SettingsPage({
                   inputMode="decimal"
                   value={settings.budget.monthlyLimit ?? ""}
                   placeholder="例如 6000"
-                  onChange={(event) => updateBudget({ monthlyLimit: Number(event.target.value) > 0 ? Number(event.target.value) : null })}
+                  onChange={(event) =>
+                    updateBudget({
+                      monthlyLimit:
+                        Number(event.target.value) > 0 ? Number(event.target.value) : null,
+                    })
+                  }
                 />
               </label>
             </div>
@@ -381,23 +402,44 @@ export function SettingsPage({
             <div>
               <p className="eyebrow">Backup</p>
               <h2>完整 JSON 备份</h2>
-              <p className="muted">包含账本、汇率缓存、货币设置、主题、提醒状态、设置页配置与旅游历史。</p>
+              <p className="muted">
+                包含账本、汇率缓存、货币设置、主题、提醒状态、设置页配置与旅游历史。
+              </p>
             </div>
           </div>
           <div className="backup-action-stack">
             <button type="button" data-action="json-backup-export" onClick={onExportJson}>
               立即导出 JSON
             </button>
-            <button type="button" className="secondary-button" data-action="json-backup-pick-import" onClick={onPickJson}>
+            <button
+              type="button"
+              className="secondary-button"
+              data-action="json-backup-pick-import"
+              onClick={onPickJson}
+            >
               选择 JSON 导入
             </button>
-            <input ref={jsonInputRef} type="file" accept=".json,application/json" hidden onChange={onJsonFileChange} />
+            <input
+              ref={jsonInputRef}
+              type="file"
+              accept=".json,application/json"
+              hidden
+              onChange={onJsonFileChange}
+            />
             <p className="muted">当前提醒状态：{backupReminderLabel}</p>
             <div className="action-row">
-              <button type="button" className="ghost-button" onClick={() => onSnoozeBackupReminder(1)}>
+              <button
+                type="button"
+                className="ghost-button"
+                onClick={() => onSnoozeBackupReminder(1)}
+              >
                 明天提醒
               </button>
-              <button type="button" className="secondary-button" onClick={() => onSnoozeBackupReminder(3)}>
+              <button
+                type="button"
+                className="secondary-button"
+                onClick={() => onSnoozeBackupReminder(3)}
+              >
                 3 天内不提醒
               </button>
             </div>
@@ -428,17 +470,24 @@ export function SettingsPage({
             <p className="eyebrow">Import Preview</p>
             <h2>导入前预览</h2>
             <p className="muted">
-              文件：{importPreview.fileName} · 导出时间：{new Date(importPreview.exportedAt).toLocaleString("zh-CN")}
+              文件：{importPreview.fileName} · 导出时间：
+              {new Date(importPreview.exportedAt).toLocaleString("zh-CN")}
             </p>
           </div>
           <div className="import-preview-grid">
             <div>
               <span>将导入账本</span>
-              <strong>{importPreview.incomingLedger.dateCount} 天 / {importPreview.incomingLedger.recordCount} 条</strong>
+              <strong>
+                {importPreview.incomingLedger.dateCount} 天 /{" "}
+                {importPreview.incomingLedger.recordCount} 条
+              </strong>
             </div>
             <div>
               <span>当前账本</span>
-              <strong>{importPreview.currentLedger.dateCount} 天 / {importPreview.currentLedger.recordCount} 条</strong>
+              <strong>
+                {importPreview.currentLedger.dateCount} 天 /{" "}
+                {importPreview.currentLedger.recordCount} 条
+              </strong>
             </div>
             <div>
               <span>设置覆盖</span>
@@ -446,14 +495,22 @@ export function SettingsPage({
             </div>
             <div>
               <span>旅游历史</span>
-              <strong>{importPreview.travelHistoryCount} 条（当前 {importPreview.currentTravelHistoryCount} 条）</strong>
+              <strong>
+                {importPreview.travelHistoryCount} 条（当前{" "}
+                {importPreview.currentTravelHistoryCount} 条）
+              </strong>
             </div>
           </div>
           <p className="warning-text">
             第一版导入采用“覆盖当前数据”模式。确认后会用备份文件替换当前账本、设置、旅游状态与相关本地缓存。
           </p>
           <div className="action-row">
-            <button type="button" className="danger-button" data-action="json-backup-confirm-import" onClick={onConfirmJsonImport}>
+            <button
+              type="button"
+              className="danger-button"
+              data-action="json-backup-confirm-import"
+              onClick={onConfirmJsonImport}
+            >
               确认覆盖导入
             </button>
             <button type="button" className="secondary-button" onClick={onCancelJsonImport}>

@@ -58,9 +58,18 @@ export function SettingsModal({ open, title, subtitle, onClose, children }: Sett
       }
 
       if (open) {
-        gsap.set(panel, { autoAlpha: 1, y: 0, scale: 1, clearProps: "transform,opacity,visibility" });
+        gsap.set(panel, {
+          autoAlpha: 1,
+          y: 0,
+          scale: 1,
+          clearProps: "transform,opacity,visibility",
+        });
         gsap.set(backdrop, { pointerEvents: "auto" });
-        gsap.fromTo(backdrop, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2, ease: "power2.out" });
+        gsap.fromTo(
+          backdrop,
+          { autoAlpha: 0 },
+          { autoAlpha: 1, duration: 0.2, ease: "power2.out" },
+        );
         return;
       }
 
@@ -118,7 +127,12 @@ export function SettingsModal({ open, title, subtitle, onClose, children }: Sett
             <h2>{title}</h2>
             {subtitle ? <p className="muted">{subtitle}</p> : null}
           </div>
-          <button type="button" className="ghost-button settings-modal__close" onClick={requestClose} aria-label="关闭">
+          <button
+            type="button"
+            className="ghost-button settings-modal__close"
+            onClick={requestClose}
+            aria-label="关闭"
+          >
             ✕
           </button>
         </header>

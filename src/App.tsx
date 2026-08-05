@@ -1,10 +1,19 @@
-import { CSSProperties, ChangeEvent, KeyboardEvent, ReactNode, Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  CSSProperties,
+  ChangeEvent,
+  KeyboardEvent,
+  ReactNode,
+  Suspense,
+  lazy,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { gsap } from "gsap";
-import {
-  LocalLedgerRecord,
-  parseNaturalLedger,
-} from "./lib/localLedgerParser";
+import { LocalLedgerRecord, parseNaturalLedger } from "./lib/localLedgerParser";
 import { HeroSection } from "./components/HeroSection";
 import { NaturalLanguageInput } from "./components/NaturalLanguageInput";
 import { SettingsModal } from "./components/SettingsModal";
@@ -106,7 +115,10 @@ type LedgerEntry = {
 
 type LedgerData = Record<string, LedgerEntry[]>;
 type EditableField = "amount" | "note";
-type PreviewField = keyof Pick<LocalLedgerRecord, "date" | "category" | "amount" | "currency" | "note">;
+type PreviewField = keyof Pick<
+  LocalLedgerRecord,
+  "date" | "category" | "amount" | "currency" | "note"
+>;
 type FunDataCard = {
   id: string;
   title: string;
@@ -153,18 +165,7 @@ type CurrencyModalState =
   | { type: "entry"; index: number; category: string; rowIndex: number }
   | null;
 
-const CATEGORIES = [
-  "餐饮",
-  "交通",
-  "购物",
-  "居住",
-  "通讯",
-  "娱乐",
-  "医疗",
-  "教育",
-  "旅行",
-  "其他",
-];
+const CATEGORIES = ["餐饮", "交通", "购物", "居住", "通讯", "娱乐", "医疗", "教育", "旅行", "其他"];
 
 const LEGACY_ROWS_PER_CATEGORY = 5;
 const PREVIOUS_MAX_RECORDS_PER_CATEGORY = 15;
@@ -192,11 +193,26 @@ const PIE_COLORS = [
 ];
 
 const PRIMARY_CURRENCIES = ["HKD", "CNY"] as const;
-const OTHER_CURRENCIES = ["USD", "MOP", "JPY", "EUR", "KRW", "THB", "SGD", "NTD", "NZD", "GBP", "AUD"] as const;
+const OTHER_CURRENCIES = [
+  "USD",
+  "MOP",
+  "JPY",
+  "EUR",
+  "KRW",
+  "THB",
+  "SGD",
+  "NTD",
+  "NZD",
+  "GBP",
+  "AUD",
+] as const;
 const DEFAULT_CURRENCIES = [...PRIMARY_CURRENCIES, ...OTHER_CURRENCIES] as const;
 const EDITABLE_FIELDS = ["amount", "note"] as const satisfies readonly EditableField[];
 
-const CURRENCY_META: Record<string, { name: string; shortName: string; apiCode: ApiCurrency; symbol: string }> = {
+const CURRENCY_META: Record<
+  string,
+  { name: string; shortName: string; apiCode: ApiCurrency; symbol: string }
+> = {
   HKD: { name: "港币", shortName: "港币", apiCode: "HKD", symbol: "HK$" },
   CNY: { name: "人民币", shortName: "人民币", apiCode: "CNY", symbol: "¥" },
   USD: { name: "美元", shortName: "美元", apiCode: "USD", symbol: "$" },
@@ -213,17 +229,160 @@ const CURRENCY_META: Record<string, { name: string; shortName: string; apiCode: 
 };
 
 const COMMON_ISO_4217_CODES = new Set([
-  "AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN", "BAM", "BBD", "BDT", "BGN", "BHD",
-  "BIF", "BMD", "BND", "BOB", "BRL", "BSD", "BTN", "BWP", "BYN", "BZD", "CAD", "CDF", "CHF", "CLP", "CNY",
-  "COP", "CRC", "CUP", "CVE", "CZK", "DJF", "DKK", "DOP", "DZD", "EGP", "ERN", "ETB", "EUR", "FJD", "FKP",
-  "GBP", "GEL", "GHS", "GIP", "GMD", "GNF", "GTQ", "GYD", "HKD", "HNL", "HRK", "HTG", "HUF", "IDR", "ILS",
-  "INR", "IQD", "IRR", "ISK", "JMD", "JOD", "JPY", "KES", "KGS", "KHR", "KMF", "KRW", "KWD", "KYD", "KZT",
-  "LAK", "LBP", "LKR", "LRD", "LSL", "LYD", "MAD", "MDL", "MGA", "MKD", "MMK", "MNT", "MOP", "MRU", "MUR",
-  "MVR", "MWK", "MXN", "MYR", "MZN", "NAD", "NGN", "NIO", "NOK", "NPR", "NTD", "NZD", "OMR", "PAB", "PEN",
-  "PGK", "PHP", "PKR", "PLN", "PYG", "QAR", "RON", "RSD", "RUB", "RWF", "SAR", "SBD", "SCR", "SDG", "SEK",
-  "SGD", "SHP", "SLE", "SOS", "SRD", "SSP", "STN", "SYP", "SZL", "THB", "TJS", "TMT", "TND", "TOP", "TRY",
-  "TTD", "TWD", "TZS", "UAH", "UGX", "USD", "UYU", "UZS", "VES", "VND", "VUV", "WST", "XAF", "XCD", "XOF",
-  "XPF", "YER", "ZAR", "ZMW",
+  "AED",
+  "AFN",
+  "ALL",
+  "AMD",
+  "ANG",
+  "AOA",
+  "ARS",
+  "AUD",
+  "AWG",
+  "AZN",
+  "BAM",
+  "BBD",
+  "BDT",
+  "BGN",
+  "BHD",
+  "BIF",
+  "BMD",
+  "BND",
+  "BOB",
+  "BRL",
+  "BSD",
+  "BTN",
+  "BWP",
+  "BYN",
+  "BZD",
+  "CAD",
+  "CDF",
+  "CHF",
+  "CLP",
+  "CNY",
+  "COP",
+  "CRC",
+  "CUP",
+  "CVE",
+  "CZK",
+  "DJF",
+  "DKK",
+  "DOP",
+  "DZD",
+  "EGP",
+  "ERN",
+  "ETB",
+  "EUR",
+  "FJD",
+  "FKP",
+  "GBP",
+  "GEL",
+  "GHS",
+  "GIP",
+  "GMD",
+  "GNF",
+  "GTQ",
+  "GYD",
+  "HKD",
+  "HNL",
+  "HRK",
+  "HTG",
+  "HUF",
+  "IDR",
+  "ILS",
+  "INR",
+  "IQD",
+  "IRR",
+  "ISK",
+  "JMD",
+  "JOD",
+  "JPY",
+  "KES",
+  "KGS",
+  "KHR",
+  "KMF",
+  "KRW",
+  "KWD",
+  "KYD",
+  "KZT",
+  "LAK",
+  "LBP",
+  "LKR",
+  "LRD",
+  "LSL",
+  "LYD",
+  "MAD",
+  "MDL",
+  "MGA",
+  "MKD",
+  "MMK",
+  "MNT",
+  "MOP",
+  "MRU",
+  "MUR",
+  "MVR",
+  "MWK",
+  "MXN",
+  "MYR",
+  "MZN",
+  "NAD",
+  "NGN",
+  "NIO",
+  "NOK",
+  "NPR",
+  "NTD",
+  "NZD",
+  "OMR",
+  "PAB",
+  "PEN",
+  "PGK",
+  "PHP",
+  "PKR",
+  "PLN",
+  "PYG",
+  "QAR",
+  "RON",
+  "RSD",
+  "RUB",
+  "RWF",
+  "SAR",
+  "SBD",
+  "SCR",
+  "SDG",
+  "SEK",
+  "SGD",
+  "SHP",
+  "SLE",
+  "SOS",
+  "SRD",
+  "SSP",
+  "STN",
+  "SYP",
+  "SZL",
+  "THB",
+  "TJS",
+  "TMT",
+  "TND",
+  "TOP",
+  "TRY",
+  "TTD",
+  "TWD",
+  "TZS",
+  "UAH",
+  "UGX",
+  "USD",
+  "UYU",
+  "UZS",
+  "VES",
+  "VND",
+  "VUV",
+  "WST",
+  "XAF",
+  "XCD",
+  "XOF",
+  "XPF",
+  "YER",
+  "ZAR",
+  "ZMW",
 ]);
 
 const DEFAULT_USD_RATES: Record<ApiCurrency, number> = {
@@ -250,7 +409,9 @@ const makeBlankEntry = (currency: Currency): LedgerEntry => ({
 });
 
 const makeDayEntries = (currency: Currency): LedgerEntry[] =>
-  Array.from({ length: CATEGORIES.length * MAX_RECORDS_PER_CATEGORY }, () => makeBlankEntry(currency));
+  Array.from({ length: CATEGORIES.length * MAX_RECORDS_PER_CATEGORY }, () =>
+    makeBlankEntry(currency),
+  );
 
 const prefersReducedMotion = () =>
   typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -264,7 +425,11 @@ const hashSeed = (value: string) => {
   return hash >>> 0;
 };
 
-const pickStableItems = <T extends { id: string }>(items: readonly T[], seed: string, count: number) =>
+const pickStableItems = <T extends { id: string }>(
+  items: readonly T[],
+  seed: string,
+  count: number,
+) =>
   [...items]
     .map((item, index) => ({
       item,
@@ -303,7 +468,9 @@ const normalizeStoredCustomCurrencies = (items: unknown): Currency[] => {
 
 const readStoredCustomCurrencies = () => {
   try {
-    return normalizeStoredCustomCurrencies(JSON.parse(localStorage.getItem(CUSTOM_CURRENCIES_KEY) ?? "[]"));
+    return normalizeStoredCustomCurrencies(
+      JSON.parse(localStorage.getItem(CUSTOM_CURRENCIES_KEY) ?? "[]"),
+    );
   } catch {
     return [];
   }
@@ -338,7 +505,7 @@ const normalizeRates = (
   Array.from(new Set(currencies.map(getApiCode))).reduce(
     (acc, code) => {
       const rate = rates?.[code];
-      acc[code] = Number.isFinite(rate) && rate && rate > 0 ? rate : DEFAULT_USD_RATES[code] ?? 1;
+      acc[code] = Number.isFinite(rate) && rate && rate > 0 ? rate : (DEFAULT_USD_RATES[code] ?? 1);
       return acc;
     },
     { ...DEFAULT_USD_RATES },
@@ -372,7 +539,10 @@ const normalizeStoredEntries = (entries: Partial<LedgerEntry>[] | undefined): Le
     CATEGORIES.forEach((_, categoryIndex) => {
       for (let rowIndex = 0; rowIndex < LEGACY_ROWS_PER_CATEGORY; rowIndex += 1) {
         const legacyIndex = categoryIndex * LEGACY_ROWS_PER_CATEGORY + rowIndex;
-        normalized[getEntryIndex(categoryIndex, rowIndex)] = sanitizeEntry(source[legacyIndex] ?? {}, "CNY");
+        normalized[getEntryIndex(categoryIndex, rowIndex)] = sanitizeEntry(
+          source[legacyIndex] ?? {},
+          "CNY",
+        );
       }
     });
     return normalized;
@@ -382,7 +552,10 @@ const normalizeStoredEntries = (entries: Partial<LedgerEntry>[] | undefined): Le
     CATEGORIES.forEach((_, categoryIndex) => {
       for (let rowIndex = 0; rowIndex < PREVIOUS_MAX_RECORDS_PER_CATEGORY; rowIndex += 1) {
         const previousIndex = categoryIndex * PREVIOUS_MAX_RECORDS_PER_CATEGORY + rowIndex;
-        normalized[getEntryIndex(categoryIndex, rowIndex)] = sanitizeEntry(source[previousIndex] ?? {}, "CNY");
+        normalized[getEntryIndex(categoryIndex, rowIndex)] = sanitizeEntry(
+          source[previousIndex] ?? {},
+          "CNY",
+        );
       }
     });
     return normalized;
@@ -395,7 +568,9 @@ const normalizeStoredEntries = (entries: Partial<LedgerEntry>[] | undefined): Le
 const serializeLedger = (ledger: LedgerData) =>
   JSON.stringify(
     Object.fromEntries(
-      Object.entries(ledger).filter(([, entries]) => entries.some((entry) => hasEntryContent(entry))),
+      Object.entries(ledger).filter(([, entries]) =>
+        entries.some((entry) => hasEntryContent(entry)),
+      ),
     ),
   );
 
@@ -462,11 +637,14 @@ const readStoredStatsCurrencies = (fallbackCurrency: Currency): Currency[] => {
   }
 };
 
-const readStoredTheme = (): ThemeMode => localStorage.getItem(THEME_KEY) === "dark" ? "dark" : "light";
+const readStoredTheme = (): ThemeMode =>
+  localStorage.getItem(THEME_KEY) === "dark" ? "dark" : "light";
 
 const readBackupReminderState = (): BackupReminderState | null => {
   try {
-    const parsed = JSON.parse(localStorage.getItem(BACKUP_REMINDER_KEY) ?? "null") as Partial<BackupReminderState> | null;
+    const parsed = JSON.parse(
+      localStorage.getItem(BACKUP_REMINDER_KEY) ?? "null",
+    ) as Partial<BackupReminderState> | null;
     if (!parsed || typeof parsed.dismissedAt !== "number") return null;
     return {
       dismissedAt: parsed.dismissedAt,
@@ -517,7 +695,11 @@ const normalizeBackupStoredEntries = (
     CATEGORIES.forEach((_, categoryIndex) => {
       for (let rowIndex = 0; rowIndex < LEGACY_ROWS_PER_CATEGORY; rowIndex += 1) {
         const legacyIndex = categoryIndex * LEGACY_ROWS_PER_CATEGORY + rowIndex;
-        normalized[getEntryIndex(categoryIndex, rowIndex)] = sanitizeBackupEntry(source[legacyIndex] ?? {}, "CNY", knownCurrencies);
+        normalized[getEntryIndex(categoryIndex, rowIndex)] = sanitizeBackupEntry(
+          source[legacyIndex] ?? {},
+          "CNY",
+          knownCurrencies,
+        );
       }
     });
     return normalized;
@@ -527,7 +709,11 @@ const normalizeBackupStoredEntries = (
     CATEGORIES.forEach((_, categoryIndex) => {
       for (let rowIndex = 0; rowIndex < PREVIOUS_MAX_RECORDS_PER_CATEGORY; rowIndex += 1) {
         const previousIndex = categoryIndex * PREVIOUS_MAX_RECORDS_PER_CATEGORY + rowIndex;
-        normalized[getEntryIndex(categoryIndex, rowIndex)] = sanitizeBackupEntry(source[previousIndex] ?? {}, "CNY", knownCurrencies);
+        normalized[getEntryIndex(categoryIndex, rowIndex)] = sanitizeBackupEntry(
+          source[previousIndex] ?? {},
+          "CNY",
+          knownCurrencies,
+        );
       }
     });
     return normalized;
@@ -537,7 +723,10 @@ const normalizeBackupStoredEntries = (
   );
 };
 
-const normalizeBackupLedger = (value: unknown, knownCurrencies: readonly Currency[]): LedgerData => {
+const normalizeBackupLedger = (
+  value: unknown,
+  knownCurrencies: readonly Currency[],
+): LedgerData => {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     throw new Error("账本结构无效。");
   }
@@ -546,12 +735,18 @@ const normalizeBackupLedger = (value: unknown, knownCurrencies: readonly Currenc
       .filter(([date]) => isValidDateKey(date))
       .map(([date, entries]) => [
         date,
-        normalizeBackupStoredEntries(Array.isArray(entries) ? entries as Partial<LedgerEntry>[] : [], knownCurrencies),
+        normalizeBackupStoredEntries(
+          Array.isArray(entries) ? (entries as Partial<LedgerEntry>[]) : [],
+          knownCurrencies,
+        ),
       ]),
   );
 };
 
-const normalizeBackupExchange = (value: unknown, currencies: readonly Currency[]): ExchangeCache => {
+const normalizeBackupExchange = (
+  value: unknown,
+  currencies: readonly Currency[],
+): ExchangeCache => {
   if (!value || typeof value !== "object" || Array.isArray(value)) return readStoredRate();
   const parsed = value as Partial<ExchangeCache>;
   return {
@@ -562,13 +757,20 @@ const normalizeBackupExchange = (value: unknown, currencies: readonly Currency[]
   };
 };
 
-const normalizeBackupCurrencyWithKnown = (value: unknown, knownCurrencies: readonly Currency[]): Currency | null => {
+const normalizeBackupCurrencyWithKnown = (
+  value: unknown,
+  knownCurrencies: readonly Currency[],
+): Currency | null => {
   const code = normalizeCurrencyCode(value);
   const normalized = code === "TWD" ? "NTD" : code;
   return knownCurrencies.includes(normalized) ? normalized : null;
 };
 
-const normalizeBackupCurrencyList = (value: unknown, fallback: Currency[], knownCurrencies: readonly Currency[]): Currency[] => {
+const normalizeBackupCurrencyList = (
+  value: unknown,
+  fallback: Currency[],
+  knownCurrencies: readonly Currency[],
+): Currency[] => {
   if (!Array.isArray(value)) return fallback;
   const currencies = value
     .map((item) => normalizeBackupCurrencyWithKnown(item, knownCurrencies))
@@ -588,7 +790,11 @@ const emptyCurrencyTotals = (currencies: readonly Currency[]) =>
     {} as Record<Currency, number>,
   );
 
-const getEntryTotals = (entries: LedgerEntry[], exchange: ExchangeCache, currencies: readonly Currency[]) =>
+const getEntryTotals = (
+  entries: LedgerEntry[],
+  exchange: ExchangeCache,
+  currencies: readonly Currency[],
+) =>
   entries.reduce(
     (acc, entry) => {
       if (entry.hidden) return acc;
@@ -612,13 +818,20 @@ type EntryTotals = ReturnType<typeof getEntryTotals>;
 const hasTotals = (totals: EntryTotals, currencies: readonly Currency[]) =>
   currencies.some((currency) => (totals.native[currency] ?? 0) !== 0);
 
-const summarizeByCategory = (entries: Array<LedgerEntry & { category: string }>, exchange: ExchangeCache, baseCurrency: Currency) => {
+const summarizeByCategory = (
+  entries: Array<LedgerEntry & { category: string }>,
+  exchange: ExchangeCache,
+  baseCurrency: Currency,
+) => {
   const totals = new Map<string, number>();
   for (const entry of entries) {
     if (entry.hidden) continue;
     const amount = parseAmount(entry.amount);
     if (!amount) continue;
-    totals.set(entry.category, (totals.get(entry.category) ?? 0) + convert(amount, entry.currency, baseCurrency, exchange));
+    totals.set(
+      entry.category,
+      (totals.get(entry.category) ?? 0) + convert(amount, entry.currency, baseCurrency, exchange),
+    );
   }
   const total = Array.from(totals.values()).reduce((sum, value) => sum + Math.abs(value), 0);
   return CATEGORIES.map((category, index) => ({
@@ -646,7 +859,9 @@ type CategorySummary = ReturnType<typeof summarizeByCategory>;
 type TravelLedgerEntry = ReturnType<typeof collectEntries>[number];
 
 const getTravelParticipantsForEntry = (entry: TravelLedgerEntry, travelState: TravelState) => {
-  const participants = travelState.participants.length ? travelState.participants : DEFAULT_TRAVEL_STATE.participants;
+  const participants = travelState.participants.length
+    ? travelState.participants
+    : DEFAULT_TRAVEL_STATE.participants;
   const selected = travelState.entryMeta[entry.travelKey]?.participantIds.filter((id) =>
     participants.some((participant) => participant.id === id),
   );
@@ -675,14 +890,17 @@ const summarizeTravelSplit = (
   travelState: TravelState,
   exchange: ExchangeCache,
 ) => {
-  const participants = travelState.participants.length ? travelState.participants : DEFAULT_TRAVEL_STATE.participants;
+  const participants = travelState.participants.length
+    ? travelState.participants
+    : DEFAULT_TRAVEL_STATE.participants;
   const owed = new Map(participants.map((participant) => [participant.id, 0]));
   for (const entry of entries) {
     if (entry.hidden) continue;
     const amount = parseAmount(entry.amount);
     if (!amount) continue;
     const selectedIds = getTravelParticipantsForEntry(entry, travelState);
-    const share = convert(amount, entry.currency, travelState.targetCurrency, exchange) / selectedIds.length;
+    const share =
+      convert(amount, entry.currency, travelState.targetCurrency, exchange) / selectedIds.length;
     selectedIds.forEach((id) => owed.set(id, (owed.get(id) ?? 0) + share));
   }
   return participants.map((participant) => ({
@@ -828,7 +1046,11 @@ function StatsExpandPanel({ open, children }: { open: boolean; children: ReactNo
   }, [open]);
 
   return (
-    <div ref={panelRef} className={`stats-expand-panel${open ? " is-open" : ""}`} aria-hidden={!open}>
+    <div
+      ref={panelRef}
+      className={`stats-expand-panel${open ? " is-open" : ""}`}
+      aria-hidden={!open}
+    >
       <div ref={innerRef} className="detail-list">
         {children}
       </div>
@@ -844,11 +1066,16 @@ function App() {
   const naturalPreviewRef = useRef<HTMLDivElement | null>(null);
   const [selectedDate, setSelectedDate] = useState(getToday);
   const [ledger, setLedger] = useState<LedgerData>(() => readStoredLedger());
-  const [customCurrencies, setCustomCurrencies] = useState<Currency[]>(() => readStoredCustomCurrencies());
+  const [customCurrencies, setCustomCurrencies] = useState<Currency[]>(() =>
+    readStoredCustomCurrencies(),
+  );
   const [lastCurrency, setLastCurrency] = useState<Currency>(() => readLastCurrency());
   const [exchange, setExchange] = useState<ExchangeCache>(() => readStoredRate());
   const [rateStatus, setRateStatus] = useState("汇率已就绪");
-  const [expandedStats, setExpandedStats] = useState<Record<"week" | "month", boolean>>({ week: true, month: true });
+  const [expandedStats, setExpandedStats] = useState<Record<"week" | "month", boolean>>({
+    week: true,
+    month: true,
+  });
   const [summaryMode, setSummaryMode] = useState<SummaryMode>("split");
   const [dailySummaryMode, setDailySummaryMode] = useState<SummaryMode>("split");
   const [statsCurrencyPopup, setStatsCurrencyPopup] = useState<"week" | "month" | null>(null);
@@ -863,8 +1090,12 @@ function App() {
   const [appSettings, setAppSettings] = useState<AppSettings>(() => readAppSettings());
   const [customCurrencyCode, setCustomCurrencyCode] = useState("");
   const [customCurrencyError, setCustomCurrencyError] = useState("");
-  const [travelState, setTravelState] = useState<TravelState>(() => readStoredTravelState(normalizeCurrencyInput));
-  const [travelHistory, setTravelHistory] = useState<TravelHistoryRecord[]>(() => readStoredTravelHistory(normalizeCurrencyInput));
+  const [travelState, setTravelState] = useState<TravelState>(() =>
+    readStoredTravelState(normalizeCurrencyInput),
+  );
+  const [travelHistory, setTravelHistory] = useState<TravelHistoryRecord[]>(() =>
+    readStoredTravelHistory(normalizeCurrencyInput),
+  );
   const [selectedTravelHistoryId, setSelectedTravelHistoryId] = useState<string | null>(null);
   const [travelHistoryRailOpen, setTravelHistoryRailOpen] = useState(false);
   const [travelHistoryMergeMode, setTravelHistoryMergeMode] = useState(false);
@@ -872,8 +1103,8 @@ function App() {
   const [travelMergeModalOpen, setTravelMergeModalOpen] = useState(false);
   const [travelHistoryEditingId, setTravelHistoryEditingId] = useState<string | null>(null);
   const [travelHistoryEditingName, setTravelHistoryEditingName] = useState("");
-  const [pendingTravelDeletes, setPendingTravelDeletes] = useState<PendingTravelHistoryDelete[]>(() =>
-    readStoredPendingTravelDeletes(normalizeCurrencyInput),
+  const [pendingTravelDeletes, setPendingTravelDeletes] = useState<PendingTravelHistoryDelete[]>(
+    () => readStoredPendingTravelDeletes(normalizeCurrencyInput),
   );
   const [deleteToastTick, setDeleteToastTick] = useState(0);
   const [travelDraftStartDate, setTravelDraftStartDate] = useState(getToday);
@@ -886,7 +1117,9 @@ function App() {
   );
   const [trendMonths, setTrendMonths] = useState(6);
   const [trendCurrency, setTrendCurrency] = useState<Currency>("CNY");
-  const [visibleRowCountsByDate, setVisibleRowCountsByDate] = useState<Record<string, number[]>>({});
+  const [visibleRowCountsByDate, setVisibleRowCountsByDate] = useState<Record<string, number[]>>(
+    {},
+  );
   const [importMessage, setImportMessage] = useState("");
   const [naturalLedgerInput, setNaturalLedgerInput] = useState("");
   const [naturalLedgerPreview, setNaturalLedgerPreview] = useState<LocalLedgerRecord[]>([]);
@@ -897,7 +1130,9 @@ function App() {
   const confettiLayerRef = useRef<HTMLDivElement | null>(null);
   const [travelExitModalOpen, setTravelExitModalOpen] = useState(false);
   const [shortcutFeedback, setShortcutFeedback] = useState("");
-  const [funCardShuffleSalt, setFunCardShuffleSalt] = useState(() => Math.floor(Math.random() * 100000));
+  const [funCardShuffleSalt, setFunCardShuffleSalt] = useState(() =>
+    Math.floor(Math.random() * 100000),
+  );
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
   const [quickEntryStatus, setQuickEntryStatus] = useState("");
   const [jsonImportMessage, setJsonImportMessage] = useState("");
@@ -908,7 +1143,8 @@ function App() {
   const selectedEntries = ledger[selectedDate] ?? makeDayEntries(dailyDefaultCurrency);
   const monthKey = getMonthKey(selectedDate);
   const weekRange = getWeekRange(selectedDate);
-  const visibleRowCounts = visibleRowCountsByDate[selectedDate] ?? getDefaultRowCounts(selectedEntries);
+  const visibleRowCounts =
+    visibleRowCountsByDate[selectedDate] ?? getDefaultRowCounts(selectedEntries);
   const weekTitle = `${formatMonthDay(weekRange.start)}-${formatMonthDay(weekRange.end)} 本周统计`;
   const allCurrencies = useMemo(
     () => Array.from(new Set([...DEFAULT_CURRENCIES, ...customCurrencies])),
@@ -1003,10 +1239,11 @@ function App() {
     }
 
     gsap.context(() => {
-      gsap.timeline({
-        onComplete: close,
-        defaults: { ease: "power2.in", overwrite: "auto" },
-      })
+      gsap
+        .timeline({
+          onComplete: close,
+          defaults: { ease: "power2.in", overwrite: "auto" },
+        })
         .to(panel, { autoAlpha: 0, y: 14, scale: 0.96, duration: 0.24 })
         .to(root, { autoAlpha: 0, duration: 0.18 }, "-=0.1");
     }, root);
@@ -1087,7 +1324,13 @@ function App() {
     const enter = (event: Event) => {
       if (reduceMotion) return;
       const target = event.currentTarget as HTMLElement;
-      gsap.to(target, { y: -4, scale: 1.008, duration: 0.28, ease: "power2.out", overwrite: "auto" });
+      gsap.to(target, {
+        y: -4,
+        scale: 1.008,
+        duration: 0.28,
+        ease: "power2.out",
+        overwrite: "auto",
+      });
     };
     const leave = (event: Event) => {
       if (reduceMotion) return;
@@ -1132,11 +1375,21 @@ function App() {
 
       const timeline = gsap.timeline({ defaults: { ease: "power3.out", overwrite: "auto" } });
       timeline
-        .fromTo(root, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.18, clearProps: "opacity,visibility" })
+        .fromTo(
+          root,
+          { autoAlpha: 0 },
+          { autoAlpha: 1, duration: 0.18, clearProps: "opacity,visibility" },
+        )
         .fromTo(
           panel,
           { autoAlpha: 0, y: 18, scale: 0.965 },
-          { autoAlpha: 1, y: 0, scale: 1, duration: 0.34, clearProps: "transform,opacity,visibility" },
+          {
+            autoAlpha: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.34,
+            clearProps: "transform,opacity,visibility",
+          },
           "<0.02",
         )
         .fromTo(
@@ -1154,7 +1407,13 @@ function App() {
     }, root);
 
     return () => ctx.revert();
-  }, [datePickerOpen, currencyModal, selectedTravelHistoryId, travelExitModalOpen, travelMergeModalOpen]);
+  }, [
+    datePickerOpen,
+    currencyModal,
+    selectedTravelHistoryId,
+    travelExitModalOpen,
+    travelMergeModalOpen,
+  ]);
 
   useEffect(() => {
     const preview = naturalPreviewRef.current;
@@ -1263,17 +1522,26 @@ function App() {
 
   const updateEntry = (index: number, patch: Partial<LedgerEntry>) => {
     setLedger((current) => {
-      const entries = current[selectedDate] ? [...current[selectedDate]] : makeDayEntries(dailyDefaultCurrency);
+      const entries = current[selectedDate]
+        ? [...current[selectedDate]]
+        : makeDayEntries(dailyDefaultCurrency);
       entries[index] = sanitizeEntry({ ...entries[index], ...patch }, dailyDefaultCurrency);
       return { ...current, [selectedDate]: entries };
     });
     if (patch.currency) setLastCurrency(patch.currency);
   };
 
-  const displayStatsCurrencies = selectedStatsCurrencies.filter((currency) => allCurrencies.includes(currency));
-  const safeDisplayStatsCurrencies = displayStatsCurrencies.length ? displayStatsCurrencies : [dailyDefaultCurrency];
+  const displayStatsCurrencies = selectedStatsCurrencies.filter((currency) =>
+    allCurrencies.includes(currency),
+  );
+  const safeDisplayStatsCurrencies = displayStatsCurrencies.length
+    ? displayStatsCurrencies
+    : [dailyDefaultCurrency];
 
-  const dayTotals = useMemo(() => getEntryTotals(selectedEntries, exchange, allCurrencies), [selectedEntries, exchange, allCurrencies]);
+  const dayTotals = useMemo(
+    () => getEntryTotals(selectedEntries, exchange, allCurrencies),
+    [selectedEntries, exchange, allCurrencies],
+  );
 
   const daySplitCurrencies = useMemo(
     () => allCurrencies.filter((currency) => (dayTotals.native[currency] ?? 0) !== 0),
@@ -1299,8 +1567,14 @@ function App() {
     [ledger, monthKey],
   );
 
-  const weekTotals = useMemo(() => getEntryTotals(weekEntries, exchange, allCurrencies), [weekEntries, exchange, allCurrencies]);
-  const monthTotals = useMemo(() => getEntryTotals(monthEntries, exchange, allCurrencies), [monthEntries, exchange, allCurrencies]);
+  const weekTotals = useMemo(
+    () => getEntryTotals(weekEntries, exchange, allCurrencies),
+    [weekEntries, exchange, allCurrencies],
+  );
+  const monthTotals = useMemo(
+    () => getEntryTotals(monthEntries, exchange, allCurrencies),
+    [monthEntries, exchange, allCurrencies],
+  );
   const weekCategorySummary = useMemo(
     () => summarizeByCategory(weekEntries, exchange, dailyDefaultCurrency),
     [weekEntries, exchange, dailyDefaultCurrency],
@@ -1311,13 +1585,17 @@ function App() {
   );
 
   const allLedgerEntries = useMemo(
-    () => collectEntries(ledger, () => true).filter((entry) => !entry.hidden && parseAmount(entry.amount) !== 0),
+    () =>
+      collectEntries(ledger, () => true).filter(
+        (entry) => !entry.hidden && parseAmount(entry.amount) !== 0,
+      ),
     [ledger],
   );
 
-  const budgetCurrency = appSettings.budget.currency && allCurrencies.includes(appSettings.budget.currency)
-    ? appSettings.budget.currency
-    : dailyDefaultCurrency;
+  const budgetCurrency =
+    appSettings.budget.currency && allCurrencies.includes(appSettings.budget.currency)
+      ? appSettings.budget.currency
+      : dailyDefaultCurrency;
 
   const monthlyBudgetSpent = useMemo(
     () => sumConvertedEntries(monthEntries, exchange, budgetCurrency),
@@ -1335,7 +1613,9 @@ function App() {
           budgetCurrency,
         );
         return { category, limit, spent };
-      }).filter((item): item is { category: string; limit: number; spent: number } => Boolean(item)),
+      }).filter((item): item is { category: string; limit: number; spent: number } =>
+        Boolean(item),
+      ),
     [appSettings.budget.categoryLimits, budgetCurrency, exchange, monthEntries],
   );
 
@@ -1348,7 +1628,12 @@ function App() {
           amount: parseAmount(entry.amount),
           currency: entry.currency,
           note: entry.note,
-          convertedAmount: convert(parseAmount(entry.amount), entry.currency, budgetCurrency, exchange),
+          convertedAmount: convert(
+            parseAmount(entry.amount),
+            entry.currency,
+            budgetCurrency,
+            exchange,
+          ),
         }))
         .sort((a, b) => b.date.localeCompare(a.date)),
     [allLedgerEntries, budgetCurrency, exchange],
@@ -1356,7 +1641,10 @@ function App() {
 
   const previousWeekRange = useMemo(() => getPreviousWeekRange(weekRange), [weekRange]);
   const previousWeekEntries = useMemo(
-    () => collectEntries(ledger, (date) => isInRange(date, previousWeekRange.start, previousWeekRange.end)),
+    () =>
+      collectEntries(ledger, (date) =>
+        isInRange(date, previousWeekRange.start, previousWeekRange.end),
+      ),
     [ledger, previousWeekRange.end, previousWeekRange.start],
   );
 
@@ -1371,11 +1659,22 @@ function App() {
     }
 
     const categoryDrops = CATEGORIES.map((category) => {
-      const previous = sumConvertedEntries(previousWeekEntries.filter((entry) => entry.category === category), exchange, budgetCurrency);
-      const current = sumConvertedEntries(weekEntries.filter((entry) => entry.category === category), exchange, budgetCurrency);
-      const dropPercent = previous > 0 && current < previous ? ((previous - current) / previous) * 100 : 0;
+      const previous = sumConvertedEntries(
+        previousWeekEntries.filter((entry) => entry.category === category),
+        exchange,
+        budgetCurrency,
+      );
+      const current = sumConvertedEntries(
+        weekEntries.filter((entry) => entry.category === category),
+        exchange,
+        budgetCurrency,
+      );
+      const dropPercent =
+        previous > 0 && current < previous ? ((previous - current) / previous) * 100 : 0;
       return { category, dropPercent };
-    }).filter((item) => item.dropPercent > 0).sort((a, b) => b.dropPercent - a.dropPercent)[0];
+    })
+      .filter((item) => item.dropPercent > 0)
+      .sort((a, b) => b.dropPercent - a.dropPercent)[0];
 
     return {
       enoughData: true,
@@ -1395,7 +1694,12 @@ function App() {
       .forEach((entry) => {
         const weekday = parseDateKey(entry.date).getDay();
         const current = weekdayMap.get(weekday) ?? { total: 0, days: new Set<string>() };
-        current.total += convert(parseAmount(entry.amount), entry.currency, budgetCurrency, exchange);
+        current.total += convert(
+          parseAmount(entry.amount),
+          entry.currency,
+          budgetCurrency,
+          exchange,
+        );
         current.days.add(entry.date);
         weekdayMap.set(weekday, current);
       });
@@ -1418,20 +1722,37 @@ function App() {
     const recordedDates = new Set(allLedgerEntries.map((entry) => entry.date));
     const streakDays = getLedgerStreak(recordedDates);
     if (streakDays >= 30) {
-      return { tier: "thirty", streakDays, title: "30 天金色徽章", hint: "稳定记录已经成为你的个人仪式。" };
+      return {
+        tier: "thirty",
+        streakDays,
+        title: "30 天金色徽章",
+        hint: "稳定记录已经成为你的个人仪式。",
+      };
     }
     if (streakDays >= 7) {
-      return { tier: "seven", streakDays, title: "7 天渐变徽章", hint: "连续记录一周，预算感会越来越清晰。" };
+      return {
+        tier: "seven",
+        streakDays,
+        title: "7 天渐变徽章",
+        hint: "连续记录一周，预算感会越来越清晰。",
+      };
     }
-    return { tier: "default", streakDays, title: "蓝色起步徽章", hint: "不用追求完美，留下今天的一笔就很好。" };
+    return {
+      tier: "default",
+      streakDays,
+      title: "蓝色起步徽章",
+      hint: "不用追求完美，留下今天的一笔就很好。",
+    };
   }, [allLedgerEntries]);
 
   const exchangeRows = useMemo(
     () =>
-      allCurrencies.filter((currency) => currency !== dailyDefaultCurrency).map((currency) => ({
-        currency,
-        value: convert(1, dailyDefaultCurrency, currency, exchange),
-      })),
+      allCurrencies
+        .filter((currency) => currency !== dailyDefaultCurrency)
+        .map((currency) => ({
+          currency,
+          value: convert(1, dailyDefaultCurrency, currency, exchange),
+        })),
     [allCurrencies, dailyDefaultCurrency, exchange],
   );
 
@@ -1440,10 +1761,15 @@ function App() {
     try {
       const response = await fetch("https://open.er-api.com/v6/latest/USD");
       if (!response.ok) throw new Error("汇率服务无响应");
-      const data = (await response.json()) as { rates?: Partial<Record<ApiCurrency, number>>; result?: string };
+      const data = (await response.json()) as {
+        rates?: Partial<Record<ApiCurrency, number>>;
+        result?: string;
+      };
       if (data.result && data.result !== "success") throw new Error("汇率服务返回失败");
       const rates = normalizeRates(data.rates, allCurrencies);
-      const hasRequiredRates = allCurrencies.map(getApiCode).every((code) => Number.isFinite(rates[code]) && rates[code] > 0);
+      const hasRequiredRates = allCurrencies
+        .map(getApiCode)
+        .every((code) => Number.isFinite(rates[code]) && rates[code] > 0);
       if (!hasRequiredRates) throw new Error("汇率数据格式异常");
       setExchange({
         base: "USD",
@@ -1472,12 +1798,14 @@ function App() {
 
   const validateNewCurrency = (value: string) => {
     const code = normalizeCurrencyCode(value);
-    if (!/^[A-Z]{3}$/.test(code)) return { code, error: "请输入 3 位大写英文字母货币代号，例如 CAD。" };
+    if (!/^[A-Z]{3}$/.test(code))
+      return { code, error: "请输入 3 位大写英文字母货币代号，例如 CAD。" };
     const normalized = code === "TWD" ? "NTD" : code;
     if (!COMMON_ISO_4217_CODES.has(code) && !COMMON_ISO_4217_CODES.has(normalized)) {
       return { code: normalized, error: "未识别该 ISO 4217 货币代号，请检查后重试。" };
     }
-    if (allCurrencies.includes(normalized)) return { code: normalized, error: "该货币已经在列表中。" };
+    if (allCurrencies.includes(normalized))
+      return { code: normalized, error: "该货币已经在列表中。" };
     return { code: normalized, error: "" };
   };
 
@@ -1489,22 +1817,33 @@ function App() {
     }
     const code = result.code;
     const apiCode = getApiCode(code);
-    setCustomCurrencies((current) => current.includes(code) ? current : [...current, code]);
-    localStorage.setItem(CUSTOM_CURRENCIES_KEY, JSON.stringify(Array.from(new Set([...customCurrencies, code]))));
-    setSelectedStatsCurrencies((current) => current.includes(code) ? current : [...current, code]);
+    setCustomCurrencies((current) => (current.includes(code) ? current : [...current, code]));
+    localStorage.setItem(
+      CUSTOM_CURRENCIES_KEY,
+      JSON.stringify(Array.from(new Set([...customCurrencies, code]))),
+    );
+    setSelectedStatsCurrencies((current) =>
+      current.includes(code) ? current : [...current, code],
+    );
     setCustomCurrencyCode("");
     setCustomCurrencyError("");
     setRateStatus(`已添加 ${code}，正在检查实时汇率...`);
     try {
       const response = await fetch("https://open.er-api.com/v6/latest/USD");
       if (!response.ok) throw new Error("汇率服务无响应");
-      const data = (await response.json()) as { rates?: Partial<Record<ApiCurrency, number>>; result?: string };
+      const data = (await response.json()) as {
+        rates?: Partial<Record<ApiCurrency, number>>;
+        result?: string;
+      };
       const rate = data.rates?.[apiCode];
       if (data.result && data.result !== "success") throw new Error("汇率服务返回失败");
       if (!Number.isFinite(rate) || !rate || rate <= 0) throw new Error("该货币暂未返回实时汇率");
       setExchange((current) => ({
         base: "USD",
-        rates: normalizeRates({ ...current.rates, ...data.rates, [apiCode]: rate }, [...allCurrencies, code]),
+        rates: normalizeRates({ ...current.rates, ...data.rates, [apiCode]: rate }, [
+          ...allCurrencies,
+          code,
+        ]),
         updatedAt: Date.now(),
         source: "open.er-api.com",
       }));
@@ -1512,9 +1851,17 @@ function App() {
     } catch (error) {
       setExchange((current) => ({
         ...current,
-        rates: normalizeRates({ ...current.rates, [apiCode]: current.rates[apiCode] ?? DEFAULT_USD_RATES[apiCode] ?? 1 }, [...allCurrencies, code]),
+        rates: normalizeRates(
+          {
+            ...current.rates,
+            [apiCode]: current.rates[apiCode] ?? DEFAULT_USD_RATES[apiCode] ?? 1,
+          },
+          [...allCurrencies, code],
+        ),
       }));
-      setRateStatus(`已添加 ${code}；${error instanceof Error ? error.message : "汇率暂不可用"}，暂用 1:1 回退避免统计中断。`);
+      setRateStatus(
+        `已添加 ${code}；${error instanceof Error ? error.message : "汇率暂不可用"}，暂用 1:1 回退避免统计中断。`,
+      );
     }
   };
 
@@ -1575,14 +1922,18 @@ function App() {
   const addCategoryRecord = (categoryIndex: number) => {
     const nextRowIndex = visibleRowCounts[categoryIndex];
     if (nextRowIndex >= MAX_RECORDS_PER_CATEGORY) {
-      setShortcutFeedback(`「${CATEGORIES[categoryIndex]}」已达 ${MAX_RECORDS_PER_CATEGORY} 条上限。`);
+      setShortcutFeedback(
+        `「${CATEGORIES[categoryIndex]}」已达 ${MAX_RECORDS_PER_CATEGORY} 条上限。`,
+      );
       return;
     }
     setShortcutFeedback("");
     updateVisibleRowCount(categoryIndex, nextRowIndex + 1);
     const nextIndex = getEntryIndex(categoryIndex, nextRowIndex);
     setLedger((current) => {
-      const entries = current[selectedDate] ? [...current[selectedDate]] : makeDayEntries(dailyDefaultCurrency);
+      const entries = current[selectedDate]
+        ? [...current[selectedDate]]
+        : makeDayEntries(dailyDefaultCurrency);
       entries[nextIndex] = makeBlankEntry(dailyDefaultCurrency);
       return { ...current, [selectedDate]: entries };
     });
@@ -1592,7 +1943,9 @@ function App() {
   const deleteCategoryRecord = (categoryIndex: number, rowIndex: number) => {
     const currentRowCount = visibleRowCounts[categoryIndex];
     setLedger((current) => {
-      const entries = current[selectedDate] ? [...current[selectedDate]] : makeDayEntries(dailyDefaultCurrency);
+      const entries = current[selectedDate]
+        ? [...current[selectedDate]]
+        : makeDayEntries(dailyDefaultCurrency);
       if (currentRowCount <= 1) {
         entries[getEntryIndex(categoryIndex, rowIndex)] = makeBlankEntry(dailyDefaultCurrency);
         return { ...current, [selectedDate]: entries };
@@ -1615,7 +1968,11 @@ function App() {
 
   const focusCell = (date: string, index: number, field: keyof LedgerEntry = "amount") => {
     requestAnimationFrame(() => {
-      document.querySelector<HTMLElement>(`[data-date="${date}"][data-index="${index}"][data-field="${field}"]`)?.focus();
+      document
+        .querySelector<HTMLElement>(
+          `[data-date="${date}"][data-index="${index}"][data-field="${field}"]`,
+        )
+        ?.focus();
     });
   };
 
@@ -1637,7 +1994,11 @@ function App() {
       const fieldIndex = EDITABLE_FIELDS.indexOf(field);
       const nextFieldIndex = fieldIndex + (direction === "left" ? -1 : 1);
       if (nextFieldIndex < 0 || nextFieldIndex >= EDITABLE_FIELDS.length) return;
-      focusCell(selectedDate, getEntryIndex(categoryIndex, rowIndex), EDITABLE_FIELDS[nextFieldIndex]);
+      focusCell(
+        selectedDate,
+        getEntryIndex(categoryIndex, rowIndex),
+        EDITABLE_FIELDS[nextFieldIndex],
+      );
       return;
     }
 
@@ -1682,7 +2043,14 @@ function App() {
       return;
     }
 
-    if (field === "amount" && event.key === "Tab" && !event.shiftKey && !event.altKey && !event.ctrlKey && !event.metaKey) {
+    if (
+      field === "amount" &&
+      event.key === "Tab" &&
+      !event.shiftKey &&
+      !event.altKey &&
+      !event.ctrlKey &&
+      !event.metaKey
+    ) {
       event.preventDefault();
       setShortcutFeedback("");
       focusNextCategoryAmount(categoryIndex);
@@ -1726,7 +2094,9 @@ function App() {
           ]);
         });
       });
-    const csv = rows.map((row) => row.map((cell) => `"${String(cell).replaceAll('"', '""')}"`).join(",")).join("\n");
+    const csv = rows
+      .map((row) => row.map((cell) => `"${String(cell).replaceAll('"', '""')}"`).join(","))
+      .join("\n");
     const blob = new Blob([`\uFEFF${csv}`], { type: "text/csv;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement("a");
@@ -1750,7 +2120,9 @@ function App() {
       travelHistory,
       pendingTravelDeletes,
     });
-    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8" });
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {
+      type: "application/json;charset=utf-8",
+    });
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement("a");
     anchor.href = url;
@@ -1759,10 +2131,16 @@ function App() {
     URL.revokeObjectURL(url);
   };
 
-  const prepareBackupImport = (payload: MoneyCountsBackupPayload, fileName: string): PreparedBackupImport => {
+  const prepareBackupImport = (
+    payload: MoneyCountsBackupPayload,
+    fileName: string,
+  ): PreparedBackupImport => {
     const nextCustomCurrencies = normalizeStoredCustomCurrencies(payload.data.customCurrencies);
-    const importedKnownCurrencies = Array.from(new Set([...DEFAULT_CURRENCIES, ...nextCustomCurrencies]));
-    const currencyNormalizer = (value: unknown) => normalizeBackupCurrencyWithKnown(value, importedKnownCurrencies);
+    const importedKnownCurrencies = Array.from(
+      new Set([...DEFAULT_CURRENCIES, ...nextCustomCurrencies]),
+    );
+    const currencyNormalizer = (value: unknown) =>
+      normalizeBackupCurrencyWithKnown(value, importedKnownCurrencies);
     const nextLedger = normalizeBackupLedger(payload.data.ledger, importedKnownCurrencies);
     const nextLastCurrency = currencyNormalizer(payload.data.lastCurrency) ?? "HKD";
     const nextStatsCurrencies = normalizeBackupCurrencyList(
@@ -1770,8 +2148,14 @@ function App() {
       [nextLastCurrency],
       importedKnownCurrencies,
     );
-    const nextTravelHistory = normalizeStoredTravelHistory(payload.data.travelHistory, currencyNormalizer);
-    const nextPendingTravelDeletes = normalizeStoredPendingTravelDeletes(payload.data.pendingTravelDeletes, currencyNormalizer);
+    const nextTravelHistory = normalizeStoredTravelHistory(
+      payload.data.travelHistory,
+      currencyNormalizer,
+    );
+    const nextPendingTravelDeletes = normalizeStoredPendingTravelDeletes(
+      payload.data.pendingTravelDeletes,
+      currencyNormalizer,
+    );
 
     return {
       payload,
@@ -1809,7 +2193,13 @@ function App() {
       setJsonImportMessage(`已读取 v${BACKUP_VERSION} 备份，请确认预览后再覆盖导入。`);
     } catch (error) {
       setPreparedJsonImport(null);
-      setJsonImportMessage(error instanceof SyntaxError ? "JSON 格式错误，无法解析。" : error instanceof Error ? error.message : "导入文件无效。");
+      setJsonImportMessage(
+        error instanceof SyntaxError
+          ? "JSON 格式错误，无法解析。"
+          : error instanceof Error
+            ? error.message
+            : "导入文件无效。",
+      );
     } finally {
       event.target.value = "";
     }
@@ -1875,7 +2265,10 @@ function App() {
     const file = event.target.files?.[0];
     if (!file) return;
     const text = await file.text();
-    const lines = text.replace(/^\uFEFF/, "").split(/\r?\n/).filter(Boolean);
+    const lines = text
+      .replace(/^\uFEFF/, "")
+      .split(/\r?\n/)
+      .filter(Boolean);
     const nextLedger = { ...ledger };
     const importedCustomCurrencies = new Set<Currency>();
     let imported = 0;
@@ -1883,16 +2276,26 @@ function App() {
       const [date, category, slot, amount, currency, note, hidden] = parseCsvLine(line);
       const categoryIndex = CATEGORIES.indexOf(category);
       const rowIndex = Number(slot) - 1;
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || categoryIndex < 0 || rowIndex < 0 || rowIndex >= MAX_RECORDS_PER_CATEGORY) continue;
-      const normalizedCurrency = normalizeCurrencyInput(currency) ?? (() => {
-        const code = normalizeCurrencyCode(currency);
-        const normalized = code === "TWD" ? "NTD" : code;
-        return /^[A-Z]{3}$/.test(code) && (COMMON_ISO_4217_CODES.has(code) || COMMON_ISO_4217_CODES.has(normalized))
-          ? normalized
-          : null;
-      })();
+      if (
+        !/^\d{4}-\d{2}-\d{2}$/.test(date) ||
+        categoryIndex < 0 ||
+        rowIndex < 0 ||
+        rowIndex >= MAX_RECORDS_PER_CATEGORY
+      )
+        continue;
+      const normalizedCurrency =
+        normalizeCurrencyInput(currency) ??
+        (() => {
+          const code = normalizeCurrencyCode(currency);
+          const normalized = code === "TWD" ? "NTD" : code;
+          return /^[A-Z]{3}$/.test(code) &&
+            (COMMON_ISO_4217_CODES.has(code) || COMMON_ISO_4217_CODES.has(normalized))
+            ? normalized
+            : null;
+        })();
       if (!normalizedCurrency) continue;
-      if (!allCurrencies.includes(normalizedCurrency)) importedCustomCurrencies.add(normalizedCurrency);
+      if (!allCurrencies.includes(normalizedCurrency))
+        importedCustomCurrencies.add(normalizedCurrency);
       const entryIndex = getEntryIndex(categoryIndex, rowIndex);
       const entries = nextLedger[date] ? [...nextLedger[date]] : makeDayEntries(normalizedCurrency);
       entries[entryIndex] = sanitizeEntry(
@@ -1903,8 +2306,13 @@ function App() {
       imported += 1;
     }
     if (importedCustomCurrencies.size) {
-      setCustomCurrencies((current) => Array.from(new Set([...current, ...importedCustomCurrencies])));
-      localStorage.setItem(CUSTOM_CURRENCIES_KEY, JSON.stringify(Array.from(new Set([...customCurrencies, ...importedCustomCurrencies]))));
+      setCustomCurrencies((current) =>
+        Array.from(new Set([...current, ...importedCustomCurrencies])),
+      );
+      localStorage.setItem(
+        CUSTOM_CURRENCIES_KEY,
+        JSON.stringify(Array.from(new Set([...customCurrencies, ...importedCustomCurrencies]))),
+      );
       setExchange((current) => ({
         ...current,
         rates: normalizeRates(current.rates, [...allCurrencies, ...importedCustomCurrencies]),
@@ -1921,7 +2329,8 @@ function App() {
       const amount = record.amount.trim();
       if (!isValidDateKey(record.date.trim())) issues.push("日期格式无效");
       if (!CATEGORIES.includes(record.category)) issues.push("分类不在列表内");
-      if (!/^-?\d+(?:\.\d{1,2})?$/.test(amount) || parseAmount(amount) === 0) issues.push("金额需为非 0 有限数字");
+      if (!/^-?\d+(?:\.\d{1,2})?$/.test(amount) || parseAmount(amount) === 0)
+        issues.push("金额需为非 0 有限数字");
       if (!allCurrencies.includes(record.currency)) issues.push("货币不在列表内");
       return issues;
     },
@@ -1948,7 +2357,8 @@ function App() {
   );
 
   const canImportNaturalLedgerPreview =
-    naturalLedgerPreview.length > 0 && naturalLedgerPreviewIssues.every((issues) => issues.length === 0);
+    naturalLedgerPreview.length > 0 &&
+    naturalLedgerPreviewIssues.every((issues) => issues.length === 0);
 
   const updateNaturalLedgerPreviewRecord = (index: number, field: PreviewField, value: string) => {
     setNaturalLedgerPreview((current) =>
@@ -1991,13 +2401,16 @@ function App() {
     for (const record of records) {
       const date = record.date.trim();
       const categoryIndex = CATEGORIES.indexOf(record.category);
-      const normalizedCurrency = normalizeCurrencyInput(record.currency) ?? (() => {
-        const code = normalizeCurrencyCode(record.currency);
-        const normalized = code === "TWD" ? "NTD" : code;
-        return /^[A-Z]{3}$/.test(code) && (COMMON_ISO_4217_CODES.has(code) || COMMON_ISO_4217_CODES.has(normalized))
-          ? normalized
-          : null;
-      })();
+      const normalizedCurrency =
+        normalizeCurrencyInput(record.currency) ??
+        (() => {
+          const code = normalizeCurrencyCode(record.currency);
+          const normalized = code === "TWD" ? "NTD" : code;
+          return /^[A-Z]{3}$/.test(code) &&
+            (COMMON_ISO_4217_CODES.has(code) || COMMON_ISO_4217_CODES.has(normalized))
+            ? normalized
+            : null;
+        })();
       const amount = record.amount.trim();
 
       if (!isValidDateKey(date)) {
@@ -2016,13 +2429,16 @@ function App() {
         messages.push(`已跳过货币无效的记录：${record.currency || record.note}`);
         continue;
       }
-      if (!allCurrencies.includes(normalizedCurrency)) importedCustomCurrencies.add(normalizedCurrency);
+      if (!allCurrencies.includes(normalizedCurrency))
+        importedCustomCurrencies.add(normalizedCurrency);
 
       const entries = nextLedger[date] ? [...nextLedger[date]] : makeDayEntries(normalizedCurrency);
       const categoryEntries = getCategoryEntries(entries, categoryIndex);
       const rowIndex = categoryEntries.findIndex((entry) => !hasEntryContent(entry));
       if (rowIndex < 0 || rowIndex >= MAX_RECORDS_PER_CATEGORY) {
-        messages.push(`${date}「${record.category}」已达 ${MAX_RECORDS_PER_CATEGORY} 条上限，已跳过：${record.note || amount}`);
+        messages.push(
+          `${date}「${record.category}」已达 ${MAX_RECORDS_PER_CATEGORY} 条上限，已跳过：${record.note || amount}`,
+        );
         continue;
       }
 
@@ -2045,8 +2461,13 @@ function App() {
     }
 
     if (importedCustomCurrencies.size) {
-      setCustomCurrencies((current) => Array.from(new Set([...current, ...importedCustomCurrencies])));
-      localStorage.setItem(CUSTOM_CURRENCIES_KEY, JSON.stringify(Array.from(new Set([...customCurrencies, ...importedCustomCurrencies]))));
+      setCustomCurrencies((current) =>
+        Array.from(new Set([...current, ...importedCustomCurrencies])),
+      );
+      localStorage.setItem(
+        CUSTOM_CURRENCIES_KEY,
+        JSON.stringify(Array.from(new Set([...customCurrencies, ...importedCustomCurrencies]))),
+      );
       setExchange((current) => ({
         ...current,
         rates: normalizeRates(current.rates, [...allCurrencies, ...importedCustomCurrencies]),
@@ -2074,7 +2495,8 @@ function App() {
       const records = result.records
         .map((record) => {
           const normalized = normalizeParsedNaturalRecord(record);
-          if (!normalized) frontendWarnings.push(`已跳过金额无效的记录：${record.note || record.amount}`);
+          if (!normalized)
+            frontendWarnings.push(`已跳过金额无效的记录：${record.note || record.amount}`);
           return normalized;
         })
         .filter((record): record is LocalLedgerRecord => Boolean(record));
@@ -2113,12 +2535,15 @@ function App() {
       setNaturalLedgerStatus("请先修正待导入记录中的校验提示。");
       return;
     }
-    const { imported, messages, importedEntries } = importNaturalLedgerRecords(naturalLedgerPreview);
+    const { imported, messages, importedEntries } =
+      importNaturalLedgerRecords(naturalLedgerPreview);
     setNaturalLedgerWarnings(messages);
     setNaturalLedgerStatus(
       imported
         ? `已确认导入 ${imported} 条记录${messages.length ? `，另有 ${messages.length} 条提示。` : "。"}`
-        : messages.length ? "没有记录被导入，请查看提示。" : "没有待导入记录。",
+        : messages.length
+          ? "没有记录被导入，请查看提示。"
+          : "没有待导入记录。",
     );
     if (imported) {
       setImportMessage(`自然语言记账已导入 ${imported} 条记录。`);
@@ -2134,16 +2559,22 @@ function App() {
     const confirmed = window.confirm(`确认清空 ${monthKey} 整个月的全部记账数据？此操作不可撤销。`);
     if (!confirmed) return;
     setLedger((current) =>
-      Object.fromEntries(Object.entries(current).filter(([date]) => getMonthKey(date) !== monthKey)),
+      Object.fromEntries(
+        Object.entries(current).filter(([date]) => getMonthKey(date) !== monthKey),
+      ),
     );
     setVisibleRowCountsByDate((current) =>
-      Object.fromEntries(Object.entries(current).filter(([date]) => getMonthKey(date) !== monthKey)),
+      Object.fromEntries(
+        Object.entries(current).filter(([date]) => getMonthKey(date) !== monthKey),
+      ),
     );
     setImportMessage(`${monthKey} 数据已清空。`);
   };
 
   const clearCurrentDay = () => {
-    const confirmed = window.confirm(`确认清空 ${selectedDate} 当日的全部记账数据？此操作不可撤销。`);
+    const confirmed = window.confirm(
+      `确认清空 ${selectedDate} 当日的全部记账数据？此操作不可撤销。`,
+    );
     if (!confirmed) return;
     setLedger((current) => {
       const { [selectedDate]: _removed, ...rest } = current;
@@ -2165,7 +2596,10 @@ function App() {
     variant: number,
   ) => {
     return (
-      <section className={`card stats-card stat-variant-${variant}`} data-section={`${type}-stats-card`}>
+      <section
+        className={`card stats-card stat-variant-${variant}`}
+        data-section={`${type}-stats-card`}
+      >
         <div className="card-heading">
           <div>
             <p className="eyebrow">{range}</p>
@@ -2185,7 +2619,9 @@ function App() {
             <button
               className="ghost-button"
               data-action={`${type}-stats-toggle`}
-              onClick={() => setExpandedStats((current) => ({ ...current, [type]: !current[type] }))}
+              onClick={() =>
+                setExpandedStats((current) => ({ ...current, [type]: !current[type] }))
+              }
             >
               {expandedStats[type] ? "收起" : "展开"}
             </button>
@@ -2194,7 +2630,11 @@ function App() {
         <div className="totals-grid">
           {safeDisplayStatsCurrencies.map((currency) => (
             <div key={currency}>
-              <span>{currency === dailyDefaultCurrency ? "当前默认口径" : `${getCurrencyMeta(currency).shortName}口径`}</span>
+              <span>
+                {currency === dailyDefaultCurrency
+                  ? "当前默认口径"
+                  : `${getCurrencyMeta(currency).shortName}口径`}
+              </span>
               <strong>{formatMoney(totals.converted[currency], currency)}</strong>
             </div>
           ))}
@@ -2221,7 +2661,9 @@ function App() {
           {summary.map((item) => (
             <div key={item.category}>
               <span>{item.category}</span>
-              <span>{formatMoney(item.value, dailyDefaultCurrency)} · {item.percent.toFixed(1)}%</span>
+              <span>
+                {formatMoney(item.value, dailyDefaultCurrency)} · {item.percent.toFixed(1)}%
+              </span>
             </div>
           ))}
           {type === "month" && (
@@ -2229,7 +2671,10 @@ function App() {
               <div className="summary-controls">
                 <label>
                   汇总模式
-                  <select value={summaryMode} onChange={(event) => setSummaryMode(event.target.value as SummaryMode)}>
+                  <select
+                    value={summaryMode}
+                    onChange={(event) => setSummaryMode(event.target.value as SummaryMode)}
+                  >
                     <option value="split">原货币分开</option>
                     <option value="merged">单一货币合并</option>
                   </select>
@@ -2239,7 +2684,8 @@ function App() {
                   <select
                     value={baseCurrency}
                     onChange={(event) => {
-                      if (allCurrencies.includes(event.target.value)) setBaseCurrency(event.target.value);
+                      if (allCurrencies.includes(event.target.value))
+                        setBaseCurrency(event.target.value);
                     }}
                   >
                     {allCurrencies.map((currency) => (
@@ -2257,12 +2703,15 @@ function App() {
                       <span>{category}</span>
                       {summaryMode === "split" ? (
                         <strong>
-                          {allCurrencies.filter((currency) => (rowTotals.native[currency] ?? 0) !== 0)
+                          {allCurrencies
+                            .filter((currency) => (rowTotals.native[currency] ?? 0) !== 0)
                             .map((currency) => formatMoney(rowTotals.native[currency], currency))
                             .join(" / ")}
                         </strong>
                       ) : (
-                        <strong>{formatMoney(rowTotals.converted[baseCurrency], baseCurrency)}</strong>
+                        <strong>
+                          {formatMoney(rowTotals.converted[baseCurrency], baseCurrency)}
+                        </strong>
                       )}
                     </div>
                   ))
@@ -2283,10 +2732,16 @@ function App() {
     return { category, totals };
   }).filter((row) => hasTotals(row.totals, allCurrencies));
 
-  const detectMentionedTravelParticipantIds = (rawInput: string, participants = travelState.participants) => {
+  const detectMentionedTravelParticipantIds = (
+    rawInput: string,
+    participants = travelState.participants,
+  ) => {
     const text = rawInput.replace(/\s+/g, "");
     const roster = participants.length ? participants : DEFAULT_TRAVEL_STATE.participants;
-    const intro = text.match(/(?:和|跟|与)([^，。,.;；、在]+)(?:在|去|到|吃|喝|玩|买|花|消费|,|，|。|$)/u)?.[1] ?? text;
+    const intro =
+      text.match(
+        /(?:和|跟|与)([^，。,.;；、在]+)(?:在|去|到|吃|喝|玩|买|花|消费|,|，|。|$)/u,
+      )?.[1] ?? text;
     const matched = roster.filter((participant) => {
       if (participant.id === "me" && !/(我|本人|自己)/.test(intro)) return false;
       const name = participant.name.trim();
@@ -2344,7 +2799,9 @@ function App() {
       const records = parsedRecords.length ? parsedRecords : fallbackRecords;
       setNaturalLedgerPreview(records);
       setNaturalLedgerWarnings(result.warnings);
-      setQuickEntryStatus(records.length ? `已生成 ${records.length} 笔预览，请确认后写入。` : "未生成可导入预览。");
+      setQuickEntryStatus(
+        records.length ? `已生成 ${records.length} 笔预览，请确认后写入。` : "未生成可导入预览。",
+      );
     } catch (error) {
       const fallbackRecords = results.map((quickResult) => ({
         date: selectedDate,
@@ -2354,8 +2811,14 @@ function App() {
         note: quickResult.note,
       }));
       setNaturalLedgerPreview(fallbackRecords);
-      setNaturalLedgerWarnings([error instanceof Error ? error.message : "本地规则解析失败，已保留草稿识别结果。"]);
-      setQuickEntryStatus(fallbackRecords.length ? `已生成 ${fallbackRecords.length} 笔基础预览，请确认后写入。` : "快速输入解析失败，请稍后重试。");
+      setNaturalLedgerWarnings([
+        error instanceof Error ? error.message : "本地规则解析失败，已保留草稿识别结果。",
+      ]);
+      setQuickEntryStatus(
+        fallbackRecords.length
+          ? `已生成 ${fallbackRecords.length} 笔基础预览，请确认后写入。`
+          : "快速输入解析失败，请稍后重试。",
+      );
     } finally {
       setIsParsingNaturalLedger(false);
     }
@@ -2392,14 +2855,18 @@ function App() {
       }
       applyTravelMetaForImportedEntries(importedEntries, rawInput);
       const participantNames = detectMentionedTravelParticipantIds(rawInput)
-        .map((id) => travelState.participants.find((participant) => participant.id === id)?.name ?? id)
+        .map(
+          (id) => travelState.participants.find((participant) => participant.id === id)?.name ?? id,
+        )
         .join(" / ");
       setTravelStatus(
         `已写入 ${imported} 笔旅游账单${participantNames ? `，参与分摊：${participantNames}` : ""}${messages.length ? `；另有 ${messages.length} 条提示` : "。"}`,
       );
       setCelebrationTick((tick) => tick + 1);
     } catch (error) {
-      setTravelStatus(`旅游自然语言解析失败：${error instanceof Error ? error.message : "未知错误"}`);
+      setTravelStatus(
+        `旅游自然语言解析失败：${error instanceof Error ? error.message : "未知错误"}`,
+      );
     }
   };
 
@@ -2450,7 +2917,7 @@ function App() {
 
   const travelEndDate = travelState.active
     ? selectedDate
-    : travelState.endDate ?? travelState.plannedEndDate ?? selectedDate;
+    : (travelState.endDate ?? travelState.plannedEndDate ?? selectedDate);
   const travelRangeLabel = travelState.startDate
     ? travelState.active
       ? travelState.plannedEndDate
@@ -2461,7 +2928,9 @@ function App() {
   const travelEntries = useMemo(
     () =>
       travelState.startDate
-        ? collectEntries(ledger, (date) => isInRange(date, travelState.startDate ?? selectedDate, travelEndDate))
+        ? collectEntries(ledger, (date) =>
+            isInRange(date, travelState.startDate ?? selectedDate, travelEndDate),
+          )
         : [],
     [ledger, selectedDate, travelEndDate, travelState.startDate],
   );
@@ -2491,7 +2960,9 @@ function App() {
           [
             travelState.locationLabel,
             ...Object.values(travelState.entryMeta).map((meta) => meta.locationLabel),
-            ...travelHistory.flatMap((record) => record.details.map((detail) => detail.locationLabel)),
+            ...travelHistory.flatMap((record) =>
+              record.details.map((detail) => detail.locationLabel),
+            ),
           ]
             .filter((value): value is string => Boolean(value && value.trim()))
             .map((value) => value.trim()),
@@ -2505,7 +2976,14 @@ function App() {
     const dayCount = Math.max(
       1,
       travelState.startDate
-        ? Math.max(activeDates.size, Math.floor((parseDateKey(travelEndDate).getTime() - parseDateKey(travelState.startDate).getTime()) / DAY_MS) + 1)
+        ? Math.max(
+            activeDates.size,
+            Math.floor(
+              (parseDateKey(travelEndDate).getTime() -
+                parseDateKey(travelState.startDate).getTime()) /
+                DAY_MS,
+            ) + 1,
+          )
         : activeDates.size,
     );
     const dailyLimit = travelState.budget.dailyLimit;
@@ -2515,7 +2993,9 @@ function App() {
       if (!limit) return null;
       const spent = travelCategorySummary.find((item) => item.category === category)?.value ?? 0;
       return { category, limit, spent, percent: (Math.abs(spent) / limit) * 100 };
-    }).filter((item): item is { category: string; limit: number; spent: number; percent: number } => Boolean(item));
+    }).filter((item): item is { category: string; limit: number; spent: number; percent: number } =>
+      Boolean(item),
+    );
     return {
       dayCount,
       dailyBudget,
@@ -2523,19 +3003,37 @@ function App() {
       dailyPercent: dailyBudget ? (Math.abs(total) / dailyBudget) * 100 : 0,
       categoryProgress,
     };
-  }, [travelCategorySummary, travelDetails, travelEndDate, travelState.budget, travelState.startDate, travelState.targetCurrency, travelTotals.converted]);
+  }, [
+    travelCategorySummary,
+    travelDetails,
+    travelEndDate,
+    travelState.budget,
+    travelState.startDate,
+    travelState.targetCurrency,
+    travelTotals.converted,
+  ]);
 
   const updateTravelParticipants = (names: string[]) => {
     setTravelState((current) => {
-      const { participants, entryMeta } = reconcileTravelParticipants(current.participants, names, current.entryMeta);
+      const { participants, entryMeta } = reconcileTravelParticipants(
+        current.participants,
+        names,
+        current.entryMeta,
+      );
       return { ...current, participants, entryMeta };
     });
   };
 
-  const updateTravelEntryMeta = (travelKey: string, patch: Partial<{ participantIds: string[]; locationLabel: string }>) => {
+  const updateTravelEntryMeta = (
+    travelKey: string,
+    patch: Partial<{ participantIds: string[]; locationLabel: string }>,
+  ) => {
     setTravelState((current) => {
       const fallbackIds = current.participants.map((participant) => participant.id);
-      const currentMeta = current.entryMeta[travelKey] ?? { participantIds: fallbackIds, locationLabel: "" };
+      const currentMeta = current.entryMeta[travelKey] ?? {
+        participantIds: fallbackIds,
+        locationLabel: "",
+      };
       return {
         ...current,
         entryMeta: {
@@ -2559,7 +3057,6 @@ function App() {
     }));
   };
 
-
   const dismissBackupReminder = (cooldownDays = 3, permanent = false) => {
     const now = Date.now();
     const nextState: BackupReminderState = {
@@ -2579,8 +3076,7 @@ function App() {
         : null;
     const destinationCurrency = travelState.destinationCurrency || dailyDefaultCurrency;
     const billName =
-      travelDraftBillName.trim() ||
-      buildBillNameFromLocation(null, destinationCurrency);
+      travelDraftBillName.trim() || buildBillNameFromLocation(null, destinationCurrency);
 
     setTravelState({
       active: true,
@@ -2591,7 +3087,9 @@ function App() {
       targetCurrency: travelState.targetCurrency || dailyDefaultCurrency,
       billName,
       locationLabel: null,
-      participants: travelState.participants.length ? travelState.participants : DEFAULT_TRAVEL_STATE.participants,
+      participants: travelState.participants.length
+        ? travelState.participants
+        : DEFAULT_TRAVEL_STATE.participants,
       entryMeta: travelState.entryMeta ?? {},
       budget: travelState.budget ?? DEFAULT_TRAVEL_STATE.budget,
     });
@@ -2602,7 +3100,9 @@ function App() {
       .then((geo) => {
         if (!allCurrencies.includes(geo.destinationCurrency)) {
           setCustomCurrencies((current) =>
-            current.includes(geo.destinationCurrency) ? current : [...current, geo.destinationCurrency],
+            current.includes(geo.destinationCurrency)
+              ? current
+              : [...current, geo.destinationCurrency],
           );
         }
         setExchange((current) => ({
@@ -2622,7 +3122,9 @@ function App() {
         if (!travelDraftBillName.trim()) {
           setTravelDraftBillName(geo.billName);
         }
-        setTravelStatus(`已识别 ${geo.locationLabel || geo.countryName || "当前位置"} · ${geo.destinationCurrency}。`);
+        setTravelStatus(
+          `已识别 ${geo.locationLabel || geo.countryName || "当前位置"} · ${geo.destinationCurrency}。`,
+        );
       })
       .catch((error) => {
         setTravelStatus(
@@ -2658,9 +3160,15 @@ function App() {
           const amount = parseAmount(entry.amount);
           const participantIds = getTravelParticipantsForEntry(entry, travelState);
           const participantNames = participantIds.map(
-            (id) => travelState.participants.find((participant) => participant.id === id)?.name ?? id,
+            (id) =>
+              travelState.participants.find((participant) => participant.id === id)?.name ?? id,
           );
-          const snapshot = buildTravelExchangeSnapshot(amount, entry.currency, travelState.targetCurrency, exchange);
+          const snapshot = buildTravelExchangeSnapshot(
+            amount,
+            entry.currency,
+            travelState.targetCurrency,
+            exchange,
+          );
           return {
             date: entry.date,
             category: entry.category,
@@ -2671,7 +3179,9 @@ function App() {
             locationLabel: travelState.entryMeta[entry.travelKey]?.locationLabel || undefined,
             participantIds,
             participantNames,
-            splitShare: participantIds.length ? snapshot.convertedAmount / participantIds.length : snapshot.convertedAmount,
+            splitShare: participantIds.length
+              ? snapshot.convertedAmount / participantIds.length
+              : snapshot.convertedAmount,
             exchangeSnapshot: snapshot,
           };
         }),
@@ -2683,7 +3193,11 @@ function App() {
       setTravelHistory((current) => [record, ...current]);
     }
 
-    setTravelState({ ...DEFAULT_TRAVEL_STATE, participants: travelState.participants, budget: travelState.budget });
+    setTravelState({
+      ...DEFAULT_TRAVEL_STATE,
+      participants: travelState.participants,
+      budget: travelState.budget,
+    });
     setTravelDraftBillName("");
     setTravelDraftUseEndDate(false);
     setTravelExitModalOpen(false);
@@ -2696,7 +3210,9 @@ function App() {
     if (!travelHistoryEditingId || !travelHistoryEditingName.trim()) return;
     setTravelHistory((current) =>
       current.map((record) =>
-        record.id === travelHistoryEditingId ? { ...record, name: travelHistoryEditingName.trim() } : record,
+        record.id === travelHistoryEditingId
+          ? { ...record, name: travelHistoryEditingName.trim() }
+          : record,
       ),
     );
     setTravelHistoryEditingId(null);
@@ -2724,7 +3240,9 @@ function App() {
     const record = travelHistory.find((item) => item.id === id);
     if (!record) return;
     const label = mode === "full" ? "完整账单" : "分账账单";
-    const confirmed = window.confirm(`确认将「${record.name}」的${label}标记为已同步到本地对应账户？当前版本没有远端账户系统，只会写入本地同步标记并保留导出能力。`);
+    const confirmed = window.confirm(
+      `确认将「${record.name}」的${label}标记为已同步到本地对应账户？当前版本没有远端账户系统，只会写入本地同步标记并保留导出能力。`,
+    );
     if (!confirmed) return;
     setTravelHistory((current) =>
       current.map((item) =>
@@ -2743,8 +3261,14 @@ function App() {
     setPendingTravelDeletes((current) => current.filter((item) => item.record.id !== id));
   };
 
-  const confirmTravelHistoryMerge = (payload: { name: string; startDate: string; endDate: string }) => {
-    const selectedRecords = travelHistory.filter((record) => travelHistorySelectedIds.includes(record.id));
+  const confirmTravelHistoryMerge = (payload: {
+    name: string;
+    startDate: string;
+    endDate: string;
+  }) => {
+    const selectedRecords = travelHistory.filter((record) =>
+      travelHistorySelectedIds.includes(record.id),
+    );
     if (selectedRecords.length < 2) return;
     const merged = mergeTravelHistoryRecords(
       selectedRecords,
@@ -2753,7 +3277,10 @@ function App() {
       payload.endDate,
       CATEGORIES,
     );
-    setTravelHistory((current) => [merged, ...current.filter((record) => !travelHistorySelectedIds.includes(record.id))]);
+    setTravelHistory((current) => [
+      merged,
+      ...current.filter((record) => !travelHistorySelectedIds.includes(record.id)),
+    ]);
     setTravelMergeModalOpen(false);
     setTravelHistoryMergeMode(false);
     setTravelHistorySelectedIds([]);
@@ -2761,11 +3288,21 @@ function App() {
     setTravelStatus(`已合并 ${selectedRecords.length} 条旅游记录为「${merged.name}」。`);
   };
 
-
   const exportTravelBill = () => {
     const quote = (value: string | number) => `"${String(value).replaceAll('"', '""')}"`;
     const rows = [
-      ["section", "date", "category", "amount", "currency", "converted", "targetCurrency", "location", "participants", "note"],
+      [
+        "section",
+        "date",
+        "category",
+        "amount",
+        "currency",
+        "converted",
+        "targetCurrency",
+        "location",
+        "participants",
+        "note",
+      ],
       ...travelCategorySummary.map((item) => [
         "category",
         "",
@@ -2784,11 +3321,17 @@ function App() {
         entry.category,
         entry.amount,
         entry.currency,
-        formatMoney(convert(parseAmount(entry.amount), entry.currency, travelState.targetCurrency, exchange), travelState.targetCurrency),
+        formatMoney(
+          convert(parseAmount(entry.amount), entry.currency, travelState.targetCurrency, exchange),
+          travelState.targetCurrency,
+        ),
         travelState.targetCurrency,
         travelState.entryMeta[entry.travelKey]?.locationLabel ?? "",
         getTravelParticipantsForEntry(entry, travelState)
-          .map((id) => travelState.participants.find((participant) => participant.id === id)?.name ?? id)
+          .map(
+            (id) =>
+              travelState.participants.find((participant) => participant.id === id)?.name ?? id,
+          )
           .join(" / "),
         entry.note,
       ]),
@@ -2826,7 +3369,9 @@ function App() {
     })
     .join(" ");
   const targetRateCurrency = dailyDefaultCurrency === "CNY" ? "HKD" : "CNY";
-  const todayRecordCount = selectedEntries.filter((entry) => !entry.hidden && parseAmount(entry.amount) !== 0).length;
+  const todayRecordCount = selectedEntries.filter(
+    (entry) => !entry.hidden && parseAmount(entry.amount) !== 0,
+  ).length;
   const monthLedgerDayCount = countRecordedDates(monthEntries);
   const localTodayKey = getToday();
   const currentMonthKey = getMonthKey(localTodayKey);
@@ -2836,7 +3381,10 @@ function App() {
       : monthKey < currentMonthKey
         ? getDaysInMonth(monthKey)
         : parseDateKey(selectedDate).getDate();
-  const monthlyRecordProgress = calculateMonthlyRecordProgress(monthLedgerDayCount, monthElapsedDayCount);
+  const monthlyRecordProgress = calculateMonthlyRecordProgress(
+    monthLedgerDayCount,
+    monthElapsedDayCount,
+  );
   const weekRecordCount = countVisibleRecords(weekEntries);
   const monthRecordCount = countVisibleRecords(monthEntries);
   const todayTopSpend = (() => {
@@ -2854,7 +3402,10 @@ function App() {
     });
     return top;
   })();
-  const rateAgeHours = Math.max(0, Math.floor((Date.now() - exchange.updatedAt) / (60 * 60 * 1000)));
+  const rateAgeHours = Math.max(
+    0,
+    Math.floor((Date.now() - exchange.updatedAt) / (60 * 60 * 1000)),
+  );
   const categoriesUsedToday = CATEGORIES.filter((_, categoryIndex) =>
     Array.from({ length: visibleRowCounts[categoryIndex] }, (_, rowIndex) => {
       const index = getEntryIndex(categoryIndex, rowIndex);
@@ -2866,7 +3417,13 @@ function App() {
     (top, item) => (Math.abs(item.value) > Math.abs(top.value) ? item : top),
     { category: "暂无", value: 0, percent: 0, color: "#89CFF0" },
   );
-  const fortunePool = ["上上签，很适合记账", "小确幸，适合补备注", "好运在线，账目会很乖", "清爽签，今天表格很听话", "灵感签，分类一眼分明"];
+  const fortunePool = [
+    "上上签，很适合记账",
+    "小确幸，适合补备注",
+    "好运在线，账目会很乖",
+    "清爽签，今天表格很听话",
+    "灵感签，分类一眼分明",
+  ];
   const todayFortune = fortunePool[hashSeed(selectedDate) % fortunePool.length];
   const funDataCards = useMemo<FunDataCard[]>(
     () => [
@@ -2919,7 +3476,9 @@ function App() {
       {
         id: "top-spend",
         title: "今日最大单笔",
-        value: todayTopSpend.value ? formatMoney(todayTopSpend.value, todayTopSpend.currency) : "暂无",
+        value: todayTopSpend.value
+          ? formatMoney(todayTopSpend.value, todayTopSpend.currency)
+          : "暂无",
         hint: todayTopSpend.label,
         variant: "peach",
         effect: "pulse",
@@ -2929,7 +3488,9 @@ function App() {
         id: "week-top",
         title: "本周最高分类",
         value: weekTopCategory.category,
-        hint: weekTopCategory.value ? `${formatMoney(weekTopCategory.value, dailyDefaultCurrency)} · ${weekTopCategory.percent.toFixed(0)}%` : "本周还很清爽",
+        hint: weekTopCategory.value
+          ? `${formatMoney(weekTopCategory.value, dailyDefaultCurrency)} · ${weekTopCategory.percent.toFixed(0)}%`
+          : "本周还很清爽",
         variant: "violet",
         effect: "tilt",
         accent: "#b4a7d6",
@@ -2971,7 +3532,9 @@ function App() {
             ? formatMoney(weeklyAchievement.savedAmount, budgetCurrency)
             : "节奏稳定"
           : "待解锁",
-        hint: weeklyAchievement.enoughData ? weeklyAchievement.categoryMessage : "再记录几天就能对比上周",
+        hint: weeklyAchievement.enoughData
+          ? weeklyAchievement.categoryMessage
+          : "再记录几天就能对比上周",
         variant: "gold",
         effect: "spark",
         accent: "#e6c46c",
@@ -3072,7 +3635,9 @@ function App() {
   const displayedFunCards = useMemo(
     () =>
       pickStableItems(
-        appSettings.homeSections.travelEntry ? funDataCards : funDataCards.filter((card) => card.id !== "travel"),
+        appSettings.homeSections.travelEntry
+          ? funDataCards
+          : funDataCards.filter((card) => card.id !== "travel"),
         `${selectedDate}:${funCardShuffleSalt}`,
         3,
       ),
@@ -3083,9 +3648,17 @@ function App() {
     switch (key) {
       case "quickEntry":
         return (
-          <div key={key} className="home-section-slot home-section-slot--entry" data-section="quick-entry-slot">
+          <div
+            key={key}
+            className="home-section-slot home-section-slot--entry"
+            data-section="quick-entry-slot"
+          >
             <NaturalLanguageInput
-              defaultCurrency={isPrimaryCurrency(dailyDefaultCurrency) ? (dailyDefaultCurrency as "CNY" | "HKD") : "HKD"}
+              defaultCurrency={
+                isPrimaryCurrency(dailyDefaultCurrency)
+                  ? (dailyDefaultCurrency as "CNY" | "HKD")
+                  : "HKD"
+              }
               categories={CATEGORIES}
               currencies={allCurrencies}
               onDefaultCurrencyChange={(currency) => switchDailyDefaultCurrency(currency)}
@@ -3123,7 +3696,14 @@ function App() {
         );
       case "budgetOverview":
         return (
-          <FeatureBlock key={key} id="budget" eyebrow="Budget" title="预算概览" subtitle="开启后可查看月预算、分类预算与日均可花" variant="mint">
+          <FeatureBlock
+            key={key}
+            id="budget"
+            eyebrow="Budget"
+            title="预算概览"
+            subtitle="开启后可查看月预算、分类预算与日均可花"
+            variant="mint"
+          >
             <BudgetOverview
               settings={appSettings.budget}
               currency={budgetCurrency}
@@ -3156,16 +3736,32 @@ function App() {
               onCurrencyChange={(index, currency) => updateEntry(index, { currency })}
               onDelete={deleteCategoryRecord}
             />
-            <button type="button" className="secondary-button today-open-manual" data-action="open-manual-ledger" onClick={() => setSettingsModalOpen(true)}>
+            <button
+              type="button"
+              className="secondary-button today-open-manual"
+              data-action="open-manual-ledger"
+              onClick={() => setSettingsModalOpen(true)}
+            >
               打开完整记账表格
             </button>
           </FeatureBlock>
         );
       case "dayTotals":
         return (
-          <FeatureBlock key={key} id="totals" eyebrow="Day Totals" title="当日汇总" subtitle="默认分币种展示，可切换单币种合并" variant="sky">
+          <FeatureBlock
+            key={key}
+            id="totals"
+            eyebrow="Day Totals"
+            title="当日汇总"
+            subtitle="默认分币种展示，可切换单币种合并"
+            variant="sky"
+          >
             <div className="feature-block__header-row">
-              <p className="muted">{dailySummaryMode === "split" ? "按原币种分开展示" : `合并为 ${dailyDefaultCurrency} 统计口径`}</p>
+              <p className="muted">
+                {dailySummaryMode === "split"
+                  ? "按原币种分开展示"
+                  : `合并为 ${dailyDefaultCurrency} 统计口径`}
+              </p>
               <SummaryModeToggle mode={dailySummaryMode} onChange={setDailySummaryMode} />
             </div>
             <div className="totals-grid totals-grid--hero">
@@ -3183,7 +3779,9 @@ function App() {
               ) : (
                 <div className="total-pill">
                   <span>{dailyDefaultCurrency} 合并口径</span>
-                  <strong>{formatMoney(dayTotals.converted[dailyDefaultCurrency], dailyDefaultCurrency)}</strong>
+                  <strong>
+                    {formatMoney(dayTotals.converted[dailyDefaultCurrency], dailyDefaultCurrency)}
+                  </strong>
                 </div>
               )}
             </div>
@@ -3217,7 +3815,14 @@ function App() {
         );
       case "tools":
         return (
-          <FeatureBlock key={key} id="tools" eyebrow="Year Trend" title="全年趋势图表" subtitle="保留趋势、导入导出，并把预算/汇率作为本屏可选卡片" variant="neutral">
+          <FeatureBlock
+            key={key}
+            id="tools"
+            eyebrow="Year Trend"
+            title="全年趋势图表"
+            subtitle="保留趋势、导入导出，并把预算/汇率作为本屏可选卡片"
+            variant="neutral"
+          >
             <section className="card trend-card" data-section="year-trend">
               <div className="card-heading">
                 <div>
@@ -3227,7 +3832,10 @@ function App() {
                 <div className="trend-controls">
                   <label>
                     月数
-                    <select value={trendMonths} onChange={(event) => setTrendMonths(Number(event.target.value))}>
+                    <select
+                      value={trendMonths}
+                      onChange={(event) => setTrendMonths(Number(event.target.value))}
+                    >
                       <option value={3}>3 个月</option>
                       <option value={6}>6 个月</option>
                       <option value={12}>12 个月</option>
@@ -3235,7 +3843,10 @@ function App() {
                   </label>
                   <label>
                     统计口径
-                    <select value={trendCurrency} onChange={(event) => setTrendCurrency(event.target.value)}>
+                    <select
+                      value={trendCurrency}
+                      onChange={(event) => setTrendCurrency(event.target.value)}
+                    >
                       {allCurrencies.map((currency) => (
                         <option key={currency} value={currency}>
                           {currency}
@@ -3245,7 +3856,9 @@ function App() {
                   </label>
                 </div>
               </div>
-              <Suspense fallback={<div className="chart-fallback chart-fallback--wide">趋势图载入中…</div>}>
+              <Suspense
+                fallback={<div className="chart-fallback chart-fallback--wide">趋势图载入中…</div>}
+              >
                 <LazyTrendChart rows={trendRows} min={trendMin} max={trendMax} />
               </Suspense>
               <div className="trend-list">
@@ -3261,21 +3874,46 @@ function App() {
               <div>
                 <p className="eyebrow">数据管理</p>
                 <h2>导入、导出与清理</h2>
-                <p className="muted">CSV 导入会按日期、类目和序号覆盖对应格子，其他数据保持不变。</p>
+                <p className="muted">
+                  CSV 导入会按日期、类目和序号覆盖对应格子，其他数据保持不变。
+                </p>
                 {importMessage && <p className="status">{importMessage}</p>}
               </div>
               <div className="action-row">
-                <button type="button" data-action="csv-export" onClick={exportCsv}>导出 CSV</button>
-                <button type="button" className="secondary-button" data-action="csv-import-pick" onClick={() => fileInputRef.current?.click()}>
+                <button type="button" data-action="csv-export" onClick={exportCsv}>
+                  导出 CSV
+                </button>
+                <button
+                  type="button"
+                  className="secondary-button"
+                  data-action="csv-import-pick"
+                  onClick={() => fileInputRef.current?.click()}
+                >
                   导入 CSV
                 </button>
-                <input ref={fileInputRef} type="file" accept=".csv,text/csv" hidden onChange={importCsv} />
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".csv,text/csv"
+                  hidden
+                  onChange={importCsv}
+                />
               </div>
               <div className="danger-zone" aria-label="危险数据操作">
-                <button type="button" className="danger-button" data-action="clear-current-day" onClick={clearCurrentDay}>
+                <button
+                  type="button"
+                  className="danger-button"
+                  data-action="clear-current-day"
+                  onClick={clearCurrentDay}
+                >
                   清空当日数据
                 </button>
-                <button type="button" className="danger-button" data-action="clear-current-month" onClick={clearCurrentMonth}>
+                <button
+                  type="button"
+                  className="danger-button"
+                  data-action="clear-current-month"
+                  onClick={clearCurrentMonth}
+                >
                   清空当月数据
                 </button>
               </div>
@@ -3307,9 +3945,13 @@ function App() {
           path="/"
           element={
             <div className="app-shell home-shell journal-scroll" ref={appRootRef}>
-              <header className="home-screen home-screen--hero" id="hero-screen" data-section="screen-hero">
-                  {renderHomeSection("heroCards")}
-                  {renderHomeSection("quickEntry")}
+              <header
+                className="home-screen home-screen--hero"
+                id="hero-screen"
+                data-section="screen-hero"
+              >
+                {renderHomeSection("heroCards")}
+                {renderHomeSection("quickEntry")}
               </header>
               <main className="app-main home-main" data-section="home-main">
                 <section className="home-screen" id="screen-today" data-section="screen-today">
@@ -3324,12 +3966,20 @@ function App() {
                 <section className="home-screen" id="screen-month" data-section="screen-month">
                   {appSettings.homeSections.monthStats ? renderHomeSection("monthStats") : null}
                 </section>
-                <section className="home-screen home-screen--year" id="screen-year" data-section="screen-year">
+                <section
+                  className="home-screen home-screen--year"
+                  id="screen-year"
+                  data-section="screen-year"
+                >
                   {appSettings.homeSections.tools ? renderHomeSection("tools") : null}
                 </section>
               </main>
-              <div className="home-screen home-screen--footer" id="screen-footer" data-section="screen-footer">
-                  {renderHomeSection("footer")}
+              <div
+                className="home-screen home-screen--footer"
+                id="screen-footer"
+                data-section="screen-footer"
+              >
+                {renderHomeSection("footer")}
               </div>
             </div>
           }
@@ -3456,7 +4106,15 @@ function App() {
       {celebrationTick > 0 && (
         <div ref={confettiLayerRef} className="confetti-layer" aria-hidden="true">
           {Array.from({ length: 96 }, (_, index) => {
-            const palette = ["#ff8a3d", "#ffd166", "#06d6a0", "#4cc9f0", "#f72585", "#b5179e", "#7209b7"];
+            const palette = [
+              "#ff8a3d",
+              "#ffd166",
+              "#06d6a0",
+              "#4cc9f0",
+              "#f72585",
+              "#b5179e",
+              "#7209b7",
+            ];
             return (
               <span
                 key={`${celebrationTick}-${index}`}
@@ -3492,24 +4150,40 @@ function App() {
           <div className="settings-modal-toolbar">
             <div className="daily-default-controls">
               <span className="control-label">今日默认货币</span>
-              <div className="currency-switch" data-selected={isPrimaryCurrency(dailyDefaultCurrency) ? dailyDefaultCurrency : "OTHERS"} role="group">
+              <div
+                className="currency-switch"
+                data-selected={
+                  isPrimaryCurrency(dailyDefaultCurrency) ? dailyDefaultCurrency : "OTHERS"
+                }
+                role="group"
+              >
                 {PRIMARY_CURRENCIES.map((currency) => (
                   <button
                     key={currency}
                     type="button"
-                    className={dailyDefaultCurrency === currency ? "currency-switch-option active" : "currency-switch-option"}
+                    className={
+                      dailyDefaultCurrency === currency
+                        ? "currency-switch-option active"
+                        : "currency-switch-option"
+                    }
                     onClick={() => switchDailyDefaultCurrency(currency)}
                   >
                     {currency}
                   </button>
                 ))}
-                <button type="button" className="currency-switch-option" onClick={() => setCurrencyModal({ type: "daily-default" })}>
+                <button
+                  type="button"
+                  className="currency-switch-option"
+                  onClick={() => setCurrencyModal({ type: "daily-default" })}
+                >
                   Others
                 </button>
               </div>
             </div>
           </div>
-          <div className={`ledger-table-shell ledger-table-shell--modal stat-variant-${statVariant}`}>
+          <div
+            className={`ledger-table-shell ledger-table-shell--modal stat-variant-${statVariant}`}
+          >
             <div className="ledger-table-wrap">
               <table className="ledger-table">
                 <thead>
@@ -3534,7 +4208,10 @@ function App() {
                       const hiddenActionLabel = entry.hidden ? "取消隐藏" : "隐藏记录";
                       const canAdd = visibleRowCounts[categoryIndex] < MAX_RECORDS_PER_CATEGORY;
                       return (
-                        <tr key={`${category}-${rowIndex}`} className={entry.hidden ? "hidden-entry-row" : undefined}>
+                        <tr
+                          key={`${category}-${rowIndex}`}
+                          className={entry.hidden ? "hidden-entry-row" : undefined}
+                        >
                           {rowIndex === 0 && (
                             <th rowSpan={currentRowCount} className="category-cell">
                               <div className="category-cell-inner">
@@ -3545,52 +4222,94 @@ function App() {
                                   data-action="manual-ledger-add-record"
                                   onClick={() => addCategoryRecord(categoryIndex)}
                                   disabled={!canAdd}
-                                  aria-label={canAdd ? `添加${category}记录` : `${category}已达上限`}
+                                  aria-label={
+                                    canAdd ? `添加${category}记录` : `${category}已达上限`
+                                  }
                                 >
                                   +
                                 </button>
                               </div>
                             </th>
                           )}
-                          <td className="slot-cell"><span>#{rowIndex + 1}</span></td>
+                          <td className="slot-cell">
+                            <span>#{rowIndex + 1}</span>
+                          </td>
                           <td>
-                            <input data-date={selectedDate} data-index={index} data-field="amount" inputMode="decimal"
-                              placeholder="0.00" value={entry.amount}
+                            <input
+                              data-date={selectedDate}
+                              data-index={index}
+                              data-field="amount"
+                              inputMode="decimal"
+                              placeholder="0.00"
+                              value={entry.amount}
                               onChange={(event) => handleAmountChange(index, event.target.value)}
-                              onKeyDown={(event) => handleInputKeyDown(event, categoryIndex, rowIndex, "amount")}
+                              onKeyDown={(event) =>
+                                handleInputKeyDown(event, categoryIndex, rowIndex, "amount")
+                              }
                             />
                           </td>
                           <td>
-                            <button type="button" className="currency-select-button" data-action="manual-ledger-currency" data-date={selectedDate} data-index={index}
-                              onClick={() => setCurrencyModal({ type: "entry", index, category, rowIndex })}
+                            <button
+                              type="button"
+                              className="currency-select-button"
+                              data-action="manual-ledger-currency"
+                              data-date={selectedDate}
+                              data-index={index}
+                              onClick={() =>
+                                setCurrencyModal({ type: "entry", index, category, rowIndex })
+                              }
                             >
                               <span>{entry.currency}</span>
                             </button>
                           </td>
                           <td>
-                            <input data-date={selectedDate} data-index={index} data-field="note" placeholder="备注" value={entry.note}
+                            <input
+                              data-date={selectedDate}
+                              data-index={index}
+                              data-field="note"
+                              placeholder="备注"
+                              value={entry.note}
                               onChange={(event) => updateEntry(index, { note: event.target.value })}
-                              onKeyDown={(event) => handleInputKeyDown(event, categoryIndex, rowIndex, "note")}
+                              onKeyDown={(event) =>
+                                handleInputKeyDown(event, categoryIndex, rowIndex, "note")
+                              }
                             />
                           </td>
                           <td className="record-actions">
                             <div className="record-actions-inner">
-                              <button type="button" className={entry.hidden ? "hide-record-button active" : "hide-record-button"}
+                              <button
+                                type="button"
+                                className={
+                                  entry.hidden ? "hide-record-button active" : "hide-record-button"
+                                }
                                 data-action="manual-ledger-toggle-hidden"
-                                onClick={() => toggleEntryHidden(index)} aria-label={hiddenActionLabel}
-                              >{entry.hidden ? "◌" : "○"}</button>
-                              <button type="button" className="delete-record-button" title={recordActionLabel}
+                                onClick={() => toggleEntryHidden(index)}
+                                aria-label={hiddenActionLabel}
+                              >
+                                {entry.hidden ? "◌" : "○"}
+                              </button>
+                              <button
+                                type="button"
+                                className="delete-record-button"
+                                title={recordActionLabel}
                                 data-action="manual-ledger-delete-record"
-                                onClick={() => deleteCategoryRecord(categoryIndex, rowIndex)}>×</button>
+                                onClick={() => deleteCategoryRecord(categoryIndex, rowIndex)}
+                              >
+                                ×
+                              </button>
                             </div>
                           </td>
                           {rowIndex === 0 && (
                             <td rowSpan={currentRowCount} className="subtotal-cell">
                               {safeDisplayStatsCurrencies.map((currency, currencyIndex) =>
                                 currencyIndex === 0 ? (
-                                  <strong key={currency}>{formatMoney(categoryTotal.converted[currency], currency)}</strong>
+                                  <strong key={currency}>
+                                    {formatMoney(categoryTotal.converted[currency], currency)}
+                                  </strong>
                                 ) : (
-                                  <span key={currency}>{formatMoney(categoryTotal.converted[currency], currency)}</span>
+                                  <span key={currency}>
+                                    {formatMoney(categoryTotal.converted[currency], currency)}
+                                  </span>
                                 ),
                               )}
                             </td>
@@ -3604,24 +4323,47 @@ function App() {
             </div>
           </div>
           <div className="keyboard-hints">
-            <span><kbd>Enter</kbd> 添加记录</span>
-            <span><kbd>Tab</kbd> 下一类目</span>
-            <span><kbd>↑</kbd><kbd>↓</kbd> 上下行</span>
-            <span><kbd>←</kbd><kbd>→</kbd> 左右字段</span>
+            <span>
+              <kbd>Enter</kbd> 添加记录
+            </span>
+            <span>
+              <kbd>Tab</kbd> 下一类目
+            </span>
+            <span>
+              <kbd>↑</kbd>
+              <kbd>↓</kbd> 上下行
+            </span>
+            <span>
+              <kbd>←</kbd>
+              <kbd>→</kbd> 左右字段
+            </span>
           </div>
-          {shortcutFeedback && <p className="shortcut-feedback" role="status">{shortcutFeedback}</p>}
+          {shortcutFeedback && (
+            <p className="shortcut-feedback" role="status">
+              {shortcutFeedback}
+            </p>
+          )}
         </div>
       </SettingsModal>
 
       {backupReminderVisible && (
         <aside className="backup-reminder" role="status" aria-live="polite">
-          <p>建议定期导出完整 JSON 备份。数据保存在浏览器 LocalStorage 中，清理缓存或换设备后可能丢失。</p>
+          <p>
+            建议定期导出完整 JSON 备份。数据保存在浏览器 LocalStorage
+            中，清理缓存或换设备后可能丢失。
+          </p>
           <div className="backup-reminder-actions">
-              <button type="button" data-action="backup-reminder-export-json" onClick={exportJson}>立即导出 JSON</button>
+            <button type="button" data-action="backup-reminder-export-json" onClick={exportJson}>
+              立即导出 JSON
+            </button>
             <button type="button" className="ghost-button" onClick={() => dismissBackupReminder(1)}>
               明天提醒
             </button>
-            <button type="button" className="secondary-button" onClick={() => dismissBackupReminder(3)}>
+            <button
+              type="button"
+              className="secondary-button"
+              onClick={() => dismissBackupReminder(3)}
+            >
               3 天内不提醒
             </button>
           </div>
@@ -3629,7 +4371,12 @@ function App() {
       )}
 
       {travelExitModalOpen && (
-        <div className="modal-backdrop" role="presentation" onMouseDown={() => setTravelExitModalOpen(false)} ref={modalRootRef}>
+        <div
+          className="modal-backdrop"
+          role="presentation"
+          onMouseDown={() => setTravelExitModalOpen(false)}
+          ref={modalRootRef}
+        >
           <section
             className="modal-card travel-exit-modal"
             role="dialog"
@@ -3641,9 +4388,15 @@ function App() {
               <div>
                 <p className="eyebrow">Close Travel Mode</p>
                 <h2 id="travel-exit-title">结束旅游模式前选择保留口径</h2>
-                <p className="muted">当前版本没有独立远端账户系统，选择会写入旅游历史并在本地记录本次收尾口径。</p>
+                <p className="muted">
+                  当前版本没有独立远端账户系统，选择会写入旅游历史并在本地记录本次收尾口径。
+                </p>
               </div>
-              <button type="button" className="ghost-button" onClick={() => setTravelExitModalOpen(false)}>
+              <button
+                type="button"
+                className="ghost-button"
+                onClick={() => setTravelExitModalOpen(false)}
+              >
                 取消
               </button>
             </div>
@@ -3651,7 +4404,11 @@ function App() {
               <button type="button" onClick={() => endTravelMode("self")}>
                 仅保留本人支出
               </button>
-              <button type="button" className="secondary-button" onClick={() => endTravelMode("all")}>
+              <button
+                type="button"
+                className="secondary-button"
+                onClick={() => endTravelMode("all")}
+              >
                 保留所有人分账支出
               </button>
             </div>
@@ -3660,7 +4417,12 @@ function App() {
       )}
 
       {datePickerOpen && (
-        <div className="modal-backdrop" role="presentation" onMouseDown={closeDatePicker} ref={modalRootRef}>
+        <div
+          className="modal-backdrop"
+          role="presentation"
+          onMouseDown={closeDatePicker}
+          ref={modalRootRef}
+        >
           <section
             className="modal-card date-modal"
             role="dialog"
@@ -3672,36 +4434,63 @@ function App() {
               <div>
                 <p className="eyebrow">Date Console</p>
                 <h2 id="date-modal-title">选择记账日期</h2>
-                <p className="muted">当前选择：{selectedDate} · {formatMonthDay(selectedDate)} · {formatWeekday(selectedDate)}</p>
+                <p className="muted">
+                  当前选择：{selectedDate} · {formatMonthDay(selectedDate)} ·{" "}
+                  {formatWeekday(selectedDate)}
+                </p>
               </div>
-              <button className="ghost-button" type="button" onClick={closeDatePicker} aria-label="关闭日期选择">
+              <button
+                className="ghost-button"
+                type="button"
+                onClick={closeDatePicker}
+                aria-label="关闭日期选择"
+              >
                 关闭
               </button>
             </div>
             <div className="date-modal-panel">
               <label>
                 日期
-                <input type="date" value={selectedDate} onChange={(event) => commitDateChange(event.target.value)} />
+                <input
+                  type="date"
+                  value={selectedDate}
+                  onChange={(event) => commitDateChange(event.target.value)}
+                />
               </label>
               <div className="date-modal-actions" aria-label="日期快捷操作">
-                <button type="button" className="secondary-button" onClick={() => moveSelectedDate(-1)}>
+                <button
+                  type="button"
+                  className="secondary-button"
+                  onClick={() => moveSelectedDate(-1)}
+                >
                   前一天
                 </button>
                 <button type="button" onClick={jumpToToday}>
                   回到今天
                 </button>
-                <button type="button" className="secondary-button" onClick={() => moveSelectedDate(1)}>
+                <button
+                  type="button"
+                  className="secondary-button"
+                  onClick={() => moveSelectedDate(1)}
+                >
                   后一天
                 </button>
               </div>
-              <p className="date-modal-note">切换日期会沿用原有逻辑，将今日默认货币重置为 HKD，并保持已保存的每日账目独立存储。</p>
+              <p className="date-modal-note">
+                切换日期会沿用原有逻辑，将今日默认货币重置为 HKD，并保持已保存的每日账目独立存储。
+              </p>
             </div>
           </section>
         </div>
       )}
 
       {currencyModal && (
-        <div className="modal-backdrop" role="presentation" onMouseDown={closeCurrencyModal} ref={modalRootRef}>
+        <div
+          className="modal-backdrop"
+          role="presentation"
+          onMouseDown={closeCurrencyModal}
+          ref={modalRootRef}
+        >
           <section
             className="modal-card currency-modal"
             role="dialog"
@@ -3718,7 +4507,12 @@ function App() {
                     : `选择${currencyModal.category}第${currencyModal.rowIndex + 1}条货币`}
                 </h2>
               </div>
-              <button className="ghost-button" type="button" onClick={closeCurrencyModal} aria-label="关闭货币选择">
+              <button
+                className="ghost-button"
+                type="button"
+                onClick={closeCurrencyModal}
+                aria-label="关闭货币选择"
+              >
                 关闭
               </button>
             </div>
@@ -3756,14 +4550,15 @@ function App() {
                   }}
                 />
               </label>
-              <button type="button" onClick={addCustomCurrency}>添加</button>
+              <button type="button" onClick={addCustomCurrency}>
+                添加
+              </button>
               {customCurrencyError && <p className="error-text">{customCurrencyError}</p>}
               <p className="muted">仅接受 ISO 4217 三字母代号；TWD 会兼容映射为界面中的 NTD。</p>
             </div>
           </section>
         </div>
       )}
-
     </>
   );
 }

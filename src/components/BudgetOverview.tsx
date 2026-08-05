@@ -42,21 +42,28 @@ export function BudgetOverview({
             <h2>预算管理未开启</h2>
             <p className="muted">可在设置页手动开启月度总预算和分类预算，旧数据会继续保持原样。</p>
           </div>
-          <button type="button" onClick={onOpenSettings}>去设置</button>
+          <button type="button" onClick={onOpenSettings}>
+            去设置
+          </button>
         </div>
       </section>
     );
   }
 
   return (
-    <section className={`card budget-overview${isOverMonthly ? " is-over" : ""}`} aria-label={`${monthKey} 预算概览`}>
+    <section
+      className={`card budget-overview${isOverMonthly ? " is-over" : ""}`}
+      aria-label={`${monthKey} 预算概览`}
+    >
       <div className="card-heading">
         <div>
           <p className="eyebrow">Budget · {currency}</p>
           <h2>{monthKey} 预算概览</h2>
           <p className="muted">负支出会抵扣消费；跨币种已按当前汇率换算。</p>
         </div>
-        <button type="button" className="secondary-button" onClick={onOpenSettings}>调整预算</button>
+        <button type="button" className="secondary-button" onClick={onOpenSettings}>
+          调整预算
+        </button>
       </div>
 
       {hasBudget ? (
@@ -76,7 +83,10 @@ export function BudgetOverview({
               <small>{remainingDays} 天可规划</small>
             </div>
           </div>
-          <div className="budget-progress-track" aria-label={`月预算使用 ${monthlyPercent.toFixed(0)}%`}>
+          <div
+            className="budget-progress-track"
+            aria-label={`月预算使用 ${monthlyPercent.toFixed(0)}%`}
+          >
             <span style={{ width: `${Math.min(100, monthlyPercent)}%` }} />
           </div>
         </>
@@ -90,10 +100,15 @@ export function BudgetOverview({
             const percent = calculateBudgetAvailability(item.limit, item.spent, 0).percent;
             const over = item.spent > item.limit;
             return (
-              <div key={item.category} className={over ? "budget-category is-over" : "budget-category"}>
+              <div
+                key={item.category}
+                className={over ? "budget-category is-over" : "budget-category"}
+              >
                 <div className="budget-category__meta">
                   <strong>{item.category}</strong>
-                  <span>{formatMoney(item.spent, currency)} / {formatMoney(item.limit, currency)}</span>
+                  <span>
+                    {formatMoney(item.spent, currency)} / {formatMoney(item.limit, currency)}
+                  </span>
                 </div>
                 <div className="budget-progress-track budget-progress-track--mini">
                   <span style={{ width: `${Math.min(100, percent)}%` }} />

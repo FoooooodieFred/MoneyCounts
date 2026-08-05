@@ -118,13 +118,12 @@ export function TravelHistoryPanel({
           backdrop,
           { autoAlpha: 0 },
           { autoAlpha: 1, duration: 0.32, ease: "power2.out" },
-        )
-          .fromTo(
-            panel,
-            { x: 36, autoAlpha: 0, scale: 0.94 },
-            { x: 0, autoAlpha: 1, scale: 1, duration: 0.52, ease: "power3.out" },
-            0,
-          );
+        ).fromTo(
+          panel,
+          { x: 36, autoAlpha: 0, scale: 0.94 },
+          { x: 0, autoAlpha: 1, scale: 1, duration: 0.52, ease: "power3.out" },
+          0,
+        );
 
         if (listItems.length) {
           tl.fromTo(
@@ -150,7 +149,9 @@ export function TravelHistoryPanel({
         const tl = gsap.timeline({
           defaults: { overwrite: "auto" },
           onComplete: () => {
-            gsap.set([backdrop, panel, ...listItems], { clearProps: "transform,opacity,visibility" });
+            gsap.set([backdrop, panel, ...listItems], {
+              clearProps: "transform,opacity,visibility",
+            });
             setMounted(false);
           },
         });
@@ -201,10 +202,7 @@ export function TravelHistoryPanel({
   if (!records.length || !mounted) return null;
 
   return (
-    <div
-      className={`travel-history-shell${open || mounted ? " is-visible" : ""}`}
-      ref={shellRef}
-    >
+    <div className={`travel-history-shell${open || mounted ? " is-visible" : ""}`} ref={shellRef}>
       <div
         className="travel-history-backdrop"
         ref={backdropRef}
@@ -242,11 +240,7 @@ export function TravelHistoryPanel({
             {mergeMode ? "取消合并" : "合并记录"}
           </button>
           {mergeMode && (
-            <button
-              type="button"
-              disabled={selectedIds.length < 2}
-              onClick={onStartMerge}
-            >
+            <button type="button" disabled={selectedIds.length < 2} onClick={onStartMerge}>
               合并 {selectedIds.length} 条
             </button>
           )}
@@ -258,7 +252,10 @@ export function TravelHistoryPanel({
             const editing = editingId === record.id;
 
             return (
-              <div key={record.id} className={`travel-history-item-wrap${selected ? " is-selected" : ""}`}>
+              <div
+                key={record.id}
+                className={`travel-history-item-wrap${selected ? " is-selected" : ""}`}
+              >
                 {mergeMode && (
                   <label className="travel-history-select">
                     <input
@@ -295,11 +292,17 @@ export function TravelHistoryPanel({
                   <button
                     type="button"
                     className="travel-history-item"
-                    onClick={() => (mergeMode ? onToggleSelected(record.id) : onSelectRecord(record.id))}
+                    onClick={() =>
+                      mergeMode ? onToggleSelected(record.id) : onSelectRecord(record.id)
+                    }
                   >
                     <strong>{record.name}</strong>
-                    <small>{record.startDate} → {record.endDate}</small>
-                    <span>{record.destinationCurrency} · {record.entryCount} 条</span>
+                    <small>
+                      {record.startDate} → {record.endDate}
+                    </small>
+                    <span>
+                      {record.destinationCurrency} · {record.entryCount} 条
+                    </span>
                     <em>{formatMoney(record.totalAmount, record.targetCurrency)}</em>
                     {!mergeMode && (
                       <span className="travel-history-item-actions">
@@ -406,7 +409,12 @@ export function TravelHistoryDetailModal({
               换算 {record.targetCurrency}
             </p>
           </div>
-          <button className="ghost-button" type="button" onClick={onClose} aria-label="关闭旅游记录">
+          <button
+            className="ghost-button"
+            type="button"
+            onClick={onClose}
+            aria-label="关闭旅游记录"
+          >
             关闭
           </button>
         </div>
@@ -416,16 +424,23 @@ export function TravelHistoryDetailModal({
             <button type="button" onClick={() => onSyncLocal(record.id, "full")}>
               同步完整账单
             </button>
-            <button type="button" className="secondary-button" onClick={() => onSyncLocal(record.id, "split")}>
+            <button
+              type="button"
+              className="secondary-button"
+              onClick={() => onSyncLocal(record.id, "split")}
+            >
               同步分账账单
             </button>
             {record.localSync ? (
               <small className="muted">
-                已本地标记同步：{record.localSync.mode === "full" ? "完整账单" : "分账账单"} · {new Date(record.localSync.syncedAt).toLocaleString("zh-CN")}
+                已本地标记同步：{record.localSync.mode === "full" ? "完整账单" : "分账账单"} ·{" "}
+                {new Date(record.localSync.syncedAt).toLocaleString("zh-CN")}
               </small>
             ) : null}
           </div>
-          <Suspense fallback={<div className="chart-fallback chart-fallback--wide">旅游统计载入中…</div>}>
+          <Suspense
+            fallback={<div className="chart-fallback chart-fallback--wide">旅游统计载入中…</div>}
+          >
             <TravelStatCards
               cards={[
                 {
@@ -475,7 +490,11 @@ export function TravelHistoryDetailModal({
 
             <div className="travel-history-viz-card">
               <h3>货币分布</h3>
-              <Suspense fallback={<div className="chart-fallback chart-fallback--wide">货币分布载入中…</div>}>
+              <Suspense
+                fallback={
+                  <div className="chart-fallback chart-fallback--wide">货币分布载入中…</div>
+                }
+              >
                 <TravelCurrencyBars
                   items={currencyDistribution}
                   targetCurrency={record.targetCurrency}
@@ -500,13 +519,19 @@ export function TravelHistoryDetailModal({
             {record.details.length ? (
               record.details.map((entry, index) => (
                 <div key={`${entry.date}-${entry.category}-${index}`}>
-                  <span>{entry.date} · {entry.category}</span>
+                  <span>
+                    {entry.date} · {entry.category}
+                  </span>
                   <strong>{formatMoney(entry.convertedAmount, record.targetCurrency)}</strong>
                   <small>
                     {entry.amount} {entry.currency}
                     {entry.locationLabel ? ` · ${entry.locationLabel}` : ""}
-                    {entry.participantNames?.length ? ` · 分摊：${entry.participantNames.join(" / ")}` : ""}
-                    {entry.exchangeSnapshot ? ` · 快照汇率 ${entry.exchangeSnapshot.rate.toFixed(4)}` : ""}
+                    {entry.participantNames?.length
+                      ? ` · 分摊：${entry.participantNames.join(" / ")}`
+                      : ""}
+                    {entry.exchangeSnapshot
+                      ? ` · 快照汇率 ${entry.exchangeSnapshot.rate.toFixed(4)}`
+                      : ""}
                     {entry.note ? ` · ${entry.note}` : ""}
                   </small>
                 </div>
@@ -572,11 +597,19 @@ export function TravelMergeModal({
           </label>
           <label>
             开始日期
-            <input type="date" value={startDate} onChange={(event) => setStartDate(event.target.value)} />
+            <input
+              type="date"
+              value={startDate}
+              onChange={(event) => setStartDate(event.target.value)}
+            />
           </label>
           <label>
             结束日期
-            <input type="date" value={endDate} onChange={(event) => setEndDate(event.target.value)} />
+            <input
+              type="date"
+              value={endDate}
+              onChange={(event) => setEndDate(event.target.value)}
+            />
           </label>
         </div>
 
@@ -584,14 +617,22 @@ export function TravelMergeModal({
           {records.map((record) => (
             <div key={record.id}>
               <strong>{record.name}</strong>
-              <span>{record.startDate} → {record.endDate} · {record.entryCount} 条</span>
+              <span>
+                {record.startDate} → {record.endDate} · {record.entryCount} 条
+              </span>
             </div>
           ))}
         </div>
 
         <label className="travel-merge-confirm">
-          <input type="checkbox" checked={confirmed} onChange={(event) => setConfirmed(event.target.checked)} />
-          <span>我已了解：合并过程<strong>不可逆</strong>，被合并的旧条目将被永久删除。</span>
+          <input
+            type="checkbox"
+            checked={confirmed}
+            onChange={(event) => setConfirmed(event.target.checked)}
+          />
+          <span>
+            我已了解：合并过程<strong>不可逆</strong>，被合并的旧条目将被永久删除。
+          </span>
         </label>
 
         <div className="travel-merge-actions">
@@ -615,7 +656,10 @@ export function TravelMergeModal({
 export function buildMergeDefaults(records: TravelHistoryRecord[]) {
   const bounds = getHistoryDateBounds(records);
   return {
-    name: records.length === 1 ? records[0].name : `${records[0]?.name ?? "合并"}等 ${records.length} 次旅程`,
+    name:
+      records.length === 1
+        ? records[0].name
+        : `${records[0]?.name ?? "合并"}等 ${records.length} 次旅程`,
     startDate: bounds.startDate,
     endDate: bounds.endDate,
   };

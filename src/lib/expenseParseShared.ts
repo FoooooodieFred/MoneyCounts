@@ -273,10 +273,7 @@ export const CATEGORY_KEYWORDS: Array<[string, string[]]> = [
       "trip",
     ],
   ],
-  [
-    "其他",
-    ["其他", "other", "misc"],
-  ],
+  ["其他", ["其他", "other", "misc"]],
 ];
 
 export const CURRENCY_ALIASES: Record<string, string[]> = {
@@ -350,7 +347,8 @@ export const currencyAliasPattern = new RegExp(
   "gi",
 );
 
-export const normalizeCurrencyCode = (value: string) => value.trim().toUpperCase().replace(/^TWD$/, "NTD");
+export const normalizeCurrencyCode = (value: string) =>
+  value.trim().toUpperCase().replace(/^TWD$/, "NTD");
 
 export const normalizeCurrency = (value: string, currencies: readonly string[]) => {
   const code = normalizeCurrencyCode(value);
@@ -359,13 +357,13 @@ export const normalizeCurrency = (value: string, currencies: readonly string[]) 
 
 export const formatAmount = (amount: number) => {
   const rounded = Math.round((amount + Number.EPSILON) * 100) / 100;
-  return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(2).replace(/0+$/, "").replace(/\.$/, "");
+  return Number.isInteger(rounded)
+    ? String(rounded)
+    : rounded.toFixed(2).replace(/0+$/, "").replace(/\.$/, "");
 };
 
 export const normalizeNegativeAmountText = (text: string) =>
-  text
-    .replace(/(负|減|减)\s*(\d)/g, "-$2")
-    .replace(/(倒贴|倒貼)\s*(\d)/g, "-$2");
+  text.replace(/(负|減|减)\s*(\d)/g, "-$2").replace(/(倒贴|倒貼)\s*(\d)/g, "-$2");
 
 export const detectCategoryWithKeyword = (text: string, categories: readonly string[]) => {
   const amountMatch = text.match(amountPatternSingle());
@@ -391,7 +389,7 @@ export const detectCategoryWithKeyword = (text: string, categories: readonly str
 
   if (!candidates.length) {
     return {
-      category: categories.includes("其他") ? "其他" : categories[0] ?? "其他",
+      category: categories.includes("其他") ? "其他" : (categories[0] ?? "其他"),
       matchedKeyword: null as string | null,
     };
   }
@@ -423,7 +421,11 @@ export const detectCategoryWithKeyword = (text: string, categories: readonly str
   return { category: best.category, matchedKeyword: best.keyword };
 };
 
-export const detectCurrency = (text: string, currencies: readonly string[], defaultCurrency: string) => {
+export const detectCurrency = (
+  text: string,
+  currencies: readonly string[],
+  defaultCurrency: string,
+) => {
   const upperText = text.toUpperCase();
   const sortedAliases = Object.entries(CURRENCY_ALIASES)
     .flatMap(([currency, aliases]) => aliases.map((alias) => ({ currency, alias })))
@@ -441,7 +443,8 @@ export const detectCurrency = (text: string, currencies: readonly string[], defa
   }
 
   if (/块|块钱/i.test(text)) {
-    const fallback = normalizeCurrency(defaultCurrency, currencies) ?? normalizeCurrency("CNY", currencies);
+    const fallback =
+      normalizeCurrency(defaultCurrency, currencies) ?? normalizeCurrency("CNY", currencies);
     if (fallback) return fallback;
   }
 
@@ -462,8 +465,7 @@ export const detectAmount = (text: string) => {
 
   const hasExplicitNegative =
     numeric < 0 || /^[-−—]/.test(token.trim()) || NEGATIVE_AMOUNT_PREFIX.test(token);
-  const hasRefundSemantics =
-    REFUND_PATTERN.test(text) || /(负|減|减)\s*\d/.test(text);
+  const hasRefundSemantics = REFUND_PATTERN.test(text) || /(负|減|减)\s*\d/.test(text);
 
   let amount = numeric;
   if (hasExplicitNegative) {
@@ -500,7 +502,9 @@ export const cleanNote = (segment: string, matchedKeyword: string | null) => {
     `(?:[\\u4e00-\\u9fffA-Za-z]{0,2})${escapeRegExp(matchedKeyword)}(?:[\\u4e00-\\u9fffA-Za-z]{0,3})`,
     "i",
   );
-  let expanded = (segment.match(expandPattern)?.[0] ?? matchedKeyword).replace(/^我(?:的|们)?/, "").trim();
+  let expanded = (segment.match(expandPattern)?.[0] ?? matchedKeyword)
+    .replace(/^我(?:的|们)?/, "")
+    .trim();
   const keywordIdx = expanded.toLowerCase().indexOf(matchedKeyword.toLowerCase());
   if (keywordIdx >= 0) {
     const prefix = expanded.slice(0, keywordIdx);
@@ -529,13 +533,18 @@ export const splitContinuousSegment = (segment: string): string[] => {
   if (conjunctionParts) return conjunctionParts.flatMap((part) => splitContinuousSegment(part));
 
   const amountPattern = new RegExp(AMOUNT_PATTERN.source, "gi");
-  const matches = Array.from(segment.matchAll(amountPattern)).filter((match) => typeof match.index === "number");
+  const matches = Array.from(segment.matchAll(amountPattern)).filter(
+    (match) => typeof match.index === "number",
+  );
   if (matches.length <= 1) return [segment];
 
   const parts: string[] = [];
   for (let index = 0; index < matches.length; index += 1) {
     const start = index === 0 ? 0 : findSplitBetween(segment, matches[index - 1], matches[index]);
-    const end = index === matches.length - 1 ? segment.length : findSplitBetween(segment, matches[index], matches[index + 1]);
+    const end =
+      index === matches.length - 1
+        ? segment.length
+        : findSplitBetween(segment, matches[index], matches[index + 1]);
     const part = segment.slice(start, end).trim();
     if (part) parts.push(part);
   }
@@ -565,7 +574,10 @@ export const parseExpenseSegment = (
   const amount = detectAmount(segment);
   if (!amount) return null;
 
-  const { category: detectedCategory, matchedKeyword } = detectCategoryWithKeyword(segment, categories);
+  const { category: detectedCategory, matchedKeyword } = detectCategoryWithKeyword(
+    segment,
+    categories,
+  );
   const isSplitBill = /AA\b|有人\s*A|A了?我|分摊|分攤/i.test(segment);
   const category = isSplitBill && detectedCategory === "其他" ? "餐饮" : detectedCategory;
   const currency = detectCurrency(segment, currencies, defaultCurrency);

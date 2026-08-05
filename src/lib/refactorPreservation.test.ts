@@ -1,10 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  getRemainingDaysForBudget,
-  getWeekDates,
-  getWeekRange,
-  shiftDateKey,
-} from "./dateRange";
+import { getRemainingDaysForBudget, getWeekDates, getWeekRange, shiftDateKey } from "./dateRange";
 import {
   calculateBudgetAvailability,
   calculateMonthlyRecordProgress,
@@ -41,19 +36,19 @@ describe("ledgerStats preservation helpers", () => {
       { amount: "", currency: "HKD", note: "" },
       { amount: "12", currency: "HKD", note: "hidden", hidden: true },
     ],
-    "2026-06-26": [
-      { amount: "-5", currency: "HKD", note: "refund" },
-    ],
+    "2026-06-26": [{ amount: "-5", currency: "HKD", note: "refund" }],
   };
 
   it("counts saved records separately from visible statistical records", () => {
     expect(summarizeLedgerStats(ledger)).toEqual({ dateCount: 2, recordCount: 3 });
     expect(countVisibleRecords(ledger["2026-06-25"])).toBe(1);
-    expect(countRecordedDates([
-      { ...ledger["2026-06-25"][0], date: "2026-06-25" },
-      { ...ledger["2026-06-25"][2], date: "2026-06-25" },
-      { ...ledger["2026-06-26"][0], date: "2026-06-26" },
-    ])).toBe(2);
+    expect(
+      countRecordedDates([
+        { ...ledger["2026-06-25"][0], date: "2026-06-25" },
+        { ...ledger["2026-06-25"][2], date: "2026-06-25" },
+        { ...ledger["2026-06-26"][0], date: "2026-06-26" },
+      ]),
+    ).toBe(2);
   });
 
   it("calculates budget availability and monthly recording progress", () => {

@@ -50,7 +50,12 @@ export const HOME_SECTION_DEFAULT_ORDER = [
 export const PINNED_HOME_SECTIONS = ["quickEntry"] as const satisfies readonly HomeSectionKey[];
 
 /** Only these four blocks may be hidden via settings toggles. */
-export const TOGGLEABLE_HOME_SECTIONS = ["heroCards", "tools", "weekStats", "monthStats"] as const satisfies readonly HomeSectionKey[];
+export const TOGGLEABLE_HOME_SECTIONS = [
+  "heroCards",
+  "tools",
+  "weekStats",
+  "monthStats",
+] as const satisfies readonly HomeSectionKey[];
 
 /** Always visible on home; toggles disabled in settings. */
 export const LOCKED_HOME_SECTIONS = [
@@ -62,7 +67,9 @@ export const LOCKED_HOME_SECTIONS = [
   "travelEntry",
 ] as const satisfies readonly HomeSectionKey[];
 
-export const isToggleableHomeSection = (key: HomeSectionKey): key is (typeof TOGGLEABLE_HOME_SECTIONS)[number] =>
+export const isToggleableHomeSection = (
+  key: HomeSectionKey,
+): key is (typeof TOGGLEABLE_HOME_SECTIONS)[number] =>
   TOGGLEABLE_HOME_SECTIONS.includes(key as (typeof TOGGLEABLE_HOME_SECTIONS)[number]);
 
 export const DEFAULT_APP_SETTINGS: AppSettings = {
@@ -95,39 +102,48 @@ export const normalizeHomeSectionOrder = (value: unknown): HomeSectionKey[] => {
   const seen = new Set<HomeSectionKey>();
   const raw = Array.isArray(value) ? value : [];
   const movable = raw
-    .filter((item): item is HomeSectionKey => typeof item === "string" && known.has(item as HomeSectionKey))
+    .filter(
+      (item): item is HomeSectionKey =>
+        typeof item === "string" && known.has(item as HomeSectionKey),
+    )
     .filter((key) => !isMigratedHomeSection(key))
     .filter((key) => {
-      if (PINNED_HOME_SECTIONS.includes(key as (typeof PINNED_HOME_SECTIONS)[number]) || seen.has(key)) {
+      if (
+        PINNED_HOME_SECTIONS.includes(key as (typeof PINNED_HOME_SECTIONS)[number]) ||
+        seen.has(key)
+      ) {
         return false;
       }
       seen.add(key);
       return true;
     });
   const missing = HOME_SECTION_DEFAULT_ORDER.filter(
-    (key) => !PINNED_HOME_SECTIONS.includes(key as (typeof PINNED_HOME_SECTIONS)[number]) && !seen.has(key),
+    (key) =>
+      !PINNED_HOME_SECTIONS.includes(key as (typeof PINNED_HOME_SECTIONS)[number]) &&
+      !seen.has(key),
   );
   return [...PINNED_HOME_SECTIONS, ...movable, ...missing];
 };
 
 const normalizeBudgetAmount = (value: unknown) => {
-  const parsed = typeof value === "number" ? value : typeof value === "string" ? Number(value) : NaN;
+  const parsed =
+    typeof value === "number" ? value : typeof value === "string" ? Number(value) : NaN;
   return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
 };
 
 export const normalizeAppSettings = (value: unknown): AppSettings => {
-  const source = value && typeof value === "object" ? value as Partial<AppSettings> : {};
+  const source = value && typeof value === "object" ? (value as Partial<AppSettings>) : {};
   const rawSections =
     source.homeSections && typeof source.homeSections === "object"
-      ? source.homeSections as Partial<Record<HomeSectionKey, unknown>>
+      ? (source.homeSections as Partial<Record<HomeSectionKey, unknown>>)
       : {};
   const rawBudget =
     source.budget && typeof source.budget === "object"
-      ? source.budget as Partial<BudgetSettings>
+      ? (source.budget as Partial<BudgetSettings>)
       : {};
   const rawCategoryLimits =
     rawBudget.categoryLimits && typeof rawBudget.categoryLimits === "object"
-      ? rawBudget.categoryLimits as Record<string, unknown>
+      ? (rawBudget.categoryLimits as Record<string, unknown>)
       : {};
 
   const homeSections = Object.fromEntries(
@@ -152,9 +168,10 @@ export const normalizeAppSettings = (value: unknown): AppSettings => {
     homeSectionOrder: normalizeHomeSectionOrder(source.homeSectionOrder),
     budget: {
       enabled: rawBudget.enabled === true,
-      currency: typeof rawBudget.currency === "string" && rawBudget.currency.trim()
-        ? rawBudget.currency.trim().toUpperCase()
-        : DEFAULT_APP_SETTINGS.budget.currency,
+      currency:
+        typeof rawBudget.currency === "string" && rawBudget.currency.trim()
+          ? rawBudget.currency.trim().toUpperCase()
+          : DEFAULT_APP_SETTINGS.budget.currency,
       monthlyLimit: normalizeBudgetAmount(rawBudget.monthlyLimit),
       categoryLimits,
     },

@@ -93,7 +93,12 @@ export function TrendChart({ rows, min, max }: TrendChartProps) {
     .join(" ");
 
   return (
-    <svg className="trend-chart" viewBox="0 0 600 220" role="img" aria-label="近 N 个月月度总花费折线图">
+    <svg
+      className="trend-chart"
+      viewBox="0 0 600 220"
+      role="img"
+      aria-label="近 N 个月月度总花费折线图"
+    >
       <line x1="24" y1="188" x2="576" y2="188" />
       <polyline points={points} />
       {rows.map((row, index) => {

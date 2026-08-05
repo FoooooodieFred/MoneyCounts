@@ -59,7 +59,9 @@ const detectWeekday = (text: string, selectedDate: string) => {
 };
 
 const detectDate = (text: string, selectedDate: string) => {
-  const fullDate = text.match(/\b(20\d{2})[-/.](\d{1,2})[-/.](\d{1,2})\b|20(\d{2})年(\d{1,2})月(\d{1,2})[日号]?/);
+  const fullDate = text.match(
+    /\b(20\d{2})[-/.](\d{1,2})[-/.](\d{1,2})\b|20(\d{2})年(\d{1,2})月(\d{1,2})[日号]?/,
+  );
   if (fullDate) {
     const year = Number(fullDate[1] ?? `20${fullDate[4]}`);
     const month = Number(fullDate[2] ?? fullDate[5]);
@@ -123,7 +125,9 @@ const cleanRecurringNote = (note: string) => {
 };
 
 const restoreRecurringDescriptor = (segment: string, note: string) => {
-  let clean = cleanRecurringNote(note).replace(/(?:花了|用了|付了|花费|花)$/u, "").trim();
+  let clean = cleanRecurringNote(note)
+    .replace(/(?:花了|用了|付了|花费|花)$/u, "")
+    .trim();
   if (/地铁.*(?:来回|往返)|(?:来回|往返).*地铁/u.test(segment) && clean === "地铁") {
     return `地铁${segment.includes("往返") ? "往返" : "来回"}`;
   }
@@ -131,7 +135,8 @@ const restoreRecurringDescriptor = (segment: string, note: string) => {
   const keyword = CATEGORY_KEYWORDS.flatMap(([, keywords]) => keywords)
     .filter((item) => lowerSegment.includes(item.toLowerCase()))
     .sort((a, b) => b.length - a.length)[0];
-  if ((/来回|往返/u.test(segment)) && clean === keyword) return `${keyword}${segment.includes("往返") ? "往返" : "来回"}`;
+  if (/来回|往返/u.test(segment) && clean === keyword)
+    return `${keyword}${segment.includes("往返") ? "往返" : "来回"}`;
   if (!keyword || clean.includes(keyword)) return clean;
   if (!clean || /^(?:来回|往返|单程|回程)$/u.test(clean)) return `${keyword}${clean}`;
   return clean;
@@ -145,10 +150,12 @@ export const parseNaturalLedger = async (
   const trimmed = input.trim();
   if (!trimmed) return { records: [], warnings: ["请输入自然语言账单。"], source: "local" };
 
-  const fallbackDate = isValidDateKey(context.selectedDate) ? context.selectedDate : formatDateKey(new Date());
+  const fallbackDate = isValidDateKey(context.selectedDate)
+    ? context.selectedDate
+    : formatDateKey(new Date());
   const fallbackCurrency = context.currencies.includes(context.defaultCurrency)
     ? context.defaultCurrency
-    : context.currencies[0] ?? "";
+    : (context.currencies[0] ?? "");
   const globalDate = detectDate(trimmed, fallbackDate);
   const segments = splitExpenseSegments(trimmed);
   const records = segments
@@ -161,7 +168,12 @@ export const parseNaturalLedger = async (
 
       const date = detectDate(segment, fallbackDate) ?? globalDate ?? fallbackDate;
       const targetDates = detectDateTargets(segment, fallbackDate) ?? [date];
-      const parsed = parseExpenseSegment(segment, context.categories, context.currencies, fallbackCurrency);
+      const parsed = parseExpenseSegment(
+        segment,
+        context.categories,
+        context.currencies,
+        fallbackCurrency,
+      );
       if (!parsed) return [];
 
       return targetDates.map((targetDate) => ({
@@ -169,7 +181,10 @@ export const parseNaturalLedger = async (
         category: parsed.category,
         amount: parsed.amount,
         currency: parsed.currency,
-        note: targetDates.length > 1 ? restoreRecurringDescriptor(`${segment} ${trimmed}`, parsed.note) : cleanRecurringNote(parsed.note),
+        note:
+          targetDates.length > 1
+            ? restoreRecurringDescriptor(`${segment} ${trimmed}`, parsed.note)
+            : cleanRecurringNote(parsed.note),
       }));
     })
     .filter((record): record is LocalLedgerRecord => Boolean(record));
@@ -181,6 +196,7 @@ export const parseNaturalLedger = async (
     return record;
   });
 
-  if (!normalizedRecords.length && !warnings.length) warnings.push("未解析出可导入记录，请补充金额或换一种描述。");
+  if (!normalizedRecords.length && !warnings.length)
+    warnings.push("未解析出可导入记录，请补充金额或换一种描述。");
   return { records: normalizedRecords, warnings, source: "local" };
 };

@@ -62,7 +62,9 @@ export const summarizeLedger = (ledger: Record<string, BackupLedgerEntry[]>): Le
   };
 };
 
-export const buildBackupPayload = (data: MoneyCountsBackupPayload["data"]): MoneyCountsBackupPayload => ({
+export const buildBackupPayload = (
+  data: MoneyCountsBackupPayload["data"],
+): MoneyCountsBackupPayload => ({
   app: "MoneyCounts",
   version: BACKUP_VERSION,
   exportedAt: new Date().toISOString(),
@@ -72,7 +74,8 @@ export const buildBackupPayload = (data: MoneyCountsBackupPayload["data"]): Mone
 export const parseBackupPayload = (value: unknown): MoneyCountsBackupPayload => {
   if (!isPlainRecord(value)) throw new Error("JSON 顶层结构无效。");
   if (value.app !== "MoneyCounts") throw new Error("不是 MoneyCounts 备份文件。");
-  if (value.version !== BACKUP_VERSION) throw new Error(`暂不支持的备份版本：${String(value.version ?? "未知")}`);
+  if (value.version !== BACKUP_VERSION)
+    throw new Error(`暂不支持的备份版本：${String(value.version ?? "未知")}`);
   if (typeof value.exportedAt !== "string") throw new Error("缺少导出时间。");
   if (!isPlainRecord(value.data)) throw new Error("缺少备份数据。");
   if (!isPlainRecord(value.data.ledger)) throw new Error("账本结构无效。");

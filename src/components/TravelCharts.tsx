@@ -55,7 +55,12 @@ export function TravelPieChart({
   }
 
   return (
-    <svg className="pie-chart travel-viz-pie" viewBox={`0 0 ${size} ${size}`} role="img" aria-label={`${title} 类目占比图`}>
+    <svg
+      className="pie-chart travel-viz-pie"
+      viewBox={`0 0 ${size} ${size}`}
+      role="img"
+      aria-label={`${title} 类目占比图`}
+    >
       {summary.map((item, index) => {
         const startAngle = (cursor / 100) * 360;
         cursor += item.percent;
@@ -110,7 +115,9 @@ export function TravelCurrencyBars({
         <div key={item.currency} className="travel-currency-bar-row">
           <div className="travel-currency-bar-meta">
             <strong>{item.currency}</strong>
-            <span>{item.count} 笔 · {item.percent.toFixed(1)}%</span>
+            <span>
+              {item.count} 笔 · {item.percent.toFixed(1)}%
+            </span>
           </div>
           <div className="travel-currency-bar-track">
             <span
@@ -122,7 +129,8 @@ export function TravelCurrencyBars({
             />
           </div>
           <small>
-            {formatMoney(item.nativeTotal, item.currency)} · 折合 {formatMoney(item.convertedTotal, targetCurrency)}
+            {formatMoney(item.nativeTotal, item.currency)} · 折合{" "}
+            {formatMoney(item.convertedTotal, targetCurrency)}
           </small>
         </div>
       ))}

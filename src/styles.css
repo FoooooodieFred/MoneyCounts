@@ -150,7 +150,10 @@ body::before {
     linear-gradient(115deg, rgba(255, 255, 255, 0.2), transparent 35%),
     linear-gradient(rgba(40, 64, 96, 0.035) 1px, transparent 1px),
     linear-gradient(90deg, rgba(40, 64, 96, 0.032) 1px, transparent 1px);
-  background-size: auto, 88px 88px, 88px 88px;
+  background-size:
+    auto,
+    88px 88px,
+    88px 88px;
   content: "";
   pointer-events: none;
 }
@@ -200,13 +203,17 @@ button:hover {
 
 :root[data-theme="dark"] button {
   background: linear-gradient(135deg, #4778e6, #1aa9bd);
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.32), 0 0 26px rgba(77, 211, 223, 0.1);
+  box-shadow:
+    0 14px 32px rgba(0, 0, 0, 0.32),
+    0 0 26px rgba(77, 211, 223, 0.1);
   color: #f8fbff;
 }
 
 :root[data-theme="dark"] button:hover {
   background: linear-gradient(135deg, #7aa8ff, #32c8d6);
-  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.38), 0 0 34px rgba(77, 211, 223, 0.16);
+  box-shadow:
+    0 18px 38px rgba(0, 0, 0, 0.38),
+    0 0 34px rgba(77, 211, 223, 0.16);
 }
 
 input,
@@ -330,8 +337,7 @@ select.invalid {
 }
 
 .travel-history-toggle:hover {
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(213, 242, 255, 0.86));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(213, 242, 255, 0.86));
   box-shadow: 0 12px 28px rgba(47, 115, 255, 0.14);
   color: var(--blue-deep);
   transform: translateY(-1px);
@@ -692,7 +698,11 @@ select.invalid {
   border: 1px solid rgba(255, 255, 255, 0.58);
   border-radius: 18px;
   background:
-    radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--travel-accent), transparent 72%), transparent 42%),
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in srgb, var(--travel-accent), transparent 72%),
+      transparent 42%
+    ),
     linear-gradient(145deg, rgba(255, 255, 255, 0.76), rgba(238, 248, 251, 0.48));
   padding: 14px;
 }
@@ -799,8 +809,7 @@ select.invalid {
 
 :root[data-theme="dark"] .travel-history-toggle {
   border-color: rgba(166, 184, 212, 0.22);
-  background:
-    linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(12, 23, 40, 0.72));
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(12, 23, 40, 0.72));
   color: #bcefff;
 }
 
@@ -833,7 +842,11 @@ select.invalid {
 :root[data-theme="dark"] .travel-stat-card {
   border-color: rgba(166, 184, 212, 0.18);
   background:
-    radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--travel-accent), transparent 78%), transparent 42%),
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in srgb, var(--travel-accent), transparent 78%),
+      transparent 42%
+    ),
     linear-gradient(145deg, rgba(30, 41, 59, 0.82), rgba(15, 23, 42, 0.56));
 }
 
@@ -1060,14 +1073,24 @@ select.invalid {
   background:
     radial-gradient(circle at 82% 20%, rgba(76, 185, 202, 0.17), transparent 34%),
     radial-gradient(circle at 4% 88%, rgba(196, 163, 90, 0.12), transparent 30%),
-    linear-gradient(140deg, rgba(255, 255, 255, 0.88), rgba(241, 248, 250, 0.66) 46%, rgba(248, 244, 236, 0.68));
+    linear-gradient(
+      140deg,
+      rgba(255, 255, 255, 0.88),
+      rgba(241, 248, 250, 0.66) 46%,
+      rgba(248, 244, 236, 0.68)
+    );
 }
 
 :root[data-theme="dark"] .hero-copy-card {
   background:
     radial-gradient(circle at 82% 20%, rgba(77, 211, 223, 0.14), transparent 34%),
     radial-gradient(circle at 4% 88%, rgba(230, 196, 108, 0.1), transparent 30%),
-    linear-gradient(140deg, rgba(20, 30, 48, 0.9), rgba(15, 35, 48, 0.68) 46%, rgba(38, 33, 40, 0.72));
+    linear-gradient(
+      140deg,
+      rgba(20, 30, 48, 0.9),
+      rgba(15, 35, 48, 0.68) 46%,
+      rgba(38, 33, 40, 0.72)
+    );
 }
 
 .hero-copy-card::before {
@@ -1115,8 +1138,14 @@ select.invalid {
 .hero-title {
   position: relative;
   color: transparent;
-  background:
-    linear-gradient(105deg, #142033 0%, #213b5c 38%, #356f86 58%, #9f7d3e 74%, #142033 100%);
+  background: linear-gradient(
+    105deg,
+    #142033 0%,
+    #213b5c 38%,
+    #356f86 58%,
+    #9f7d3e 74%,
+    #142033 100%
+  );
   background-size: 145% 100%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -1125,8 +1154,14 @@ select.invalid {
 }
 
 :root[data-theme="dark"] .hero-title {
-  background:
-    linear-gradient(105deg, #f8fbff 0%, #9bbcff 34%, #74e8d8 58%, #e6c46c 76%, #f8fbff 100%);
+  background: linear-gradient(
+    105deg,
+    #f8fbff 0%,
+    #9bbcff 34%,
+    #74e8d8 58%,
+    #e6c46c 76%,
+    #f8fbff 100%
+  );
   -webkit-background-clip: text;
   background-clip: text;
 }
@@ -1231,7 +1266,9 @@ select.invalid {
   border: 1px solid rgba(119, 142, 174, 0.2);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.58);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 10px 24px rgba(47, 115, 255, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.75),
+    0 10px 24px rgba(47, 115, 255, 0.08);
   color: var(--blue-deep);
   font-size: 0.78rem;
   padding: 0.45rem 0.68rem;
@@ -1259,7 +1296,11 @@ select.invalid {
   border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 22px;
   background:
-    radial-gradient(circle at 96% 0%, color-mix(in srgb, var(--fun-accent), transparent 70%), transparent 42%),
+    radial-gradient(
+      circle at 96% 0%,
+      color-mix(in srgb, var(--fun-accent), transparent 70%),
+      transparent 42%
+    ),
     linear-gradient(145deg, rgba(255, 255, 255, 0.78), rgba(238, 248, 251, 0.48));
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.8),
@@ -1276,7 +1317,11 @@ select.invalid {
   z-index: -1;
   background:
     linear-gradient(120deg, rgba(255, 255, 255, 0.36), transparent 34%),
-    radial-gradient(circle at 12% 100%, color-mix(in srgb, var(--fun-accent), transparent 82%), transparent 48%);
+    radial-gradient(
+      circle at 12% 100%,
+      color-mix(in srgb, var(--fun-accent), transparent 82%),
+      transparent 48%
+    );
   content: "";
 }
 
@@ -1290,7 +1335,11 @@ select.invalid {
   border-radius: 999px;
   background:
     linear-gradient(color-mix(in srgb, var(--fun-accent), transparent 88%) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--fun-accent), transparent 90%) 1px, transparent 1px);
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--fun-accent), transparent 90%) 1px,
+      transparent 1px
+    );
   background-size: 14px 14px;
   content: "";
   opacity: 0.78;
@@ -1402,7 +1451,11 @@ select.invalid {
 :root[data-theme="dark"] .fun-data-card {
   border-color: rgba(148, 163, 184, 0.2);
   background:
-    radial-gradient(circle at 96% 0%, color-mix(in srgb, var(--fun-accent), transparent 78%), transparent 42%),
+    radial-gradient(
+      circle at 96% 0%,
+      color-mix(in srgb, var(--fun-accent), transparent 78%),
+      transparent 42%
+    ),
     linear-gradient(145deg, rgba(30, 41, 59, 0.82), rgba(15, 23, 42, 0.56));
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
@@ -1578,7 +1631,9 @@ select.invalid {
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(229, 246, 255, 0.72)),
     radial-gradient(circle at 100% 0%, rgba(255, 122, 144, 0.12), transparent 42%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.78), 0 16px 32px rgba(47, 115, 255, 0.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.78),
+    0 16px 32px rgba(47, 115, 255, 0.12);
   color: var(--ink);
   padding: 18px;
   text-align: left;
@@ -1597,7 +1652,9 @@ select.invalid {
   background:
     linear-gradient(135deg, rgba(30, 41, 59, 0.86), rgba(12, 44, 55, 0.58)),
     radial-gradient(circle at 100% 0%, rgba(242, 161, 145, 0.12), transparent 42%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 16px 32px rgba(0, 0, 0, 0.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 16px 32px rgba(0, 0, 0, 0.28);
   color: var(--ink);
 }
 
@@ -1605,7 +1662,9 @@ select.invalid {
   background:
     linear-gradient(135deg, rgba(41, 56, 80, 0.92), rgba(13, 72, 82, 0.64)),
     radial-gradient(circle at 100% 0%, rgba(242, 161, 145, 0.16), transparent 42%);
-  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.32), 0 0 26px rgba(77, 211, 223, 0.12);
+  box-shadow:
+    0 18px 34px rgba(0, 0, 0, 0.32),
+    0 0 26px rgba(77, 211, 223, 0.12);
   color: var(--ink);
 }
 
@@ -1708,8 +1767,7 @@ select.invalid {
   inset: 4px auto 4px 4px;
   width: calc(33.333% - 6px);
   border-radius: 999px;
-  background:
-    linear-gradient(135deg, var(--blue), var(--aqua), var(--mint));
+  background: linear-gradient(135deg, var(--blue), var(--aqua), var(--mint));
   box-shadow: 0 12px 24px rgba(47, 115, 255, 0.26);
   content: "";
   transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -1829,8 +1887,7 @@ select.invalid {
   overflow: hidden;
   background:
     radial-gradient(circle at 8% 0%, rgba(76, 185, 202, 0.16), transparent 32%),
-    radial-gradient(circle at 96% 16%, rgba(196, 163, 90, 0.13), transparent 30%),
-    var(--paper);
+    radial-gradient(circle at 96% 16%, rgba(196, 163, 90, 0.13), transparent 30%), var(--paper);
 }
 
 .natural-ledger-card::before {
@@ -1841,7 +1898,10 @@ select.invalid {
     linear-gradient(135deg, rgba(255, 255, 255, 0.34), transparent 36%),
     linear-gradient(rgba(53, 111, 215, 0.035) 1px, transparent 1px),
     linear-gradient(90deg, rgba(53, 111, 215, 0.03) 1px, transparent 1px);
-  background-size: auto, 34px 34px, 34px 34px;
+  background-size:
+    auto,
+    34px 34px,
+    34px 34px;
   content: "";
   pointer-events: none;
 }
@@ -1858,7 +1918,9 @@ select.invalid {
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(224, 255, 248, 0.64)),
     radial-gradient(circle at 100% 0%, rgba(196, 163, 90, 0.14), transparent 46%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.78), 0 12px 26px rgba(76, 185, 202, 0.11);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.78),
+    0 12px 26px rgba(76, 185, 202, 0.11);
   color: #1d6c7b;
   font-size: 0.88rem;
   font-weight: 800;
@@ -1875,8 +1937,7 @@ select.invalid {
 :root[data-theme="dark"] .natural-ledger-card {
   background:
     radial-gradient(circle at 8% 0%, rgba(77, 211, 223, 0.14), transparent 32%),
-    radial-gradient(circle at 96% 16%, rgba(230, 196, 108, 0.1), transparent 30%),
-    var(--paper);
+    radial-gradient(circle at 96% 16%, rgba(230, 196, 108, 0.1), transparent 30%), var(--paper);
 }
 
 :root[data-theme="dark"] .natural-ledger-card::before {
@@ -1884,7 +1945,10 @@ select.invalid {
     linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 36%),
     linear-gradient(rgba(109, 157, 255, 0.045) 1px, transparent 1px),
     linear-gradient(90deg, rgba(109, 157, 255, 0.04) 1px, transparent 1px);
-  background-size: auto, 34px 34px, 34px 34px;
+  background-size:
+    auto,
+    34px 34px,
+    34px 34px;
 }
 
 .natural-ledger-input-grid {
@@ -1953,8 +2017,7 @@ select.invalid {
   overflow-x: auto;
   border: 1px solid rgba(119, 142, 174, 0.22);
   border-radius: 20px;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(235, 247, 255, 0.48));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(235, 247, 255, 0.48));
   box-shadow: 0 18px 44px rgba(43, 74, 112, 0.08);
 }
 
@@ -2187,8 +2250,7 @@ select.invalid {
   gap: 4px;
   min-width: 260px;
   border-radius: 18px;
-  background:
-    linear-gradient(135deg, rgba(239, 246, 255, 0.9), rgba(224, 255, 248, 0.68));
+  background: linear-gradient(135deg, rgba(239, 246, 255, 0.9), rgba(224, 255, 248, 0.68));
   border: 1px solid rgba(119, 142, 174, 0.18);
   padding: 14px 16px;
   text-align: right;
@@ -2334,8 +2396,7 @@ select.invalid {
 
 .category-cell {
   width: 130px;
-  background:
-    linear-gradient(180deg, rgba(248, 251, 255, 0.98), rgba(232, 245, 255, 0.72));
+  background: linear-gradient(180deg, rgba(248, 251, 255, 0.98), rgba(232, 245, 255, 0.72));
   color: var(--blue-deep);
   font-size: 1rem;
   text-align: center;
@@ -2365,8 +2426,7 @@ select.invalid {
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(224, 242, 254, 0.76));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(224, 242, 254, 0.76));
   color: #1f4fd0;
   font-size: 1.35rem;
   line-height: 1;
@@ -2513,8 +2573,7 @@ button:disabled:hover {
   min-width: 92px;
   gap: 1px;
   border: 1px solid rgba(119, 142, 174, 0.26);
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(236, 248, 255, 0.78));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(236, 248, 255, 0.78));
   box-shadow: none;
   color: var(--ink);
   padding: 0.55rem 0.7rem;
@@ -2522,8 +2581,7 @@ button:disabled:hover {
 }
 
 .currency-select-button:hover {
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(218, 244, 255, 0.88));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(218, 244, 255, 0.88));
   box-shadow: 0 10px 18px rgba(47, 115, 255, 0.14);
   color: var(--blue-deep);
 }
@@ -2803,7 +2861,9 @@ button:disabled:hover {
   line-height: 1;
   border: 1px solid rgba(255, 255, 255, 0.56);
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(226, 246, 255, 0.5));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72), 0 14px 32px rgba(31, 58, 95, 0.16);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    0 14px 32px rgba(31, 58, 95, 0.16);
   color: #17315a;
 }
 
@@ -2855,8 +2915,7 @@ button:disabled:hover {
   display: grid;
   gap: 4px;
   border-radius: 16px;
-  background:
-    linear-gradient(135deg, rgba(248, 250, 252, 0.92), rgba(239, 253, 250, 0.72));
+  background: linear-gradient(135deg, rgba(248, 250, 252, 0.92), rgba(239, 253, 250, 0.72));
   border: 1px solid rgba(119, 142, 174, 0.16);
   padding: 14px;
 }
@@ -3006,7 +3065,9 @@ button:disabled:hover {
 
 .pie-chart.empty {
   background: #e5e7eb;
-  box-shadow: inset 0 0 0 22px #fff, inset 0 0 0 23px rgba(15, 23, 42, 0.05);
+  box-shadow:
+    inset 0 0 0 22px #fff,
+    inset 0 0 0 23px rgba(15, 23, 42, 0.05);
 }
 
 .pie-slice {
@@ -3318,8 +3379,7 @@ button:disabled:hover {
   border-radius: 22px;
   background:
     linear-gradient(rgba(53, 111, 215, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(53, 111, 215, 0.05) 1px, transparent 1px),
-    rgba(255, 255, 255, 0.42);
+    linear-gradient(90deg, rgba(53, 111, 215, 0.05) 1px, transparent 1px), rgba(255, 255, 255, 0.42);
   background-size: 42px 42px;
 }
 
@@ -3327,8 +3387,7 @@ button:disabled:hover {
   border-color: rgba(166, 184, 212, 0.2);
   background:
     linear-gradient(rgba(109, 157, 255, 0.065) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(109, 157, 255, 0.055) 1px, transparent 1px),
-    rgba(10, 18, 32, 0.58);
+    linear-gradient(90deg, rgba(109, 157, 255, 0.055) 1px, transparent 1px), rgba(10, 18, 32, 0.58);
 }
 
 :root[data-theme="dark"] .trend-chart line {
@@ -3397,8 +3456,7 @@ button:disabled:hover {
 
 .summary-list > div {
   border-radius: 14px;
-  background:
-    linear-gradient(135deg, rgba(248, 250, 252, 0.94), rgba(255, 255, 255, 0.74));
+  background: linear-gradient(135deg, rgba(248, 250, 252, 0.94), rgba(255, 255, 255, 0.74));
   border: 1px solid rgba(119, 142, 174, 0.14);
   padding: 12px 14px;
 }
@@ -3469,8 +3527,7 @@ button:disabled:hover {
   gap: 16px;
   border: 1px solid rgba(119, 142, 174, 0.16);
   border-radius: 22px;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.74), rgba(239, 253, 250, 0.58));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.74), rgba(239, 253, 250, 0.58));
   padding: 16px;
 }
 
@@ -3500,16 +3557,14 @@ button:disabled:hover {
   align-content: center;
   gap: 4px;
   border: 1px solid rgba(119, 142, 174, 0.18);
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(238, 248, 255, 0.72));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(238, 248, 255, 0.72));
   box-shadow: none;
   color: var(--ink);
   text-align: left;
 }
 
 .currency-card-option:hover {
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(219, 245, 255, 0.84));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(219, 245, 255, 0.84));
   box-shadow: 0 14px 28px rgba(47, 115, 255, 0.14);
 }
 
@@ -3521,14 +3576,12 @@ button:disabled:hover {
 
 :root[data-theme="dark"] .currency-card-option {
   border-color: rgba(166, 184, 212, 0.2);
-  background:
-    linear-gradient(135deg, rgba(30, 41, 59, 0.84), rgba(12, 23, 40, 0.62));
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.84), rgba(12, 23, 40, 0.62));
   color: var(--ink);
 }
 
 :root[data-theme="dark"] .currency-card-option:hover {
-  background:
-    linear-gradient(135deg, rgba(45, 60, 86, 0.92), rgba(12, 56, 68, 0.68));
+  background: linear-gradient(135deg, rgba(45, 60, 86, 0.92), rgba(12, 56, 68, 0.68));
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.28);
 }
 
@@ -3562,8 +3615,7 @@ button:disabled:hover {
   gap: 4px;
   border: 1px solid rgba(119, 142, 174, 0.16);
   border-radius: 18px;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(240, 249, 255, 0.74));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(240, 249, 255, 0.74));
   padding: 14px;
 }
 
@@ -3959,7 +4011,9 @@ button:disabled:hover {
   font-size: 0.82rem;
   font-weight: 700;
   text-decoration: none;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
 }
 
 .scroll-nav__links a:hover {
@@ -4012,7 +4066,6 @@ button:disabled:hover {
   margin-bottom: 0;
   width: min(var(--app-content-max), 100% - 2 * var(--app-content-gutter));
 }
-
 
 .scroll-nav--travel {
   border-color: rgba(249, 115, 22, 0.28);
@@ -4082,7 +4135,9 @@ body.travel-vacation-theme .scroll-nav .scroll-nav__links a:hover {
   border-radius: 22px;
   background: var(--paper-strong);
   color: var(--ink);
-  box-shadow: inset 0 1px 0 var(--inner-highlight), 0 18px 36px var(--shadow-soft);
+  box-shadow:
+    inset 0 1px 0 var(--inner-highlight),
+    0 18px 36px var(--shadow-soft);
   text-align: left;
 }
 
@@ -4355,7 +4410,11 @@ body.travel-vacation-theme .scroll-nav .scroll-nav__links a:hover {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, var(--fun-accent, var(--aqua)), color-mix(in srgb, var(--fun-accent, var(--aqua)), #ffffff 32%));
+  background: linear-gradient(
+    90deg,
+    var(--fun-accent, var(--aqua)),
+    color-mix(in srgb, var(--fun-accent, var(--aqua)), #ffffff 32%)
+  );
 }
 
 .hero-stat-card small {
@@ -4379,7 +4438,9 @@ body.travel-vacation-theme .scroll-nav .scroll-nav__links a:hover {
 }
 
 .nl-section.is-expanded .nl-dialog {
-  box-shadow: 0 32px 90px var(--shadow-soft), 0 0 0 1px rgba(76, 185, 202, 0.18) inset;
+  box-shadow:
+    0 32px 90px var(--shadow-soft),
+    0 0 0 1px rgba(76, 185, 202, 0.18) inset;
 }
 
 .nl-dialog {
@@ -4392,7 +4453,9 @@ body.travel-vacation-theme .scroll-nav .scroll-nav__links a:hover {
     radial-gradient(circle at 88% 18%, rgba(230, 196, 108, 0.13), transparent 34%),
     radial-gradient(circle at 0% 100%, rgba(76, 185, 202, 0.16), transparent 38%),
     var(--paper-strong);
-  box-shadow: 0 34px 96px var(--shadow-soft), 0 0 0 1px rgba(255, 255, 255, 0.48) inset;
+  box-shadow:
+    0 34px 96px var(--shadow-soft),
+    0 0 0 1px rgba(255, 255, 255, 0.48) inset;
 }
 
 .nl-dialog__glow {
@@ -4475,7 +4538,9 @@ body.travel-vacation-theme .scroll-nav .scroll-nav__links a:hover {
   min-height: 132px;
   border-color: rgba(76, 185, 202, 0.32);
   background: rgba(255, 255, 255, 0.84);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.78), 0 18px 40px rgba(37, 57, 83, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.78),
+    0 18px 40px rgba(37, 57, 83, 0.08);
   resize: vertical;
 }
 
@@ -4544,9 +4609,16 @@ body.travel-vacation-theme .scroll-nav .scroll-nav__links a:hover {
   z-index: var(--z-floating);
   display: flex;
   justify-content: center;
-  padding-inline:
-    max(var(--nl-compact-entry-gutter), env(safe-area-inset-left), var(--nl-compact-entry-fab-inset-left))
-    max(var(--nl-compact-entry-gutter), env(safe-area-inset-right), var(--nl-compact-entry-fab-inset-right));
+  padding-inline: max(
+      var(--nl-compact-entry-gutter),
+      env(safe-area-inset-left),
+      var(--nl-compact-entry-fab-inset-left)
+    )
+    max(
+      var(--nl-compact-entry-gutter),
+      env(safe-area-inset-right),
+      var(--nl-compact-entry-fab-inset-right)
+    );
   pointer-events: none;
   box-sizing: border-box;
 }
@@ -4774,11 +4846,7 @@ body.travel-vacation-theme .scroll-nav .scroll-nav__links a:hover {
   position: sticky;
   top: 0;
   z-index: 2;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 253, 249, 0.97) 75%,
-    rgba(255, 253, 249, 0)
-  );
+  background: linear-gradient(to bottom, rgba(255, 253, 249, 0.97) 75%, rgba(255, 253, 249, 0));
 }
 
 .settings-modal__header h2 {
@@ -4789,11 +4857,7 @@ body.travel-vacation-theme .scroll-nav .scroll-nav__links a:hover {
 }
 
 :root[data-theme="dark"] .settings-modal__header {
-  background: linear-gradient(
-    to bottom,
-    rgba(20, 31, 49, 0.97) 75%,
-    rgba(20, 31, 49, 0)
-  );
+  background: linear-gradient(to bottom, rgba(20, 31, 49, 0.97) 75%, rgba(20, 31, 49, 0));
 }
 
 .ledger-table-shell--modal {
@@ -4890,10 +4954,7 @@ body.travel-vacation-theme .scroll-nav .scroll-nav__links a:hover {
   max-width: none;
   width: min(var(--app-shell-max-width), 100%);
   margin-inline: auto;
-  padding:
-    var(--app-nav-offset)
-    var(--app-content-padding-inline)
-    var(--app-content-padding-inline);
+  padding: var(--app-nav-offset) var(--app-content-padding-inline) var(--app-content-padding-inline);
   display: grid;
   gap: var(--space-5);
 }
@@ -5016,7 +5077,10 @@ body.travel-vacation-theme .scroll-nav .scroll-nav__links a:hover {
   min-width: 0;
 }
 
-.settings-toggle > span:not(.settings-toggle__drag-handle):not(.settings-toggle__controls):not(.settings-toggle__copy) {
+.settings-toggle
+  > span:not(.settings-toggle__drag-handle):not(.settings-toggle__controls):not(
+    .settings-toggle__copy
+  ) {
   display: grid;
   gap: 0.18rem;
 }
@@ -5258,8 +5322,7 @@ body.travel-vacation-theme .scroll-nav .scroll-nav__links a:hover {
 .budget-overview.is-over {
   border-color: rgba(220, 38, 38, 0.34);
   background:
-    linear-gradient(145deg, rgba(255, 247, 247, 0.82), rgba(255, 255, 255, 0.58)),
-    var(--paper);
+    linear-gradient(145deg, rgba(255, 247, 247, 0.82), rgba(255, 255, 255, 0.58)), var(--paper);
 }
 
 .budget-hero-row > div,
@@ -5353,9 +5416,7 @@ body.travel-vacation-theme .scroll-nav .scroll-nav__links a:hover {
 }
 
 :root[data-theme="dark"] .budget-overview.is-over {
-  background:
-    linear-gradient(145deg, rgba(69, 10, 10, 0.34), rgba(15, 23, 42, 0.62)),
-    var(--paper);
+  background: linear-gradient(145deg, rgba(69, 10, 10, 0.34), rgba(15, 23, 42, 0.62)), var(--paper);
 }
 
 @media (max-width: 860px) {
@@ -5487,7 +5548,10 @@ body.travel-vacation-theme {
 
 .nl-preview-row--editable {
   display: grid;
-  grid-template-columns: minmax(132px, 0.9fr) minmax(100px, 0.8fr) minmax(96px, 0.75fr) minmax(96px, 0.7fr) minmax(160px, 1.2fr) auto;
+  grid-template-columns: minmax(132px, 0.9fr) minmax(100px, 0.8fr) minmax(96px, 0.75fr) minmax(
+      96px,
+      0.7fr
+    ) minmax(160px, 1.2fr) auto;
   align-items: end;
   gap: 0.6rem;
   padding: 0.75rem 0;
@@ -5615,14 +5679,12 @@ body.travel-vacation-theme {
   margin-bottom: 1rem;
   border: 1px solid rgba(249, 115, 22, 0.22);
   border-radius: 22px;
-  background:
-    linear-gradient(135deg, rgba(255, 247, 237, 0.9), rgba(254, 243, 199, 0.6));
+  background: linear-gradient(135deg, rgba(255, 247, 237, 0.9), rgba(254, 243, 199, 0.6));
   padding: 1rem;
 }
 
 :root[data-theme="dark"] .travel-natural-entry {
-  background:
-    linear-gradient(135deg, rgba(67, 32, 9, 0.56), rgba(30, 41, 59, 0.52));
+  background: linear-gradient(135deg, rgba(67, 32, 9, 0.56), rgba(30, 41, 59, 0.52));
 }
 
 .travel-history-sync-actions,
@@ -5649,10 +5711,7 @@ body.travel-vacation-theme {
 /* Refactor stage: semantic home shell and token-backed component boundaries. */
 .app-shell.home-shell {
   max-width: none;
-  padding:
-    var(--app-nav-offset)
-    var(--app-content-padding-inline)
-    var(--app-content-padding-inline);
+  padding: var(--app-nav-offset) var(--app-content-padding-inline) var(--app-content-padding-inline);
 }
 
 .home-shell {
@@ -5879,15 +5938,27 @@ body.travel-vacation-theme {
   --mint: #facc15;
 }
 
-:root[data-theme="dark"] .travel-page button:not(.ghost-button):not(.secondary-button):not(.danger-button):not(.floating-theme-toggle):not(.floating-date-fab),
-:root[data-theme="dark"] .travel-exit-modal button:not(.ghost-button):not(.secondary-button):not(.danger-button) {
+:root[data-theme="dark"]
+  .travel-page
+  button:not(.ghost-button):not(.secondary-button):not(.danger-button):not(
+    .floating-theme-toggle
+  ):not(.floating-date-fab),
+:root[data-theme="dark"]
+  .travel-exit-modal
+  button:not(.ghost-button):not(.secondary-button):not(.danger-button) {
   background: linear-gradient(135deg, #f97316, #f59e0b);
   box-shadow: 0 14px 32px rgba(249, 115, 22, 0.22);
   color: #fff7ed;
 }
 
-:root[data-theme="dark"] .travel-page button:not(.ghost-button):not(.secondary-button):not(.danger-button):not(.floating-theme-toggle):not(.floating-date-fab):hover,
-:root[data-theme="dark"] .travel-exit-modal button:not(.ghost-button):not(.secondary-button):not(.danger-button):hover {
+:root[data-theme="dark"]
+  .travel-page
+  button:not(.ghost-button):not(.secondary-button):not(.danger-button):not(
+    .floating-theme-toggle
+  ):not(.floating-date-fab):hover,
+:root[data-theme="dark"]
+  .travel-exit-modal
+  button:not(.ghost-button):not(.secondary-button):not(.danger-button):hover {
   background: linear-gradient(135deg, #fb923c, #facc15);
   box-shadow: 0 18px 38px rgba(249, 115, 22, 0.28);
 }
@@ -5942,9 +6013,7 @@ body.travel-vacation-theme {
   }
 
   .app-shell.home-shell {
-    padding:
-      var(--app-nav-offset)
-      var(--app-content-padding-inline)
+    padding: var(--app-nav-offset) var(--app-content-padding-inline)
       var(--app-content-padding-inline);
   }
 
@@ -5969,8 +6038,7 @@ body.travel-vacation-theme {
 
   .nl-compact-entry-host {
     bottom: max(82px, calc(env(safe-area-inset-bottom) + 72px));
-    padding-inline:
-      max(var(--nl-compact-entry-gutter), env(safe-area-inset-left))
+    padding-inline: max(var(--nl-compact-entry-gutter), env(safe-area-inset-left))
       max(var(--nl-compact-entry-gutter), env(safe-area-inset-right));
   }
 

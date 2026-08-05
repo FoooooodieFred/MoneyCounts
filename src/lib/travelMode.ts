@@ -93,7 +93,8 @@ export type TravelGeoResult = {
 
 export const TRAVEL_KEY = "monthly-smart-ledger:travel";
 export const TRAVEL_HISTORY_KEY = "monthly-smart-ledger:travel-history";
-export const TRAVEL_HISTORY_PENDING_DELETE_KEY = "monthly-smart-ledger:travel-history-pending-delete";
+export const TRAVEL_HISTORY_PENDING_DELETE_KEY =
+  "monthly-smart-ledger:travel-history-pending-delete";
 export const PENDING_DELETE_TTL_MS = 10_000;
 
 export type PendingTravelHistoryDelete = {
@@ -136,17 +137,160 @@ const PIE_COLORS = [
 ];
 
 const COMMON_ISO_4217_CODES = new Set([
-  "AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN", "BAM", "BBD", "BDT", "BGN", "BHD",
-  "BIF", "BMD", "BND", "BOB", "BRL", "BSD", "BTN", "BWP", "BYN", "BZD", "CAD", "CDF", "CHF", "CLP", "CNY",
-  "COP", "CRC", "CUP", "CVE", "CZK", "DJF", "DKK", "DOP", "DZD", "EGP", "ERN", "ETB", "EUR", "FJD", "FKP",
-  "GBP", "GEL", "GHS", "GIP", "GMD", "GNF", "GTQ", "GYD", "HKD", "HNL", "HRK", "HTG", "HUF", "IDR", "ILS",
-  "INR", "IQD", "IRR", "ISK", "JMD", "JOD", "JPY", "KES", "KGS", "KHR", "KMF", "KRW", "KWD", "KYD", "KZT",
-  "LAK", "LBP", "LKR", "LRD", "LSL", "LYD", "MAD", "MDL", "MGA", "MKD", "MMK", "MNT", "MOP", "MRU", "MUR",
-  "MVR", "MWK", "MXN", "MYR", "MZN", "NAD", "NGN", "NIO", "NOK", "NPR", "NTD", "NZD", "OMR", "PAB", "PEN",
-  "PGK", "PHP", "PKR", "PLN", "PYG", "QAR", "RON", "RSD", "RUB", "RWF", "SAR", "SBD", "SCR", "SDG", "SEK",
-  "SGD", "SHP", "SLE", "SOS", "SRD", "SSP", "STN", "SYP", "SZL", "THB", "TJS", "TMT", "TND", "TOP", "TRY",
-  "TTD", "TWD", "TZS", "UAH", "UGX", "USD", "UYU", "UZS", "VES", "VND", "VUV", "WST", "XAF", "XCD", "XOF",
-  "XPF", "YER", "ZAR", "ZMW",
+  "AED",
+  "AFN",
+  "ALL",
+  "AMD",
+  "ANG",
+  "AOA",
+  "ARS",
+  "AUD",
+  "AWG",
+  "AZN",
+  "BAM",
+  "BBD",
+  "BDT",
+  "BGN",
+  "BHD",
+  "BIF",
+  "BMD",
+  "BND",
+  "BOB",
+  "BRL",
+  "BSD",
+  "BTN",
+  "BWP",
+  "BYN",
+  "BZD",
+  "CAD",
+  "CDF",
+  "CHF",
+  "CLP",
+  "CNY",
+  "COP",
+  "CRC",
+  "CUP",
+  "CVE",
+  "CZK",
+  "DJF",
+  "DKK",
+  "DOP",
+  "DZD",
+  "EGP",
+  "ERN",
+  "ETB",
+  "EUR",
+  "FJD",
+  "FKP",
+  "GBP",
+  "GEL",
+  "GHS",
+  "GIP",
+  "GMD",
+  "GNF",
+  "GTQ",
+  "GYD",
+  "HKD",
+  "HNL",
+  "HRK",
+  "HTG",
+  "HUF",
+  "IDR",
+  "ILS",
+  "INR",
+  "IQD",
+  "IRR",
+  "ISK",
+  "JMD",
+  "JOD",
+  "JPY",
+  "KES",
+  "KGS",
+  "KHR",
+  "KMF",
+  "KRW",
+  "KWD",
+  "KYD",
+  "KZT",
+  "LAK",
+  "LBP",
+  "LKR",
+  "LRD",
+  "LSL",
+  "LYD",
+  "MAD",
+  "MDL",
+  "MGA",
+  "MKD",
+  "MMK",
+  "MNT",
+  "MOP",
+  "MRU",
+  "MUR",
+  "MVR",
+  "MWK",
+  "MXN",
+  "MYR",
+  "MZN",
+  "NAD",
+  "NGN",
+  "NIO",
+  "NOK",
+  "NPR",
+  "NTD",
+  "NZD",
+  "OMR",
+  "PAB",
+  "PEN",
+  "PGK",
+  "PHP",
+  "PKR",
+  "PLN",
+  "PYG",
+  "QAR",
+  "RON",
+  "RSD",
+  "RUB",
+  "RWF",
+  "SAR",
+  "SBD",
+  "SCR",
+  "SDG",
+  "SEK",
+  "SGD",
+  "SHP",
+  "SLE",
+  "SOS",
+  "SRD",
+  "SSP",
+  "STN",
+  "SYP",
+  "SZL",
+  "THB",
+  "TJS",
+  "TMT",
+  "TND",
+  "TOP",
+  "TRY",
+  "TTD",
+  "TWD",
+  "TZS",
+  "UAH",
+  "UGX",
+  "USD",
+  "UYU",
+  "UZS",
+  "VES",
+  "VND",
+  "VUV",
+  "WST",
+  "XAF",
+  "XCD",
+  "XOF",
+  "XPF",
+  "YER",
+  "ZAR",
+  "ZMW",
 ]);
 
 export const normalizeCurrencyCode = (value: unknown) =>
@@ -155,17 +299,22 @@ export const normalizeCurrencyCode = (value: unknown) =>
 export const buildFallbackBillName = (destinationCurrency?: string) =>
   destinationCurrency ? `${destinationCurrency}之旅` : "我的旅游账单";
 
-export const buildBillNameFromLocation = (locationLabel: string | null | undefined, destinationCurrency?: string) => {
+export const buildBillNameFromLocation = (
+  locationLabel: string | null | undefined,
+  destinationCurrency?: string,
+) => {
   const label = locationLabel?.trim();
   if (label) return `${label}的旅游账单`;
   return buildFallbackBillName(destinationCurrency);
 };
 
-export const buildLegacyHistoryName = (record: Pick<TravelHistoryRecord, "startDate" | "destinationCurrency">) =>
-  `${record.destinationCurrency}之旅 · ${record.startDate}`;
+export const buildLegacyHistoryName = (
+  record: Pick<TravelHistoryRecord, "startDate" | "destinationCurrency">,
+) => `${record.destinationCurrency}之旅 · ${record.startDate}`;
 
 const normalizePositiveAmount = (value: unknown) => {
-  const parsed = typeof value === "number" ? value : typeof value === "string" ? Number(value) : NaN;
+  const parsed =
+    typeof value === "number" ? value : typeof value === "string" ? Number(value) : NaN;
   return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
 };
 
@@ -178,9 +327,10 @@ export const normalizeTravelParticipants = (value: unknown): TravelParticipant[]
           const name = typeof participant.name === "string" ? participant.name.trim() : "";
           if (!name) return null;
           return {
-            id: typeof participant.id === "string" && participant.id.trim()
-              ? participant.id.trim()
-              : `person-${index + 1}`,
+            id:
+              typeof participant.id === "string" && participant.id.trim()
+                ? participant.id.trim()
+                : `person-${index + 1}`,
             name,
           };
         })
@@ -204,7 +354,9 @@ export const reconcileTravelParticipants = (
       };
     })
     .filter((participant): participant is TravelParticipant => Boolean(participant));
-  const nextParticipants = participants.length ? participants : [...DEFAULT_TRAVEL_STATE.participants];
+  const nextParticipants = participants.length
+    ? participants
+    : [...DEFAULT_TRAVEL_STATE.participants];
   const allowed = new Set(nextParticipants.map((participant) => participant.id));
   const fallbackIds = nextParticipants.map((participant) => participant.id);
   const entryMeta = Object.fromEntries(
@@ -224,10 +376,10 @@ export const reconcileTravelParticipants = (
 };
 
 export const normalizeTravelBudgetSettings = (value: unknown): TravelBudgetSettings => {
-  const source = value && typeof value === "object" ? value as Partial<TravelBudgetSettings> : {};
+  const source = value && typeof value === "object" ? (value as Partial<TravelBudgetSettings>) : {};
   const rawCategoryLimits =
     source.categoryLimits && typeof source.categoryLimits === "object"
-      ? source.categoryLimits as Record<string, unknown>
+      ? (source.categoryLimits as Record<string, unknown>)
       : {};
   return {
     dailyLimit: normalizePositiveAmount(source.dailyLimit),
@@ -239,8 +391,11 @@ export const normalizeTravelBudgetSettings = (value: unknown): TravelBudgetSetti
   };
 };
 
-export const normalizeTravelEntryMeta = (value: unknown, participants: TravelParticipant[]): Record<string, TravelEntryMeta> => {
-  const source = value && typeof value === "object" ? value as Record<string, unknown> : {};
+export const normalizeTravelEntryMeta = (
+  value: unknown,
+  participants: TravelParticipant[],
+): Record<string, TravelEntryMeta> => {
+  const source = value && typeof value === "object" ? (value as Record<string, unknown>) : {};
   const participantIds = new Set(participants.map((item) => item.id));
   return Object.fromEntries(
     Object.entries(source)
@@ -248,7 +403,9 @@ export const normalizeTravelEntryMeta = (value: unknown, participants: TravelPar
         if (!raw || typeof raw !== "object") return null;
         const meta = raw as Partial<TravelEntryMeta>;
         const selectedIds = Array.isArray(meta.participantIds)
-          ? meta.participantIds.filter((id): id is string => typeof id === "string" && participantIds.has(id))
+          ? meta.participantIds.filter(
+              (id): id is string => typeof id === "string" && participantIds.has(id),
+            )
           : [];
         return [
           key,
@@ -304,7 +461,10 @@ export const summarizeCurrencyDistribution = (
       convertedTotal: current.convertedTotal + converted,
     });
   }
-  const totalConverted = Array.from(buckets.values()).reduce((sum, item) => sum + item.convertedTotal, 0);
+  const totalConverted = Array.from(buckets.values()).reduce(
+    (sum, item) => sum + item.convertedTotal,
+    0,
+  );
   return Array.from(buckets.entries())
     .map(([currency, stats], index) => ({
       currency,
@@ -318,7 +478,11 @@ export const summarizeCurrencyDistribution = (
 };
 
 export const getHistoryDateBounds = (records: TravelHistoryRecord[]) => {
-  const dates = records.flatMap((record) => [record.startDate, record.endDate, ...record.details.map((item) => item.date)]);
+  const dates = records.flatMap((record) => [
+    record.startDate,
+    record.endDate,
+    ...record.details.map((item) => item.date),
+  ]);
   const sorted = dates.filter(Boolean).sort();
   return {
     startDate: sorted[0] ?? "",
@@ -375,11 +539,17 @@ export const detectTravelGeo = async (
     })();
   if (!detected) throw new Error("未获取到可用货币");
   const destinationCurrency = detected === "TWD" ? "NTD" : detected;
-  const locationLabel = [data.city, data.region, data.country_name].filter(Boolean).join(" · ") || data.country_name || "";
+  const locationLabel =
+    [data.city, data.region, data.country_name].filter(Boolean).join(" · ") ||
+    data.country_name ||
+    "";
   return {
     destinationCurrency,
     locationLabel,
-    billName: buildBillNameFromLocation(locationLabel.split(" · ")[0] || data.country_name, destinationCurrency),
+    billName: buildBillNameFromLocation(
+      locationLabel.split(" · ")[0] || data.country_name,
+      destinationCurrency,
+    ),
     countryName: data.country_name,
   };
 };
@@ -389,7 +559,7 @@ export const normalizeStoredTravelState = (
   normalizeCurrencyInput: (value: unknown) => string | null,
 ): TravelState => {
   try {
-    const parsed = value && typeof value === "object" ? value as Partial<TravelState> : {};
+    const parsed = value && typeof value === "object" ? (value as Partial<TravelState>) : {};
     const participants = normalizeTravelParticipants(parsed.participants);
     return {
       ...DEFAULT_TRAVEL_STATE,
@@ -398,11 +568,18 @@ export const normalizeStoredTravelState = (
       endDate: typeof parsed.endDate === "string" ? parsed.endDate : null,
       plannedEndDate: typeof parsed.plannedEndDate === "string" ? parsed.plannedEndDate : null,
       destinationCurrency:
-        normalizeCurrencyInput(parsed.destinationCurrency) ?? DEFAULT_TRAVEL_STATE.destinationCurrency,
-      targetCurrency: normalizeCurrencyInput(parsed.targetCurrency) ?? DEFAULT_TRAVEL_STATE.targetCurrency,
-      billName: typeof parsed.billName === "string" && parsed.billName.trim() ? parsed.billName.trim() : null,
+        normalizeCurrencyInput(parsed.destinationCurrency) ??
+        DEFAULT_TRAVEL_STATE.destinationCurrency,
+      targetCurrency:
+        normalizeCurrencyInput(parsed.targetCurrency) ?? DEFAULT_TRAVEL_STATE.targetCurrency,
+      billName:
+        typeof parsed.billName === "string" && parsed.billName.trim()
+          ? parsed.billName.trim()
+          : null,
       locationLabel:
-        typeof parsed.locationLabel === "string" && parsed.locationLabel.trim() ? parsed.locationLabel.trim() : null,
+        typeof parsed.locationLabel === "string" && parsed.locationLabel.trim()
+          ? parsed.locationLabel.trim()
+          : null,
       participants,
       entryMeta: normalizeTravelEntryMeta(parsed.entryMeta, participants),
       budget: normalizeTravelBudgetSettings(parsed.budget),
@@ -416,7 +593,10 @@ export const readStoredTravelState = (
   normalizeCurrencyInput: (value: unknown) => string | null,
 ): TravelState => {
   try {
-    return normalizeStoredTravelState(JSON.parse(localStorage.getItem(TRAVEL_KEY) ?? "{}"), normalizeCurrencyInput);
+    return normalizeStoredTravelState(
+      JSON.parse(localStorage.getItem(TRAVEL_KEY) ?? "{}"),
+      normalizeCurrencyInput,
+    );
   } catch {
     return DEFAULT_TRAVEL_STATE;
   }
@@ -474,11 +654,13 @@ const migrateTravelHistoryRecord = (
               ? detail.participantIds.filter((value): value is string => typeof value === "string")
               : undefined;
             const participantNames = Array.isArray(detail.participantNames)
-              ? detail.participantNames.filter((value): value is string => typeof value === "string")
+              ? detail.participantNames.filter(
+                  (value): value is string => typeof value === "string",
+                )
               : undefined;
             const exchangeSnapshot =
               detail.exchangeSnapshot && typeof detail.exchangeSnapshot === "object"
-                ? detail.exchangeSnapshot as Partial<TravelExchangeSnapshot>
+                ? (detail.exchangeSnapshot as Partial<TravelExchangeSnapshot>)
                 : null;
             return {
               date: typeof detail.date === "string" ? detail.date : record.startDate!,
@@ -486,13 +668,18 @@ const migrateTravelHistoryRecord = (
               amount: typeof detail.amount === "string" ? detail.amount : "",
               currency,
               note: typeof detail.note === "string" ? detail.note : "",
-              convertedAmount: Number.isFinite(detail.convertedAmount) ? Number(detail.convertedAmount) : 0,
-              locationLabel: typeof detail.locationLabel === "string" && detail.locationLabel.trim()
-                ? detail.locationLabel.trim()
-                : undefined,
+              convertedAmount: Number.isFinite(detail.convertedAmount)
+                ? Number(detail.convertedAmount)
+                : 0,
+              locationLabel:
+                typeof detail.locationLabel === "string" && detail.locationLabel.trim()
+                  ? detail.locationLabel.trim()
+                  : undefined,
               participantIds,
               participantNames,
-              splitShare: Number.isFinite(detail.splitShare) ? Number(detail.splitShare) : undefined,
+              splitShare: Number.isFinite(detail.splitShare)
+                ? Number(detail.splitShare)
+                : undefined,
               exchangeSnapshot:
                 exchangeSnapshot &&
                 typeof exchangeSnapshot.from === "string" &&
@@ -504,7 +691,10 @@ const migrateTravelHistoryRecord = (
                       from: exchangeSnapshot.from,
                       to: exchangeSnapshot.to,
                       rate: Number(exchangeSnapshot.rate),
-                      source: typeof exchangeSnapshot.source === "string" ? exchangeSnapshot.source : "unknown",
+                      source:
+                        typeof exchangeSnapshot.source === "string"
+                          ? exchangeSnapshot.source
+                          : "unknown",
                       updatedAt: exchangeSnapshot.updatedAt,
                       convertedAmount: Number(exchangeSnapshot.convertedAmount),
                     }
@@ -551,7 +741,11 @@ export const normalizeStoredPendingTravelDeletes = (
         .map((item) => {
           if (!item || typeof item !== "object") return null;
           const pending = item as Partial<PendingTravelHistoryDelete>;
-          if (typeof pending.deletedAt !== "number" || !pending.record || typeof pending.record !== "object") {
+          if (
+            typeof pending.deletedAt !== "number" ||
+            !pending.record ||
+            typeof pending.record !== "object"
+          ) {
             return null;
           }
           const record = migrateTravelHistoryRecord(
@@ -590,7 +784,10 @@ export const normalizeStoredTravelHistory = (
     return value
       .map((item) => {
         if (!item || typeof item !== "object") return null;
-        return migrateTravelHistoryRecord(item as Partial<TravelHistoryRecord>, normalizeCurrencyInput);
+        return migrateTravelHistoryRecord(
+          item as Partial<TravelHistoryRecord>,
+          normalizeCurrencyInput,
+        );
       })
       .filter((record): record is TravelHistoryRecord => Boolean(record))
       .sort((a, b) => b.savedAt - a.savedAt);
@@ -603,7 +800,10 @@ export const readStoredTravelHistory = (
   normalizeCurrencyInput: (value: unknown) => string | null,
 ): TravelHistoryRecord[] => {
   try {
-    return normalizeStoredTravelHistory(JSON.parse(localStorage.getItem(TRAVEL_HISTORY_KEY) ?? "[]"), normalizeCurrencyInput);
+    return normalizeStoredTravelHistory(
+      JSON.parse(localStorage.getItem(TRAVEL_HISTORY_KEY) ?? "[]"),
+      normalizeCurrencyInput,
+    );
   } catch {
     return [];
   }

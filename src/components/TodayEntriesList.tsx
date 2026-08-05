@@ -36,29 +36,37 @@ export function TodayEntriesList({
 }: TodayEntriesListProps) {
   const tableRef = useRef<HTMLDivElement | null>(null);
 
-  useGsapContext(tableRef, (ctx) => {
-    if (prefersReducedMotion()) return;
-    const onFocus = (event: Event) => {
-      const cell = (event.target as HTMLElement).closest("td");
-      if (!cell) return;
-      gsap.to(cell, { scale: 1.01, duration: 0.2, ease: "power2.out", overwrite: "auto" });
-    };
-    const onBlur = (event: Event) => {
-      const cell = (event.target as HTMLElement).closest("td");
-      if (!cell) return;
-      gsap.to(cell, { scale: 1, duration: 0.25, ease: "power2.out", overwrite: "auto" });
-    };
-    ctx.selector?.(".today-inline-table input, .today-inline-table select")?.forEach((el: Element) => {
-      el.addEventListener("focus", onFocus);
-      el.addEventListener("blur", onBlur);
-    });
-    return () => {
-      ctx.selector?.(".today-inline-table input, .today-inline-table select")?.forEach((el: Element) => {
-        el.removeEventListener("focus", onFocus);
-        el.removeEventListener("blur", onBlur);
-      });
-    };
-  }, [entries.length]);
+  useGsapContext(
+    tableRef,
+    (ctx) => {
+      if (prefersReducedMotion()) return;
+      const onFocus = (event: Event) => {
+        const cell = (event.target as HTMLElement).closest("td");
+        if (!cell) return;
+        gsap.to(cell, { scale: 1.01, duration: 0.2, ease: "power2.out", overwrite: "auto" });
+      };
+      const onBlur = (event: Event) => {
+        const cell = (event.target as HTMLElement).closest("td");
+        if (!cell) return;
+        gsap.to(cell, { scale: 1, duration: 0.25, ease: "power2.out", overwrite: "auto" });
+      };
+      ctx
+        .selector?.(".today-inline-table input, .today-inline-table select")
+        ?.forEach((el: Element) => {
+          el.addEventListener("focus", onFocus);
+          el.addEventListener("blur", onBlur);
+        });
+      return () => {
+        ctx
+          .selector?.(".today-inline-table input, .today-inline-table select")
+          ?.forEach((el: Element) => {
+            el.removeEventListener("focus", onFocus);
+            el.removeEventListener("blur", onBlur);
+          });
+      };
+    },
+    [entries.length],
+  );
 
   if (!entries.length) {
     return <p className="muted empty-state">今天还没有记录，用上方对话框记第一笔吧。</p>;
@@ -78,7 +86,10 @@ export function TodayEntriesList({
         </thead>
         <tbody>
           {entries.map((entry) => (
-            <tr key={`${entry.category}-${entry.rowIndex}-${entry.index}`} className={entry.hidden ? "is-hidden" : undefined}>
+            <tr
+              key={`${entry.category}-${entry.rowIndex}-${entry.index}`}
+              className={entry.hidden ? "is-hidden" : undefined}
+            >
               <td>
                 <span className="today-entry-list__category">{entry.category}</span>
               </td>
