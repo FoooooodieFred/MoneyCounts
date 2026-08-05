@@ -31,7 +31,7 @@
 
 | 阶段 | 关键产出 | 代表 commit / tag |
 | --- | --- | --- |
-| **1 基线** | 离线 zip；整理前 tag | tag **`baseline-pre-cleanup`** @ `843aa29`（等价历史点；盘点文档记为 `279ab60` 时段） |
+| **1 基线** | 离线 zip；整理前 tag | tag **`baseline-pre-cleanup`** @ `279ab60`（`chore: update PWA icon`） |
 | **2 盘点** | `01-directory-structure.md` · `02-feature-inventory.md` · `03-issues-and-redundancy.md` · `04-acceptance-flows.md` | `8eab9f1` |
 | **3 结构** | lib/components 归位；`06-phase3-result.md` | `24349b5` · `c2b601c` |
 | **4 规范化** | Prettier/ESLint；删冗余；延期清单；`07`–`09` 文档 | `90921f6` … `3dff922` |
