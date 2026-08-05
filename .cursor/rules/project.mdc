@@ -1,0 +1,61 @@
+---
+description: MoneyCounts 项目约定 — 技术栈、目录、风格与禁止事项
+alwaysApply: true
+---
+
+# MoneyCounts（Accounting Book）
+
+纯前端记账 Web 应用。数据只存浏览器 LocalStorage，无后端。
+
+## 技术栈（以 package.json 为准）
+
+- Vite 8 · React 19 · TypeScript · react-router-dom 7 · GSAP 3
+- Vitest · Prettier · ESLint（flat）· PWA（`public/sw.js` + manifest）
+- 无服务端 / 无 Python API
+
+## 目录约定
+
+| 路径 | 放什么 |
+| --- | --- |
+| `src/pages/` | 路由页（Search / Travel / Settings） |
+| `src/components/` | 可复用 UI（含 TravelHistoryUI、TravelCharts） |
+| `src/lib/` | 纯逻辑与测试（parser、stats、settings、backup、travelMode） |
+| `src/hooks/` | React hooks（如 useGsapContext） |
+| `src/App.tsx` | 应用壳：状态、路由、账本写入、模态 |
+| `src/styles.css` | 全局样式（暂不拆分） |
+| `public/` | PWA / 静态资源 |
+| `docs/` | 文档与 cleanup 盘点；非业务代码 |
+
+新增文件按上表归位；不要把页面逻辑丢回 `src/` 根目录。
+
+## 代码风格
+
+- Prettier：2 空格、双引号、分号、`printWidth: 100`、`trailingComma: "all"`
+- 脚本：`npm run format` / `format:check` / `lint`
+- 组件 PascalCase；`lib` 纯函数 camelCase；测试 `*.test.ts` 与源码同目录
+
+## 禁止事项
+
+- **禁止**随意新增依赖；确需时先说明理由并征求确认
+- **禁止**整理/重构时顺手加功能或改产品行为
+- **禁止**无确认大拆 `App.tsx` / `styles.css`（体量大、连锁风险高）
+- 改动 `src/lib/` 公共纯函数须谨慎，并跑 `npm test`
+- 不要改 LocalStorage key / 备份 schema，除非任务明确要求
+- 不要 push、不要打 tag，除非用户明确要求
+
+## 领域约束（简短）
+
+- **本地优先**：账本/设置/汇率缓存/旅游状态均在 LocalStorage；换设备需 JSON 备份
+- **多货币**：HKD/CNY 为主；汇率经外部 API 拉取并缓存；统计货币可多选
+- **旅游模式**：独立行程与历史；AA 分账、地点标签、汇率快照；状态归一化在 `travelMode.ts`
+- 自然语言记账入口：`parseNaturalLedger`（`localLedgerParser`）；预览确认后再写入
+- 交互契约见 `docs/refactor-preservation.md`；清理盘点见 `docs/cleanup/`
+
+## 提交前验证
+
+```bash
+npm run typecheck
+npm test
+```
+
+涉及样式或构建产物时再视情况 `npm run build`。改逻辑必跑 test；仅文档/规则可跳过。
