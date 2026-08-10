@@ -12,7 +12,7 @@ import {
 } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { gsap } from "gsap";
-import { Alert, Button, Input, Label, TextField } from "@heroui/react";
+import { Alert, Button, Input, Label, ListBox, Select, TextField } from "@heroui/react";
 import { LocalLedgerRecord, parseNaturalLedger } from "./lib/localLedgerParser";
 import { HeroSection } from "./components/HeroSection";
 import { NaturalLanguageInput } from "./components/NaturalLanguageInput";
@@ -2560,32 +2560,57 @@ function App() {
           {type === "month" && (
             <div className="monthly-summary-panel">
               <div className="summary-controls">
-                <label>
-                  汇总模式
-                  <select
-                    value={summaryMode}
-                    onChange={(event) => setSummaryMode(event.target.value as SummaryMode)}
-                  >
-                    <option value="split">原货币分开</option>
-                    <option value="merged">单一货币合并</option>
-                  </select>
-                </label>
-                <label>
-                  基准货币
-                  <select
-                    value={baseCurrency}
-                    onChange={(event) => {
-                      if (allCurrencies.includes(event.target.value))
-                        setBaseCurrency(event.target.value);
-                    }}
-                  >
-                    {allCurrencies.map((currency) => (
-                      <option key={currency} value={currency}>
-                        {currency} · {getCurrencyMeta(currency).shortName}
-                      </option>
-                    ))}
-                  </select>
-                </label>
+                <Select
+                  selectedKey={summaryMode}
+                  onSelectionChange={(key) => {
+                    if (key === "split" || key === "merged") setSummaryMode(key);
+                  }}
+                  className="w-full max-w-xs"
+                >
+                  <Label>汇总模式</Label>
+                  <Select.Trigger>
+                    <Select.Value />
+                    <Select.Indicator />
+                  </Select.Trigger>
+                  <Select.Popover>
+                    <ListBox>
+                      <ListBox.Item id="split" textValue="原货币分开">
+                        原货币分开
+                      </ListBox.Item>
+                      <ListBox.Item id="merged" textValue="单一货币合并">
+                        单一货币合并
+                      </ListBox.Item>
+                    </ListBox>
+                  </Select.Popover>
+                </Select>
+                <Select
+                  selectedKey={baseCurrency}
+                  onSelectionChange={(key) => {
+                    if (key != null && allCurrencies.includes(String(key))) {
+                      setBaseCurrency(String(key));
+                    }
+                  }}
+                  className="w-full max-w-xs"
+                >
+                  <Label>基准货币</Label>
+                  <Select.Trigger>
+                    <Select.Value />
+                    <Select.Indicator />
+                  </Select.Trigger>
+                  <Select.Popover>
+                    <ListBox>
+                      {allCurrencies.map((currency) => (
+                        <ListBox.Item
+                          key={currency}
+                          id={currency}
+                          textValue={`${currency} · ${getCurrencyMeta(currency).shortName}`}
+                        >
+                          {currency} · {getCurrencyMeta(currency).shortName}
+                        </ListBox.Item>
+                      ))}
+                    </ListBox>
+                  </Select.Popover>
+                </Select>
               </div>
               <div className="summary-list">
                 {monthlySummaryRows.length ? (
@@ -3714,30 +3739,52 @@ function App() {
                   <h2>近 N 个月花费对比</h2>
                 </div>
                 <div className="trend-controls">
-                  <label>
-                    月数
-                    <select
-                      value={trendMonths}
-                      onChange={(event) => setTrendMonths(Number(event.target.value))}
-                    >
-                      <option value={3}>3 个月</option>
-                      <option value={6}>6 个月</option>
-                      <option value={12}>12 个月</option>
-                    </select>
-                  </label>
-                  <label>
-                    统计口径
-                    <select
-                      value={trendCurrency}
-                      onChange={(event) => setTrendCurrency(event.target.value)}
-                    >
-                      {allCurrencies.map((currency) => (
-                        <option key={currency} value={currency}>
-                          {currency}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
+                  <Select
+                    selectedKey={String(trendMonths)}
+                    onSelectionChange={(key) => {
+                      if (key != null) setTrendMonths(Number(key));
+                    }}
+                  >
+                    <Label>月数</Label>
+                    <Select.Trigger>
+                      <Select.Value />
+                      <Select.Indicator />
+                    </Select.Trigger>
+                    <Select.Popover>
+                      <ListBox>
+                        <ListBox.Item id="3" textValue="3 个月">
+                          3 个月
+                        </ListBox.Item>
+                        <ListBox.Item id="6" textValue="6 个月">
+                          6 个月
+                        </ListBox.Item>
+                        <ListBox.Item id="12" textValue="12 个月">
+                          12 个月
+                        </ListBox.Item>
+                      </ListBox>
+                    </Select.Popover>
+                  </Select>
+                  <Select
+                    selectedKey={trendCurrency}
+                    onSelectionChange={(key) => {
+                      if (key != null) setTrendCurrency(String(key));
+                    }}
+                  >
+                    <Label>统计口径</Label>
+                    <Select.Trigger>
+                      <Select.Value />
+                      <Select.Indicator />
+                    </Select.Trigger>
+                    <Select.Popover>
+                      <ListBox>
+                        {allCurrencies.map((currency) => (
+                          <ListBox.Item key={currency} id={currency} textValue={currency}>
+                            {currency}
+                          </ListBox.Item>
+                        ))}
+                      </ListBox>
+                    </Select.Popover>
+                  </Select>
                 </div>
               </div>
               <Suspense
@@ -4099,18 +4146,20 @@ function App() {
                             <th rowSpan={currentRowCount} className="category-cell">
                               <div className="category-cell-inner">
                                 <span>{category}</span>
-                                <button
-                                  type="button"
+                                <Button
+                                  isIconOnly
+                                  size="sm"
+                                  variant="secondary"
                                   className="add-record-button add-record-button--inline"
                                   data-action="manual-ledger-add-record"
-                                  onClick={() => addCategoryRecord(categoryIndex)}
-                                  disabled={!canAdd}
+                                  onPress={() => addCategoryRecord(categoryIndex)}
+                                  isDisabled={!canAdd}
                                   aria-label={
                                     canAdd ? `添加${category}记录` : `${category}已达上限`
                                   }
                                 >
                                   +
-                                </button>
+                                </Button>
                               </div>
                             </th>
                           )}
@@ -4118,7 +4167,7 @@ function App() {
                             <span>#{rowIndex + 1}</span>
                           </td>
                           <td>
-                            <input
+                            <Input
                               data-date={selectedDate}
                               data-index={index}
                               data-field="amount"
@@ -4132,21 +4181,21 @@ function App() {
                             />
                           </td>
                           <td>
-                            <button
-                              type="button"
+                            <Button
+                              variant="outline"
                               className="currency-select-button"
                               data-action="manual-ledger-currency"
                               data-date={selectedDate}
                               data-index={index}
-                              onClick={() =>
+                              onPress={() =>
                                 setCurrencyModal({ type: "entry", index, category, rowIndex })
                               }
                             >
                               <span>{entry.currency}</span>
-                            </button>
+                            </Button>
                           </td>
                           <td>
-                            <input
+                            <Input
                               data-date={selectedDate}
                               data-index={index}
                               data-field="note"
@@ -4160,26 +4209,30 @@ function App() {
                           </td>
                           <td className="record-actions">
                             <div className="record-actions-inner">
-                              <button
-                                type="button"
+                              <Button
+                                isIconOnly
+                                size="sm"
+                                variant={entry.hidden ? "secondary" : "ghost"}
                                 className={
                                   entry.hidden ? "hide-record-button active" : "hide-record-button"
                                 }
                                 data-action="manual-ledger-toggle-hidden"
-                                onClick={() => toggleEntryHidden(index)}
+                                onPress={() => toggleEntryHidden(index)}
                                 aria-label={hiddenActionLabel}
                               >
                                 {entry.hidden ? "◌" : "○"}
-                              </button>
-                              <button
-                                type="button"
+                              </Button>
+                              <Button
+                                isIconOnly
+                                size="sm"
+                                variant="danger-soft"
                                 className="delete-record-button"
-                                title={recordActionLabel}
                                 data-action="manual-ledger-delete-record"
-                                onClick={() => deleteCategoryRecord(categoryIndex, rowIndex)}
+                                onPress={() => deleteCategoryRecord(categoryIndex, rowIndex)}
+                                aria-label={recordActionLabel}
                               >
                                 ×
-                              </button>
+                              </Button>
                             </div>
                           </td>
                           {rowIndex === 0 && (
