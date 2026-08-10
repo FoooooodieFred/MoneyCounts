@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
+import { Button, Modal, ToggleButton, ToggleButtonGroup, useOverlayState } from "@heroui/react";
 import { gsap } from "gsap";
 import { prefersReducedMotion } from "../hooks/useGsapContext";
 
@@ -19,86 +20,43 @@ export function StatsCurrencyPicker({
   onClose,
   getLabel,
 }: StatsCurrencyPickerProps) {
-  const backdropRef = useRef<HTMLDivElement | null>(null);
-  const panelRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open, onClose]);
-
-  useEffect(() => {
-    const backdrop = backdropRef.current;
-    const panel = panelRef.current;
-    if (!backdrop || !panel) return;
-
-    const ctx = gsap.context(() => {
-      if (!open) return;
-      if (prefersReducedMotion()) {
-        gsap.set([backdrop, panel], { autoAlpha: 1, clearProps: "transform,opacity,visibility" });
-        return;
-      }
-      gsap.fromTo(backdrop, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.22, ease: "power2.out" });
-      gsap.fromTo(
-        panel,
-        { autoAlpha: 0, y: 12, scale: 0.96 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.32,
-          ease: "back.out(1.5)",
-          clearProps: "transform,opacity,visibility",
-        },
-      );
-    });
-
-    return () => ctx.revert();
-  }, [open]);
-
-  if (!open) return null;
+  const state = useOverlayState({
+    isOpen: open,
+    onOpenChange: (isOpen) => {
+      if (!isOpen) onClose();
+    },
+  });
 
   return (
-    <div
-      ref={backdropRef}
-      className="stats-currency-popup-backdrop"
-      role="presentation"
-      onClick={(event) => {
-        if (event.target === backdropRef.current) onClose();
-      }}
-    >
-      <div
-        ref={panelRef}
-        className="stats-currency-popup"
-        role="dialog"
-        aria-label="选择统计货币"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <header>
-          <strong>统计货币</strong>
-          <button type="button" className="ghost-button" onClick={onClose} aria-label="关闭">
-            ✕
-          </button>
-        </header>
-        <div className="stats-currency-popup__chips">
-          {currencies.map((currency) => (
-            <button
-              key={currency}
-              type="button"
-              className={selected.includes(currency) ? "currency-chip active" : "currency-chip"}
-              onClick={() => onToggle(currency)}
-              aria-pressed={selected.includes(currency)}
-            >
-              {currency} · {getLabel(currency)}
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
+    <Modal state={state}>
+      <Modal.Backdrop className="stats-currency-popup-backdrop">
+        <Modal.Container className="stats-currency-popup" size="sm">
+          <Modal.Dialog aria-label="选择统计货币">
+            <Modal.CloseTrigger aria-label="关闭" />
+            <Modal.Header>
+              <Modal.Heading>统计货币</Modal.Heading>
+            </Modal.Header>
+            <Modal.Body>
+              <div className="stats-currency-popup__chips">
+                {currencies.map((currency) => (
+                  <Button
+                    key={currency}
+                    className={
+                      selected.includes(currency) ? "currency-chip active" : "currency-chip"
+                    }
+                    variant={selected.includes(currency) ? "secondary" : "tertiary"}
+                    onPress={() => onToggle(currency)}
+                    aria-pressed={selected.includes(currency)}
+                  >
+                    {currency} · {getLabel(currency)}
+                  </Button>
+                ))}
+              </div>
+            </Modal.Body>
+          </Modal.Dialog>
+        </Modal.Container>
+      </Modal.Backdrop>
+    </Modal>
   );
 }
 
@@ -124,23 +82,24 @@ export function SummaryModeToggle({ mode, onChange }: SummaryModeToggleProps) {
   };
 
   return (
-    <div ref={trackRef} className="summary-mode-toggle" role="group" aria-label="汇总显示模式">
-      <button
-        type="button"
-        className={mode === "split" ? "active" : undefined}
-        aria-pressed={mode === "split"}
-        onClick={() => animate("split")}
+    <div ref={trackRef}>
+      <ToggleButtonGroup
+        className="summary-mode-toggle"
+        aria-label="汇总显示模式"
+        selectionMode="single"
+        selectedKeys={new Set([mode])}
+        disallowEmptySelection
+        onSelectionChange={(keys) => {
+          const next = [...keys][0];
+          if (next === "split" || next === "merged") animate(next);
+        }}
       >
-        分币种
-      </button>
-      <button
-        type="button"
-        className={mode === "merged" ? "active" : undefined}
-        aria-pressed={mode === "merged"}
-        onClick={() => animate("merged")}
-      >
-        单币种
-      </button>
+        <ToggleButton id="split">分币种</ToggleButton>
+        <ToggleButton id="merged">
+          <ToggleButtonGroup.Separator />
+          单币种
+        </ToggleButton>
+      </ToggleButtonGroup>
     </div>
   );
 }

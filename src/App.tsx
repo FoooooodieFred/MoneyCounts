@@ -1105,7 +1105,10 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem(THEME_KEY, themeMode);
-    document.documentElement.dataset.theme = themeMode;
+    const root = document.documentElement;
+    root.dataset.theme = themeMode;
+    root.classList.remove("light", "dark");
+    root.classList.add(themeMode);
   }, [themeMode]);
 
   useEffect(() => {

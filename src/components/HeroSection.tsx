@@ -1,4 +1,5 @@
 import { CSSProperties, PointerEvent, useEffect, useLayoutEffect, useRef } from "react";
+import { Button } from "@heroui/react";
 import { gsap } from "gsap";
 import { useGsapContext, prefersReducedMotion } from "../hooks/useGsapContext";
 
@@ -191,27 +192,25 @@ export function HeroSection({
           <em>{weekdayLabel}</em>
         </button>
         <div className="hero-date-banner__nav" aria-label="日期导航">
-          <button
-            type="button"
-            className="secondary-button"
+          <Button
+            variant="secondary"
             data-action="date-prev"
-            onClick={onPrevDay}
+            onPress={onPrevDay}
             aria-label="前一天"
           >
             ‹ 前一天
-          </button>
-          <button type="button" data-action="date-today" onClick={onToday}>
+          </Button>
+          <Button data-action="date-today" onPress={onToday}>
             今天
-          </button>
-          <button
-            type="button"
-            className="secondary-button"
+          </Button>
+          <Button
+            variant="secondary"
             data-action="date-next"
-            onClick={onNextDay}
+            onPress={onNextDay}
             aria-label="后一天"
           >
             后一天 ›
-          </button>
+          </Button>
         </div>
       </article>
 
@@ -229,14 +228,9 @@ export function HeroSection({
         <div className="hero-stats">
           <div className="hero-stats__heading">
             <span>趣味小卡片</span>
-            <button
-              type="button"
-              className="ghost-button"
-              data-action="shuffle-hero-cards"
-              onClick={handleShuffleCards}
-            >
+            <Button variant="ghost" data-action="shuffle-hero-cards" onPress={handleShuffleCards}>
               换一组
-            </button>
+            </Button>
           </div>
           <div className="hero-stats__grid">
             {statCards.map((card) => {

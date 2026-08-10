@@ -1,4 +1,5 @@
 import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import { Button, ToggleButton, ToggleButtonGroup } from "@heroui/react";
 import { gsap } from "gsap";
 import { parseQuickExpenseLines, type QuickExpenseResult } from "../lib/quickExpenseParser";
 import type { LocalLedgerRecord } from "../lib/localLedgerParser";
@@ -264,26 +265,35 @@ export function NaturalLanguageInput({
                 支持多句混输、相对日期、多币种、AA/退款/到账；按 Enter 确认，Shift+Enter 换行。
               </p>
             </div>
-            <div className="nl-currency-toggle" role="group" aria-label="默认货币">
-              {(["CNY", "HKD"] as const).map((currency) => (
-                <button
-                  key={currency}
-                  type="button"
-                  className={defaultCurrency === currency ? "active" : undefined}
-                  aria-pressed={defaultCurrency === currency}
-                  onClick={() => onDefaultCurrencyChange(currency)}
-                >
-                  {currency}
-                </button>
-              ))}
-            </div>
+            <ToggleButtonGroup
+              className="nl-currency-toggle"
+              aria-label="默认货币"
+              selectionMode="single"
+              selectedKeys={new Set([defaultCurrency])}
+              disallowEmptySelection
+              onSelectionChange={(keys) => {
+                const next = [...keys][0];
+                if (next === "CNY" || next === "HKD") onDefaultCurrencyChange(next);
+              }}
+            >
+              <ToggleButton id="CNY">CNY</ToggleButton>
+              <ToggleButton id="HKD">
+                <ToggleButtonGroup.Separator />
+                HKD
+              </ToggleButton>
+            </ToggleButtonGroup>
           </header>
 
           <div className="nl-template-row" aria-label="快捷模板">
             {QUICK_TEMPLATES.map((template) => (
-              <button key={template} type="button" onClick={() => applyTemplate(template)}>
+              <Button
+                key={template}
+                variant="tertiary"
+                size="sm"
+                onPress={() => applyTemplate(template)}
+              >
                 {template}
-              </button>
+              </Button>
             ))}
           </div>
 
@@ -305,19 +315,19 @@ export function NaturalLanguageInput({
               />
             </label>
             <div className="nl-form__actions">
-              <button type="submit" disabled={!previews.length || isParsing}>
+              <Button type="submit" isDisabled={!previews.length || isParsing}>
                 {isParsing
                   ? "解析中..."
                   : `生成预览${previews.length > 1 ? ` (${previews.length} 笔)` : ""}`}
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
-                className="secondary-button"
+                variant="secondary"
                 data-action="quick-entry-clear"
-                onClick={() => setInput("")}
+                onPress={() => setInput("")}
               >
                 清空
-              </button>
+              </Button>
             </div>
           </form>
 
@@ -325,14 +335,9 @@ export function NaturalLanguageInput({
             <div ref={previewRef} className="nl-preview nl-preview--batch" role="status">
               <div className="nl-preview__heading">
                 <span className="nl-preview__count">待确认 {previewRecords.length} 笔</span>
-                <button
-                  type="button"
-                  className="ghost-button"
-                  data-action="preview-add-record"
-                  onClick={onPreviewAdd}
-                >
+                <Button variant="ghost" data-action="preview-add-record" onPress={onPreviewAdd}>
                   补一笔
-                </button>
+                </Button>
               </div>
               {previewRecords.map((preview, index) => (
                 <div
@@ -388,15 +393,16 @@ export function NaturalLanguageInput({
                       onChange={(event) => onPreviewChange(index, "note", event.target.value)}
                     />
                   </label>
-                  <button
-                    type="button"
+                  <Button
+                    isIconOnly
+                    variant="danger-soft"
                     className="delete-record-button"
                     data-action="preview-delete-record"
-                    onClick={() => onPreviewDelete(index)}
+                    onPress={() => onPreviewDelete(index)}
                     aria-label="删除预览记录"
                   >
                     ×
-                  </button>
+                  </Button>
                   {previewIssues[index]?.length ? (
                     <small className="nl-preview-row__issues">
                       {previewIssues[index].join(" / ")}
@@ -411,15 +417,14 @@ export function NaturalLanguageInput({
                   ))}
                 </div>
               ) : null}
-              <button
-                type="button"
+              <Button
                 className="nl-confirm-float"
                 data-action="preview-confirm-import"
-                disabled={!canConfirm}
-                onClick={onConfirm}
+                isDisabled={!canConfirm}
+                onPress={onConfirm}
               >
                 确认记账
-              </button>
+              </Button>
             </div>
           ) : previews.length > 0 ? (
             <div ref={previewRef} className="nl-preview nl-preview--compact" role="status">
@@ -460,13 +465,13 @@ export function NaturalLanguageInput({
               placeholder="输入一笔，Enter 确认"
               aria-label="底部快速记账输入"
             />
-            <button
+            <Button
               type="submit"
-              disabled={!previews.length || isParsing}
+              isDisabled={!previews.length || isParsing}
               aria-label="生成记账预览"
             >
               →
-            </button>
+            </Button>
           </form>
         </div>
       ) : null}

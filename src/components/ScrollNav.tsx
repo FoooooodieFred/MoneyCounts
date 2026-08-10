@@ -38,10 +38,19 @@ type ScrollNavProps = {
 };
 
 function NavLink({ href, label }: { href: string; label: string }) {
+  const className = "button button--ghost button--sm";
   if (isRouteLink(href)) {
-    return <Link to={href}>{label}</Link>;
+    return (
+      <Link className={className} to={href}>
+        {label}
+      </Link>
+    );
   }
-  return <Link to={toRouterTarget(href)}>{label}</Link>;
+  return (
+    <Link className={className} to={toRouterTarget(href)}>
+      {label}
+    </Link>
+  );
 }
 
 export function ScrollNav({ settings, travelAccent = false }: ScrollNavProps) {

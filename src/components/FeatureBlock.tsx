@@ -1,4 +1,5 @@
 import { ReactNode, useRef } from "react";
+import { Card } from "@heroui/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGsapContext, prefersReducedMotion } from "../hooks/useGsapContext";
@@ -53,12 +54,14 @@ export function FeatureBlock({
 
   return (
     <section ref={blockRef} id={id} className={`feature-block feature-block--${variant}`}>
-      <header className="feature-block__header">
-        <p className="eyebrow">{eyebrow}</p>
-        <h2>{title}</h2>
-        {subtitle ? <p className="muted">{subtitle}</p> : null}
-      </header>
-      <div className="feature-block__body">{children}</div>
+      <Card className="feature-block__card">
+        <Card.Header className="feature-block__header">
+          <p className="eyebrow">{eyebrow}</p>
+          <Card.Title>{title}</Card.Title>
+          {subtitle ? <Card.Description>{subtitle}</Card.Description> : null}
+        </Card.Header>
+        <Card.Content className="feature-block__body">{children}</Card.Content>
+      </Card>
     </section>
   );
 }

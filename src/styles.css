@@ -1,3 +1,55 @@
+@import "tailwindcss";
+@import "@heroui/styles";
+
+/* Bridge MoneyCounts tokens → HeroUI semantic variables */
+:root,
+.light,
+[data-theme="light"] {
+  --background: #f8fafb;
+  --foreground: var(--color-text, #172131);
+  --surface: var(--color-surface-solid, #fffdf9);
+  --surface-foreground: var(--color-text, #172131);
+  --overlay: var(--color-surface-solid, #fffdf9);
+  --overlay-foreground: var(--color-text, #172131);
+  --accent: var(--color-brand, #356fd7);
+  --accent-foreground: #ffffff;
+  --accent-hover: var(--color-brand-deep, #224a9f);
+  --danger: var(--color-danger, #dc2626);
+  --danger-foreground: #ffffff;
+  --danger-hover: var(--color-danger-deep, #b91c1c);
+  --border: var(--color-line, rgba(120, 139, 163, 0.24));
+  --separator: var(--color-line, rgba(120, 139, 163, 0.24));
+  --focus: var(--color-brand, #356fd7);
+  --field-background: rgba(255, 255, 255, 0.78);
+  --field-foreground: var(--color-text, #172131);
+  --field-border: rgba(131, 154, 186, 0.32);
+  --default: rgba(255, 255, 255, 0.84);
+  --default-foreground: var(--color-text, #172131);
+}
+
+.dark,
+[data-theme="dark"] {
+  --background: #101a2b;
+  --foreground: var(--color-text, #edf4ff);
+  --surface: var(--color-surface-solid, #101a2b);
+  --surface-foreground: var(--color-text, #edf4ff);
+  --overlay: var(--color-surface-strong, rgba(22, 33, 52, 0.92));
+  --overlay-foreground: var(--color-text, #edf4ff);
+  --accent: var(--color-brand, #6d9dff);
+  --accent-foreground: #0b1220;
+  --accent-hover: var(--color-brand-deep, #c0d7ff);
+  --danger: var(--color-danger, #dc2626);
+  --danger-foreground: #ffffff;
+  --border: var(--color-line, rgba(166, 184, 212, 0.24));
+  --separator: var(--color-line, rgba(166, 184, 212, 0.24));
+  --focus: var(--color-brand, #6d9dff);
+  --field-background: rgba(15, 23, 42, 0.72);
+  --field-foreground: var(--color-text, #edf4ff);
+  --field-border: rgba(148, 163, 184, 0.28);
+  --default: rgba(22, 33, 52, 0.92);
+  --default-foreground: var(--color-text, #edf4ff);
+}
+
 :root {
   --font-sans: "Manrope", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   --font-display: "Bricolage Grotesque", "Manrope", "PingFang SC", sans-serif;
@@ -140,6 +192,8 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  background-color: var(--background);
+  color: var(--foreground);
 }
 
 body::before {
@@ -165,22 +219,23 @@ body::before {
     linear-gradient(90deg, rgba(148, 163, 184, 0.05) 1px, transparent 1px);
 }
 
-button,
-input,
-textarea,
-select {
+/* Legacy native controls — exclude HeroUI BEM roots (.button, .input, …) */
+button:not(.button),
+input:not(.input),
+textarea:not(.textarea),
+select:not(.select) {
   font: inherit;
 }
 
-:root[data-theme="dark"] input,
-:root[data-theme="dark"] textarea,
-:root[data-theme="dark"] select {
+:root[data-theme="dark"] input:not(.input),
+:root[data-theme="dark"] textarea:not(.textarea),
+:root[data-theme="dark"] select:not(.select) {
   border-color: rgba(148, 163, 184, 0.28);
   background: rgba(15, 23, 42, 0.72);
   color: var(--ink);
 }
 
-button {
+button:not(.button) {
   border: 0;
   border-radius: 14px;
   background: linear-gradient(135deg, var(--blue), var(--aqua));
@@ -195,13 +250,13 @@ button {
     background 0.15s ease;
 }
 
-button:hover {
+button:not(.button):hover {
   background: linear-gradient(135deg, var(--blue-deep), #0e9ac6);
   box-shadow: 0 18px 36px rgba(47, 115, 255, 0.26);
   transform: translateY(-1px);
 }
 
-:root[data-theme="dark"] button {
+:root[data-theme="dark"] button:not(.button) {
   background: linear-gradient(135deg, #4778e6, #1aa9bd);
   box-shadow:
     0 14px 32px rgba(0, 0, 0, 0.32),
@@ -209,16 +264,16 @@ button:hover {
   color: #f8fbff;
 }
 
-:root[data-theme="dark"] button:hover {
+:root[data-theme="dark"] button:not(.button):hover {
   background: linear-gradient(135deg, #7aa8ff, #32c8d6);
   box-shadow:
     0 18px 38px rgba(0, 0, 0, 0.38),
     0 0 34px rgba(77, 211, 223, 0.16);
 }
 
-input,
-textarea,
-select {
+input:not(.input),
+textarea:not(.textarea),
+select:not(.select) {
   width: 100%;
   border: 1px solid rgba(131, 154, 186, 0.32);
   border-radius: 12px;
@@ -231,26 +286,26 @@ select {
     box-shadow 0.15s ease;
 }
 
-input:focus,
-textarea:focus,
-select:focus {
+input:not(.input):focus,
+textarea:not(.textarea):focus,
+select:not(.select):focus {
   border-color: var(--blue);
   box-shadow: 0 0 0 4px rgba(47, 115, 255, 0.13);
 }
 
-textarea {
+textarea:not(.textarea) {
   min-height: 128px;
   resize: vertical;
 }
 
-input.invalid,
-select.invalid {
+input:not(.input).invalid,
+select:not(.select).invalid {
   border-color: #dc2626;
   background: #fff7f7;
 }
 
-:root[data-theme="dark"] input.invalid,
-:root[data-theme="dark"] select.invalid {
+:root[data-theme="dark"] input:not(.input).invalid,
+:root[data-theme="dark"] select:not(.select).invalid {
   border-color: rgba(248, 113, 113, 0.78);
   background: rgba(69, 10, 10, 0.46);
 }

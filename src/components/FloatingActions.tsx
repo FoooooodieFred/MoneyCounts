@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { Button } from "@heroui/react";
 import { gsap } from "gsap";
 import { useGsapContext, prefersReducedMotion } from "../hooks/useGsapContext";
 
@@ -59,7 +60,7 @@ export function FloatingActions({
     pulseTheme();
   }, [themeMode]);
 
-  const fabClick = (action: () => void, selector: string) => {
+  const fabPress = (action: () => void, selector: string) => {
     if (!prefersReducedMotion()) {
       const btn = rootRef.current?.querySelector(selector);
       if (btn) {
@@ -75,48 +76,48 @@ export function FloatingActions({
 
   return (
     <div ref={rootRef} className="floating-actions-root" aria-label="快捷操作">
-      <button
-        type="button"
+      <Button
+        isIconOnly
+        variant="secondary"
         className="floating-theme-toggle fab-btn"
         data-action="toggle-theme"
-        onClick={() => fabClick(onToggleTheme, ".floating-theme-toggle")}
+        onPress={() => fabPress(onToggleTheme, ".floating-theme-toggle")}
         aria-label={themeMode === "dark" ? "切换浅色模式" : "切换深色模式"}
-        title={themeMode === "dark" ? "浅色模式" : "深色模式"}
       >
         <span aria-hidden="true">{themeMode === "dark" ? "☀" : "☾"}</span>
-      </button>
+      </Button>
 
       <div className="floating-date-fabs" aria-label="日期快捷切换">
-        <button
-          type="button"
+        <Button
+          isIconOnly
+          variant="secondary"
           className="floating-date-fab fab-btn"
           data-action="floating-date-prev"
-          onClick={() => fabClick(onPrevDay, ".floating-date-fab:nth-child(1)")}
+          onPress={() => fabPress(onPrevDay, ".floating-date-fab:nth-child(1)")}
           aria-label="前一天"
-          title="前一天"
         >
           ‹
-        </button>
-        <button
-          type="button"
+        </Button>
+        <Button
+          isIconOnly
+          variant="secondary"
           className="floating-date-fab floating-date-fab--today fab-btn"
           data-action="floating-date-today"
-          onClick={() => fabClick(onToday, ".floating-date-fab--today")}
+          onPress={() => fabPress(onToday, ".floating-date-fab--today")}
           aria-label="今天"
-          title="今天"
         >
           ●
-        </button>
-        <button
-          type="button"
+        </Button>
+        <Button
+          isIconOnly
+          variant="secondary"
           className="floating-date-fab fab-btn"
           data-action="floating-date-next"
-          onClick={() => fabClick(onNextDay, ".floating-date-fab:nth-child(3)")}
+          onPress={() => fabPress(onNextDay, ".floating-date-fab:nth-child(3)")}
           aria-label="后一天"
-          title="后一天"
         >
           ›
-        </button>
+        </Button>
       </div>
     </div>
   );

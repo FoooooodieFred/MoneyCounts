@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { Button, Input, ListBox, Select } from "@heroui/react";
 import { gsap } from "gsap";
 import { useGsapContext, prefersReducedMotion } from "../hooks/useGsapContext";
 
@@ -51,14 +52,14 @@ export function TodayEntriesList({
         gsap.to(cell, { scale: 1, duration: 0.25, ease: "power2.out", overwrite: "auto" });
       };
       ctx
-        .selector?.(".today-inline-table input, .today-inline-table select")
+        .selector?.(".today-inline-table input, .today-inline-table [data-slot='select-trigger']")
         ?.forEach((el: Element) => {
           el.addEventListener("focus", onFocus);
           el.addEventListener("blur", onBlur);
         });
       return () => {
         ctx
-          .selector?.(".today-inline-table input, .today-inline-table select")
+          .selector?.(".today-inline-table input, .today-inline-table [data-slot='select-trigger']")
           ?.forEach((el: Element) => {
             el.removeEventListener("focus", onFocus);
             el.removeEventListener("blur", onBlur);
@@ -94,7 +95,7 @@ export function TodayEntriesList({
                 <span className="today-entry-list__category">{entry.category}</span>
               </td>
               <td>
-                <input
+                <Input
                   inputMode="decimal"
                   data-action="today-inline-amount"
                   value={entry.amount}
@@ -108,21 +109,31 @@ export function TodayEntriesList({
                 />
               </td>
               <td>
-                <select
-                  value={entry.currency}
+                <Select
+                  selectedKey={entry.currency}
                   data-action="today-inline-currency"
-                  onChange={(event) => onCurrencyChange(entry.index, event.target.value)}
                   aria-label={`${entry.category} 货币`}
+                  onSelectionChange={(key) => {
+                    if (key != null) onCurrencyChange(entry.index, String(key));
+                  }}
                 >
-                  {currencies.map((currency) => (
-                    <option key={currency} value={currency}>
-                      {currency}
-                    </option>
-                  ))}
-                </select>
+                  <Select.Trigger>
+                    <Select.Value />
+                    <Select.Indicator />
+                  </Select.Trigger>
+                  <Select.Popover>
+                    <ListBox>
+                      {currencies.map((currency) => (
+                        <ListBox.Item key={currency} id={currency} textValue={currency}>
+                          {currency}
+                        </ListBox.Item>
+                      ))}
+                    </ListBox>
+                  </Select.Popover>
+                </Select>
               </td>
               <td>
-                <input
+                <Input
                   value={entry.note}
                   data-action="today-inline-note"
                   onChange={(event) => onNoteChange(entry.index, event.target.value)}
@@ -131,15 +142,16 @@ export function TodayEntriesList({
                 />
               </td>
               <td className="today-inline-table__actions">
-                <button
-                  type="button"
+                <Button
+                  isIconOnly
+                  variant="danger-soft"
                   className="delete-record-button"
                   data-action="today-inline-delete"
-                  onClick={() => onDelete(entry.categoryIndex, entry.rowIndex)}
+                  onPress={() => onDelete(entry.categoryIndex, entry.rowIndex)}
                   aria-label="删除"
                 >
                   ×
-                </button>
+                </Button>
               </td>
             </tr>
           ))}
