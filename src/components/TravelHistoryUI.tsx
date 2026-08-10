@@ -10,6 +10,15 @@ import {
   useState,
 } from "react";
 import { gsap } from "gsap";
+import {
+  Button,
+  Checkbox,
+  Input,
+  Label,
+  Modal,
+  TextField,
+  useOverlayState,
+} from "@heroui/react";
 import type { TravelHistoryRecord } from "../lib/travelMode";
 import { getHistoryDateBounds, summarizeCurrencyDistribution } from "../lib/travelMode";
 
@@ -221,28 +230,24 @@ export function TravelHistoryPanel({
             <strong className="travel-history-rail-title-main">旅游记账历史</strong>
             <small className="travel-history-rail-meta muted">{records.length} 次旅程</small>
           </div>
-          <button
-            type="button"
-            className="ghost-button travel-history-close"
-            onClick={onToggleOpen}
+          <Button
+            variant="ghost"
+            className="travel-history-close"
+            onPress={onToggleOpen}
             aria-label="关闭记账历史"
           >
             ×
-          </button>
+          </Button>
         </div>
 
         <div className="travel-history-toolbar">
-          <button
-            type="button"
-            className={mergeMode ? "secondary-button" : "ghost-button"}
-            onClick={onToggleMergeMode}
-          >
+          <Button variant={mergeMode ? "secondary" : "ghost"} onPress={onToggleMergeMode}>
             {mergeMode ? "取消合并" : "合并记录"}
-          </button>
+          </Button>
           {mergeMode && (
-            <button type="button" disabled={selectedIds.length < 2} onClick={onStartMerge}>
+            <Button isDisabled={selectedIds.length < 2} onPress={onStartMerge}>
               合并 {selectedIds.length} 条
-            </button>
+            </Button>
           )}
         </div>
 
@@ -257,13 +262,18 @@ export function TravelHistoryPanel({
                 className={`travel-history-item-wrap${selected ? " is-selected" : ""}`}
               >
                 {mergeMode && (
-                  <label className="travel-history-select">
-                    <input
-                      type="checkbox"
-                      checked={selected}
-                      onChange={() => onToggleSelected(record.id)}
-                    />
-                  </label>
+                  <Checkbox
+                    className="travel-history-select"
+                    aria-label={`选择 ${record.name}`}
+                    isSelected={selected}
+                    onChange={() => onToggleSelected(record.id)}
+                  >
+                    <Checkbox.Content>
+                      <Checkbox.Control>
+                        <Checkbox.Indicator />
+                      </Checkbox.Control>
+                    </Checkbox.Content>
+                  </Checkbox>
                 )}
                 {editing ? (
                   <form
@@ -273,19 +283,23 @@ export function TravelHistoryPanel({
                       onSaveRename();
                     }}
                   >
-                    <input
+                    <TextField
                       value={editingName}
-                      onChange={(event) => onEditingNameChange(event.target.value)}
+                      onChange={onEditingNameChange}
                       autoFocus
-                      onKeyDown={(event: KeyboardEvent<HTMLInputElement>) => {
-                        if (event.key === "Escape") onCancelRename();
-                      }}
-                    />
+                    >
+                      <Label className="sr-only">重命名</Label>
+                      <Input
+                        onKeyDown={(event: KeyboardEvent<HTMLInputElement>) => {
+                          if (event.key === "Escape") onCancelRename();
+                        }}
+                      />
+                    </TextField>
                     <div className="travel-history-edit-actions">
-                      <button type="submit">保存</button>
-                      <button type="button" className="ghost-button" onClick={onCancelRename}>
+                      <Button type="submit">保存</Button>
+                      <Button variant="ghost" onPress={onCancelRename}>
                         取消
-                      </button>
+                      </Button>
                     </div>
                   </form>
                 ) : (
@@ -371,6 +385,12 @@ export function TravelHistoryDetailModal({
   formatMoney,
   modalRootRef,
 }: TravelHistoryDetailModalProps) {
+  const overlayState = useOverlayState({
+    isOpen: true,
+    onOpenChange: (open) => {
+      if (!open) onClose();
+    },
+  });
   const categorySummary = useMemo(
     () =>
       record.categorySummary.map((item, index) => ({
@@ -389,160 +409,147 @@ export function TravelHistoryDetailModal({
   );
 
   return (
-    <div className="modal-backdrop" role="presentation" onMouseDown={onClose} ref={modalRootRef}>
-      <section
-        className="modal-card travel-history-modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="travel-history-modal-title"
-        onMouseDown={(event) => event.stopPropagation()}
-      >
-        <div className="modal-heading">
-          <div>
-            <p className="eyebrow">Travel Archive</p>
-            <h2 id="travel-history-modal-title">{record.name}</h2>
-            <p className="muted">
-              {record.startDate} 至 {record.endDate}
-              {" · "}
-              目的地 {record.destinationCurrency}
-              {" · "}
-              换算 {record.targetCurrency}
-            </p>
-          </div>
-          <button
-            className="ghost-button"
-            type="button"
-            onClick={onClose}
-            aria-label="关闭旅游记录"
-          >
-            关闭
-          </button>
-        </div>
-
-        <div className="travel-history-modal-details">
-          <div className="travel-history-sync-actions">
-            <button type="button" onClick={() => onSyncLocal(record.id, "full")}>
-              同步完整账单
-            </button>
-            <button
-              type="button"
-              className="secondary-button"
-              onClick={() => onSyncLocal(record.id, "split")}
-            >
-              同步分账账单
-            </button>
-            {record.localSync ? (
-              <small className="muted">
-                已本地标记同步：{record.localSync.mode === "full" ? "完整账单" : "分账账单"} ·{" "}
-                {new Date(record.localSync.syncedAt).toLocaleString("zh-CN")}
-              </small>
-            ) : null}
-          </div>
-          <Suspense
-            fallback={<div className="chart-fallback chart-fallback--wide">旅游统计载入中…</div>}
-          >
-            <TravelStatCards
-              cards={[
-                {
-                  label: "旅游总额",
-                  value: formatMoney(record.totalAmount, record.targetCurrency),
-                  hint: record.targetCurrency,
-                  accent: "#356fd7",
-                },
-                {
-                  label: "有效明细",
-                  value: `${record.entryCount} 条`,
-                  hint: `${dayCount} 天有记录`,
-                  accent: "#4cb9ca",
-                },
-                {
-                  label: "货币种类",
-                  value: `${currencyDistribution.length} 种`,
-                  hint: currencyDistribution.map((item) => item.currency).join(" / ") || "—",
-                  accent: "#c4a35a",
-                },
-              ]}
-            />
-          </Suspense>
-
-          <div className="travel-history-viz-grid">
-            <div className="travel-history-viz-card">
-              <h3>分类占比</h3>
-              <div className="chart-row">
-                <Suspense fallback={<div className="chart-fallback">图表载入中…</div>}>
-                  <TravelPieChart summary={categorySummary} title={record.name} />
-                </Suspense>
-                <div className="legend">
-                  {categorySummary.length ? (
-                    categorySummary.map((item) => (
-                      <div key={item.category} className="legend-item">
-                        <span style={{ backgroundColor: item.color }} />
-                        <b>{item.category}</b>
-                        <em>{item.percent.toFixed(1)}%</em>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="muted">该次旅游没有分类汇总数据。</p>
-                  )}
-                </div>
+    <Modal state={overlayState}>
+      <Modal.Backdrop className="modal-backdrop" ref={modalRootRef} isDismissable>
+        <Modal.Container className="modal-card travel-history-modal">
+          <Modal.Dialog aria-labelledby="travel-history-modal-title">
+            <Modal.Header className="modal-heading">
+              <div>
+                <p className="eyebrow">Travel Archive</p>
+                <Modal.Heading id="travel-history-modal-title">{record.name}</Modal.Heading>
+                <p className="muted">
+                  {record.startDate} 至 {record.endDate}
+                  {" · "}
+                  目的地 {record.destinationCurrency}
+                  {" · "}
+                  换算 {record.targetCurrency}
+                </p>
               </div>
-            </div>
+              <Button variant="ghost" onPress={onClose} aria-label="关闭旅游记录">
+                关闭
+              </Button>
+            </Modal.Header>
 
-            <div className="travel-history-viz-card">
-              <h3>货币分布</h3>
+            <Modal.Body className="travel-history-modal-details">
+              <div className="travel-history-sync-actions">
+                <Button onPress={() => onSyncLocal(record.id, "full")}>同步完整账单</Button>
+                <Button variant="secondary" onPress={() => onSyncLocal(record.id, "split")}>
+                  同步分账账单
+                </Button>
+                {record.localSync ? (
+                  <small className="muted">
+                    已本地标记同步：{record.localSync.mode === "full" ? "完整账单" : "分账账单"} ·{" "}
+                    {new Date(record.localSync.syncedAt).toLocaleString("zh-CN")}
+                  </small>
+                ) : null}
+              </div>
               <Suspense
-                fallback={
-                  <div className="chart-fallback chart-fallback--wide">货币分布载入中…</div>
-                }
+                fallback={<div className="chart-fallback chart-fallback--wide">旅游统计载入中…</div>}
               >
-                <TravelCurrencyBars
-                  items={currencyDistribution}
-                  targetCurrency={record.targetCurrency}
-                  formatMoney={formatMoney}
+                <TravelStatCards
+                  cards={[
+                    {
+                      label: "旅游总额",
+                      value: formatMoney(record.totalAmount, record.targetCurrency),
+                      hint: record.targetCurrency,
+                      accent: "#356fd7",
+                    },
+                    {
+                      label: "有效明细",
+                      value: `${record.entryCount} 条`,
+                      hint: `${dayCount} 天有记录`,
+                      accent: "#4cb9ca",
+                    },
+                    {
+                      label: "货币种类",
+                      value: `${currencyDistribution.length} 种`,
+                      hint: currencyDistribution.map((item) => item.currency).join(" / ") || "—",
+                      accent: "#c4a35a",
+                    },
+                  ]}
                 />
               </Suspense>
-            </div>
-          </div>
 
-          <div className="summary-list">
-            {categorySummary.map((item) => (
-              <div key={item.category}>
-                <span>{item.category}</span>
-                <strong>
-                  {formatMoney(item.value, record.targetCurrency)} · {item.percent.toFixed(1)}%
-                </strong>
-              </div>
-            ))}
-          </div>
-
-          <div className="travel-details">
-            {record.details.length ? (
-              record.details.map((entry, index) => (
-                <div key={`${entry.date}-${entry.category}-${index}`}>
-                  <span>
-                    {entry.date} · {entry.category}
-                  </span>
-                  <strong>{formatMoney(entry.convertedAmount, record.targetCurrency)}</strong>
-                  <small>
-                    {entry.amount} {entry.currency}
-                    {entry.locationLabel ? ` · ${entry.locationLabel}` : ""}
-                    {entry.participantNames?.length
-                      ? ` · 分摊：${entry.participantNames.join(" / ")}`
-                      : ""}
-                    {entry.exchangeSnapshot
-                      ? ` · 快照汇率 ${entry.exchangeSnapshot.rate.toFixed(4)}`
-                      : ""}
-                    {entry.note ? ` · ${entry.note}` : ""}
-                  </small>
+              <div className="travel-history-viz-grid">
+                <div className="travel-history-viz-card">
+                  <h3>分类占比</h3>
+                  <div className="chart-row">
+                    <Suspense fallback={<div className="chart-fallback">图表载入中…</div>}>
+                      <TravelPieChart summary={categorySummary} title={record.name} />
+                    </Suspense>
+                    <div className="legend">
+                      {categorySummary.length ? (
+                        categorySummary.map((item) => (
+                          <div key={item.category} className="legend-item">
+                            <span style={{ backgroundColor: item.color }} />
+                            <b>{item.category}</b>
+                            <em>{item.percent.toFixed(1)}%</em>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="muted">该次旅游没有分类汇总数据。</p>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              ))
-            ) : (
-              <p className="muted">该次旅游没有明细记录。</p>
-            )}
-          </div>
-        </div>
-      </section>
-    </div>
+
+                <div className="travel-history-viz-card">
+                  <h3>货币分布</h3>
+                  <Suspense
+                    fallback={
+                      <div className="chart-fallback chart-fallback--wide">货币分布载入中…</div>
+                    }
+                  >
+                    <TravelCurrencyBars
+                      items={currencyDistribution}
+                      targetCurrency={record.targetCurrency}
+                      formatMoney={formatMoney}
+                    />
+                  </Suspense>
+                </div>
+              </div>
+
+              <div className="summary-list">
+                {categorySummary.map((item) => (
+                  <div key={item.category}>
+                    <span>{item.category}</span>
+                    <strong>
+                      {formatMoney(item.value, record.targetCurrency)} · {item.percent.toFixed(1)}%
+                    </strong>
+                  </div>
+                ))}
+              </div>
+
+              <div className="travel-details">
+                {record.details.length ? (
+                  record.details.map((entry, index) => (
+                    <div key={`${entry.date}-${entry.category}-${index}`}>
+                      <span>
+                        {entry.date} · {entry.category}
+                      </span>
+                      <strong>{formatMoney(entry.convertedAmount, record.targetCurrency)}</strong>
+                      <small>
+                        {entry.amount} {entry.currency}
+                        {entry.locationLabel ? ` · ${entry.locationLabel}` : ""}
+                        {entry.participantNames?.length
+                          ? ` · 分摊：${entry.participantNames.join(" / ")}`
+                          : ""}
+                        {entry.exchangeSnapshot
+                          ? ` · 快照汇率 ${entry.exchangeSnapshot.rate.toFixed(4)}`
+                          : ""}
+                        {entry.note ? ` · ${entry.note}` : ""}
+                      </small>
+                    </div>
+                  ))
+                ) : (
+                  <p className="muted">该次旅游没有明细记录。</p>
+                )}
+              </div>
+            </Modal.Body>
+          </Modal.Dialog>
+        </Modal.Container>
+      </Modal.Backdrop>
+    </Modal>
   );
 }
 
@@ -569,87 +576,90 @@ export function TravelMergeModal({
   const [startDate, setStartDate] = useState(defaultStartDate);
   const [endDate, setEndDate] = useState(defaultEndDate);
   const [confirmed, setConfirmed] = useState(false);
+  const overlayState = useOverlayState({
+    isOpen: true,
+    onOpenChange: (open) => {
+      if (!open) onClose();
+    },
+  });
 
   return (
-    <div className="modal-backdrop" role="presentation" onMouseDown={onClose} ref={modalRootRef}>
-      <section
-        className="modal-card travel-merge-modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="travel-merge-modal-title"
-        onMouseDown={(event) => event.stopPropagation()}
-      >
-        <div className="modal-heading">
-          <div>
-            <p className="eyebrow">Merge Archive</p>
-            <h2 id="travel-merge-modal-title">合并 {records.length} 条旅游记录</h2>
-            <p className="muted">合并后会生成一条新历史，并删除被选中的旧条目。</p>
-          </div>
-          <button className="ghost-button" type="button" onClick={onClose}>
-            取消
-          </button>
-        </div>
+    <Modal state={overlayState}>
+      <Modal.Backdrop className="modal-backdrop" ref={modalRootRef} isDismissable>
+        <Modal.Container className="modal-card travel-merge-modal">
+          <Modal.Dialog aria-labelledby="travel-merge-modal-title">
+            <Modal.Header className="modal-heading">
+              <div>
+                <p className="eyebrow">Merge Archive</p>
+                <Modal.Heading id="travel-merge-modal-title">
+                  合并 {records.length} 条旅游记录
+                </Modal.Heading>
+                <p className="muted">合并后会生成一条新历史，并删除被选中的旧条目。</p>
+              </div>
+              <Button variant="ghost" onPress={onClose}>
+                取消
+              </Button>
+            </Modal.Header>
 
-        <div className="travel-merge-form">
-          <label>
-            合并后账单名称
-            <input value={name} onChange={(event) => setName(event.target.value)} />
-          </label>
-          <label>
-            开始日期
-            <input
-              type="date"
-              value={startDate}
-              onChange={(event) => setStartDate(event.target.value)}
-            />
-          </label>
-          <label>
-            结束日期
-            <input
-              type="date"
-              value={endDate}
-              onChange={(event) => setEndDate(event.target.value)}
-            />
-          </label>
-        </div>
+            <Modal.Body>
+              <div className="travel-merge-form">
+                <TextField value={name} onChange={setName}>
+                  <Label>合并后账单名称</Label>
+                  <Input />
+                </TextField>
+                <TextField type="date" value={startDate} onChange={setStartDate}>
+                  <Label>开始日期</Label>
+                  <Input />
+                </TextField>
+                <TextField type="date" value={endDate} onChange={setEndDate}>
+                  <Label>结束日期</Label>
+                  <Input />
+                </TextField>
+              </div>
 
-        <div className="travel-merge-preview">
-          {records.map((record) => (
-            <div key={record.id}>
-              <strong>{record.name}</strong>
-              <span>
-                {record.startDate} → {record.endDate} · {record.entryCount} 条
-              </span>
-            </div>
-          ))}
-        </div>
+              <div className="travel-merge-preview">
+                {records.map((record) => (
+                  <div key={record.id}>
+                    <strong>{record.name}</strong>
+                    <span>
+                      {record.startDate} → {record.endDate} · {record.entryCount} 条
+                    </span>
+                  </div>
+                ))}
+              </div>
 
-        <label className="travel-merge-confirm">
-          <input
-            type="checkbox"
-            checked={confirmed}
-            onChange={(event) => setConfirmed(event.target.checked)}
-          />
-          <span>
-            我已了解：合并过程<strong>不可逆</strong>，被合并的旧条目将被永久删除。
-          </span>
-        </label>
+              <Checkbox
+                className="travel-merge-confirm"
+                isSelected={confirmed}
+                onChange={setConfirmed}
+              >
+                <Checkbox.Content>
+                  <Checkbox.Control>
+                    <Checkbox.Indicator />
+                  </Checkbox.Control>
+                  <span>
+                    我已了解：合并过程<strong>不可逆</strong>，被合并的旧条目将被永久删除。
+                  </span>
+                </Checkbox.Content>
+              </Checkbox>
 
-        <div className="travel-merge-actions">
-          <button
-            type="button"
-            className="danger-button"
-            disabled={!confirmed || !name.trim() || !startDate || !endDate || startDate > endDate}
-            onClick={() => onConfirm({ name: name.trim(), startDate, endDate })}
-          >
-            确认合并
-          </button>
-          <button type="button" className="ghost-button" onClick={onClose}>
-            返回
-          </button>
-        </div>
-      </section>
-    </div>
+              <div className="travel-merge-actions">
+                <Button
+                  variant="danger"
+                  isDisabled={!confirmed || !name.trim() || !startDate || !endDate || startDate > endDate}
+                  onPress={() => onConfirm({ name: name.trim(), startDate, endDate })}
+                >
+                  确认合并
+                </Button>
+                <Button variant="ghost" onPress={onClose}>
+                  返回
+                </Button>
+              </div>
+            </Modal.Body>
+          </Modal.Dialog>
+        </Modal.Container>
+      </Modal.Backdrop>
+    </Modal>
   );
 }
 

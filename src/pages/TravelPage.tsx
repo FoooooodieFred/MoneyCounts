@@ -1,5 +1,17 @@
 import { Suspense, useEffect, useRef, useState, type ComponentType } from "react";
 import { gsap } from "gsap";
+import {
+  Alert,
+  Button,
+  Card,
+  Checkbox,
+  Input,
+  Label,
+  ListBox,
+  Select,
+  Switch,
+  TextField,
+} from "@heroui/react";
 import { prefersReducedMotion } from "../hooks/useGsapContext";
 import {
   TravelHistoryDetailModal,
@@ -155,8 +167,8 @@ export function TravelPage(props: TravelPageProps) {
       </section>
 
       <div className="travel-mode-zone" data-section="travel-mode">
-        <section className="card travel-card">
-          <div className="card-heading">
+        <Card className="travel-card">
+          <Card.Header className="card-heading">
             <div>
               {travelState.active && travelState.locationLabel && (
                 <p className="muted">定位参考：{travelState.locationLabel}</p>
@@ -164,73 +176,76 @@ export function TravelPage(props: TravelPageProps) {
             </div>
             <div className="travel-header-actions">
               {travelHistory.length > 0 && (
-                <button
-                  type="button"
+                <Button
+                  variant="secondary"
                   className="travel-history-toggle"
                   data-action="toggle-travel-history"
-                  onClick={() => props.setTravelHistoryRailOpen((open) => !open)}
+                  onPress={() => props.setTravelHistoryRailOpen((open) => !open)}
                   aria-expanded={props.travelHistoryRailOpen}
                 >
                   <span>{props.travelHistoryRailOpen ? "关闭历史" : "旅游历史"}</span>
                   <em>{travelHistory.length}</em>
-                </button>
+                </Button>
               )}
-              <button
-                type="button"
+              <Button
                 data-action={travelState.active ? "travel-end" : "travel-start"}
-                onClick={travelState.active ? props.onEndTravel : props.onEnableTravel}
+                onPress={travelState.active ? props.onEndTravel : props.onEnableTravel}
               >
                 {travelState.active ? "结束旅游" : "开始旅游记账"}
-              </button>
+              </Button>
             </div>
-          </div>
+          </Card.Header>
 
-          {!travelState.active && (
-            <div className="travel-setup-grid">
-              <label>
-                旅游账单名称
-                <input
+          <Card.Content>
+            {!travelState.active && (
+              <div className="travel-setup-grid">
+                <TextField
                   value={props.travelDraftBillName}
-                  placeholder={props.buildFallbackBillName(travelState.destinationCurrency)}
-                  onChange={(event) => props.setTravelDraftBillName(event.target.value)}
-                />
-              </label>
-              <label>
-                开始日期
-                <input
+                  onChange={props.setTravelDraftBillName}
+                >
+                  <Label>旅游账单名称</Label>
+                  <Input
+                    placeholder={props.buildFallbackBillName(travelState.destinationCurrency)}
+                  />
+                </TextField>
+                <TextField
                   type="date"
                   value={props.travelDraftStartDate}
-                  onChange={(event) => props.setTravelDraftStartDate(event.target.value)}
-                />
-              </label>
-              <label className="travel-end-date-toggle">
-                <span>预设结束日期</span>
-                <input
-                  type="checkbox"
-                  checked={props.travelDraftUseEndDate}
-                  onChange={(event) => props.setTravelDraftUseEndDate(event.target.checked)}
-                />
-              </label>
-              <label className={props.travelDraftUseEndDate ? "" : "is-disabled"}>
-                结束日期
-                <input
+                  onChange={props.setTravelDraftStartDate}
+                >
+                  <Label>开始日期</Label>
+                  <Input />
+                </TextField>
+                <Switch
+                  className="travel-end-date-toggle"
+                  isSelected={props.travelDraftUseEndDate}
+                  onChange={props.setTravelDraftUseEndDate}
+                >
+                  <Switch.Content>
+                    <span>预设结束日期</span>
+                    <Switch.Control>
+                      <Switch.Thumb />
+                    </Switch.Control>
+                  </Switch.Content>
+                </Switch>
+                <TextField
                   type="date"
+                  className={props.travelDraftUseEndDate ? "" : "is-disabled"}
                   value={props.travelDraftEndDate}
-                  disabled={!props.travelDraftUseEndDate}
-                  min={props.travelDraftStartDate}
-                  onChange={(event) => props.setTravelDraftEndDate(event.target.value)}
-                />
-              </label>
-            </div>
-          )}
+                  isDisabled={!props.travelDraftUseEndDate}
+                  onChange={props.setTravelDraftEndDate}
+                >
+                  <Label>结束日期</Label>
+                  <Input min={props.travelDraftStartDate} />
+                </TextField>
+              </div>
+            )}
 
-          <div className="travel-controls">
-            <label>
-              目的地默认货币
-              <select
+            <div className="travel-controls">
+              <Select
                 value={travelState.destinationCurrency}
-                onChange={(event) => {
-                  const currency = event.target.value;
+                onChange={(key) => {
+                  const currency = String(key ?? travelState.destinationCurrency);
                   props.setTravelState((current) => ({
                     ...current,
                     destinationCurrency: currency,
@@ -238,324 +253,362 @@ export function TravelPage(props: TravelPageProps) {
                   if (travelState.active) props.switchDailyDefaultCurrency(currency);
                 }}
               >
-                {props.allCurrencies.map((currency) => (
-                  <option key={currency} value={currency}>
-                    {currency} · {props.getCurrencyMeta(currency).shortName}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label>
-              账单换算目标货币
-              <select
+                <Label>目的地默认货币</Label>
+                <Select.Trigger>
+                  <Select.Value />
+                  <Select.Indicator />
+                </Select.Trigger>
+                <Select.Popover>
+                  <ListBox>
+                    {props.allCurrencies.map((currency) => (
+                      <ListBox.Item
+                        key={currency}
+                        id={currency}
+                        textValue={`${currency} · ${props.getCurrencyMeta(currency).shortName}`}
+                      >
+                        {currency} · {props.getCurrencyMeta(currency).shortName}
+                        <ListBox.ItemIndicator />
+                      </ListBox.Item>
+                    ))}
+                  </ListBox>
+                </Select.Popover>
+              </Select>
+              <Select
                 value={travelState.targetCurrency}
-                onChange={(event) =>
+                onChange={(key) =>
                   props.setTravelState((current) => ({
                     ...current,
-                    targetCurrency: event.target.value,
+                    targetCurrency: String(key ?? current.targetCurrency),
                   }))
                 }
               >
-                {props.allCurrencies.map((currency) => (
-                  <option key={currency} value={currency}>
-                    {currency} · {props.getCurrencyMeta(currency).shortName}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <button
-              type="button"
-              className="secondary-button"
-              data-action="travel-export-bill"
-              onClick={props.onExportBill}
-              disabled={!props.travelDetails.length}
-            >
-              导出旅游账单
-            </button>
-          </div>
+                <Label>账单换算目标货币</Label>
+                <Select.Trigger>
+                  <Select.Value />
+                  <Select.Indicator />
+                </Select.Trigger>
+                <Select.Popover>
+                  <ListBox>
+                    {props.allCurrencies.map((currency) => (
+                      <ListBox.Item
+                        key={currency}
+                        id={currency}
+                        textValue={`${currency} · ${props.getCurrencyMeta(currency).shortName}`}
+                      >
+                        {currency} · {props.getCurrencyMeta(currency).shortName}
+                        <ListBox.ItemIndicator />
+                      </ListBox.Item>
+                    ))}
+                  </ListBox>
+                </Select.Popover>
+              </Select>
+              <Button
+                variant="secondary"
+                data-action="travel-export-bill"
+                onPress={props.onExportBill}
+                isDisabled={!props.travelDetails.length}
+              >
+                导出旅游账单
+              </Button>
+            </div>
 
-          <div className="travel-phase4-grid">
-            <section className="travel-subpanel">
-              <div>
-                <p className="eyebrow">Split</p>
-                <h3>同行人与均分口径</h3>
-                <p className="muted">
-                  每笔消费按勾选参与人均分；这里展示每人应承担金额，不追踪谁先垫付。
-                </p>
-              </div>
-              <div className="travel-participant-list">
-                {travelState.participants.map((participant, index) => (
-                  <label key={participant.id}>
-                    同行人 {index + 1}
-                    <input
+            <div className="travel-phase4-grid">
+              <section className="travel-subpanel">
+                <div>
+                  <p className="eyebrow">Split</p>
+                  <h3>同行人与均分口径</h3>
+                  <p className="muted">
+                    每笔消费按勾选参与人均分；这里展示每人应承担金额，不追踪谁先垫付。
+                  </p>
+                </div>
+                <div className="travel-participant-list">
+                  {travelState.participants.map((participant, index) => (
+                    <TextField
+                      key={participant.id}
                       value={participant.name}
-                      onChange={(event) => {
+                      onChange={(value) => {
                         const names = travelState.participants.map((item) => item.name);
-                        names[index] = event.target.value;
+                        names[index] = value;
                         props.updateTravelParticipants(names);
                       }}
-                    />
-                  </label>
-                ))}
-              </div>
-              <div className="action-row">
-                <button
-                  type="button"
-                  className="secondary-button"
-                  onClick={() =>
-                    props.updateTravelParticipants([
-                      ...travelState.participants.map((item) => item.name),
-                      `同行人${travelState.participants.length + 1}`,
-                    ])
-                  }
-                >
-                  添加同行人
-                </button>
-                <button
-                  type="button"
-                  className="ghost-button"
-                  disabled={travelState.participants.length <= 1}
-                  onClick={() =>
-                    props.updateTravelParticipants(
-                      travelState.participants.slice(0, -1).map((item) => item.name),
-                    )
-                  }
-                >
-                  移除末位
-                </button>
-              </div>
-              <div className="travel-split-summary">
-                {props.travelSplitSummary.map((item) => (
-                  <div key={item.participantId}>
-                    <span>{item.name}</span>
-                    <strong>{props.formatMoney(item.owed, travelState.targetCurrency)}</strong>
-                  </div>
-                ))}
-              </div>
-            </section>
+                    >
+                      <Label>同行人 {index + 1}</Label>
+                      <Input />
+                    </TextField>
+                  ))}
+                </div>
+                <div className="action-row">
+                  <Button
+                    variant="secondary"
+                    onPress={() =>
+                      props.updateTravelParticipants([
+                        ...travelState.participants.map((item) => item.name),
+                        `同行人${travelState.participants.length + 1}`,
+                      ])
+                    }
+                  >
+                    添加同行人
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    isDisabled={travelState.participants.length <= 1}
+                    onPress={() =>
+                      props.updateTravelParticipants(
+                        travelState.participants.slice(0, -1).map((item) => item.name),
+                      )
+                    }
+                  >
+                    移除末位
+                  </Button>
+                </div>
+                <div className="travel-split-summary">
+                  {props.travelSplitSummary.map((item) => (
+                    <div key={item.participantId}>
+                      <span>{item.name}</span>
+                      <strong>{props.formatMoney(item.owed, travelState.targetCurrency)}</strong>
+                    </div>
+                  ))}
+                </div>
+              </section>
 
-            <section className="travel-subpanel">
-              <div>
-                <p className="eyebrow">Budget</p>
-                <h3>旅行预算</h3>
-                <p className="muted">
-                  按旅行目标货币 {travelState.targetCurrency} 计算，支持每日预算和分类预算预警。
-                </p>
-              </div>
-              <div className="travel-budget-inputs">
-                <label>
-                  每日预算
-                  <input
-                    inputMode="decimal"
-                    data-action="travel-budget-daily"
-                    value={travelState.budget.dailyLimit ?? ""}
-                    placeholder={`例如 500 ${travelState.targetCurrency}`}
-                    onChange={(event) =>
+              <section className="travel-subpanel">
+                <div>
+                  <p className="eyebrow">Budget</p>
+                  <h3>旅行预算</h3>
+                  <p className="muted">
+                    按旅行目标货币 {travelState.targetCurrency} 计算，支持每日预算和分类预算预警。
+                  </p>
+                </div>
+                <div className="travel-budget-inputs">
+                  <TextField
+                    value={
+                      travelState.budget.dailyLimit != null
+                        ? String(travelState.budget.dailyLimit)
+                        : ""
+                    }
+                    onChange={(value) =>
                       props.updateTravelBudget({
-                        dailyLimit:
-                          Number(event.target.value) > 0 ? Number(event.target.value) : null,
+                        dailyLimit: Number(value) > 0 ? Number(value) : null,
                       })
                     }
-                  />
-                </label>
-                {["餐饮", "交通", "购物", "旅行"].map((category) => (
-                  <label key={category}>
-                    {category}预算
-                    <input
+                  >
+                    <Label>每日预算</Label>
+                    <Input
                       inputMode="decimal"
-                      data-action="travel-budget-category"
-                      value={travelState.budget.categoryLimits[category] ?? ""}
-                      onChange={(event) => {
+                      data-action="travel-budget-daily"
+                      placeholder={`例如 500 ${travelState.targetCurrency}`}
+                    />
+                  </TextField>
+                  {["餐饮", "交通", "购物", "旅行"].map((category) => (
+                    <TextField
+                      key={category}
+                      value={
+                        travelState.budget.categoryLimits[category] != null
+                          ? String(travelState.budget.categoryLimits[category])
+                          : ""
+                      }
+                      onChange={(value) => {
                         const nextLimits = { ...travelState.budget.categoryLimits };
-                        const parsed = Number(event.target.value);
+                        const parsed = Number(value);
                         if (Number.isFinite(parsed) && parsed > 0) nextLimits[category] = parsed;
                         else delete nextLimits[category];
                         props.updateTravelBudget({ categoryLimits: nextLimits });
                       }}
-                    />
-                  </label>
-                ))}
-              </div>
-              <div className="travel-budget-progress">
-                {props.travelBudgetProgress.dailyBudget ? (
-                  <div className={props.travelBudgetProgress.dailyPercent > 100 ? "is-over" : ""}>
-                    <span>{props.travelBudgetProgress.dayCount} 天总预算</span>
-                    <strong>
-                      {props.formatMoney(
-                        props.travelBudgetProgress.total,
-                        travelState.targetCurrency,
-                      )}
-                      {" / "}
-                      {props.formatMoney(
-                        props.travelBudgetProgress.dailyBudget,
-                        travelState.targetCurrency,
-                      )}
-                    </strong>
-                    <small>{props.travelBudgetProgress.dailyPercent.toFixed(1)}%</small>
-                  </div>
-                ) : (
-                  <p className="muted">设置每日预算后显示总进度。</p>
-                )}
-                {props.travelBudgetProgress.categoryProgress.map((item) => (
-                  <div key={item.category} className={item.percent > 100 ? "is-over" : ""}>
-                    <span>{item.category}</span>
-                    <strong>
-                      {props.formatMoney(item.spent, travelState.targetCurrency)}
-                      {" / "}
-                      {props.formatMoney(item.limit, travelState.targetCurrency)}
-                    </strong>
-                    <small>{item.percent.toFixed(1)}%</small>
-                  </div>
-                ))}
-              </div>
-            </section>
-          </div>
-
-          {props.travelStatus && (
-            <p className="status travel-status-banner">{props.travelStatus}</p>
-          )}
-
-          {travelState.active && (
-            <div className="travel-bill">
-              <form
-                className="travel-natural-entry"
-                data-action="travel-natural-submit"
-                onSubmit={(event) => {
-                  event.preventDefault();
-                  if (!travelQuickInput.trim()) return;
-                  props.onTravelNaturalSubmit(travelQuickInput);
-                  setTravelQuickInput("");
-                }}
-              >
-                <div>
-                  <p className="eyebrow">AA Quick Entry</p>
-                  <h3>整单自然语言分账</h3>
-                  <p className="muted">
-                    建议输入整单信息完成记账，例如：和 AB 在 XXX 餐厅吃饭，花了 300Jpy
-                  </p>
+                    >
+                      <Label>{category}预算</Label>
+                      <Input inputMode="decimal" data-action="travel-budget-category" />
+                    </TextField>
+                  ))}
                 </div>
-                <label>
-                  <span className="sr-only">旅游自然语言记账</span>
-                  <input
-                    data-action="travel-natural-input"
-                    value={travelQuickInput}
-                    onChange={(event) => setTravelQuickInput(event.target.value)}
-                    placeholder="和 AB 在 XXX 餐厅吃饭，花了 300Jpy"
-                  />
-                </label>
-                <button type="submit" data-action="travel-natural-confirm">
-                  写入并分摊
-                </button>
-              </form>
-              <div className="totals-grid">
-                <div>
-                  <span>旅游总额 · {travelState.targetCurrency}</span>
-                  <strong>
-                    {props.formatMoney(
-                      props.travelTotals.converted[travelState.targetCurrency] ?? 0,
-                      travelState.targetCurrency,
-                    )}
-                  </strong>
-                </div>
-                <div>
-                  <span>有效明细</span>
-                  <strong>{props.travelDetails.length} 条</strong>
-                </div>
-              </div>
-              <div className="chart-row">
-                <Suspense fallback={<div className="chart-fallback">旅游图表载入中…</div>}>
-                  <PieChart summary={props.travelCategorySummary} title="旅游账单" />
-                </Suspense>
-                <div className="summary-list">
-                  {props.travelCategorySummary.length ? (
-                    props.travelCategorySummary.map((item) => (
-                      <div key={item.category}>
-                        <span>{item.category}</span>
-                        <strong>
-                          {props.formatMoney(item.value, travelState.targetCurrency)} ·{" "}
-                          {item.percent.toFixed(1)}%
-                        </strong>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="muted">当前范围还没有旅游账单数据。</p>
-                  )}
-                </div>
-              </div>
-              <div className="travel-details">
-                {props.travelDetails.slice(0, 12).map((entry, index) => (
-                  <div key={`${entry.date}-${entry.category}-${index}`}>
-                    <span>
-                      {entry.date} · {entry.category}
-                    </span>
-                    <strong>
-                      {props.formatMoney(
-                        props.convert(
-                          props.parseAmount(entry.amount),
-                          entry.currency,
+                <div className="travel-budget-progress">
+                  {props.travelBudgetProgress.dailyBudget ? (
+                    <div className={props.travelBudgetProgress.dailyPercent > 100 ? "is-over" : ""}>
+                      <span>{props.travelBudgetProgress.dayCount} 天总预算</span>
+                      <strong>
+                        {props.formatMoney(
+                          props.travelBudgetProgress.total,
                           travelState.targetCurrency,
-                          props.exchange,
-                        ),
+                        )}
+                        {" / "}
+                        {props.formatMoney(
+                          props.travelBudgetProgress.dailyBudget,
+                          travelState.targetCurrency,
+                        )}
+                      </strong>
+                      <small>{props.travelBudgetProgress.dailyPercent.toFixed(1)}%</small>
+                    </div>
+                  ) : (
+                    <p className="muted">设置每日预算后显示总进度。</p>
+                  )}
+                  {props.travelBudgetProgress.categoryProgress.map((item) => (
+                    <div key={item.category} className={item.percent > 100 ? "is-over" : ""}>
+                      <span>{item.category}</span>
+                      <strong>
+                        {props.formatMoney(item.spent, travelState.targetCurrency)}
+                        {" / "}
+                        {props.formatMoney(item.limit, travelState.targetCurrency)}
+                      </strong>
+                      <small>{item.percent.toFixed(1)}%</small>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            </div>
+
+            {props.travelStatus ? (
+              <Alert status="accent" className="travel-status-banner">
+                <Alert.Indicator />
+                <Alert.Content>
+                  <Alert.Description>{props.travelStatus}</Alert.Description>
+                </Alert.Content>
+              </Alert>
+            ) : null}
+
+            {travelState.active && (
+              <div className="travel-bill">
+                <form
+                  className="travel-natural-entry"
+                  data-action="travel-natural-submit"
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    if (!travelQuickInput.trim()) return;
+                    props.onTravelNaturalSubmit(travelQuickInput);
+                    setTravelQuickInput("");
+                  }}
+                >
+                  <div>
+                    <p className="eyebrow">AA Quick Entry</p>
+                    <h3>整单自然语言分账</h3>
+                    <p className="muted">
+                      建议输入整单信息完成记账，例如：和 AB 在 XXX 餐厅吃饭，花了 300Jpy
+                    </p>
+                  </div>
+                  <TextField value={travelQuickInput} onChange={setTravelQuickInput}>
+                    <Label className="sr-only">旅游自然语言记账</Label>
+                    <Input
+                      data-action="travel-natural-input"
+                      placeholder="和 AB 在 XXX 餐厅吃饭，花了 300Jpy"
+                    />
+                  </TextField>
+                  <Button type="submit" data-action="travel-natural-confirm">
+                    写入并分摊
+                  </Button>
+                </form>
+                <div className="totals-grid">
+                  <div>
+                    <span>旅游总额 · {travelState.targetCurrency}</span>
+                    <strong>
+                      {props.formatMoney(
+                        props.travelTotals.converted[travelState.targetCurrency] ?? 0,
                         travelState.targetCurrency,
                       )}
                     </strong>
-                    <small>
-                      {entry.amount} {entry.currency}
-                      {entry.note ? ` · ${entry.note}` : ""}
-                    </small>
-                    <div className="travel-entry-meta">
-                      <label>
-                        地点标签
-                        <input
-                          list="travel-location-options"
-                          data-action="travel-entry-location"
+                  </div>
+                  <div>
+                    <span>有效明细</span>
+                    <strong>{props.travelDetails.length} 条</strong>
+                  </div>
+                </div>
+                <div className="chart-row">
+                  <Suspense fallback={<div className="chart-fallback">旅游图表载入中…</div>}>
+                    <PieChart summary={props.travelCategorySummary} title="旅游账单" />
+                  </Suspense>
+                  <div className="summary-list">
+                    {props.travelCategorySummary.length ? (
+                      props.travelCategorySummary.map((item) => (
+                        <div key={item.category}>
+                          <span>{item.category}</span>
+                          <strong>
+                            {props.formatMoney(item.value, travelState.targetCurrency)} ·{" "}
+                            {item.percent.toFixed(1)}%
+                          </strong>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="muted">当前范围还没有旅游账单数据。</p>
+                    )}
+                  </div>
+                </div>
+                <div className="travel-details">
+                  {props.travelDetails.slice(0, 12).map((entry, index) => (
+                    <div key={`${entry.date}-${entry.category}-${index}`}>
+                      <span>
+                        {entry.date} · {entry.category}
+                      </span>
+                      <strong>
+                        {props.formatMoney(
+                          props.convert(
+                            props.parseAmount(entry.amount),
+                            entry.currency,
+                            travelState.targetCurrency,
+                            props.exchange,
+                          ),
+                          travelState.targetCurrency,
+                        )}
+                      </strong>
+                      <small>
+                        {entry.amount} {entry.currency}
+                        {entry.note ? ` · ${entry.note}` : ""}
+                      </small>
+                      <div className="travel-entry-meta">
+                        <TextField
                           value={travelState.entryMeta[entry.travelKey]?.locationLabel ?? ""}
-                          placeholder={travelState.locationLabel ?? "例如 东京站 / 机场"}
-                          onChange={(event) =>
+                          onChange={(value) =>
                             props.updateTravelEntryMeta(entry.travelKey, {
-                              locationLabel: event.target.value,
+                              locationLabel: value,
                             })
                           }
-                        />
-                      </label>
-                      <div className="travel-entry-participants" aria-label="参与分摊的人">
-                        {travelState.participants.map((participant) => {
-                          const selectedIds =
-                            travelState.entryMeta[entry.travelKey]?.participantIds ??
-                            travelState.participants.map((item) => item.id);
-                          const checked = selectedIds.includes(participant.id);
-                          return (
-                            <label key={participant.id}>
-                              <input
-                                type="checkbox"
+                        >
+                          <Label>地点标签</Label>
+                          <Input
+                            list="travel-location-options"
+                            data-action="travel-entry-location"
+                            placeholder={travelState.locationLabel ?? "例如 东京站 / 机场"}
+                          />
+                        </TextField>
+                        <div className="travel-entry-participants" aria-label="参与分摊的人">
+                          {travelState.participants.map((participant) => {
+                            const selectedIds =
+                              travelState.entryMeta[entry.travelKey]?.participantIds ??
+                              travelState.participants.map((item) => item.id);
+                            const checked = selectedIds.includes(participant.id);
+                            return (
+                              <Checkbox
+                                key={participant.id}
                                 data-action="travel-entry-participant"
-                                checked={checked}
-                                onChange={(event) => {
-                                  const nextIds = event.target.checked
+                                isSelected={checked}
+                                onChange={(isSelected) => {
+                                  const nextIds = isSelected
                                     ? [...selectedIds, participant.id]
                                     : selectedIds.filter((id) => id !== participant.id);
                                   props.updateTravelEntryMeta(entry.travelKey, {
                                     participantIds: nextIds.length ? nextIds : [participant.id],
                                   });
                                 }}
-                              />
-                              {participant.name}
-                            </label>
-                          );
-                        })}
+                              >
+                                <Checkbox.Content>
+                                  <Checkbox.Control>
+                                    <Checkbox.Indicator />
+                                  </Checkbox.Control>
+                                  {participant.name}
+                                </Checkbox.Content>
+                              </Checkbox>
+                            );
+                          })}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+                <datalist id="travel-location-options">
+                  {props.travelLocationOptions.map((location) => (
+                    <option key={location} value={location} />
+                  ))}
+                </datalist>
               </div>
-              <datalist id="travel-location-options">
-                {props.travelLocationOptions.map((location) => (
-                  <option key={location} value={location} />
-                ))}
-              </datalist>
-            </div>
-          )}
-        </section>
+            )}
+          </Card.Content>
+        </Card>
 
         <TravelHistoryPanel
           records={travelHistory}
@@ -602,19 +655,17 @@ export function TravelPage(props: TravelPageProps) {
             const remainingSec = Math.max(1, Math.ceil(remainingMs / 1000));
             void props.deleteToastTick;
             return (
-              <aside key={pending.record.id} className="travel-delete-toast" role="status">
-                <p>
-                  「{pending.record.name}」已删除，{remainingSec} 秒内可恢复
-                </p>
-                <div className="travel-delete-toast-actions">
-                  <button
-                    type="button"
-                    onClick={() => props.undoTravelHistoryDelete(pending.record.id)}
-                  >
-                    撤销
-                  </button>
-                </div>
-              </aside>
+              <Alert key={pending.record.id} className="travel-delete-toast" status="warning">
+                <Alert.Indicator />
+                <Alert.Content>
+                  <Alert.Description>
+                    「{pending.record.name}」已删除，{remainingSec} 秒内可恢复
+                  </Alert.Description>
+                </Alert.Content>
+                <Button size="sm" onPress={() => props.undoTravelHistoryDelete(pending.record.id)}>
+                  撤销
+                </Button>
+              </Alert>
             );
           })}
         </div>

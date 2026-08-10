@@ -12,6 +12,7 @@ import {
 } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { gsap } from "gsap";
+import { Alert, Button, Input, Label, TextField } from "@heroui/react";
 import { LocalLedgerRecord, parseNaturalLedger } from "./lib/localLedgerParser";
 import { HeroSection } from "./components/HeroSection";
 import { NaturalLanguageInput } from "./components/NaturalLanguageInput";
@@ -2498,25 +2499,23 @@ function App() {
             <h2>{title}</h2>
           </div>
           <div className="card-heading__actions">
-            <button
-              type="button"
+            <Button
               className="stats-card__currency-btn"
               data-action={`${type}-stats-currency`}
-              onClick={() => setStatsCurrencyPopup(type)}
+              onPress={() => setStatsCurrencyPopup(type)}
               aria-label={`${title}统计货币`}
-              title="选择统计货币"
             >
               💱
-            </button>
-            <button
-              className="ghost-button"
+            </Button>
+            <Button
+              variant="ghost"
               data-action={`${type}-stats-toggle`}
-              onClick={() =>
+              onPress={() =>
                 setExpandedStats((current) => ({ ...current, [type]: !current[type] }))
               }
             >
               {expandedStats[type] ? "收起" : "展开"}
-            </button>
+            </Button>
           </div>
         </div>
         <div className="totals-grid">
@@ -3621,14 +3620,14 @@ function App() {
               onCurrencyChange={(index, currency) => updateEntry(index, { currency })}
               onDelete={deleteCategoryRecord}
             />
-            <button
-              type="button"
-              className="secondary-button today-open-manual"
+            <Button
+              variant="secondary"
+              className="today-open-manual"
               data-action="open-manual-ledger"
-              onClick={() => setSettingsModalOpen(true)}
+              onPress={() => setSettingsModalOpen(true)}
             >
               打开完整记账表格
-            </button>
+            </Button>
           </FeatureBlock>
         );
       case "dayTotals":
@@ -3765,17 +3764,16 @@ function App() {
                 {importMessage && <p className="status">{importMessage}</p>}
               </div>
               <div className="action-row">
-                <button type="button" data-action="csv-export" onClick={exportCsv}>
+                <Button data-action="csv-export" onPress={exportCsv}>
                   导出 CSV
-                </button>
-                <button
-                  type="button"
-                  className="secondary-button"
+                </Button>
+                <Button
+                  variant="secondary"
                   data-action="csv-import-pick"
-                  onClick={() => fileInputRef.current?.click()}
+                  onPress={() => fileInputRef.current?.click()}
                 >
                   导入 CSV
-                </button>
+                </Button>
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -3785,22 +3783,20 @@ function App() {
                 />
               </div>
               <div className="danger-zone" aria-label="危险数据操作">
-                <button
-                  type="button"
-                  className="danger-button"
+                <Button
+                  variant="danger"
                   data-action="clear-current-day"
-                  onClick={clearCurrentDay}
+                  onPress={clearCurrentDay}
                 >
                   清空当日数据
-                </button>
-                <button
-                  type="button"
-                  className="danger-button"
+                </Button>
+                <Button
+                  variant="danger"
                   data-action="clear-current-month"
-                  onClick={clearCurrentMonth}
+                  onPress={clearCurrentMonth}
                 >
                   清空当月数据
-                </button>
+                </Button>
               </div>
             </section>
             <div className="year-support-grid" data-section="year-support-cards">
@@ -4043,26 +4039,28 @@ function App() {
                 role="group"
               >
                 {PRIMARY_CURRENCIES.map((currency) => (
-                  <button
+                  <Button
                     key={currency}
-                    type="button"
+                    size="sm"
+                    variant={dailyDefaultCurrency === currency ? "secondary" : "ghost"}
                     className={
                       dailyDefaultCurrency === currency
                         ? "currency-switch-option active"
                         : "currency-switch-option"
                     }
-                    onClick={() => switchDailyDefaultCurrency(currency)}
+                    onPress={() => switchDailyDefaultCurrency(currency)}
                   >
                     {currency}
-                  </button>
+                  </Button>
                 ))}
-                <button
-                  type="button"
+                <Button
+                  size="sm"
+                  variant="ghost"
                   className="currency-switch-option"
-                  onClick={() => setCurrencyModal({ type: "daily-default" })}
+                  onPress={() => setCurrencyModal({ type: "daily-default" })}
                 >
                   Others
-                </button>
+                </Button>
               </div>
             </div>
           </div>
@@ -4232,218 +4230,119 @@ function App() {
       </SettingsModal>
 
       {backupReminderVisible && (
-        <aside className="backup-reminder" role="status" aria-live="polite">
-          <p>
-            建议定期导出完整 JSON 备份。数据保存在浏览器 LocalStorage
-            中，清理缓存或换设备后可能丢失。
-          </p>
-          <div className="backup-reminder-actions">
-            <button type="button" data-action="backup-reminder-export-json" onClick={exportJson}>
-              立即导出 JSON
-            </button>
-            <button type="button" className="ghost-button" onClick={() => dismissBackupReminder(1)}>
-              明天提醒
-            </button>
-            <button
-              type="button"
-              className="secondary-button"
-              onClick={() => dismissBackupReminder(3)}
-            >
-              3 天内不提醒
-            </button>
+        <Alert className="backup-reminder" status="warning" role="status" aria-live="polite">
+          <Alert.Indicator />
+          <Alert.Content>
+            <Alert.Description>
+              建议定期导出完整 JSON 备份。数据保存在浏览器 LocalStorage
+              中，清理缓存或换设备后可能丢失。
+            </Alert.Description>
+            <div className="backup-reminder-actions">
+              <Button data-action="backup-reminder-export-json" onPress={exportJson}>
+                立即导出 JSON
+              </Button>
+              <Button variant="ghost" onPress={() => dismissBackupReminder(1)}>
+                明天提醒
+              </Button>
+              <Button variant="secondary" onPress={() => dismissBackupReminder(3)}>
+                3 天内不提醒
+              </Button>
+            </div>
+          </Alert.Content>
+        </Alert>
+      )}
+
+      <SettingsModal
+        open={travelExitModalOpen}
+        title="结束旅游模式前选择保留口径"
+        subtitle="当前版本没有独立远端账户系统，选择会写入旅游历史并在本地记录本次收尾口径。"
+        onClose={() => setTravelExitModalOpen(false)}
+      >
+        <div className="travel-exit-actions">
+          <Button onPress={() => endTravelMode("self")}>仅保留本人支出</Button>
+          <Button variant="secondary" onPress={() => endTravelMode("all")}>
+            保留所有人分账支出
+          </Button>
+        </div>
+      </SettingsModal>
+
+      <SettingsModal
+        open={datePickerOpen}
+        title="选择记账日期"
+        subtitle={`当前选择：${selectedDate} · ${formatMonthDay(selectedDate)} · ${formatWeekday(selectedDate)}`}
+        onClose={closeDatePicker}
+      >
+        <div className="date-modal-panel">
+          <TextField type="date" value={selectedDate} onChange={commitDateChange}>
+            <Label>日期</Label>
+            <Input />
+          </TextField>
+          <div className="date-modal-actions" aria-label="日期快捷操作">
+            <Button variant="secondary" onPress={() => moveSelectedDate(-1)}>
+              前一天
+            </Button>
+            <Button onPress={jumpToToday}>回到今天</Button>
+            <Button variant="secondary" onPress={() => moveSelectedDate(1)}>
+              后一天
+            </Button>
           </div>
-        </aside>
-      )}
-
-      {travelExitModalOpen && (
-        <div
-          className="modal-backdrop"
-          role="presentation"
-          onMouseDown={() => setTravelExitModalOpen(false)}
-          ref={modalRootRef}
-        >
-          <section
-            className="modal-card travel-exit-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="travel-exit-title"
-            onMouseDown={(event) => event.stopPropagation()}
-          >
-            <div className="modal-heading">
-              <div>
-                <p className="eyebrow">Close Travel Mode</p>
-                <h2 id="travel-exit-title">结束旅游模式前选择保留口径</h2>
-                <p className="muted">
-                  当前版本没有独立远端账户系统，选择会写入旅游历史并在本地记录本次收尾口径。
-                </p>
-              </div>
-              <button
-                type="button"
-                className="ghost-button"
-                onClick={() => setTravelExitModalOpen(false)}
-              >
-                取消
-              </button>
-            </div>
-            <div className="travel-exit-actions">
-              <button type="button" onClick={() => endTravelMode("self")}>
-                仅保留本人支出
-              </button>
-              <button
-                type="button"
-                className="secondary-button"
-                onClick={() => endTravelMode("all")}
-              >
-                保留所有人分账支出
-              </button>
-            </div>
-          </section>
+          <p className="date-modal-note">
+            切换日期会沿用原有逻辑，将今日默认货币重置为 HKD，并保持已保存的每日账目独立存储。
+          </p>
         </div>
-      )}
+      </SettingsModal>
 
-      {datePickerOpen && (
-        <div
-          className="modal-backdrop"
-          role="presentation"
-          onMouseDown={closeDatePicker}
-          ref={modalRootRef}
-        >
-          <section
-            className="modal-card date-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="date-modal-title"
-            onMouseDown={(event) => event.stopPropagation()}
-          >
-            <div className="modal-heading">
-              <div>
-                <p className="eyebrow">Date Console</p>
-                <h2 id="date-modal-title">选择记账日期</h2>
-                <p className="muted">
-                  当前选择：{selectedDate} · {formatMonthDay(selectedDate)} ·{" "}
-                  {formatWeekday(selectedDate)}
-                </p>
-              </div>
-              <button
-                className="ghost-button"
-                type="button"
-                onClick={closeDatePicker}
-                aria-label="关闭日期选择"
+      <SettingsModal
+        open={currencyModal !== null}
+        title={
+          currencyModal?.type === "daily-default"
+            ? "选择今日默认货币"
+            : currencyModal
+              ? `选择${currencyModal.category}第${currencyModal.rowIndex + 1}条货币`
+              : "选择货币"
+        }
+        onClose={closeCurrencyModal}
+      >
+        <div className="currency-modal-grid">
+          {allCurrencies.map((currency) => {
+            const active =
+              currencyModal?.type === "daily-default"
+                ? dailyDefaultCurrency === currency
+                : currencyModal?.type === "entry"
+                  ? selectedEntries[currencyModal.index]?.currency === currency
+                  : false;
+            return (
+              <Button
+                key={currency}
+                size="sm"
+                variant={active ? "secondary" : "ghost"}
+                className={active ? "currency-card-option active" : "currency-card-option"}
+                onPress={() => handleCurrencySelect(currency)}
+                aria-pressed={active}
               >
-                关闭
-              </button>
-            </div>
-            <div className="date-modal-panel">
-              <label>
-                日期
-                <input
-                  type="date"
-                  value={selectedDate}
-                  onChange={(event) => commitDateChange(event.target.value)}
-                />
-              </label>
-              <div className="date-modal-actions" aria-label="日期快捷操作">
-                <button
-                  type="button"
-                  className="secondary-button"
-                  onClick={() => moveSelectedDate(-1)}
-                >
-                  前一天
-                </button>
-                <button type="button" onClick={jumpToToday}>
-                  回到今天
-                </button>
-                <button
-                  type="button"
-                  className="secondary-button"
-                  onClick={() => moveSelectedDate(1)}
-                >
-                  后一天
-                </button>
-              </div>
-              <p className="date-modal-note">
-                切换日期会沿用原有逻辑，将今日默认货币重置为 HKD，并保持已保存的每日账目独立存储。
-              </p>
-            </div>
-          </section>
+                <strong>{currency}</strong>
+                <span>{getCurrencyMeta(currency).name}</span>
+                {currency === "NTD" && <small>API 按 TWD 请求</small>}
+              </Button>
+            );
+          })}
         </div>
-      )}
-
-      {currencyModal && (
-        <div
-          className="modal-backdrop"
-          role="presentation"
-          onMouseDown={closeCurrencyModal}
-          ref={modalRootRef}
-        >
-          <section
-            className="modal-card currency-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="currency-modal-title"
-            onMouseDown={(event) => event.stopPropagation()}
+        <div className="custom-currency-box">
+          <TextField
+            value={customCurrencyCode}
+            onChange={(value) => {
+              setCustomCurrencyCode(value.toUpperCase());
+              setCustomCurrencyError("");
+            }}
           >
-            <div className="modal-heading">
-              <div>
-                <p className="eyebrow">Currency Palette</p>
-                <h2 id="currency-modal-title">
-                  {currencyModal.type === "daily-default"
-                    ? "选择今日默认货币"
-                    : `选择${currencyModal.category}第${currencyModal.rowIndex + 1}条货币`}
-                </h2>
-              </div>
-              <button
-                className="ghost-button"
-                type="button"
-                onClick={closeCurrencyModal}
-                aria-label="关闭货币选择"
-              >
-                关闭
-              </button>
-            </div>
-            <div className="currency-modal-grid">
-              {allCurrencies.map((currency) => {
-                const active =
-                  currencyModal.type === "daily-default"
-                    ? dailyDefaultCurrency === currency
-                    : selectedEntries[currencyModal.index]?.currency === currency;
-                return (
-                  <button
-                    key={currency}
-                    type="button"
-                    className={active ? "currency-card-option active" : "currency-card-option"}
-                    onClick={() => handleCurrencySelect(currency)}
-                    aria-pressed={active}
-                  >
-                    <strong>{currency}</strong>
-                    <span>{getCurrencyMeta(currency).name}</span>
-                    {currency === "NTD" && <small>API 按 TWD 请求</small>}
-                  </button>
-                );
-              })}
-            </div>
-            <div className="custom-currency-box">
-              <label>
-                添加自定义货币
-                <input
-                  value={customCurrencyCode}
-                  maxLength={3}
-                  placeholder="例如 CAD"
-                  onChange={(event) => {
-                    setCustomCurrencyCode(event.target.value.toUpperCase());
-                    setCustomCurrencyError("");
-                  }}
-                />
-              </label>
-              <button type="button" onClick={addCustomCurrency}>
-                添加
-              </button>
-              {customCurrencyError && <p className="error-text">{customCurrencyError}</p>}
-              <p className="muted">仅接受 ISO 4217 三字母代号；TWD 会兼容映射为界面中的 NTD。</p>
-            </div>
-          </section>
+            <Label>添加自定义货币</Label>
+            <Input maxLength={3} placeholder="例如 CAD" />
+          </TextField>
+          <Button onPress={addCustomCurrency}>添加</Button>
+          {customCurrencyError && <p className="error-text">{customCurrencyError}</p>}
+          <p className="muted">仅接受 ISO 4217 三字母代号；TWD 会兼容映射为界面中的 NTD。</p>
         </div>
-      )}
+      </SettingsModal>
     </>
   );
 }
