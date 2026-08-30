@@ -259,10 +259,8 @@ export function NaturalLanguageInput({
           <header className="nl-dialog__header">
             <div>
               <p className="eyebrow">Quick Entry</p>
-              <h2>几句话记几笔</h2>
-              <p className="muted">
-                支持多句混输、相对日期、多币种、AA/退款/到账；按 Enter 确认，Shift+Enter 换行。
-              </p>
+              <h2>记一笔</h2>
+              <p className="muted">用自然语言写开销，预览确认后再写入账本。</p>
             </div>
             <div className="nl-currency-toggle" role="group" aria-label="默认货币">
               {(["CNY", "HKD"] as const).map((currency) => (
@@ -299,7 +297,7 @@ export function NaturalLanguageInput({
                 onKeyDown={handleKeyDown}
                 onCompositionStart={() => setIsComposing(true)}
                 onCompositionEnd={() => setIsComposing(false)}
-                placeholder="例如：大前天奶茶20块；朋友还我100；今天明天洗衣服10HKD"
+                placeholder="记任何开销… 例如：午餐 35元"
                 rows={expanded ? 5 : 3}
                 autoComplete="off"
               />
