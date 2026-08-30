@@ -26,6 +26,7 @@ import { BudgetOverview } from "./components/BudgetOverview";
 import { TravelPage } from "./pages/TravelPage";
 import { SettingsPage, BackupImportPreview } from "./pages/SettingsPage";
 import { SearchPage, SearchableLedgerRecord } from "./pages/SearchPage";
+import { SectionPage } from "./pages/SectionPage";
 import type { LedgerBadge, SpendingInsight, WeeklyAchievement } from "./lib/ledgerInsights";
 import type { QuickExpenseResult } from "./lib/quickExpenseParser";
 import {
@@ -2718,6 +2719,13 @@ function App() {
     setNaturalLedgerStatus("");
   }, []);
 
+  const cancelNaturalLedgerPreview = useCallback(() => {
+    setNaturalLedgerPreview([]);
+    setNaturalLedgerWarnings([]);
+    setNaturalLedgerStatus("");
+    setQuickEntryStatus("");
+  }, []);
+
   const handleTravelNaturalSubmit = async (rawInput: string) => {
     if (!travelState.active) {
       setTravelStatus("请先开启旅游模式，再记录分账账单。");
@@ -3546,6 +3554,7 @@ function App() {
               onDefaultCurrencyChange={(currency) => switchDailyDefaultCurrency(currency)}
               onSubmit={handleQuickExpenses}
               onConfirm={confirmNaturalLedgerImport}
+              onCancel={cancelNaturalLedgerPreview}
               onClearStatus={clearQuickEntryStatus}
               onPreviewChange={updateNaturalLedgerPreviewRecord}
               onPreviewDelete={deleteNaturalLedgerPreviewRecord}
@@ -3557,6 +3566,7 @@ function App() {
               isParsing={isParsingNaturalLedger}
               resetSignal={celebrationTick}
               statusMessage={quickEntryStatus || naturalLedgerStatus}
+              submittedInput={naturalLedgerInput}
             />
           </div>
         );
@@ -3835,27 +3845,6 @@ function App() {
                 {renderHomeSection("heroCards")}
                 {renderHomeSection("quickEntry")}
               </header>
-              <main className="app-main home-main" data-section="home-main">
-                <section className="home-screen" id="screen-today" data-section="screen-today">
-                  {renderHomeSection("todayDetails")}
-                </section>
-                <section className="home-screen" id="screen-day" data-section="screen-day">
-                  {renderHomeSection("dayTotals")}
-                </section>
-                <section className="home-screen" id="screen-week" data-section="screen-week">
-                  {appSettings.homeSections.weekStats ? renderHomeSection("weekStats") : null}
-                </section>
-                <section className="home-screen" id="screen-month" data-section="screen-month">
-                  {appSettings.homeSections.monthStats ? renderHomeSection("monthStats") : null}
-                </section>
-                <section
-                  className="home-screen home-screen--year"
-                  id="screen-year"
-                  data-section="screen-year"
-                >
-                  {appSettings.homeSections.tools ? renderHomeSection("tools") : null}
-                </section>
-              </main>
               <div
                 className="home-screen home-screen--footer"
                 id="screen-footer"
@@ -3864,6 +3853,50 @@ function App() {
                 {renderHomeSection("footer")}
               </div>
             </div>
+          }
+        />
+        <Route
+          path="/entry"
+          element={
+            <SectionPage data-section="screen-entry">{renderHomeSection("quickEntry")}</SectionPage>
+          }
+        />
+        <Route
+          path="/today"
+          element={
+            <SectionPage data-section="screen-today">
+              {renderHomeSection("todayDetails")}
+            </SectionPage>
+          }
+        />
+        <Route
+          path="/day"
+          element={
+            <SectionPage data-section="screen-day">{renderHomeSection("dayTotals")}</SectionPage>
+          }
+        />
+        <Route
+          path="/week"
+          element={
+            <SectionPage data-section="screen-week">
+              {appSettings.homeSections.weekStats ? renderHomeSection("weekStats") : null}
+            </SectionPage>
+          }
+        />
+        <Route
+          path="/month"
+          element={
+            <SectionPage data-section="screen-month">
+              {appSettings.homeSections.monthStats ? renderHomeSection("monthStats") : null}
+            </SectionPage>
+          }
+        />
+        <Route
+          path="/year"
+          element={
+            <SectionPage className="section-page-shell--year" data-section="screen-year">
+              {appSettings.homeSections.tools ? renderHomeSection("tools") : null}
+            </SectionPage>
           }
         />
         <Route
@@ -3876,7 +3909,7 @@ function App() {
               formatMoney={formatMoney}
               onSelectDate={(date) => {
                 commitDateChange(date);
-                navigate("/#today");
+                navigate("/today");
               }}
             />
           }

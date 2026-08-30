@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import type { AppSettings } from "../lib/appSettings";
-import type { ReactNode } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 
 type NavItem = {
   href: string;
@@ -8,6 +8,8 @@ type NavItem = {
   icon: ReactNode;
   group?: "primary" | "sections" | "tools";
 };
+
+const SIDEBAR_COLLAPSED_KEY = "moneycounts:sidebar-collapsed";
 
 const iconProps = {
   width: 18,
@@ -81,47 +83,37 @@ const Icons = {
       <path d="M12 2v2.2M12 19.8V22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M2 12h2.2M19.8 12H22M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6" />
     </svg>
   ),
+  collapse: (
+    <svg {...iconProps}>
+      <path d="M15 6 9 12l6 6" />
+    </svg>
+  ),
+  expand: (
+    <svg {...iconProps}>
+      <path d="M9 6h11M9 12h11M9 18h11M4 6v12" />
+    </svg>
+  ),
 };
 
 const getLinks = (_settings: AppSettings): NavItem[] => {
   void _settings;
   return [
     { href: "/", label: "首页", icon: Icons.home, group: "primary" },
+    { href: "/entry", label: "记账", icon: Icons.pen, group: "primary" },
+    { href: "/today", label: "今日", icon: Icons.calendar, group: "primary" },
     { href: "/search", label: "搜索", icon: Icons.search, group: "primary" },
-    { href: "/#entry", label: "记账", icon: Icons.pen, group: "primary" },
-    { href: "/#today", label: "今日", icon: Icons.calendar, group: "primary" },
-    { href: "/#totals", label: "当日", icon: Icons.day, group: "sections" },
-    { href: "/#week", label: "本周", icon: Icons.week, group: "sections" },
-    { href: "/#month", label: "本月", icon: Icons.month, group: "sections" },
-    { href: "/#tools", label: "全年", icon: Icons.year, group: "sections" },
+    { href: "/day", label: "当日", icon: Icons.day, group: "sections" },
+    { href: "/week", label: "本周", icon: Icons.week, group: "sections" },
+    { href: "/month", label: "本月", icon: Icons.month, group: "sections" },
+    { href: "/year", label: "全年", icon: Icons.year, group: "sections" },
     { href: "/travel", label: "旅游模式", icon: Icons.travel, group: "tools" },
     { href: "/settings", label: "设置", icon: Icons.settings, group: "tools" },
   ];
 };
 
-const isRouteLink = (href: string) => href.startsWith("/") && !href.includes("#");
-
-const toRouterTarget = (href: string) => {
-  const hashIndex = href.indexOf("#");
-  if (hashIndex === -1) {
-    return href;
-  }
-  return {
-    pathname: href.slice(0, hashIndex) || "/",
-    hash: href.slice(hashIndex),
-  };
-};
-
-function isActive(href: string, pathname: string, hash: string) {
-  if (href === "/") {
-    return pathname === "/" && (!hash || hash === "#");
-  }
-  if (isRouteLink(href)) {
-    return pathname === href;
-  }
-  const target = toRouterTarget(href);
-  if (typeof target === "string") return pathname === target;
-  return pathname === target.pathname && hash === target.hash;
+function isActive(href: string, pathname: string) {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
 }
 
 type ScrollNavProps = {
@@ -134,29 +126,24 @@ function NavLink({
   label,
   icon,
   active,
+  collapsed,
 }: {
   href: string;
   label: string;
   icon: ReactNode;
   active: boolean;
+  collapsed?: boolean;
 }) {
   const className = `nav-item${active ? " nav-item--active" : ""}`;
-  const content = (
-    <>
+  return (
+    <Link
+      className={className}
+      to={href}
+      aria-current={active ? "page" : undefined}
+      title={collapsed ? label : undefined}
+    >
       <span className="nav-item__icon">{icon}</span>
       <span className="nav-item__label">{label}</span>
-    </>
-  );
-  if (isRouteLink(href)) {
-    return (
-      <Link className={className} to={href} aria-current={active ? "page" : undefined}>
-        {content}
-      </Link>
-    );
-  }
-  return (
-    <Link className={className} to={toRouterTarget(href)} aria-current={active ? "page" : undefined}>
-      {content}
     </Link>
   );
 }
@@ -164,11 +151,11 @@ function NavLink({
 function NavGroup({
   items,
   pathname,
-  hash,
+  collapsed,
 }: {
   items: NavItem[];
   pathname: string;
-  hash: string;
+  collapsed?: boolean;
 }) {
   if (!items.length) return null;
   return (
@@ -179,36 +166,82 @@ function NavGroup({
           href={link.href}
           label={link.label}
           icon={link.icon}
-          active={isActive(link.href, pathname, hash)}
+          active={isActive(link.href, pathname)}
+          collapsed={collapsed}
         />
       ))}
     </div>
   );
 }
 
+function readCollapsed(): boolean {
+  try {
+    return window.localStorage.getItem(SIDEBAR_COLLAPSED_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function applyCollapsedDataset(collapsed: boolean) {
+  document.documentElement.dataset.sidebar = collapsed ? "collapsed" : "expanded";
+}
+
 export function ScrollNav({ settings, travelAccent = false }: ScrollNavProps) {
   const location = useLocation();
+  const [collapsed, setCollapsed] = useState(false);
   const links = getLinks(settings);
   const primary = links.filter((l) => l.group === "primary");
   const sections = links.filter((l) => l.group === "sections");
   const tools = links.filter((l) => l.group === "tools");
 
+  useEffect(() => {
+    const initial = readCollapsed();
+    setCollapsed(initial);
+    applyCollapsedDataset(initial);
+  }, []);
+
+  const toggleCollapsed = () => {
+    setCollapsed((current) => {
+      const next = !current;
+      applyCollapsedDataset(next);
+      try {
+        window.localStorage.setItem(SIDEBAR_COLLAPSED_KEY, next ? "1" : "0");
+      } catch {
+        /* ignore */
+      }
+      return next;
+    });
+  };
+
   return (
     <nav
-      className={`scroll-nav journal-desktop-only${travelAccent ? " scroll-nav--travel" : ""}`}
+      className={`scroll-nav journal-desktop-only${travelAccent ? " scroll-nav--travel" : ""}${collapsed ? " scroll-nav--collapsed" : ""}`}
       aria-label="页面章节"
+      data-collapsed={collapsed ? "true" : "false"}
     >
-      <Link className="scroll-nav__brand" to="/">
-        <span className="scroll-nav__brand-mark" aria-hidden="true">
-          M
-        </span>
-        <span className="scroll-nav__brand-text">MoneyCounts</span>
-      </Link>
+      <div className="scroll-nav__top">
+        <Link className="scroll-nav__brand" to="/" title="MoneyCounts">
+          <span className="scroll-nav__brand-mark" aria-hidden="true">
+            M
+          </span>
+          <span className="scroll-nav__brand-text">MoneyCounts</span>
+        </Link>
+        <button
+          type="button"
+          className="scroll-nav__collapse ghost-button"
+          aria-label={collapsed ? "展开侧边栏" : "收缩侧边栏"}
+          aria-expanded={!collapsed}
+          title={collapsed ? "展开" : "收缩"}
+          onClick={toggleCollapsed}
+        >
+          {collapsed ? Icons.expand : Icons.collapse}
+        </button>
+      </div>
 
       <div className="scroll-nav__links">
-        <NavGroup items={primary} pathname={location.pathname} hash={location.hash} />
-        <NavGroup items={sections} pathname={location.pathname} hash={location.hash} />
-        <NavGroup items={tools} pathname={location.pathname} hash={location.hash} />
+        <NavGroup items={primary} pathname={location.pathname} collapsed={collapsed} />
+        <NavGroup items={sections} pathname={location.pathname} collapsed={collapsed} />
+        <NavGroup items={tools} pathname={location.pathname} collapsed={collapsed} />
       </div>
     </nav>
   );
@@ -217,7 +250,7 @@ export function ScrollNav({ settings, travelAccent = false }: ScrollNavProps) {
 export function MobileScrollNav({ settings, travelAccent = false }: ScrollNavProps) {
   const location = useLocation();
   const links = getLinks(settings).filter((link) =>
-    ["/", "/search", "/#entry", "/#today", "/travel", "/settings"].includes(link.href),
+    ["/", "/entry", "/today", "/search", "/travel", "/settings"].includes(link.href),
   );
 
   return (
@@ -231,7 +264,7 @@ export function MobileScrollNav({ settings, travelAccent = false }: ScrollNavPro
           href={link.href}
           label={link.label}
           icon={link.icon}
-          active={isActive(link.href, location.pathname, location.hash)}
+          active={isActive(link.href, location.pathname)}
         />
       ))}
     </nav>

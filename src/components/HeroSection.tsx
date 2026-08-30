@@ -1,6 +1,7 @@
-import { CSSProperties, PointerEvent, useEffect, useLayoutEffect, useRef } from "react";
+import { CSSProperties, PointerEvent, useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { gsap } from "gsap";
 import { useGsapContext, prefersReducedMotion } from "../hooks/useGsapContext";
+import { buildHeroSlogan, listHeroSloganVariants } from "../lib/heroSlogans";
 
 export type HeroStatCard = {
   id: string;
@@ -25,6 +26,7 @@ type HeroSectionProps = {
   onShuffleCards: () => void;
   onStatCardClick?: (cardId: string) => void;
   showStats?: boolean;
+  sloganVariant?: number;
 };
 
 export function HeroSection({
@@ -38,10 +40,17 @@ export function HeroSection({
   onShuffleCards,
   onStatCardClick,
   showStats = true,
+  sloganVariant,
 }: HeroSectionProps) {
   const heroRef = useRef<HTMLElement | null>(null);
   const shuffleTweenRef = useRef<gsap.core.Tween | null>(null);
   const pendingShuffleFadeInRef = useRef(false);
+
+  const slogan = useMemo(
+    () => buildHeroSlogan(selectedDate, sloganVariant),
+    [selectedDate, sloganVariant],
+  );
+  const sloganAlternates = useMemo(() => listHeroSloganVariants(selectedDate), [selectedDate]);
 
   useEffect(
     () => () => {
@@ -98,7 +107,7 @@ export function HeroSection({
         },
       );
     },
-    [selectedDate, statCards.length],
+    [selectedDate, slogan, statCards.length],
   );
 
   useLayoutEffect(() => {
@@ -219,9 +228,9 @@ export function HeroSection({
         <div className="hero-copy">
           <p className="eyebrow">MoneyCounts</p>
           <h1 className="hero-headline" data-motion="hero-headline">
-            今天也要
-            <span> 轻松记账</span>
+            {slogan}
           </h1>
+          <p className="sr-only">可选文案：{sloganAlternates.join("；")}</p>
         </div>
       </div>
 

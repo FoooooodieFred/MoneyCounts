@@ -29,6 +29,7 @@ type NaturalLanguageInputProps = {
   onDefaultCurrencyChange: (currency: "CNY" | "HKD") => void;
   onSubmit: (results: QuickExpenseResult[], rawInput: string) => void;
   onConfirm: () => void;
+  onCancel: () => void;
   onClearStatus: () => void;
   onPreviewChange: (
     index: number,
@@ -44,15 +45,15 @@ type NaturalLanguageInputProps = {
   isParsing?: boolean;
   resetSignal?: number;
   statusMessage?: string;
+  submittedInput?: string;
 };
 
 const QUICK_TEMPLATES = [
-  "这一周每天地铁来回10.8HKD",
-  "今天明天都要洗衣服花10HKD",
-  "大前天奶茶20块",
-  "朋友还我100",
-  "午餐45HKD，地铁10.8HKD",
-  "发工资 5000",
+  "这一周每天地铁来回 __ HKD",
+  "午餐 __ 元",
+  "朋友还我 __",
+  "大前天奶茶 __ 块",
+  "发工资 __",
 ];
 
 export function NaturalLanguageInput({
@@ -62,6 +63,7 @@ export function NaturalLanguageInput({
   onDefaultCurrencyChange,
   onSubmit,
   onConfirm,
+  onCancel,
   onClearStatus,
   onPreviewChange,
   onPreviewDelete,
@@ -73,6 +75,7 @@ export function NaturalLanguageInput({
   isParsing = false,
   resetSignal = 0,
   statusMessage,
+  submittedInput = "",
 }: NaturalLanguageInputProps) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const dialogRef = useRef<HTMLDivElement | null>(null);
@@ -86,6 +89,9 @@ export function NaturalLanguageInput({
   const [compactVisible, setCompactVisible] = useState(false);
   const [isComposing, setIsComposing] = useState(false);
 
+  const previewMode = previewRecords.length > 0;
+  const bubbleText = submittedInput.trim() || input.trim();
+
   useGsapContext(
     sectionRef,
     (_ctx) => {
@@ -97,12 +103,11 @@ export function NaturalLanguageInput({
       }
       gsap.fromTo(
         dialog,
-        { autoAlpha: 0, scale: 0.97, y: 20 },
+        { autoAlpha: 0, y: 16 },
         {
           autoAlpha: 1,
-          scale: 1,
           y: 0,
-          duration: 0.55,
+          duration: 0.45,
           ease: "power3.out",
           clearProps: "transform,opacity,visibility",
         },
@@ -114,21 +119,21 @@ export function NaturalLanguageInput({
   useGsapContext(
     previewRef,
     (ctx) => {
-      if (!previews.length || prefersReducedMotion()) return;
+      if (!previewMode || prefersReducedMotion()) return;
       gsap.fromTo(
         ctx.selector?.(".nl-preview-row") ?? [],
-        { autoAlpha: 0, x: -8 },
+        { autoAlpha: 0, y: 8 },
         {
           autoAlpha: 1,
-          x: 0,
-          stagger: 0.05,
-          duration: 0.3,
+          y: 0,
+          stagger: 0.04,
+          duration: 0.28,
           ease: "power2.out",
           clearProps: "transform,opacity,visibility",
         },
       );
     },
-    [previews.length],
+    [previewMode, previewRecords.length],
   );
 
   useEffect(() => {
@@ -177,17 +182,6 @@ export function NaturalLanguageInput({
       });
     });
   }, [isParsing, previewRecords]);
-
-  const handleFocus = () => {
-    setExpanded(true);
-    if (prefersReducedMotion() || !dialogRef.current) return;
-    gsap.to(dialogRef.current, { scale: 1.01, duration: 0.35, ease: "power2.out" });
-  };
-
-  const handleBlur = () => {
-    if (prefersReducedMotion() || !dialogRef.current) return;
-    gsap.to(dialogRef.current, { scale: 1, duration: 0.35, ease: "power2.out" });
-  };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -246,21 +240,29 @@ export function NaturalLanguageInput({
     focusMainInput();
   };
 
+  const handleEditPreview = () => {
+    if (submittedInput.trim()) setInput(submittedInput);
+    onCancel();
+    requestAnimationFrame(() => textareaRef.current?.focus());
+  };
+
+  const handleCancel = () => {
+    onCancel();
+    setError("");
+  };
+
   return (
     <>
       <section
         ref={sectionRef}
-        className={`nl-section is-visible${expanded ? " is-expanded" : ""}`}
+        className={`nl-section is-visible${expanded ? " is-expanded" : ""}${previewMode ? " is-preview" : ""}`}
         id="entry"
         data-section="quick-entry"
       >
-        <div ref={dialogRef} className="nl-dialog">
-          <div className="nl-dialog__glow" aria-hidden="true" />
-          <header className="nl-dialog__header">
+        <div ref={dialogRef} className="nl-dialog nl-dialog--composer">
+          <header className="nl-dialog__header nl-dialog__header--compact">
             <div>
-              <p className="eyebrow">Quick Entry</p>
               <h2>记一笔</h2>
-              <p className="muted">用自然语言写开销，预览确认后再写入账本。</p>
             </div>
             <div className="nl-currency-toggle" role="group" aria-label="默认货币">
               {(["CNY", "HKD"] as const).map((currency) => (
@@ -277,172 +279,196 @@ export function NaturalLanguageInput({
             </div>
           </header>
 
-          <div className="nl-template-row" aria-label="快捷模板">
-            {QUICK_TEMPLATES.map((template) => (
-              <button key={template} type="button" onClick={() => applyTemplate(template)}>
-                {template}
-              </button>
-            ))}
-          </div>
-
-          <form className="nl-form" onSubmit={handleSubmit} data-action="quick-entry-submit">
-            <label className="nl-input-wrap">
-              <span className="sr-only">输入今日开销</span>
-              <textarea
-                ref={textareaRef}
-                value={input}
-                onChange={(event) => setInput(event.target.value)}
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-                onKeyDown={handleKeyDown}
-                onCompositionStart={() => setIsComposing(true)}
-                onCompositionEnd={() => setIsComposing(false)}
-                placeholder="记任何开销… 例如：午餐 35元"
-                rows={expanded ? 5 : 3}
-                autoComplete="off"
-              />
-            </label>
-            <div className="nl-form__actions">
-              <button type="submit" disabled={!previews.length || isParsing}>
-                {isParsing
-                  ? "解析中..."
-                  : `生成预览${previews.length > 1 ? ` (${previews.length} 笔)` : ""}`}
-              </button>
-              <button
-                type="button"
-                className="secondary-button"
-                data-action="quick-entry-clear"
-                onClick={() => setInput("")}
+          {!previewMode ? (
+            <>
+              <form
+                className="nl-form nl-form--bubble"
+                onSubmit={handleSubmit}
+                data-action="quick-entry-submit"
               >
-                清空
-              </button>
-            </div>
-          </form>
-
-          {previewRecords.length > 0 ? (
-            <div ref={previewRef} className="nl-preview nl-preview--batch" role="status">
-              <div className="nl-preview__heading">
-                <span className="nl-preview__count">待确认 {previewRecords.length} 笔</span>
-                <button
-                  type="button"
-                  className="ghost-button"
-                  data-action="preview-add-record"
-                  onClick={onPreviewAdd}
-                >
-                  补一笔
-                </button>
-              </div>
-              {previewRecords.map((preview, index) => (
-                <div
-                  key={`${preview.date}-${preview.amount}-${preview.note}-${index}`}
-                  className="nl-preview-row nl-preview-row--editable"
-                >
-                  <label>
-                    日期
-                    <input
-                      type="date"
-                      value={preview.date}
-                      onChange={(event) => onPreviewChange(index, "date", event.target.value)}
-                    />
-                  </label>
-                  <label>
-                    分类
-                    <select
-                      value={preview.category}
-                      onChange={(event) => onPreviewChange(index, "category", event.target.value)}
-                    >
-                      {categories.map((category) => (
-                        <option key={category} value={category}>
-                          {category}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <label>
-                    金额
-                    <input
-                      inputMode="decimal"
-                      value={preview.amount}
-                      onChange={(event) => onPreviewChange(index, "amount", event.target.value)}
-                    />
-                  </label>
-                  <label>
-                    货币
-                    <select
-                      value={preview.currency}
-                      onChange={(event) => onPreviewChange(index, "currency", event.target.value)}
-                    >
-                      {currencies.map((currency) => (
-                        <option key={currency} value={currency}>
-                          {currency}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <label className="nl-preview-row__note">
-                    备注
-                    <input
-                      value={preview.note}
-                      onChange={(event) => onPreviewChange(index, "note", event.target.value)}
+                <div className="nl-bubble">
+                  <label className="nl-bubble__field">
+                    <span className="sr-only">输入开销</span>
+                    <textarea
+                      ref={textareaRef}
+                      value={input}
+                      onChange={(event) => setInput(event.target.value)}
+                      onFocus={() => setExpanded(true)}
+                      onKeyDown={handleKeyDown}
+                      onCompositionStart={() => setIsComposing(true)}
+                      onCompositionEnd={() => setIsComposing(false)}
+                      placeholder="用一句话记下开销…"
+                      rows={expanded ? 4 : 3}
+                      autoComplete="off"
                     />
                   </label>
                   <button
-                    type="button"
-                    className="delete-record-button"
-                    data-action="preview-delete-record"
-                    onClick={() => onPreviewDelete(index)}
-                    aria-label="删除预览记录"
+                    type="submit"
+                    className="nl-bubble__action"
+                    disabled={!previews.length || isParsing}
                   >
-                    ×
+                    {isParsing ? "解析中…" : "生成记账预览"}
                   </button>
-                  {previewIssues[index]?.length ? (
-                    <small className="nl-preview-row__issues">
-                      {previewIssues[index].join(" / ")}
-                    </small>
-                  ) : null}
                 </div>
-              ))}
-              {warnings.length ? (
-                <div className="nl-preview-warnings">
-                  {warnings.map((warning) => (
-                    <small key={warning}>{warning}</small>
-                  ))}
+              </form>
+
+              <div className="nl-template-stack" aria-label="快捷模板">
+                <p className="nl-template-stack__hint">快捷模板 · 点选填入后再补金额</p>
+                {QUICK_TEMPLATES.map((template) => (
+                  <button
+                    key={template}
+                    type="button"
+                    className="nl-chip"
+                    onClick={() => applyTemplate(template)}
+                  >
+                    {template}
+                  </button>
+                ))}
+              </div>
+
+              {previews.length > 0 ? (
+                <div className="nl-preview nl-preview--compact" role="status">
+                  <span className="nl-preview__count">
+                    草稿识别 {previews.length} 笔，点「生成记账预览」继续
+                  </span>
                 </div>
+              ) : error ? (
+                <p className="nl-error">{error}</p>
               ) : null}
-              <button
-                type="button"
-                className="nl-confirm-float"
-                data-action="preview-confirm-import"
-                disabled={!canConfirm}
-                onClick={onConfirm}
-              >
-                确认记账
-              </button>
-            </div>
-          ) : previews.length > 0 ? (
-            <div ref={previewRef} className="nl-preview nl-preview--compact" role="status">
-              <span className="nl-preview__count">
-                草稿识别 {previews.length} 笔，按 Enter 生成可编辑预览
-              </span>
-              {previews.map((preview, index) => (
-                <div key={`${preview.amount}-${preview.note}-${index}`} className="nl-preview-row">
-                  <span>{preview.category}</span>
-                  <strong>
-                    {preview.amount} {preview.currency}
-                  </strong>
-                  {preview.note ? <em>{preview.note}</em> : null}
+            </>
+          ) : (
+            <>
+              <div className="nl-message-row">
+                <div className="nl-message-bubble" aria-label="已输入内容">
+                  <p>{bubbleText || "（已生成预览）"}</p>
                 </div>
-              ))}
-            </div>
-          ) : error ? (
-            <p className="nl-error">{error}</p>
-          ) : null}
+                <button
+                  type="button"
+                  className="secondary-button nl-edit-preview"
+                  data-action="preview-edit-input"
+                  onClick={handleEditPreview}
+                >
+                  更改记账预览
+                </button>
+              </div>
+
+              <div ref={previewRef} className="nl-preview nl-preview--batch" role="status">
+                <div className="nl-preview__heading">
+                  <span className="nl-preview__count">记账预览 · 可编辑 · {previewRecords.length} 笔</span>
+                  <button
+                    type="button"
+                    className="ghost-button"
+                    data-action="preview-add-record"
+                    onClick={onPreviewAdd}
+                  >
+                    补一笔
+                  </button>
+                </div>
+                {previewRecords.map((preview, index) => (
+                  <div
+                    key={`${preview.date}-${preview.amount}-${preview.note}-${index}`}
+                    className="nl-preview-row nl-preview-row--editable"
+                  >
+                    <label>
+                      日期
+                      <input
+                        type="date"
+                        value={preview.date}
+                        onChange={(event) => onPreviewChange(index, "date", event.target.value)}
+                      />
+                    </label>
+                    <label>
+                      分类
+                      <select
+                        value={preview.category}
+                        onChange={(event) => onPreviewChange(index, "category", event.target.value)}
+                      >
+                        {categories.map((category) => (
+                          <option key={category} value={category}>
+                            {category}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label>
+                      金额
+                      <input
+                        inputMode="decimal"
+                        value={preview.amount}
+                        onChange={(event) => onPreviewChange(index, "amount", event.target.value)}
+                      />
+                    </label>
+                    <label>
+                      货币
+                      <select
+                        value={preview.currency}
+                        onChange={(event) => onPreviewChange(index, "currency", event.target.value)}
+                      >
+                        {currencies.map((currency) => (
+                          <option key={currency} value={currency}>
+                            {currency}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label className="nl-preview-row__note">
+                      备注
+                      <input
+                        value={preview.note}
+                        onChange={(event) => onPreviewChange(index, "note", event.target.value)}
+                      />
+                    </label>
+                    <button
+                      type="button"
+                      className="delete-record-button"
+                      data-action="preview-delete-record"
+                      onClick={() => onPreviewDelete(index)}
+                      aria-label="删除预览记录"
+                    >
+                      ×
+                    </button>
+                    {previewIssues[index]?.length ? (
+                      <small className="nl-preview-row__issues">
+                        {previewIssues[index].join(" / ")}
+                      </small>
+                    ) : null}
+                  </div>
+                ))}
+                {warnings.length ? (
+                  <div className="nl-preview-warnings">
+                    {warnings.map((warning) => (
+                      <small key={warning}>{warning}</small>
+                    ))}
+                  </div>
+                ) : null}
+                <div className="nl-preview__footer">
+                  <button
+                    type="button"
+                    className="secondary-button"
+                    data-action="preview-cancel-import"
+                    onClick={handleCancel}
+                  >
+                    取消记账
+                  </button>
+                  <button
+                    type="button"
+                    className="nl-confirm-primary"
+                    data-action="preview-confirm-import"
+                    disabled={!canConfirm}
+                    onClick={onConfirm}
+                  >
+                    完成记账
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
 
           {statusMessage ? <p className="status nl-status">{statusMessage}</p> : null}
         </div>
       </section>
 
-      {compactVisible ? (
+      {compactVisible && !previewMode ? (
         <div className="nl-compact-entry-host">
           <form
             className="nl-compact-entry"
