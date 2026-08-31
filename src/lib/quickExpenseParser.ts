@@ -5,6 +5,7 @@ import {
   splitExpenseSegments,
   type ParsedExpenseSegment,
 } from "./expenseParseShared";
+import { FALLBACK_CATEGORY_ZH } from "./nlLedgerCategories";
 
 export type QuickExpenseResult = ParsedExpenseSegment & {
   warnings: string[];
@@ -28,8 +29,8 @@ const SUPPORTED_CURRENCIES = [
 
 function withWarnings(segment: ParsedExpenseSegment, text: string): QuickExpenseResult {
   const warnings: string[] = [];
-  if (segment.category === "其他" && !/其他|other/i.test(text)) {
-    warnings.push("未匹配到明确分类，已归入「其他」");
+  if (segment.category === FALLBACK_CATEGORY_ZH && !/日用|百货|household|other|其他/i.test(text)) {
+    warnings.push("未匹配到明确分类，已归入「日用百货」");
   }
   return { ...segment, warnings };
 }

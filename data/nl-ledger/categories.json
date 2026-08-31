@@ -1,0 +1,216 @@
+{
+  "anchorDate": "2026-08-31",
+  "note": "Amounts for kind=negative_expense are signed negative. Income amounts stay positive. Multi-day utterances copy the same amount onto every resolved date.",
+  "categories": [
+    {
+      "id": "food_dining",
+      "zh": "餐饮美食",
+      "en": "Food and Dining",
+      "kind": "expense"
+    },
+    {
+      "id": "transport",
+      "zh": "交通出行",
+      "en": "Transport",
+      "kind": "expense"
+    },
+    {
+      "id": "groceries",
+      "zh": "商超购物",
+      "en": "Groceries",
+      "kind": "expense"
+    },
+    {
+      "id": "household_goods",
+      "zh": "日用百货",
+      "en": "Household Goods",
+      "kind": "expense"
+    },
+    {
+      "id": "rent",
+      "zh": "房屋租金",
+      "en": "Rent",
+      "kind": "expense"
+    },
+    {
+      "id": "property_mgmt",
+      "zh": "物业费用",
+      "en": "Property Fees",
+      "kind": "expense"
+    },
+    {
+      "id": "utilities",
+      "zh": "水电燃气",
+      "en": "Utilities",
+      "kind": "expense"
+    },
+    {
+      "id": "mobile_phone",
+      "zh": "通讯话费",
+      "en": "Mobile and Phone",
+      "kind": "expense"
+    },
+    {
+      "id": "broadband",
+      "zh": "宽带网络",
+      "en": "Broadband",
+      "kind": "expense"
+    },
+    {
+      "id": "medical",
+      "zh": "医疗诊疗",
+      "en": "Medical Care",
+      "kind": "expense"
+    },
+    {
+      "id": "pharmacy",
+      "zh": "药品保健",
+      "en": "Pharmacy",
+      "kind": "expense"
+    },
+    {
+      "id": "education",
+      "zh": "教育学习",
+      "en": "Education",
+      "kind": "expense"
+    },
+    {
+      "id": "books_stationery",
+      "zh": "书籍文具",
+      "en": "Books and Stationery",
+      "kind": "expense"
+    },
+    {
+      "id": "leisure",
+      "zh": "休闲娱乐",
+      "en": "Leisure",
+      "kind": "expense"
+    },
+    {
+      "id": "shows_media",
+      "zh": "影视演出",
+      "en": "Shows and Media",
+      "kind": "expense"
+    },
+    {
+      "id": "fitness",
+      "zh": "运动健身",
+      "en": "Fitness",
+      "kind": "expense"
+    },
+    {
+      "id": "travel",
+      "zh": "旅游度假",
+      "en": "Travel",
+      "kind": "expense"
+    },
+    {
+      "id": "lodging",
+      "zh": "酒店住宿",
+      "en": "Lodging",
+      "kind": "expense"
+    },
+    {
+      "id": "gifts",
+      "zh": "人情送礼",
+      "en": "Gifts",
+      "kind": "expense"
+    },
+    {
+      "id": "red_packet",
+      "zh": "红包礼金",
+      "en": "Red Packets",
+      "kind": "expense"
+    },
+    {
+      "id": "pets",
+      "zh": "宠物养护",
+      "en": "Pets",
+      "kind": "expense"
+    },
+    {
+      "id": "apparel",
+      "zh": "服饰鞋包",
+      "en": "Apparel",
+      "kind": "expense"
+    },
+    {
+      "id": "beauty",
+      "zh": "美容个护",
+      "en": "Beauty",
+      "kind": "expense"
+    },
+    {
+      "id": "electronics",
+      "zh": "数码产品",
+      "en": "Electronics",
+      "kind": "expense"
+    },
+    {
+      "id": "home_decor",
+      "zh": "家居家装",
+      "en": "Home and Decor",
+      "kind": "expense"
+    },
+    {
+      "id": "insurance",
+      "zh": "保险缴费",
+      "en": "Insurance",
+      "kind": "expense"
+    },
+    {
+      "id": "loan_repay",
+      "zh": "还贷支出",
+      "en": "Loan Repayment",
+      "kind": "expense"
+    },
+    {
+      "id": "tax",
+      "zh": "税费支出",
+      "en": "Taxes",
+      "kind": "expense"
+    },
+    {
+      "id": "salary",
+      "zh": "工资收入",
+      "en": "Salary",
+      "kind": "income"
+    },
+    {
+      "id": "side_income",
+      "zh": "副业收入",
+      "en": "Side Income",
+      "kind": "income"
+    },
+    {
+      "id": "refund_shopping",
+      "zh": "购物退款",
+      "en": "Shopping Refunds",
+      "kind": "negative_expense"
+    },
+    {
+      "id": "refund_tickets",
+      "zh": "票务退款",
+      "en": "Ticket Refunds",
+      "kind": "negative_expense"
+    },
+    {
+      "id": "reimbursement",
+      "zh": "报销到账",
+      "en": "Reimbursement",
+      "kind": "negative_expense"
+    },
+    {
+      "id": "cashback",
+      "zh": "优惠返现",
+      "en": "Cashback",
+      "kind": "negative_expense"
+    },
+    {
+      "id": "repay_from_others",
+      "zh": "他人还款",
+      "en": "Repayment from Others",
+      "kind": "negative_expense"
+    }
+  ]
+}

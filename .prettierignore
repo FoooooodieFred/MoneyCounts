@@ -4,4 +4,9 @@ dist
 coverage
 package-lock.json
 *.tsbuildinfo
-docs
+data/nl-ledger/staging-by-cat
+data/nl-ledger/staging-zh.json
+data/nl-ledger/pairs
+data/nl-ledger/*.csv
+data/nl-ledger/*.jsonl
+data/nl-ledger/source-zh-30.csv

@@ -3,6 +3,8 @@
  * `normalize*` 负责旧版字段迁移；locked/pinned 区块规则勿随意打破。
  * 备份 JSON 的 settings 字段与此类型对齐，改 schema 需同步 backup。
  */
+import { remapLegacyCategoryLimits } from "./nlLedgerCategories";
+
 export const APP_SETTINGS_KEY = "monthly-smart-ledger:settings";
 
 export const HOME_SECTION_LABELS = {
@@ -162,11 +164,7 @@ export const normalizeAppSettings = (value: unknown): AppSettings => {
     ]),
   ) as Record<HomeSectionKey, boolean>;
 
-  const categoryLimits = Object.fromEntries(
-    Object.entries(rawCategoryLimits)
-      .map(([category, value]) => [category, normalizeBudgetAmount(value)] as const)
-      .filter((entry): entry is readonly [string, number] => entry[1] !== null),
-  );
+  const categoryLimits = remapLegacyCategoryLimits(rawCategoryLimits);
 
   return {
     homeSections,

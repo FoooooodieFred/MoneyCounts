@@ -1,8 +1,8 @@
 /**
- * 自然语言账本解析入口（中文多句 → 可预览记录）。
+ * 自然语言账本解析入口（中英多句 → 可预览记录）。
  * 首页快速记账与旅游自然语言录入共用 `parseNaturalLedger`；
- * 日期/整周工具委托 `dateRange`，分词与金额委托 `expenseParseShared`。
- * 改动行为前请跑 `npm test`（quickExpenseParser / refactorPreservation）。
+ * 日期用 `date_spec` 展开（每天复制同一金额），分词与金额委托 `expenseParseShared`。
+ * 改动行为前请跑 `npm test`（quickExpenseParser / nlLedgerDateSpec / refactorPreservation）。
  */
 import {
   CATEGORY_KEYWORDS,
@@ -10,14 +10,8 @@ import {
   parseExpenseSegment,
   splitExpenseSegments,
 } from "./expenseParseShared";
-import {
-  buildDateKey,
-  formatDateKey,
-  getWeekDates,
-  isValidDateKey,
-  parseDateKey,
-  shiftDateKey,
-} from "./dateRange";
+import { formatDateKey, isValidDateKey } from "./dateRange";
+import { detectNlLedgerDateSpec, resolveNlLedgerDateSpec } from "./nlLedgerDateSpec";
 
 export type LocalLedgerRecord = {
   date: string;
@@ -41,79 +35,10 @@ export type LocalLedgerParseResult = {
   source: "local";
 };
 
-const detectWeekday = (text: string, selectedDate: string) => {
-  const match = text.match(/(上|下|本|这)?(?:周|星期|礼拜)([一二三四五六日天])/);
-  if (!match) return null;
-  const weekdayMap: Record<string, number> = {
-    一: 1,
-    二: 2,
-    三: 3,
-    四: 4,
-    五: 5,
-    六: 6,
-    日: 7,
-    天: 7,
-  };
-  const selected = parseDateKey(selectedDate);
-  const currentDay = selected.getDay() || 7;
-  const targetDay = weekdayMap[match[2]];
-  const prefix = match[1];
-  let offset = targetDay - currentDay;
-  if (prefix === "上") offset -= 7;
-  if (prefix === "下") offset += 7;
-  return shiftDateKey(selectedDate, offset);
-};
-
-const detectDate = (text: string, selectedDate: string) => {
-  const fullDate = text.match(
-    /\b(20\d{2})[-/.](\d{1,2})[-/.](\d{1,2})\b|20(\d{2})年(\d{1,2})月(\d{1,2})[日号]?/,
-  );
-  if (fullDate) {
-    const year = Number(fullDate[1] ?? `20${fullDate[4]}`);
-    const month = Number(fullDate[2] ?? fullDate[5]);
-    const day = Number(fullDate[3] ?? fullDate[6]);
-    const parsed = buildDateKey(year, month, day);
-    if (parsed) return parsed;
-  }
-
-  const [, selectedYear] = selectedDate.match(/^(\d{4})-/) ?? [];
-  const monthDay = text.match(/\b(\d{1,2})[-/.](\d{1,2})\b|(\d{1,2})月(\d{1,2})[日号]?/);
-  if (monthDay && selectedYear) {
-    const month = Number(monthDay[1] ?? monthDay[3]);
-    const day = Number(monthDay[2] ?? monthDay[4]);
-    const parsed = buildDateKey(Number(selectedYear), month, day);
-    if (parsed) return parsed;
-  }
-
-  if (/大前天/.test(text)) return shiftDateKey(selectedDate, -3);
-  if (/前天/.test(text)) return shiftDateKey(selectedDate, -2);
-  if (/昨天|昨日/.test(text)) return shiftDateKey(selectedDate, -1);
-  if (/今天|今日/.test(text)) return selectedDate;
-  if (/大后天/.test(text)) return shiftDateKey(selectedDate, 3);
-  if (/明天/.test(text)) return shiftDateKey(selectedDate, 1);
-  if (/后天/.test(text)) return shiftDateKey(selectedDate, 2);
-
-  return detectWeekday(text, selectedDate);
-};
-
-const detectDateTargets = (text: string, selectedDate: string) => {
-  const weekEveryDay = text.match(/(上|下|本|这)?(?:一)?周(?:每天|每日|天天|每一天|整周|一周七天)/);
-  if (weekEveryDay) return getWeekDates(selectedDate, weekEveryDay[1]);
-
-  const targets: string[] = [];
-  const add = (date: string) => {
-    if (!targets.includes(date)) targets.push(date);
-  };
-
-  if (/大前天/.test(text)) add(shiftDateKey(selectedDate, -3));
-  else if (/前天/.test(text)) add(shiftDateKey(selectedDate, -2));
-  if (/昨天|昨日/.test(text)) add(shiftDateKey(selectedDate, -1));
-  if (/今天|今日/.test(text)) add(selectedDate);
-  if (/大后天/.test(text)) add(shiftDateKey(selectedDate, 3));
-  else if (/后天/.test(text)) add(shiftDateKey(selectedDate, 2));
-  if (/明天/.test(text)) add(shiftDateKey(selectedDate, 1));
-
-  return targets.length ? targets : null;
+const resolveSingleDayFallbackSpec = (text: string, selectedDate: string) => {
+  const spec = detectNlLedgerDateSpec(text);
+  const dates = resolveNlLedgerDateSpec(spec, selectedDate);
+  return dates.length === 1 ? spec : "anchor";
 };
 
 const cleanRecurringNote = (note: string) => {
@@ -123,6 +48,7 @@ const cleanRecurringNote = (note: string) => {
     previous = next;
     next = next
       .replace(/^(?:上|下|本|这)?(?:一)?周(?:每天|每日|天天|每一天|整周|一周七天)?/u, "")
+      .replace(/^(?:today|yesterday|tomorrow|this week|last week|next week)+/iu, "")
       .replace(/^(?:今天|今日|明天|后天|大后天|昨天|昨日|前天|大前天)+/u, "")
       .replace(/^(?:都要|都|每天|每日|天天|每一天|要)+/u, "")
       .trim();
@@ -163,7 +89,7 @@ export const parseNaturalLedger = async (
   const fallbackCurrency = context.currencies.includes(context.defaultCurrency)
     ? context.defaultCurrency
     : (context.currencies[0] ?? "");
-  const globalDate = detectDate(trimmed, fallbackDate);
+  const globalFallbackSpec = resolveSingleDayFallbackSpec(trimmed, fallbackDate);
   const segments = splitExpenseSegments(trimmed);
   const records = segments
     .flatMap((segment) => {
@@ -173,8 +99,9 @@ export const parseNaturalLedger = async (
         return [];
       }
 
-      const date = detectDate(segment, fallbackDate) ?? globalDate ?? fallbackDate;
-      const targetDates = detectDateTargets(segment, fallbackDate) ?? [date];
+      const segmentSpec = detectNlLedgerDateSpec(segment);
+      const spec = segmentSpec !== "anchor" ? segmentSpec : globalFallbackSpec;
+      const targetDates = resolveNlLedgerDateSpec(spec, fallbackDate);
       const parsed = parseExpenseSegment(
         segment,
         context.categories,

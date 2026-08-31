@@ -71,6 +71,12 @@ import {
   hasEntryContent,
   parseAmount,
 } from "./lib/ledgerStats";
+import { MAX_RECORDS_PER_CATEGORY, migrateLegacyDayEntries } from "./lib/ledgerLayout";
+import {
+  FALLBACK_CATEGORY_ZH,
+  LEDGER_CATEGORIES,
+  remapLegacyCategoryName,
+} from "./lib/nlLedgerCategories";
 import {
   DEFAULT_TRAVEL_STATE,
   TravelHistoryRecord,
@@ -165,11 +171,7 @@ type CurrencyModalState =
   | { type: "entry"; index: number; category: string; rowIndex: number }
   | null;
 
-const CATEGORIES = ["餐饮", "交通", "购物", "居住", "通讯", "娱乐", "医疗", "教育", "旅行", "其他"];
-
-const LEGACY_ROWS_PER_CATEGORY = 5;
-const PREVIOUS_MAX_RECORDS_PER_CATEGORY = 15;
-const MAX_RECORDS_PER_CATEGORY = 50;
+const CATEGORIES = [...LEDGER_CATEGORIES];
 const STORAGE_KEY = "monthly-smart-ledger:v1";
 const RATE_KEY = "monthly-smart-ledger:exchange";
 const LAST_CURRENCY_KEY = "monthly-smart-ledger:last-currency";
@@ -190,6 +192,31 @@ const PIE_COLORS = [
   "#E6E6FA",
   "#B0E0E6",
   "#D3D3D3",
+  "#F7B267",
+  "#77BFA3",
+  "#9B5DE5",
+  "#F15BB5",
+  "#00BBF9",
+  "#FEE440",
+  "#80ED99",
+  "#F77F00",
+  "#3D5A80",
+  "#E07A5F",
+  "#81B29A",
+  "#F2CC8F",
+  "#6D597A",
+  "#B8C0FF",
+  "#FFC6FF",
+  "#A0C4FF",
+  "#CAFFBF",
+  "#FFADAD",
+  "#FFD6A5",
+  "#FDFFB6",
+  "#9BF6FF",
+  "#BDB2FF",
+  "#FFC8DD",
+  "#A2D2FF",
+  "#CDB4DB",
 ];
 
 const PRIMARY_CURRENCIES = ["HKD", "CNY"] as const;
@@ -532,34 +559,10 @@ const getCategoryEntries = <T extends LedgerEntry>(entries: T[], categoryIndex: 
 
 const normalizeStoredEntries = (entries: Partial<LedgerEntry>[] | undefined): LedgerEntry[] => {
   const source = Array.isArray(entries) ? entries : [];
-  if (source.length <= CATEGORIES.length * LEGACY_ROWS_PER_CATEGORY) {
-    const normalized = makeDayEntries("CNY");
-    CATEGORIES.forEach((_, categoryIndex) => {
-      for (let rowIndex = 0; rowIndex < LEGACY_ROWS_PER_CATEGORY; rowIndex += 1) {
-        const legacyIndex = categoryIndex * LEGACY_ROWS_PER_CATEGORY + rowIndex;
-        normalized[getEntryIndex(categoryIndex, rowIndex)] = sanitizeEntry(
-          source[legacyIndex] ?? {},
-          "CNY",
-        );
-      }
-    });
-    return normalized;
-  }
-  if (source.length <= CATEGORIES.length * PREVIOUS_MAX_RECORDS_PER_CATEGORY) {
-    const normalized = makeDayEntries("CNY");
-    CATEGORIES.forEach((_, categoryIndex) => {
-      for (let rowIndex = 0; rowIndex < PREVIOUS_MAX_RECORDS_PER_CATEGORY; rowIndex += 1) {
-        const previousIndex = categoryIndex * PREVIOUS_MAX_RECORDS_PER_CATEGORY + rowIndex;
-        normalized[getEntryIndex(categoryIndex, rowIndex)] = sanitizeEntry(
-          source[previousIndex] ?? {},
-          "CNY",
-        );
-      }
-    });
-    return normalized;
-  }
-  return Array.from({ length: CATEGORIES.length * MAX_RECORDS_PER_CATEGORY }, (_, index) =>
-    sanitizeEntry(source[index] ?? {}, "CNY"),
+  return migrateLegacyDayEntries(
+    source,
+    () => makeBlankEntry("CNY"),
+    (entry) => sanitizeEntry(entry ?? {}, "CNY"),
   );
 };
 
@@ -688,36 +691,10 @@ const normalizeBackupStoredEntries = (
   knownCurrencies: readonly Currency[],
 ): LedgerEntry[] => {
   const source = Array.isArray(entries) ? entries : [];
-  if (source.length <= CATEGORIES.length * LEGACY_ROWS_PER_CATEGORY) {
-    const normalized = makeDayEntries("CNY");
-    CATEGORIES.forEach((_, categoryIndex) => {
-      for (let rowIndex = 0; rowIndex < LEGACY_ROWS_PER_CATEGORY; rowIndex += 1) {
-        const legacyIndex = categoryIndex * LEGACY_ROWS_PER_CATEGORY + rowIndex;
-        normalized[getEntryIndex(categoryIndex, rowIndex)] = sanitizeBackupEntry(
-          source[legacyIndex] ?? {},
-          "CNY",
-          knownCurrencies,
-        );
-      }
-    });
-    return normalized;
-  }
-  if (source.length <= CATEGORIES.length * PREVIOUS_MAX_RECORDS_PER_CATEGORY) {
-    const normalized = makeDayEntries("CNY");
-    CATEGORIES.forEach((_, categoryIndex) => {
-      for (let rowIndex = 0; rowIndex < PREVIOUS_MAX_RECORDS_PER_CATEGORY; rowIndex += 1) {
-        const previousIndex = categoryIndex * PREVIOUS_MAX_RECORDS_PER_CATEGORY + rowIndex;
-        normalized[getEntryIndex(categoryIndex, rowIndex)] = sanitizeBackupEntry(
-          source[previousIndex] ?? {},
-          "CNY",
-          knownCurrencies,
-        );
-      }
-    });
-    return normalized;
-  }
-  return Array.from({ length: CATEGORIES.length * MAX_RECORDS_PER_CATEGORY }, (_, index) =>
-    sanitizeBackupEntry(source[index] ?? {}, "CNY", knownCurrencies),
+  return migrateLegacyDayEntries(
+    source,
+    () => makeBlankEntry("CNY"),
+    (entry) => sanitizeBackupEntry(entry ?? {}, "CNY", knownCurrencies),
   );
 };
 
@@ -836,7 +813,7 @@ const summarizeByCategory = (
     category,
     value: totals.get(category) ?? 0,
     percent: total ? (Math.abs(totals.get(category) ?? 0) / total) * 100 : 0,
-    color: PIE_COLORS[index],
+    color: PIE_COLORS[index % PIE_COLORS.length],
   })).filter((item) => item.value !== 0);
 };
 
@@ -2207,7 +2184,7 @@ function App() {
     let imported = 0;
     for (const line of lines.slice(1)) {
       const [date, category, slot, amount, currency, note, hidden] = parseCsvLine(line);
-      const categoryIndex = CATEGORIES.indexOf(category);
+      const categoryIndex = CATEGORIES.indexOf(remapLegacyCategoryName(category));
       const rowIndex = Number(slot) - 1;
       if (
         !/^\d{4}-\d{2}-\d{2}$/.test(date) ||
@@ -2261,7 +2238,8 @@ function App() {
       const issues: string[] = [];
       const amount = record.amount.trim();
       if (!isValidDateKey(record.date.trim())) issues.push("日期格式无效");
-      if (!CATEGORIES.includes(record.category)) issues.push("分类不在列表内");
+      if (!CATEGORIES.includes(remapLegacyCategoryName(record.category)))
+        issues.push("分类不在列表内");
       if (!/^-?\d+(?:\.\d{1,2})?$/.test(amount) || parseAmount(amount) === 0)
         issues.push("金额需为非 0 有限数字");
       if (!allCurrencies.includes(record.currency)) issues.push("货币不在列表内");
@@ -2273,9 +2251,10 @@ function App() {
   const normalizeParsedNaturalRecord = (record: LocalLedgerRecord) => {
     const amount = record.amount.trim();
     if (!/^-?\d+(?:\.\d{1,2})?$/.test(amount) || parseAmount(amount) === 0) return null;
+    const mappedCategory = remapLegacyCategoryName(record.category);
     const normalized: LocalLedgerRecord = {
       date: isValidDateKey(record.date.trim()) ? record.date.trim() : selectedDate,
-      category: CATEGORIES.includes(record.category) ? record.category : "其他",
+      category: CATEGORIES.includes(mappedCategory) ? mappedCategory : FALLBACK_CATEGORY_ZH,
       amount,
       currency: allCurrencies.includes(record.currency) ? record.currency : dailyDefaultCurrency,
       note: record.note.replace(/["'“”‘’`]/g, "").trim(),
@@ -2313,7 +2292,7 @@ function App() {
       ...current,
       {
         date: selectedDate,
-        category: "其他",
+        category: FALLBACK_CATEGORY_ZH,
         amount: "",
         currency: dailyDefaultCurrency,
         note: "",
@@ -2333,7 +2312,7 @@ function App() {
 
     for (const record of records) {
       const date = record.date.trim();
-      const categoryIndex = CATEGORIES.indexOf(record.category);
+      const categoryIndex = CATEGORIES.indexOf(remapLegacyCategoryName(record.category));
       const normalizedCurrency =
         normalizeCurrencyInput(record.currency) ??
         (() => {

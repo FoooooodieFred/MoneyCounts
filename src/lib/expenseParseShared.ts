@@ -1,280 +1,18 @@
-export const QUICK_PARSER_CATEGORIES = [
-  "餐饮",
-  "交通",
-  "购物",
-  "居住",
-  "通讯",
-  "娱乐",
-  "医疗",
-  "教育",
-  "旅行",
-  "其他",
-] as const;
+import {
+  CATEGORY_KEYWORDS,
+  FALLBACK_CATEGORY_ZH,
+  FOOD_DINING_CATEGORY_ZH,
+  getCategoryKind,
+  LEDGER_CATEGORIES,
+  REPAY_FROM_OTHERS_CATEGORY_ZH,
+} from "./nlLedgerCategories";
 
-export const CATEGORY_KEYWORDS: Array<[string, string[]]> = [
-  [
-    "居住",
-    [
-      "洗衣",
-      "干洗",
-      "洗衣服",
-      "空调费",
-      "冷气",
-      "电费",
-      "水费",
-      "水电",
-      "煤气",
-      "燃气",
-      "天然气",
-      "物业",
-      "管理费",
-      "房租",
-      "租金",
-      "租房",
-      "维修",
-      "修理",
-      "家具",
-      "家电",
-      "清洁",
-      "保洁",
-      "宽带",
-      "网费",
-      "网络费",
-      "家政",
-      "rent",
-      "utility",
-      "housing",
-    ],
-  ],
-  [
-    "通讯",
-    [
-      "手机费",
-      "话费",
-      "流量",
-      "电话费",
-      "电话卡",
-      "sim",
-      "sim卡",
-      "通讯",
-      "通信",
-      "套餐",
-      "漫游",
-      "充值话费",
-      "phone",
-      "mobile",
-      "data",
-    ],
-  ],
-  [
-    "餐饮",
-    [
-      "早餐",
-      "早饭",
-      "午餐",
-      "午饭",
-      "晚餐",
-      "晚饭",
-      "宵夜",
-      "夜宵",
-      "餐",
-      "饭",
-      "外卖",
-      "餐厅",
-      "饭店",
-      "食堂",
-      "咖啡",
-      "奶茶",
-      "茶餐厅",
-      "星巴克",
-      "饮料",
-      "甜品",
-      "蛋糕",
-      "面包",
-      "酒水",
-      "吃",
-      "喝",
-      "food",
-      "lunch",
-      "dinner",
-      "breakfast",
-      "drink",
-      "coffee",
-      "tea",
-    ],
-  ],
-  [
-    "交通",
-    [
-      "打车",
-      "的士",
-      "出租",
-      "网约车",
-      "滴滴",
-      "uber",
-      "taxi",
-      "地铁",
-      "公交",
-      "公交车",
-      "巴士",
-      "轻轨",
-      "火车",
-      "高铁",
-      "动车",
-      "机票",
-      "航班",
-      "机场",
-      "车费",
-      "油费",
-      "停车",
-      "过路费",
-      "通行费",
-      "交通",
-      "船票",
-      "轮渡",
-      "transport",
-      "metro",
-      "subway",
-      "bus",
-      "train",
-      "ride",
-    ],
-  ],
-  [
-    "购物",
-    [
-      "购物",
-      "买",
-      "购入",
-      "淘宝",
-      "天猫",
-      "京东",
-      "拼多多",
-      "亚马逊",
-      "超市",
-      "便利店",
-      "商场",
-      "衣服",
-      "鞋",
-      "包",
-      "护肤",
-      "化妆",
-      "日用品",
-      "百货",
-      "零食",
-      "水果",
-      "菜",
-      "生鲜",
-      "电子",
-      "数码",
-      "shopping",
-      "mall",
-      "store",
-      "buy",
-    ],
-  ],
-  [
-    "娱乐",
-    [
-      "电影",
-      "影院",
-      "游戏",
-      "会员",
-      "充值",
-      "演唱会",
-      "音乐会",
-      "展览",
-      "酒吧",
-      "ktv",
-      "k歌",
-      "剧本杀",
-      "密室",
-      "门票",
-      "娱乐",
-      "订阅",
-      "spotify",
-      "netflix",
-      "迪士尼",
-      "sport",
-      "sports",
-      "健身",
-      "gym",
-      "球",
-      "entertainment",
-      "movie",
-      "game",
-    ],
-  ],
-  [
-    "医疗",
-    [
-      "医院",
-      "诊所",
-      "门诊",
-      "挂号",
-      "药",
-      "药房",
-      "看病",
-      "牙医",
-      "体检",
-      "疫苗",
-      "医疗",
-      "医保",
-      "理疗",
-      "眼科",
-      "health",
-      "medical",
-      "doctor",
-      "pharmacy",
-    ],
-  ],
-  [
-    "教育",
-    [
-      "课程",
-      "学费",
-      "书",
-      "教材",
-      "培训",
-      "教育",
-      "考试",
-      "报名费",
-      "网课",
-      "学习",
-      "文具",
-      "资料",
-      "讲座",
-      "education",
-      "course",
-      "book",
-      "school",
-    ],
-  ],
-  [
-    "旅行",
-    [
-      "旅行",
-      "旅游",
-      "签证",
-      "景点",
-      "行李",
-      "度假",
-      "酒店",
-      "民宿",
-      "门票",
-      "保险",
-      "护照",
-      "出游",
-      "旅拍",
-      "租车",
-      "travel",
-      "hotel",
-      "flight",
-      "trip",
-    ],
-  ],
-  ["其他", ["其他", "other", "misc"]],
-];
+export { CATEGORY_KEYWORDS, LEDGER_CATEGORIES as QUICK_PARSER_CATEGORIES };
+
+export const REPAY_FROM_OTHERS_PATTERN =
+  /还我|還我|还给我|還給我|转我|轉我|转回|轉回|垫付收回|有人\s*A|A了?我|paid me back|transferred back|paid back my|repaid me/i;
+
+export const OWN_SPLIT_BILL_PATTERN = /(?:^|[^\w])AA(?:\b)|分摊|分攤|go dutch|split (?:the )?bill/i;
 
 export const CURRENCY_ALIASES: Record<string, string[]> = {
   HKD: ["HKD", "HK$", "港币", "港幣", "港元", "香港币", "香港幣", "香港元"],
@@ -291,9 +29,6 @@ export const CURRENCY_ALIASES: Record<string, string[]> = {
   GBP: ["GBP", "英镑", "英鎊"],
   AUD: ["AUD", "澳元"],
 };
-
-export const REFUND_PATTERN =
-  /退款|退回|返还|返現|返现|退费|退票|冲抵|沖抵|冲销|沖銷|报销|报销到账|返利|抵扣|抵回|倒贴|倒貼|负向|分摊|分攤|有人\s*A|A了?我|AA\b|还我|還我|还给我|還給我|发工资|發工資|工资到账|工資到賬|工资入账|工資入賬|薪资到账|薪資到賬|薪水|工资|工資|收入|进账|進賬|到账|到賬|refund|rebate|cashback|reversal|chargeback|salary|payday|income/i;
 
 export const NEGATIVE_AMOUNT_PREFIX = /^\s*(?:[-−—+]?\s*)?(?:负|減|减)/i;
 
@@ -388,8 +123,11 @@ export const detectCategoryWithKeyword = (text: string, categories: readonly str
   }
 
   if (!candidates.length) {
+    const fallback = categories.includes(FALLBACK_CATEGORY_ZH)
+      ? FALLBACK_CATEGORY_ZH
+      : (categories[0] ?? FALLBACK_CATEGORY_ZH);
     return {
-      category: categories.includes("其他") ? "其他" : (categories[0] ?? "其他"),
+      category: fallback,
       matchedKeyword: null as string | null,
     };
   }
@@ -465,16 +203,15 @@ export const detectAmount = (text: string) => {
 
   const hasExplicitNegative =
     numeric < 0 || /^[-−—]/.test(token.trim()) || NEGATIVE_AMOUNT_PREFIX.test(token);
-  const hasRefundSemantics = REFUND_PATTERN.test(text) || /(负|減|减)\s*\d/.test(text);
+  return formatAmount(hasExplicitNegative ? -Math.abs(numeric) : Math.abs(numeric));
+};
 
-  let amount = numeric;
-  if (hasExplicitNegative) {
-    amount = -Math.abs(numeric);
-  } else if (numeric > 0 && hasRefundSemantics) {
-    amount = -numeric;
-  }
-
-  return formatAmount(amount);
+export const applyCategoryAmountSign = (amount: string, category: string) => {
+  const numeric = Number(amount);
+  if (!Number.isFinite(numeric) || numeric === 0) return amount;
+  if (numeric < 0) return formatAmount(numeric);
+  if (getCategoryKind(category) === "negative_expense") return formatAmount(-Math.abs(numeric));
+  return formatAmount(Math.abs(numeric));
 };
 
 export const cleanNote = (segment: string, matchedKeyword: string | null) => {
@@ -499,7 +236,7 @@ export const cleanNote = (segment: string, matchedKeyword: string | null) => {
   if (!matchedKeyword) return residual;
 
   const expandPattern = new RegExp(
-    `(?:[\\u4e00-\\u9fffA-Za-z]{0,2})${escapeRegExp(matchedKeyword)}(?:[\\u4e00-\\u9fffA-Za-z]{0,3})`,
+    `(?:[\\u4e00-\\u9fff]{0,2})${escapeRegExp(matchedKeyword)}(?:[\\u4e00-\\u9fffA-Za-z]{0,3})`,
     "i",
   );
   let expanded = (segment.match(expandPattern)?.[0] ?? matchedKeyword)
@@ -508,11 +245,11 @@ export const cleanNote = (segment: string, matchedKeyword: string | null) => {
   const keywordIdx = expanded.toLowerCase().indexOf(matchedKeyword.toLowerCase());
   if (keywordIdx >= 0) {
     const prefix = expanded.slice(0, keywordIdx);
-    if (!prefix || /^[块元钱的了\s]+$/u.test(prefix)) {
+    if (!prefix || /^[块元钱的了买\s]+$/u.test(prefix)) {
       expanded = expanded.slice(keywordIdx).trim();
     }
   }
-  expanded = expanded.replace(/^(?:块|块钱|元|钱|的|了)+/u, "").trim();
+  expanded = expanded.replace(/^(?:块|块钱|元|钱|的|了|买)+/u, "").trim();
 
   const residualWithoutDescriptor = residual
     .replace(expandPattern, " ")
@@ -571,15 +308,28 @@ export const parseExpenseSegment = (
   currencies: readonly string[],
   defaultCurrency: string,
 ): ParsedExpenseSegment | null => {
-  const amount = detectAmount(segment);
-  if (!amount) return null;
+  const rawAmount = detectAmount(segment);
+  if (!rawAmount) return null;
 
   const { category: detectedCategory, matchedKeyword } = detectCategoryWithKeyword(
     segment,
     categories,
   );
-  const isSplitBill = /AA\b|有人\s*A|A了?我|分摊|分攤/i.test(segment);
-  const category = isSplitBill && detectedCategory === "其他" ? "餐饮" : detectedCategory;
+  let category = detectedCategory;
+  if (
+    REPAY_FROM_OTHERS_PATTERN.test(segment) &&
+    categories.includes(REPAY_FROM_OTHERS_CATEGORY_ZH)
+  ) {
+    category = REPAY_FROM_OTHERS_CATEGORY_ZH;
+  } else if (
+    OWN_SPLIT_BILL_PATTERN.test(segment) &&
+    (category === FALLBACK_CATEGORY_ZH || category === "其他") &&
+    categories.includes(FOOD_DINING_CATEGORY_ZH)
+  ) {
+    category = FOOD_DINING_CATEGORY_ZH;
+  }
+
+  const amount = applyCategoryAmountSign(rawAmount, category);
   const currency = detectCurrency(segment, currencies, defaultCurrency);
   const note = cleanNote(segment, matchedKeyword);
 

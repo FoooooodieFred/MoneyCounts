@@ -7,6 +7,7 @@ import {
   TravelMergeModal,
   buildMergeDefaults,
 } from "../components/TravelHistoryUI";
+import { TRAVEL_BUDGET_CATEGORIES } from "../lib/nlLedgerCategories";
 import type {
   PendingTravelHistoryDelete,
   TravelHistoryRecord,
@@ -359,7 +360,7 @@ export function TravelPage(props: TravelPageProps) {
                     }
                   />
                 </label>
-                {["餐饮", "交通", "购物", "旅行"].map((category) => (
+                {TRAVEL_BUDGET_CATEGORIES.map((category) => (
                   <label key={category}>
                     {category}预算
                     <input

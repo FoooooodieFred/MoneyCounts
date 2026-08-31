@@ -3,6 +3,12 @@
  * Keys：`TRAVEL_KEY`、`TRAVEL_HISTORY_KEY`、pending-delete；勿随意改名或改 schema。
  * 读写经 `normalizeStored*` / `readStored*`，导入备份亦依赖此形状。
  */
+import {
+  FALLBACK_CATEGORY_ZH,
+  remapLegacyCategoryLimits,
+  remapLegacyCategoryName,
+} from "./nlLedgerCategories";
+
 export type TravelState = {
   active: boolean;
   startDate: string | null;
@@ -388,11 +394,7 @@ export const normalizeTravelBudgetSettings = (value: unknown): TravelBudgetSetti
       : {};
   return {
     dailyLimit: normalizePositiveAmount(source.dailyLimit),
-    categoryLimits: Object.fromEntries(
-      Object.entries(rawCategoryLimits)
-        .map(([category, amount]) => [category, normalizePositiveAmount(amount)] as const)
-        .filter((entry): entry is readonly [string, number] => entry[1] !== null),
-    ),
+    categoryLimits: remapLegacyCategoryLimits(rawCategoryLimits),
   };
 };
 
@@ -643,7 +645,9 @@ const migrateTravelHistoryRecord = (
           .map((row) => {
             const summary = row as Partial<TravelHistoryCategory>;
             return {
-              category: typeof summary.category === "string" ? summary.category : "其他",
+              category: remapLegacyCategoryName(
+                typeof summary.category === "string" ? summary.category : FALLBACK_CATEGORY_ZH,
+              ),
               value: Number.isFinite(summary.value) ? Number(summary.value) : 0,
               percent: Number.isFinite(summary.percent) ? Number(summary.percent) : 0,
             };
@@ -669,7 +673,9 @@ const migrateTravelHistoryRecord = (
                 : null;
             return {
               date: typeof detail.date === "string" ? detail.date : record.startDate!,
-              category: typeof detail.category === "string" ? detail.category : "其他",
+              category: remapLegacyCategoryName(
+                typeof detail.category === "string" ? detail.category : FALLBACK_CATEGORY_ZH,
+              ),
               amount: typeof detail.amount === "string" ? detail.amount : "",
               currency,
               note: typeof detail.note === "string" ? detail.note : "",

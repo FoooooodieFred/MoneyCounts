@@ -72,7 +72,7 @@ export const collectEntries = <T extends LedgerStatsEntry>(
           date,
           entryIndex: index,
           travelKey: `${date}:${index}`,
-          category: categories[Math.floor(index / maxRecordsPerCategory)] ?? "其他",
+          category: categories[Math.floor(index / maxRecordsPerCategory)] ?? "日用百货",
         }))
       : [],
   );
