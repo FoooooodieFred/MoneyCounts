@@ -587,6 +587,18 @@ const serializeLedger = (ledger: LedgerData) =>
     ),
   );
 
+const downloadBlob = (blob: Blob, filename: string) => {
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = filename;
+  anchor.rel = "noopener";
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 2000);
+};
+
 const readStoredLedger = (): LedgerData => {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -2022,18 +2034,13 @@ function App() {
       .map((row) => row.map((cell) => `"${String(cell).replaceAll('"', '""')}"`).join(","))
       .join("\n");
     const blob = new Blob([`\uFEFF${csv}`], { type: "text/csv;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.download = `智能记账本-${monthKey}.csv`;
-    anchor.click();
-    URL.revokeObjectURL(url);
+    downloadBlob(blob, `智能记账本-${monthKey}.csv`);
   };
 
-  const exportJson = () => {
+  const downloadJsonBackup = (ledgerToExport: LedgerData) => {
     const llmSettings = readLlmApiSettings();
     const payload = buildBackupPayload({
-      ledger: JSON.parse(serializeLedger(ledger)),
+      ledger: JSON.parse(serializeLedger(ledgerToExport)),
       exchange,
       lastCurrency,
       statsCurrencies: selectedStatsCurrencies,
@@ -2049,13 +2056,10 @@ function App() {
     const blob = new Blob([JSON.stringify(payload, null, 2)], {
       type: "application/json;charset=utf-8",
     });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.download = makeBackupFilename(new Date(payload.exportedAt));
-    anchor.click();
-    URL.revokeObjectURL(url);
+    downloadBlob(blob, makeBackupFilename(new Date(payload.exportedAt)));
   };
+
+  const exportJson = () => downloadJsonBackup(ledger);
 
   const prepareBackupImport = (
     payload: MoneyCountsBackupPayload,
@@ -2412,7 +2416,7 @@ function App() {
       setLedger(nextLedger);
       setVisibleRowCountsByDate(nextVisibleRowCounts);
     }
-    return { imported, messages, importedEntries };
+    return { imported, messages, importedEntries, nextLedger };
   };
 
   const confirmNaturalLedgerImport = () => {
@@ -2482,15 +2486,20 @@ function App() {
         );
         return;
       }
-      const { imported, messages } = importNaturalLedgerRecords(result.rows);
+      const { imported, messages, nextLedger } = importNaturalLedgerRecords(result.rows);
       const parts = [
         `已导入 ${imported} 条。`,
         ...result.warnings.slice(0, 6),
         ...messages.slice(0, 6),
       ].filter(Boolean);
       setImportMessage(parts.join(" "));
-      if (imported > 0 && window.confirm(`已写入 ${imported} 条。要现在导出 JSON 备份吗？`)) {
-        exportJson();
+      if (imported > 0) {
+        const ledgerForBackup = nextLedger;
+        window.setTimeout(() => {
+          if (window.confirm(`已写入 ${imported} 条。要现在导出 JSON 备份吗？`)) {
+            downloadJsonBackup(ledgerForBackup);
+          }
+        }, 100);
       }
     } catch (error) {
       setImportMessage(error instanceof Error ? error.message : "表格识别失败。");
@@ -3333,12 +3342,10 @@ function App() {
     ];
     const csv = rows.map((row) => row.map(quote).join(",")).join("\n");
     const blob = new Blob([`\uFEFF${csv}`], { type: "text/csv;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.download = `${travelState.billName ?? "旅游账单"}-${travelState.startDate ?? selectedDate}-${travelEndDate}.csv`;
-    anchor.click();
-    URL.revokeObjectURL(url);
+    downloadBlob(
+      blob,
+      `${travelState.billName ?? "旅游账单"}-${travelState.startDate ?? selectedDate}-${travelEndDate}.csv`,
+    );
   };
 
   const trendRows = useMemo(() => {
