@@ -33,6 +33,8 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+__pycache__/
+*.pyc
 # generated dataset staging
 /data/nl-ledger/staging-by-cat
 /data/nl-ledger/staging-zh.json

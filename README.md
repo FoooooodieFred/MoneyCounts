@@ -1,18 +1,20 @@
 # MoneyCounts
 
-纯前端记账本：一句话记账、35 类账本、多货币、旅游 AA。账本仍只在浏览器 LocalStorage。自然语言记账改为调用你自己的 LLM API（密钥在「API 看台」填写，不进 JSON 备份）。
+纯前端记账本：一句话记账、35 类账本、多货币、旅游 AA。账本只在浏览器 LocalStorage。
 
 **在线 → [moneycounts.freddyhu2007.workers.dev](https://moneycounts.freddyhu2007.workers.dev/)**
 
-生产站由 Cloudflare Workers 从 **`main`** 构建（`wrangler.toml` 里 Worker 名是 `moneycounts`，静态资源来自 `dist/`）。
+生产站由 Cloudflare Workers 从 **`main`** 构建（Worker 名 `moneycounts`，静态资源来自 `dist/`，见 `wrangler.toml`）。
 
 ---
 
 ## 能做什么
 
-- **自然语言记账**：在「API 看台」（`/console`）填入 OpenAI 兼容的 Base URL、模型与 API Key。一句话由模型拆成词条，预览里改日期 / 分类 / 金额 / 币种 / 备注，确认后才写入。本地规则解析不再作为记账入口。
+- **自然语言记账**：输入中英句子，预览里改日期 / 分类 / 金额 / 币种 / 备注，确认后才写入。首页「生成记账预览」左侧可切换识别方式：
+  - **规则识别·快且本地**（默认）：金额、币种、日期走规则；分类是关键词 + 浏览器内 n-gram 分类器。不经过网络。
+  - **LLM识别·精确有效**：调用你在「API 看台」填写的 OpenAI 兼容接口。未配置或解析失败时会回退到规则识别。
 - **35 类**：28 个支出 + 工资收入 / 副业收入 + 5 个负支出（购物退款、票务退款、报销到账、优惠返现、他人还款）。对不上的归入「日用百货」。
-- **金额符号**：工资、副业为正；退款 / 报销 / 返现 / 别人还你为负；AA 自己那份仍是餐饮美食、正数。
+- **金额符号**：工资、副业为正；退款 / 报销 / 返现 / 别人还你为负；AA 自己那份仍记餐饮美食、正数。
 - **多日展开**：「今天明天」「这一周每天」等按 `date_spec` 拆成若干账本日，**每天复制同一金额**（不是把一周总额摊开）。
 - **手动表格**：按类目填，键盘在格子间移动。
 - **日 / 周 / 月 / 年**：汇总、分类饼图、趋势。
@@ -29,16 +31,16 @@
 
 ## 页面
 
-| 路径                                     | 内容                                     |
-| ---------------------------------------- | ---------------------------------------- |
-| `/`                                      | 记账：自然语言入口、今日明细、日汇总     |
-| `/today` `/day` `/week` `/month` `/year` | 各周期统计                               |
-| `/search`                                | 筛选                                     |
-| `/travel`                                | 旅游模式                                 |
-| `/data`                                  | CSV 与账本清理                           |
-| `/settings`                              | 区块显隐、预算、汇率、JSON 备份          |
-| `/console`                               | API 看台：密钥、提示词、试运行、最近调用 |
-| `/entry`                                 | 重定向到 `/`                             |
+| 路径                                     | 内容                                           |
+| ---------------------------------------- | ---------------------------------------------- |
+| `/`                                      | 记账：自然语言入口、今日明细、日汇总           |
+| `/today` `/day` `/week` `/month` `/year` | 各周期统计                                     |
+| `/search`                                | 筛选                                           |
+| `/travel`                                | 旅游模式                                       |
+| `/data`                                  | CSV 与账本清理                                 |
+| `/settings`                              | 区块显隐、预算、汇率、JSON 备份                |
+| `/console`                               | API 看台：接口、密钥、提示词、试运行、最近调用 |
+| `/entry`                                 | 重定向到 `/`                                   |
 
 ---
 
@@ -54,11 +56,32 @@ npm test
 npm run build        # 输出 dist/，Cloudflare 发这一份
 ```
 
-Node.js 18+。账本不经过服务器；清站点数据或换设备前，在设置里导出 JSON。API Key 存在单独的 LocalStorage key（`monthly-smart-ledger:llm-api:v1`），**不会**打进 JSON 备份。
+Node.js 18+。账本不经过服务器；清站点数据或换设备前，在设置里导出 JSON。
 
-本地 `npm run dev` 与生产站都会把浏览器请求代理到 `/api/llm/chat`（避免模型接口 CORS）。生产由 Worker 转发；密钥只出现在本次请求头里，服务端不保存。
+API Key 存在单独的 LocalStorage key（`monthly-smart-ledger:llm-api:v1`）。默认**不进** JSON 备份；可在 API 看台或设置里勾选「把 API 写入 JSON 备份」。勾选后请自行保管备份文件。
 
-自然语言 35 类、`date_spec` 与默认提示词见 `src/lib/llmLedgerPrompt.ts`；语料仍在 `data/nl-ledger/`。
+本地 `npm run dev` 与生产站都会把浏览器的模型请求发到同源 `/api/llm/chat`（避免 CORS）。生产由 Worker 转发；密钥只出现在本次请求头里，服务端不保存。
+
+---
+
+## 自然语言怎么解析
+
+| 步骤     | 规则识别（默认）                                          | LLM 识别                         |
+| -------- | --------------------------------------------------------- | -------------------------------- |
+| 切句     | `expenseParseShared`                                      | 模型返回多条词条                 |
+| 金额/币种 | 正则                                                      | 模型 + 本地校验                  |
+| 日期     | `date_spec`（`nlLedgerDateSpec.ts`）                      | 模型给 `date_spec`，仍由规则展开 |
+| 分类     | 关键词优先；不够强则用浏览器内 n-gram 分类器              | 模型映射到 35 类                 |
+| 写入     | 预览确认后才进 LocalStorage                               | 同左                             |
+
+分类器权重在 `src/lib/nlLedgerClassifier.model.json`，用 `data/nl-ledger/samples.jsonl` 训练，**没有新增 npm 依赖**。改语料后：
+
+```bash
+pip install scikit-learn numpy   # 仅训练机
+npm run train:nl-classifier      # 写出 model.json
+```
+
+35 类、`date_spec` 与默认 LLM 提示词见 `src/lib/llmLedgerPrompt.ts`；语料说明见 `data/nl-ledger/README.md`。
 
 ---
 
@@ -66,16 +89,17 @@ Node.js 18+。账本不经过服务器；清站点数据或换设备前，在设
 
 Vite 8 · React 19 · TypeScript · react-router-dom 7 · GSAP 3 · Vitest · PWA（`public/sw.js`）
 
-| 路径              | 用途                                                          |
-| ----------------- | ------------------------------------------------------------- |
-| `src/App.tsx`     | 应用壳：状态、路由、写入账本                                  |
-| `src/pages/`      | 搜索 / 旅游 / 设置 / 数据管理 / API 看台                      |
-| `src/components/` | 可复用 UI                                                     |
-| `src/lib/`        | 解析、分类、日期展开、LLM 提示词 / 代理、统计、备份、旅游状态 |
-| `workers/`        | Cloudflare：`/api/llm/chat` 同源代理                          |
-| `src/styles.css`  | 全局样式                                                      |
-| `public/`         | PWA                                                           |
-| `wrangler.toml`   | Cloudflare：`moneycounts`，SPA 回退 `dist/`                   |
+| 路径              | 用途                                                            |
+| ----------------- | --------------------------------------------------------------- |
+| `src/App.tsx`     | 应用壳：状态、路由、写入账本                                    |
+| `src/pages/`      | 搜索 / 旅游 / 设置 / 数据管理 / API 看台                        |
+| `src/components/` | 可复用 UI                                                       |
+| `src/lib/`        | 解析、分类器、日期展开、LLM 提示词 / 代理、统计、备份、旅游状态 |
+| `workers/`        | Cloudflare：`/api/llm/chat` 同源代理                            |
+| `scripts/`        | 分类器训练                                                      |
+| `src/styles.css`  | 全局样式                                                        |
+| `public/`         | PWA                                                             |
+| `wrangler.toml`   | Cloudflare：`moneycounts`，SPA 回退 `dist/`                     |
 
 ---
 
@@ -99,7 +123,7 @@ License: ISC
 
 # MoneyCounts (English)
 
-A client-only ledger: natural-language entry, 35 categories, multiple currencies, travel split-bills. The book still stays in LocalStorage. Natural-language entry calls **your** OpenAI-compatible LLM (key on `/console`, never in JSON backup).
+A client-side ledger: natural-language entry, 35 categories, multiple currencies, travel split-bills. The book stays in browser LocalStorage.
 
 **Live → [moneycounts.freddyhu2007.workers.dev](https://moneycounts.freddyhu2007.workers.dev/)**
 
@@ -107,20 +131,82 @@ Cloudflare Workers builds **`main`**. Worker name `moneycounts`; static assets f
 
 ## What it does
 
-- Parse Chinese or English via your LLM into preview rows (date, category, amount, currency, note), then write after confirm. Configure the key on **API 看台** (`/console`).
+- **Natural-language entry**: Chinese or English becomes preview rows (date, category, amount, currency, note). Nothing is written until you confirm. Next to **生成记账预览** you can pick:
+  - **规则识别·快且本地** (default): amount, currency, and dates stay rule-based; category uses keywords plus an in-browser n-gram classifier. No network.
+  - **LLM识别·精确有效**: calls the OpenAI-compatible endpoint you set on **API 看台** (`/console`). Falls back to local rules if the key is missing or the model fails.
 - **35 classes**: 28 expenses, salary / side income (positive), five negative expenses (shopping refund, ticket refund, reimbursement, cashback, repayment from others). Unknown → 日用百货.
-- Multi-day phrases copy the **same amount onto each day**.
-- Manual grid, day/week/month/year stats, HKD/CNY-first FX cache, budgets, travel AA, search, CSV on `/data`, JSON backup in Settings, PWA.
+- **Signs**: salary and side income are positive; refunds / reimbursement / cashback / someone paying you back are negative; your own AA share is still 餐饮美食, positive.
+- **Multi-day phrases** (`date_spec`) copy the **same amount onto each day**.
+- Manual category grid, day/week/month/year stats, HKD/CNY-first FX cache, budgets, travel AA, search, CSV on `/data`, JSON backup in Settings, PWA. UI is Simplified Chinese.
 
-Old 10-class books migrate in place (same LocalStorage key).
+Old 10-class books migrate in place (same LocalStorage key `monthly-smart-ledger:v1`).
+
+## Routes
+
+| Path                                     | What you get                                          |
+| ---------------------------------------- | ----------------------------------------------------- |
+| `/`                                      | Home: NL entry, today’s rows, day totals              |
+| `/today` `/day` `/week` `/month` `/year` | Period stats                                          |
+| `/search`                                | Filters                                               |
+| `/travel`                                | Travel mode                                           |
+| `/data`                                  | CSV and ledger cleanup                                |
+| `/settings`                              | Home blocks, budgets, FX, JSON backup                 |
+| `/console`                               | API console: URL, key, prompt, probe, recent calls    |
+| `/entry`                                 | Redirects to `/`                                      |
 
 ## Develop
 
 ```bash
+git clone https://github.com/FoooooodieFred/MoneyCounts.git
+cd MoneyCounts
 npm install
 npm run dev          # http://localhost:5173
-npm run typecheck && npm test
+npm run typecheck
+npm test
 npm run build        # dist/ — what Cloudflare publishes
 ```
 
-Ledger data has no server. LLM calls go through same-origin `/api/llm/chat` (Vite proxy in dev, Worker in production). Export JSON from Settings before changing devices; API keys are not included.
+Node.js 18+. The ledger never hits a server. Export JSON from Settings before wiping the origin or switching devices.
+
+API keys live in `monthly-smart-ledger:llm-api:v1`. They are **off** JSON backup by default; opt in on the console or Settings. Keep that file private if you do.
+
+LLM requests go through same-origin `/api/llm/chat` (Vite middleware in dev, Worker in production) so the browser does not talk to the model host directly. The key is only on that request; the Worker does not store it.
+
+## How parsing works
+
+| Step               | Local rules (default)                                      | LLM                                      |
+| ------------------ | ---------------------------------------------------------- | ---------------------------------------- |
+| Split utterances   | `expenseParseShared`                                       | Model returns rows                       |
+| Amount / currency  | Regex                                                      | Model + local checks                     |
+| Dates              | `date_spec` in `nlLedgerDateSpec.ts`                       | Model emits `date_spec`; rules expand it |
+| Category           | Keywords first; else in-browser n-gram logistic classifier | Model mapped onto the 35 classes         |
+| Write              | After preview confirm                                      | Same                                     |
+
+Classifier weights: `src/lib/nlLedgerClassifier.model.json`, trained from `data/nl-ledger/samples.jsonl` (no extra npm dependency):
+
+```bash
+pip install scikit-learn numpy   # trainer machine only
+npm run train:nl-classifier
+```
+
+Default LLM prompt and the 35-class list: `src/lib/llmLedgerPrompt.ts`. Corpus notes: `data/nl-ledger/README.md`.
+
+## Stack
+
+Vite 8 · React 19 · TypeScript · react-router-dom 7 · GSAP 3 · Vitest · PWA (`public/sw.js`)
+
+| Path              | Role                                                              |
+| ----------------- | ----------------------------------------------------------------- |
+| `src/App.tsx`     | Shell: state, routes, writes                                      |
+| `src/pages/`      | Search / travel / settings / data / API console                   |
+| `src/components/` | Reusable UI                                                       |
+| `src/lib/`        | Parsers, classifier, dates, LLM prompt / proxy, stats, backup, travel |
+| `workers/`        | Cloudflare same-origin `/api/llm/chat`                            |
+| `scripts/`        | Classifier training                                               |
+| `wrangler.toml`   | Worker `moneycounts`, SPA fallback from `dist/`                   |
+
+## Author
+
+**@FoodieFred** · [github.com/FoooooodieFred/MoneyCounts](https://github.com/FoooooodieFred/MoneyCounts)
+
+License: ISC

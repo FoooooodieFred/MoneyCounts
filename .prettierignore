@@ -4,6 +4,7 @@ dist
 coverage
 package-lock.json
 *.tsbuildinfo
+src/lib/nlLedgerClassifier.model.json
 data/nl-ledger/staging-by-cat
 data/nl-ledger/staging-zh.json
 data/nl-ledger/pairs
