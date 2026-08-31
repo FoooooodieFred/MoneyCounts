@@ -17,11 +17,13 @@
   --space-6: 1.5rem;
   --space-8: 2rem;
   --space-10: 2.5rem;
-  --radius-sm: 10px;
-  --radius-md: 14px;
-  --radius-lg: 18px;
-  --radius-xl: 24px;
-  --radius-2xl: 24px;
+  --radius: 24px;
+  --radius-sm: var(--radius);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius);
+  --radius-xl: var(--radius);
+  --radius-2xl: var(--radius);
+  --radius-secondary: var(--radius);
   --radius-pill: 9999px;
   --sidebar-width: 240px;
   --sidebar-width-collapsed: 76px;
@@ -211,7 +213,7 @@ textarea,
 select {
   width: 100%;
   border: 1px solid var(--color-line);
-  border-radius: 14px;
+  border-radius: var(--radius);
   background: var(--color-surface);
   color: var(--ink);
   outline: none;
@@ -224,8 +226,8 @@ select {
 input:focus,
 textarea:focus,
 select:focus {
-  border-color: var(--blue);
-  box-shadow: 0 0 0 4px rgba(47, 115, 255, 0.13);
+  border-color: var(--color-brand);
+  box-shadow: 0 0 0 3px var(--color-quiet-wash);
 }
 
 textarea {
@@ -354,7 +356,7 @@ select.invalid {
 .travel-card input,
 .travel-card select {
   padding: 0.52rem 0.62rem;
-  border-radius: 10px;
+  border-radius: var(--radius);
 }
 
 .travel-end-date-toggle {
@@ -365,7 +367,7 @@ select.invalid {
   align-self: end;
   gap: 8px;
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.42);
   padding: 0.52rem 0.62rem;
   min-height: 40px;
@@ -415,7 +417,7 @@ select.invalid {
   max-height: min(68vh, 560px);
   overflow: auto;
   border: 1px solid var(--line);
-  border-radius: 24px;
+  border-radius: var(--radius);
   background:
     linear-gradient(160deg, rgba(255, 255, 255, 0.78), rgba(236, 248, 255, 0.56)),
     radial-gradient(circle at 100% 0%, rgba(76, 185, 202, 0.16), transparent 42%);
@@ -511,7 +513,7 @@ select.invalid {
   gap: 8px;
   width: 100%;
   border: 1px solid rgba(119, 142, 174, 0.18);
-  border-radius: 16px;
+  border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.56);
   padding: 12px;
 }
@@ -620,7 +622,7 @@ select.invalid {
   display: grid;
   gap: 10px;
   border: 1px solid rgba(220, 38, 38, 0.18);
-  border-radius: 18px;
+  border-radius: var(--radius);
   background:
     linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(255, 247, 247, 0.78)),
     radial-gradient(circle at 100% 0%, rgba(244, 63, 94, 0.08), transparent 42%);
@@ -667,7 +669,7 @@ select.invalid {
 
 .travel-history-viz-card {
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.42);
   padding: 14px;
 }
@@ -688,7 +690,7 @@ select.invalid {
   display: grid;
   gap: 4px;
   border: 1px solid rgba(255, 255, 255, 0.58);
-  border-radius: 18px;
+  border-radius: var(--radius);
   background:
     radial-gradient(
       circle at 100% 0%,
@@ -755,7 +757,7 @@ select.invalid {
 
 .travel-merge-preview {
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.42);
   padding: 12px;
 }
@@ -783,7 +785,7 @@ select.invalid {
   gap: 10px;
   align-items: flex-start;
   border: 1px solid rgba(220, 38, 38, 0.18);
-  border-radius: 16px;
+  border-radius: var(--radius);
   background: rgba(255, 247, 247, 0.72);
   padding: 12px 14px;
 }
@@ -877,7 +879,7 @@ select.invalid {
   gap: 4px;
   width: 100%;
   border: 1px solid rgba(119, 142, 174, 0.18);
-  border-radius: 16px;
+  border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.56);
   box-shadow: none;
   color: var(--ink);
@@ -939,7 +941,7 @@ select.invalid {
   display: grid;
   gap: 4px;
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.48);
   padding: 12px;
 }
@@ -958,7 +960,7 @@ select.invalid {
   gap: 10px;
   width: min(360px, calc(100vw - 36px));
   border: 1px solid var(--color-line);
-  border-radius: 20px;
+  border-radius: var(--radius);
   background: var(--color-surface);
   box-shadow: var(--shadow-lift-token);
   padding: 14px 16px;
@@ -1014,7 +1016,7 @@ select.invalid {
 .card,
 .date-card {
   border: 1px solid var(--line);
-  border-radius: 26px;
+  border-radius: var(--radius);
   background: var(--paper);
   box-shadow:
     inset 0 1px 0 var(--inner-highlight),
@@ -1162,7 +1164,7 @@ select.invalid {
   width: min(100%, 260px);
   gap: 8px;
   border: 1px solid rgba(255, 255, 255, 0.62);
-  border-radius: 30px;
+  border-radius: var(--radius);
   background:
     linear-gradient(145deg, rgba(255, 255, 255, 0.74), rgba(236, 245, 248, 0.44)),
     radial-gradient(circle at 16% 0%, rgba(255, 255, 255, 0.72), transparent 44%);
@@ -1282,7 +1284,7 @@ select.invalid {
   gap: 4px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: 22px;
+  border-radius: var(--radius);
   background:
     radial-gradient(
       circle at 96% 0%,
@@ -1485,7 +1487,7 @@ select.invalid {
   position: absolute;
   inset: 20px 8px 14px 10px;
   border: 1px solid rgba(62, 88, 123, 0.09);
-  border-radius: 34px;
+  border-radius: var(--radius);
   background:
     linear-gradient(rgba(38, 68, 104, 0.045) 1px, transparent 1px),
     linear-gradient(90deg, rgba(38, 68, 104, 0.04) 1px, transparent 1px);
@@ -1512,14 +1514,14 @@ select.invalid {
   right: 6px;
   width: min(100%, 260px);
   gap: 8px;
-  border-radius: 26px;
+  border-radius: var(--radius);
   padding: 22px;
 }
 
 .ledger-glass-card.mini {
   min-width: 118px;
   gap: 4px;
-  border-radius: 20px;
+  border-radius: var(--radius);
   padding: 14px 16px;
 }
 
@@ -1615,7 +1617,7 @@ select.invalid {
   gap: 4px;
   width: 100%;
   border: 1px solid rgba(119, 142, 174, 0.22);
-  border-radius: 22px;
+  border-radius: var(--radius);
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(229, 246, 255, 0.72)),
     radial-gradient(circle at 100% 0%, rgba(255, 122, 144, 0.12), transparent 42%);
@@ -1692,7 +1694,7 @@ select.invalid {
   display: grid;
   gap: 14px;
   border: 1px solid rgba(255, 255, 255, 0.7);
-  border-radius: 22px;
+  border-radius: var(--radius);
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(232, 245, 255, 0.58)),
     radial-gradient(circle at 100% 0%, rgba(94, 234, 212, 0.2), transparent 48%);
@@ -1858,7 +1860,7 @@ select.invalid {
 
 .status {
   margin: 0;
-  border-radius: 12px;
+  border-radius: var(--radius);
   border: 1px solid var(--color-line);
   background: var(--color-quiet-wash);
   color: var(--color-text);
@@ -1966,7 +1968,7 @@ select.invalid {
   gap: 12px;
   margin-top: 16px;
   border: 1px solid rgba(255, 255, 255, 0.48);
-  border-radius: 24px;
+  border-radius: var(--radius);
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.54), rgba(239, 253, 250, 0.34)),
     radial-gradient(circle at 0% 0%, rgba(76, 185, 202, 0.12), transparent 35%);
@@ -2006,7 +2008,7 @@ select.invalid {
 .natural-ledger-table-wrap {
   overflow-x: auto;
   border: 1px solid rgba(119, 142, 174, 0.22);
-  border-radius: 20px;
+  border-radius: var(--radius);
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(235, 247, 255, 0.48));
   box-shadow: 0 18px 44px rgba(43, 74, 112, 0.08);
 }
@@ -2069,7 +2071,7 @@ select.invalid {
 .natural-ledger-table input,
 .natural-ledger-table select {
   min-height: 40px;
-  border-radius: 11px;
+  border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.82);
   padding: 0.55rem 0.62rem;
 }
@@ -2130,7 +2132,7 @@ select.invalid {
 
 .natural-ledger-warnings span {
   border: 1px solid rgba(221, 180, 91, 0.26);
-  border-radius: 12px;
+  border-radius: var(--radius);
   background: rgba(255, 251, 235, 0.7);
   color: #9a6a12;
   font-size: 0.88rem;
@@ -2204,7 +2206,7 @@ select.invalid {
 }
 
 .stat-variant-1 {
-  border-radius: 30px;
+  border-radius: var(--radius);
 }
 
 .stat-variant-2 {
@@ -2239,7 +2241,7 @@ select.invalid {
   display: grid;
   gap: 4px;
   min-width: 260px;
-  border-radius: 18px;
+  border-radius: var(--radius);
   background: linear-gradient(135deg, rgba(239, 246, 255, 0.9), rgba(224, 255, 248, 0.68));
   border: 1px solid rgba(119, 142, 174, 0.18);
   padding: 14px 16px;
@@ -2293,7 +2295,7 @@ select.invalid {
   min-width: 0;
   overflow-x: auto;
   border: 1px solid rgba(119, 142, 174, 0.24);
-  border-radius: 22px;
+  border-radius: var(--radius);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82);
 }
 
@@ -2600,7 +2602,7 @@ button:disabled:hover {
   gap: 10px;
   margin-top: 16px;
   border: 1px solid rgba(119, 142, 174, 0.18);
-  border-radius: 18px;
+  border-radius: var(--radius);
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(232, 245, 255, 0.56)),
     radial-gradient(circle at 0% 0%, rgba(94, 234, 212, 0.12), transparent 34%);
@@ -2622,7 +2624,7 @@ button:disabled:hover {
 .keyboard-hints kbd {
   min-width: 30px;
   border: 1px solid rgba(47, 115, 255, 0.18);
-  border-radius: 8px;
+  border-radius: var(--radius);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(225, 239, 255, 0.82));
   box-shadow: inset 0 -1px 0 rgba(47, 115, 255, 0.16);
   color: var(--blue-deep);
@@ -2637,7 +2639,7 @@ button:disabled:hover {
 .shortcut-feedback {
   margin: 10px 0 0;
   border: 1px solid rgba(221, 180, 91, 0.28);
-  border-radius: 14px;
+  border-radius: var(--radius);
   background: rgba(255, 251, 235, 0.76);
   color: #9a6a12;
   font-size: 0.9rem;
@@ -2690,7 +2692,7 @@ button:disabled:hover {
 .stats-currency-popup {
   width: min(420px, 100%);
   padding: 1rem;
-  border-radius: 20px;
+  border-radius: var(--radius);
   border: 1px solid var(--line);
   background: var(--paper-strong);
   box-shadow: 0 24px 60px var(--shadow-soft);
@@ -2741,7 +2743,7 @@ button:disabled:hover {
 .today-inline-table-wrap {
   overflow-x: auto;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: var(--radius);
   background: var(--paper-strong);
 }
 
@@ -2913,7 +2915,7 @@ button:disabled:hover {
 .totals-grid > div {
   display: grid;
   gap: 4px;
-  border-radius: 16px;
+  border-radius: var(--radius);
   background: linear-gradient(135deg, rgba(248, 250, 252, 0.92), rgba(239, 253, 250, 0.72));
   border: 1px solid rgba(119, 142, 174, 0.16);
   padding: 14px;
@@ -3215,7 +3217,7 @@ button:disabled:hover {
   gap: 0.8rem;
   padding: 1rem;
   border: 1px solid var(--line);
-  border-radius: 22px;
+  border-radius: var(--radius);
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.58), rgba(238, 247, 250, 0.46)),
     radial-gradient(circle at 0% 0%, rgba(167, 211, 151, 0.14), transparent 45%);
@@ -3246,7 +3248,7 @@ button:disabled:hover {
   gap: 0.75rem;
   padding: 0.65rem 0.75rem;
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.42);
 }
 
@@ -3285,7 +3287,7 @@ button:disabled:hover {
   display: grid;
   gap: 4px;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.48);
   padding: 12px;
 }
@@ -3357,7 +3359,7 @@ button:disabled:hover {
   place-items: center;
   min-height: 160px;
   border: 1px dashed var(--line);
-  border-radius: 22px;
+  border-radius: var(--radius);
   color: var(--muted);
   font-weight: 800;
   background: rgba(255, 255, 255, 0.38);
@@ -3375,7 +3377,7 @@ button:disabled:hover {
   width: 100%;
   height: auto;
   border: 1px solid var(--line);
-  border-radius: 22px;
+  border-radius: var(--radius);
   background:
     linear-gradient(rgba(53, 111, 215, 0.06) 1px, transparent 1px),
     linear-gradient(90deg, rgba(53, 111, 215, 0.05) 1px, transparent 1px), rgba(255, 255, 255, 0.42);
@@ -3454,7 +3456,7 @@ button:disabled:hover {
 }
 
 .summary-list > div {
-  border-radius: 14px;
+  border-radius: var(--radius);
   background: linear-gradient(135deg, rgba(248, 250, 252, 0.94), rgba(255, 255, 255, 0.74));
   border: 1px solid rgba(119, 142, 174, 0.14);
   padding: 12px 14px;
@@ -3478,7 +3480,7 @@ button:disabled:hover {
   max-height: min(720px, calc(100vh - 40px));
   overflow: auto;
   border: 1px solid rgba(255, 255, 255, 0.54);
-  border-radius: 28px;
+  border-radius: var(--radius);
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(237, 248, 255, 0.82)),
     radial-gradient(circle at 100% 0%, rgba(255, 122, 144, 0.12), transparent 42%);
@@ -3525,14 +3527,14 @@ button:disabled:hover {
   display: grid;
   gap: 16px;
   border: 1px solid rgba(119, 142, 174, 0.16);
-  border-radius: 22px;
+  border-radius: var(--radius);
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.74), rgba(239, 253, 250, 0.58));
   padding: 16px;
 }
 
 .date-modal-note {
   margin: 0;
-  border-radius: 16px;
+  border-radius: var(--radius);
   background: rgba(219, 234, 254, 0.54);
   color: #315175;
   font-size: 0.9rem;
@@ -3613,7 +3615,7 @@ button:disabled:hover {
   display: grid;
   gap: 4px;
   border: 1px solid rgba(119, 142, 174, 0.16);
-  border-radius: 18px;
+  border-radius: var(--radius);
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(240, 249, 255, 0.74));
   padding: 14px;
 }
@@ -3837,7 +3839,7 @@ button:disabled:hover {
 
   .nl-compact-entry {
     grid-template-columns: 1fr auto;
-    border-radius: 22px;
+    border-radius: var(--radius);
   }
 
   .nl-compact-entry__focus {
@@ -3854,7 +3856,7 @@ button:disabled:hover {
   .hero-copy-card,
   .card,
   .date-card {
-    border-radius: 18px;
+    border-radius: var(--radius);
     padding: 18px;
   }
 
@@ -4004,7 +4006,7 @@ button:disabled:hover {
   place-items: center;
   width: 28px;
   height: 28px;
-  border-radius: 9px;
+  border-radius: var(--radius);
   background: var(--color-brand);
   color: #e2ebf0;
   font-size: 0.78rem;
@@ -4038,7 +4040,7 @@ button:disabled:hover {
   gap: 0.7rem;
   min-height: 40px;
   padding: 0.55rem 0.75rem;
-  border-radius: 12px;
+  border-radius: var(--radius);
   color: var(--color-muted);
   font-size: 0.92rem;
   font-weight: 520;
@@ -4100,7 +4102,7 @@ button:disabled:hover {
   min-width: 3.4rem;
   min-height: 0;
   padding: 0.45rem 0.55rem;
-  border-radius: 14px;
+  border-radius: var(--radius);
   font-size: 0.68rem;
 }
 
@@ -4213,7 +4215,7 @@ body.travel-vacation-theme .scroll-nav .nav-item--active {
   gap: 0.35rem;
   padding: 1.1rem 1.35rem;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: var(--radius);
   background: var(--paper-strong);
   color: var(--ink);
   box-shadow: var(--shadow-soft-token);
@@ -4228,7 +4230,7 @@ body.travel-vacation-theme .scroll-nav .nav-item--active {
   margin-bottom: 1.25rem;
   padding: 0.85rem 1rem;
   border: 1px solid var(--color-line);
-  border-radius: 18px;
+  border-radius: var(--radius);
   background: transparent;
   box-shadow: none;
   backdrop-filter: none;
@@ -4251,7 +4253,7 @@ body.travel-vacation-theme .scroll-nav .nav-item--active {
   display: grid;
   gap: 0.2rem;
   border: 0;
-  border-radius: 18px;
+  border-radius: var(--radius);
   background: transparent;
   box-shadow: none;
   color: var(--ink);
@@ -4354,7 +4356,7 @@ body.travel-vacation-theme .scroll-nav .nav-item--active {
   background: var(--paper-strong);
   color: var(--ink);
   border: 1px solid var(--line);
-  border-radius: 22px;
+  border-radius: var(--radius);
   box-shadow: 0 18px 36px var(--shadow-soft);
   padding: 1rem 1.05rem;
   font-weight: inherit;
@@ -4437,7 +4439,7 @@ body.travel-vacation-theme .scroll-nav .nav-item--active {
   display: flex;
   flex-direction: column;
   padding: 1rem 1.05rem;
-  border-radius: 22px;
+  border-radius: var(--radius);
   border: 1px solid var(--line);
   background: var(--paper-strong);
   box-shadow: 0 18px 36px var(--shadow-soft);
@@ -4468,7 +4470,7 @@ body.travel-vacation-theme .scroll-nav .nav-item--active {
 .hero-stat-card strong {
   display: block;
   margin: 0.35rem 0;
-  font-family: "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-sans);
   font-size: 1.25rem;
   color: var(--ink);
 }
@@ -4614,7 +4616,7 @@ body.travel-vacation-theme .scroll-nav .nav-item--active {
   font-size: 1.02rem;
   line-height: 1.55;
   padding: 1rem 1.1rem;
-  border-radius: 18px;
+  border-radius: var(--radius);
   min-height: 112px;
   border-color: var(--color-line);
   background: var(--color-page);
@@ -4669,13 +4671,13 @@ body.travel-vacation-theme .scroll-nav .nav-item--active {
   gap: 0.65rem;
   margin-top: 1rem;
   padding: 0.85rem 1rem;
-  border-radius: 16px;
+  border-radius: var(--radius);
   background: rgba(76, 185, 202, 0.12);
   border: 1px dashed rgba(76, 185, 202, 0.35);
 }
 
 .nl-preview strong {
-  font-family: "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-sans);
   font-size: 1.2rem;
 }
 
@@ -4773,7 +4775,7 @@ body.travel-vacation-theme .scroll-nav .nav-item--active {
   max-width: var(--app-content-max-width);
   margin: 0 auto 1.5rem;
   padding: 1rem 1.25rem;
-  border-radius: 20px;
+  border-radius: var(--radius);
   border: 1px solid var(--line);
   background: var(--paper);
 }
@@ -4796,7 +4798,7 @@ body.travel-vacation-theme .scroll-nav .nav-item--active {
 .feature-block {
   margin: 0 auto 2.5rem;
   padding: clamp(1.25rem, 3vw, 1.75rem);
-  border-radius: 28px;
+  border-radius: var(--radius);
   border: 1px solid var(--line);
   background: var(--paper);
   box-shadow: 0 20px 50px var(--shadow-soft);
@@ -4820,7 +4822,7 @@ body.travel-vacation-theme .scroll-nav .nav-item--active {
 
 .feature-block__header h2 {
   margin: 0.25rem 0 0.35rem;
-  font-family: "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-sans);
   font-size: clamp(1.4rem, 3vw, 2rem);
 }
 
@@ -4838,7 +4840,7 @@ body.travel-vacation-theme .scroll-nav .nav-item--active {
   justify-content: space-between;
   gap: 0.85rem;
   padding: 0.85rem 1rem;
-  border-radius: 16px;
+  border-radius: var(--radius);
   border: 1px solid var(--line);
   background: var(--paper-strong);
 }
@@ -4873,7 +4875,7 @@ body.travel-vacation-theme .scroll-nav .nav-item--active {
 
 .total-pill {
   padding: 0.85rem 1rem;
-  border-radius: 16px;
+  border-radius: var(--radius);
   border: 1px solid var(--line);
   background: var(--paper-strong);
 }
@@ -4896,7 +4898,7 @@ body.travel-vacation-theme .scroll-nav .nav-item--active {
   max-height: min(90vh, 920px);
   overflow: auto;
   padding: 1.25rem 1.25rem 1.5rem;
-  border-radius: 28px 28px 20px 20px;
+  border-radius: var(--radius);
   border: 1px solid var(--line);
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(244, 238, 230, 0.88)),
@@ -4934,7 +4936,7 @@ body.travel-vacation-theme .scroll-nav .nav-item--active {
 
 .settings-modal__header h2 {
   margin: 0 0 0.35rem;
-  font-family: "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-sans);
   font-size: clamp(1.4rem, 3vw, 2rem);
   letter-spacing: -0.02em;
 }
@@ -4973,7 +4975,7 @@ body.travel-vacation-theme .scroll-nav .nav-item--active {
 
 .rate-section-bottom__header h2 {
   margin: 0.2rem 0;
-  font-family: "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-sans);
   font-size: clamp(1.25rem, 3vw, 1.65rem);
 }
 
@@ -4991,7 +4993,7 @@ body.travel-vacation-theme .scroll-nav .nav-item--active {
 }
 
 .site-footer a {
-  font-family: "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 800;
   font-size: 1.05rem;
   color: var(--blue);
@@ -5023,7 +5025,7 @@ body.travel-vacation-theme .scroll-nav .nav-item--active {
 .empty-state {
   padding: 1.5rem;
   text-align: center;
-  border-radius: 16px;
+  border-radius: var(--radius);
   border: 1px dashed var(--line);
 }
 
@@ -5125,7 +5127,7 @@ body.travel-vacation-theme .scroll-nav .nav-item--active {
   gap: 0.75rem;
   padding: 0.85rem 1rem;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: var(--radius);
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.78), rgba(238, 247, 250, 0.58)),
     radial-gradient(circle at 100% 0%, rgba(76, 185, 202, 0.12), transparent 48%);
@@ -5328,7 +5330,7 @@ body.travel-vacation-theme .scroll-nav .nav-item--active {
   min-height: 96px;
   padding: 0.9rem;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: var(--radius);
   background: var(--paper-strong);
 }
 
@@ -5338,7 +5340,7 @@ body.travel-vacation-theme .scroll-nav .nav-item--active {
 }
 
 .import-preview-grid strong {
-  font-family: "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-sans);
   font-size: clamp(1.1rem, 2vw, 1.45rem);
 }
 
@@ -5346,7 +5348,7 @@ body.travel-vacation-theme .scroll-nav .nav-item--active {
   margin: 0;
   padding: 0.9rem 1rem;
   border: 1px solid rgba(220, 38, 38, 0.22);
-  border-radius: 16px;
+  border-radius: var(--radius);
   background: rgba(254, 226, 226, 0.56);
   color: var(--danger-deep);
   font-weight: 700;
@@ -5413,7 +5415,7 @@ body.travel-vacation-theme .scroll-nav .nav-item--active {
 .search-filter-summary,
 .search-result-item {
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.42);
   padding: 14px;
 }
@@ -5653,7 +5655,7 @@ body.travel-vacation-theme {
 .nl-preview-row--editable select {
   min-height: 38px;
   padding: 0.5rem 0.58rem;
-  border-radius: 12px;
+  border-radius: var(--radius);
   font-size: 0.9rem;
 }
 
@@ -5670,7 +5672,7 @@ body.travel-vacation-theme {
 .nl-preview-warnings {
   display: grid;
   gap: 0.25rem;
-  border-radius: 14px;
+  border-radius: var(--radius);
   background: rgba(251, 191, 36, 0.12);
   padding: 0.65rem 0.75rem;
   color: #92400e;
@@ -5762,7 +5764,7 @@ body.travel-vacation-theme {
   align-items: end;
   margin-bottom: 1rem;
   border: 1px solid rgba(249, 115, 22, 0.22);
-  border-radius: 22px;
+  border-radius: var(--radius);
   background: linear-gradient(135deg, rgba(255, 247, 237, 0.9), rgba(254, 243, 199, 0.6));
   padding: 1rem;
 }
@@ -5778,7 +5780,7 @@ body.travel-vacation-theme {
   align-items: center;
   gap: 0.75rem;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.42);
   padding: 0.9rem;
 }
@@ -6029,9 +6031,9 @@ body.travel-vacation-theme {
 :root[data-theme="dark"]
   .travel-exit-modal
   button:not(.ghost-button):not(.secondary-button):not(.danger-button) {
-  background: linear-gradient(135deg, #f97316, #f59e0b);
-  box-shadow: 0 14px 32px rgba(249, 115, 22, 0.22);
-  color: #fff7ed;
+  background: var(--color-brand);
+  box-shadow: none;
+  color: #141310;
 }
 
 :root[data-theme="dark"]
@@ -6042,8 +6044,8 @@ body.travel-vacation-theme {
 :root[data-theme="dark"]
   .travel-exit-modal
   button:not(.ghost-button):not(.secondary-button):not(.danger-button):hover {
-  background: linear-gradient(135deg, #fb923c, #facc15);
-  box-shadow: 0 18px 38px rgba(249, 115, 22, 0.28);
+  background: var(--color-brand-deep);
+  box-shadow: none;
 }
 
 :root[data-theme="dark"] .card,
@@ -6251,7 +6253,7 @@ html[data-sidebar="collapsed"] {
   height: 32px;
   min-height: 32px;
   padding: 0;
-  border-radius: 10px;
+  border-radius: var(--radius);
   border: 1px solid var(--color-line);
   color: var(--color-muted);
   background: var(--color-surface-strong);
@@ -6346,7 +6348,7 @@ html[data-sidebar="collapsed"] {
   gap: 0.65rem;
   padding: 0.85rem 0.95rem 0.75rem;
   border: 1px solid var(--color-line);
-  border-radius: 16px;
+  border-radius: var(--radius);
   background: var(--color-surface);
   box-shadow: var(--shadow-soft-token);
 }
@@ -6453,7 +6455,7 @@ html[data-sidebar="collapsed"] {
   max-width: calc(100vw - 2rem);
   padding: 0.85rem 0.95rem;
   border: 1px solid var(--color-line);
-  border-radius: 14px;
+  border-radius: var(--radius);
   background: #e2ebf0;
   box-shadow: 0 18px 48px rgba(29, 31, 32, 0.14);
 }
@@ -6481,7 +6483,7 @@ html[data-sidebar="collapsed"] {
   border: 1px solid var(--color-line);
   background: var(--color-surface);
   box-shadow: var(--shadow-soft-token);
-  border-radius: 16px;
+  border-radius: var(--radius);
 }
 
 .nl-answer__table-wrap {
@@ -6546,7 +6548,7 @@ html[data-sidebar="collapsed"] {
   width: 100%;
   min-height: 38px;
   padding: 0.45rem 0.55rem;
-  border-radius: 10px;
+  border-radius: var(--radius);
   font-size: 0.88rem;
   box-sizing: border-box;
 }
@@ -6570,7 +6572,7 @@ html[data-sidebar="collapsed"] {
   gap: 0.35rem;
   margin-top: 0.65rem;
   padding: 0.65rem 0.75rem;
-  border-radius: 12px;
+  border-radius: var(--radius);
   background: rgba(180, 35, 24, 0.08);
   color: var(--color-danger);
   font-size: 0.82rem;
@@ -6797,7 +6799,6 @@ html[data-sidebar="collapsed"] {
 /* === Unified layout: centered content rail, restrained surfaces === */
 :root {
   --content-rail-max: 680px;
-  --radius-secondary: 8px;
 }
 
 .content-rail {
@@ -7095,5 +7096,28 @@ html[data-sidebar="collapsed"] {
 /* Hide legacy top-right query dock (chat thread replaces it) */
 .nl-query-dock {
   display: none !important;
+}
+
+/* Visual system lock: one large rectangle radius; pills/circles unchanged */
+.surface-secondary,
+.card,
+.card-soft,
+.modal-card,
+.settings-modal,
+.search-filter-card,
+.search-result-item,
+.search-result-empty,
+.travel-card,
+.settings-panel,
+.backup-reminder,
+.nl-composer,
+.nl-bubble,
+.nl-compact-entry,
+.data-management-card,
+.today-inline-table-wrap,
+.empty-state,
+.status,
+.hero-stat-card {
+  border-radius: var(--radius);
 }
 
