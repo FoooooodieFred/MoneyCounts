@@ -131,9 +131,9 @@ Cloudflare Workers builds **`main`**. Worker name `moneycounts`; static assets f
 
 ## What it does
 
-- **Natural-language entry**: Chinese or English becomes preview rows (date, category, amount, currency, note). Nothing is written until you confirm. Next to **生成记账预览** you can pick:
-  - **规则识别·快且本地** (default): amount, currency, and dates stay rule-based; category uses keywords plus an in-browser n-gram classifier. No network.
-  - **LLM识别·精确有效**: calls the OpenAI-compatible endpoint you set on **API 看台** (`/console`). Falls back to local rules if the key is missing or the model fails.
+- **Natural-language entry**: Chinese or English becomes preview rows (date, category, amount, currency, note). Nothing is written until you confirm. Next to **Generate Bookkeeping Preview** you can pick:
+  - **Rule‑based Recognition: Fast and Local** (default): amount, currency, and dates stay rule-based; category uses keywords plus an in-browser n-gram classifier. No network.
+  - **LLM Recognition · Accurate and Effective**: calls the OpenAI-compatible endpoint you set on **API Console** (`/console`). Falls back to local rules if the key is missing or the model fails.
 - **35 classes**: 28 expenses, salary / side income (positive), five negative expenses (shopping refund, ticket refund, reimbursement, cashback, repayment from others). Unknown → 日用百货.
 - **Signs**: salary and side income are positive; refunds / reimbursement / cashback / someone paying you back are negative; your own AA share is still 餐饮美食, positive.
 - **Multi-day phrases** (`date_spec`) copy the **same amount onto each day**.
