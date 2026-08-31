@@ -3961,15 +3961,17 @@ button:disabled:hover {
   place-items: center;
   width: 28px;
   height: 28px;
+  flex-shrink: 0;
+  overflow: hidden;
   border-radius: var(--radius);
-  background: var(--color-brand);
-  color: #e2ebf0;
-  font-size: 0.78rem;
-  font-weight: 700;
+  background: transparent;
 }
 
-:root[data-theme="dark"] .scroll-nav__brand-mark {
-  color: #141310;
+.scroll-nav__brand-logo {
+  display: block;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
 }
 
 .scroll-nav__brand-text {

@@ -104,6 +104,12 @@ const KIND_BY_ZH = Object.fromEntries(
 
 export const getCategoryKind = (zh: string): LedgerCategoryKind => KIND_BY_ZH[zh] ?? "expense";
 
+/** 工资/副业与退款类在账本里都记负数，支出记正数。 */
+export const categoryStoresNegativeAmount = (zh: string) => {
+  const kind = getCategoryKind(zh);
+  return kind === "income" || kind === "negative_expense";
+};
+
 export const remapLegacyCategoryLimits = (limits: Record<string, unknown>) => {
   const next: Record<string, number> = {};
   for (const [name, raw] of Object.entries(limits)) {

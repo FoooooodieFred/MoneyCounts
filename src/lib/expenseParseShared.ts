@@ -3,7 +3,7 @@ import {
   CATEGORY_KEYWORDS,
   FALLBACK_CATEGORY_ZH,
   FOOD_DINING_CATEGORY_ZH,
-  getCategoryKind,
+  categoryStoresNegativeAmount,
   LEDGER_CATEGORIES,
   REPAY_FROM_OTHERS_CATEGORY_ZH,
 } from "./nlLedgerCategories";
@@ -246,9 +246,9 @@ export const detectAmount = (text: string) => {
 export const applyCategoryAmountSign = (amount: string, category: string) => {
   const numeric = Number(amount);
   if (!Number.isFinite(numeric) || numeric === 0) return amount;
-  if (numeric < 0) return formatAmount(numeric);
-  if (getCategoryKind(category) === "negative_expense") return formatAmount(-Math.abs(numeric));
-  return formatAmount(Math.abs(numeric));
+  const magnitude = Math.abs(numeric);
+  if (categoryStoresNegativeAmount(category)) return formatAmount(-magnitude);
+  return formatAmount(numeric < 0 ? -magnitude : magnitude);
 };
 
 export const cleanNote = (segment: string, matchedKeyword: string | null) => {

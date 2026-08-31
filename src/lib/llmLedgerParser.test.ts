@@ -147,7 +147,7 @@ describe("parseLlmLedgerPayload", () => {
   it("maps category ids and signs negative expenses", () => {
     expect(resolveLlmCategory("food_dining")).toBe("餐饮美食");
     expect(applyCategoryAmountSign("他人还款", "100")).toBe("-100");
-    expect(applyCategoryAmountSign("工资收入", "-5000")).toBe("5000");
+    expect(applyCategoryAmountSign("工资收入", "-5000")).toBe("-5000");
     expect(applyCategoryAmountSign("餐饮美食", "45.5")).toBe("45.5");
   });
 

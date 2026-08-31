@@ -119,18 +119,18 @@ describe("parseQuickExpenseLines — multi-clause Chinese", () => {
     expect(result?.amount).toBe("-50");
   });
 
-  it("keeps salary positive and repayment/refunds negative", () => {
+  it("stores salary, repayment, and refunds as negative amounts", () => {
     expect(parseQuickExpense("朋友还我100", "CNY")).toMatchObject({
       category: "他人还款",
       amount: "-100",
     });
     expect(parseQuickExpense("发工资 5000", "CNY")).toMatchObject({
       category: "工资收入",
-      amount: "5000",
+      amount: "-5000",
     });
     expect(parseQuickExpense("工资到账5000", "CNY")).toMatchObject({
       category: "工资收入",
-      amount: "5000",
+      amount: "-5000",
     });
     expect(parseQuickExpense("退款30", "CNY")).toMatchObject({
       category: "购物退款",
@@ -233,9 +233,9 @@ describe("parseNaturalLedger relative dates", () => {
     });
   });
 
-  it("keeps salary positive and repayment/refunds signed in natural parsing", async () => {
+  it("stores salary, repayment, and refunds as negative amounts in natural parsing", async () => {
     const result = await parseNaturalLedger("朋友还我100，工资到账5000，退款30", context);
-    expect(result.records.map((record) => record.amount)).toEqual(["-100", "5000", "-30"]);
+    expect(result.records.map((record) => record.amount)).toEqual(["-100", "-5000", "-30"]);
     expect(result.records.map((record) => record.category)).toEqual([
       "他人还款",
       "工资收入",

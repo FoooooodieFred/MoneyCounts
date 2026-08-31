@@ -187,17 +187,21 @@ export function SettingsPage({
             <p className="muted">默认关闭；开启后可在全年页查看月度与分类预算。</p>
           </header>
           <div className="budget-settings-stack">
-            <label className="settings-option">
+            <div className="settings-option">
               <span className="settings-option__copy">
                 <strong>开启预算管理</strong>
                 <small>不会改动已有账本数据。</small>
               </span>
-              <input
-                type="checkbox"
-                checked={settings.budget.enabled}
-                onChange={(event) => updateBudget({ enabled: event.target.checked })}
-              />
-            </label>
+              <label className="settings-toggle-switch">
+                <input
+                  type="checkbox"
+                  checked={settings.budget.enabled}
+                  aria-label="开启预算管理"
+                  onChange={(event) => updateBudget({ enabled: event.target.checked })}
+                />
+                <span className="settings-toggle-switch__track" aria-hidden="true" />
+              </label>
+            </div>
             <div className="budget-settings-grid">
               <label>
                 预算货币

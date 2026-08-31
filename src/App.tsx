@@ -14,6 +14,7 @@ import { Route, Routes, useLocation, useNavigate, Navigate } from "react-router-
 import { gsap } from "gsap";
 import { LocalLedgerRecord, parseNaturalLedger } from "./lib/localLedgerParser";
 import { parseNaturalLedgerViaLlm } from "./lib/llmLedgerParser";
+import { importSpreadsheetViaLlm, looksLikeBinarySpreadsheet } from "./lib/llmSpreadsheetImport";
 import type { LedgerParseMode } from "./lib/ledgerParseMode";
 import { HeroSection } from "./components/HeroSection";
 import { NaturalLanguageInput } from "./components/NaturalLanguageInput";
@@ -1059,7 +1060,9 @@ function App() {
   const [jsonImportMessage, setJsonImportMessage] = useState("");
   const [preparedJsonImport, setPreparedJsonImport] = useState<PreparedBackupImport | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const llmFileInputRef = useRef<HTMLInputElement | null>(null);
   const jsonInputRef = useRef<HTMLInputElement | null>(null);
+  const [isImportingSpreadsheet, setIsImportingSpreadsheet] = useState(false);
 
   const selectedEntries = ledger[selectedDate] ?? makeDayEntries(dailyDefaultCurrency);
   const monthKey = getMonthKey(selectedDate);
@@ -2442,6 +2445,58 @@ function App() {
       setNaturalLedgerPreview([]);
       setNaturalLedgerInput("");
       setCelebrationTick((tick) => tick + 1);
+    }
+  };
+
+  const importLegacySpreadsheet = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    const settings = readLlmApiSettings();
+    if (!isLlmApiVerified(settings)) {
+      setImportMessage("请先到「API 看台」配置并验证 LLM 模型。");
+      event.target.value = "";
+      return;
+    }
+    setIsImportingSpreadsheet(true);
+    setImportMessage("正在读取表格…");
+    try {
+      const text = await file.text();
+      if (!text.trim()) {
+        setImportMessage("表格是空的。");
+        return;
+      }
+      if (looksLikeBinarySpreadsheet(text)) {
+        setImportMessage("请上传 CSV / TSV / TXT 文本表格（暂不支持 Excel 二进制 .xlsx）。");
+        return;
+      }
+      const result = await importSpreadsheetViaLlm({
+        tableText: text,
+        fileName: file.name,
+        defaultCurrency: dailyDefaultCurrency,
+        settings,
+        onProgress: setImportMessage,
+      });
+      if (!result.rows.length) {
+        setImportMessage(
+          ["模型没有解析出可写入的记录。", ...result.warnings].filter(Boolean).join(" "),
+        );
+        return;
+      }
+      const { imported, messages } = importNaturalLedgerRecords(result.rows);
+      const parts = [
+        `已导入 ${imported} 条。`,
+        ...result.warnings.slice(0, 6),
+        ...messages.slice(0, 6),
+      ].filter(Boolean);
+      setImportMessage(parts.join(" "));
+      if (imported > 0 && window.confirm(`已写入 ${imported} 条。要现在导出 JSON 备份吗？`)) {
+        exportJson();
+      }
+    } catch (error) {
+      setImportMessage(error instanceof Error ? error.message : "表格识别失败。");
+    } finally {
+      setIsImportingSpreadsheet(false);
+      event.target.value = "";
     }
   };
 
@@ -3978,9 +4033,14 @@ function App() {
                 monthKey={monthKey}
                 importMessage={importMessage}
                 fileInputRef={fileInputRef}
+                llmFileInputRef={llmFileInputRef}
+                llmConfigured={isLlmApiVerified(readLlmApiSettings())}
+                llmImporting={isImportingSpreadsheet}
                 onExportCsv={exportCsv}
                 onPickCsv={() => fileInputRef.current?.click()}
                 onCsvFileChange={importCsv}
+                onPickLlmSpreadsheet={() => llmFileInputRef.current?.click()}
+                onLlmSpreadsheetChange={(event) => void importLegacySpreadsheet(event)}
                 onClearCurrentDay={clearCurrentDay}
                 onClearCurrentMonth={clearCurrentMonth}
               />

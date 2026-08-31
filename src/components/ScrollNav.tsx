@@ -273,7 +273,7 @@ export function ScrollNav({
       <div className="scroll-nav__top">
         <Link className="scroll-nav__brand" to="/" title="MoneyCounts">
           <span className="scroll-nav__brand-mark" aria-hidden="true">
-            M
+            <img className="scroll-nav__brand-logo" src="/pwa-icon.svg" alt="" />
           </span>
           <span className="scroll-nav__brand-text">MoneyCounts</span>
         </Link>

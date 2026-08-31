@@ -7,7 +7,7 @@ import {
   FALLBACK_CATEGORY_ZH,
   LEDGER_CATEGORIES,
   LEDGER_CATEGORY_DEFS,
-  getCategoryKind,
+  categoryStoresNegativeAmount,
   remapLegacyCategoryName,
 } from "./nlLedgerCategories";
 import type {
@@ -49,7 +49,7 @@ export const applyCategoryAmountSign = (category: string, rawAmount: string) => 
   const parsed = Number(rawAmount);
   if (!Number.isFinite(parsed) || parsed === 0) return null;
   const magnitude = Math.abs(parsed);
-  const signed = getCategoryKind(category) === "negative_expense" ? -magnitude : magnitude;
+  const signed = categoryStoresNegativeAmount(category) ? -magnitude : magnitude;
   return formatSignedAmount(signed);
 };
 
