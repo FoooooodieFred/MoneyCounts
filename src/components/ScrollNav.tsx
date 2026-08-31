@@ -6,7 +6,7 @@ type NavItem = {
   href: string;
   label: string;
   icon: ReactNode;
-  group?: "primary" | "sections" | "tools";
+  group?: "entry" | "primary" | "sections" | "tools";
 };
 
 const SIDEBAR_COLLAPSED_KEY = "moneycounts:sidebar-collapsed";
@@ -24,22 +24,16 @@ const iconProps = {
 };
 
 const Icons = {
-  home: (
+  pen: (
     <svg {...iconProps}>
-      <path d="M3 10.5 12 3l9 7.5" />
-      <path d="M5.5 9.5V21h13V9.5" />
+      <path d="M12 20h9" />
+      <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
     </svg>
   ),
   search: (
     <svg {...iconProps}>
       <circle cx="11" cy="11" r="7" />
       <path d="m20 20-3.5-3.5" />
-    </svg>
-  ),
-  pen: (
-    <svg {...iconProps}>
-      <path d="M12 20h9" />
-      <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
     </svg>
   ),
   calendar: (
@@ -105,8 +99,7 @@ const Icons = {
 const getLinks = (_settings: AppSettings): NavItem[] => {
   void _settings;
   return [
-    { href: "/", label: "首页", icon: Icons.home, group: "primary" },
-    { href: "/entry", label: "记账", icon: Icons.pen, group: "primary" },
+    { href: "/", label: "记账", icon: Icons.pen, group: "entry" },
     { href: "/today", label: "今日", icon: Icons.calendar, group: "primary" },
     { href: "/search", label: "搜索", icon: Icons.search, group: "primary" },
     { href: "/day", label: "当日", icon: Icons.day, group: "sections" },
@@ -160,14 +153,16 @@ function NavGroup({
   items,
   pathname,
   collapsed,
+  className,
 }: {
   items: NavItem[];
   pathname: string;
   collapsed?: boolean;
+  className?: string;
 }) {
   if (!items.length) return null;
   return (
-    <div className="scroll-nav__group">
+    <div className={`scroll-nav__group${className ? ` ${className}` : ""}`}>
       {items.map((link) => (
         <NavLink
           key={link.href}
@@ -198,6 +193,7 @@ export function ScrollNav({ settings, travelAccent = false }: ScrollNavProps) {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
   const links = getLinks(settings);
+  const entry = links.filter((l) => l.group === "entry");
   const primary = links.filter((l) => l.group === "primary");
   const sections = links.filter((l) => l.group === "sections");
   const tools = links.filter((l) => l.group === "tools");
@@ -247,6 +243,12 @@ export function ScrollNav({ settings, travelAccent = false }: ScrollNavProps) {
       </div>
 
       <div className="scroll-nav__links">
+        <NavGroup
+          items={entry}
+          pathname={location.pathname}
+          collapsed={collapsed}
+          className="scroll-nav__group--entry"
+        />
         <NavGroup items={primary} pathname={location.pathname} collapsed={collapsed} />
         <NavGroup items={sections} pathname={location.pathname} collapsed={collapsed} />
         <NavGroup items={tools} pathname={location.pathname} collapsed={collapsed} />
@@ -258,7 +260,7 @@ export function ScrollNav({ settings, travelAccent = false }: ScrollNavProps) {
 export function MobileScrollNav({ settings, travelAccent = false }: ScrollNavProps) {
   const location = useLocation();
   const links = getLinks(settings).filter((link) =>
-    ["/", "/entry", "/today", "/search", "/travel", "/settings"].includes(link.href),
+    ["/", "/today", "/search", "/travel", "/data", "/settings"].includes(link.href),
   );
 
   return (

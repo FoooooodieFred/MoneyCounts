@@ -52,8 +52,8 @@ export function FeatureBlock({
   );
 
   return (
-    <section ref={blockRef} id={id} className={`feature-block feature-block--${variant}`}>
-      <header className="feature-block__header">
+    <section ref={blockRef} id={id} className={`feature-block feature-block--flat feature-block--${variant}`}>
+      <header className="feature-block__header page-intro">
         <p className="eyebrow">{eyebrow}</p>
         <h2>{title}</h2>
         {subtitle ? <p className="muted">{subtitle}</p> : null}

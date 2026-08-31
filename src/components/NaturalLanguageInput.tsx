@@ -1,9 +1,8 @@
-import { FormEvent, KeyboardEvent, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
-import { gsap } from "gsap";
+import { FormEvent, KeyboardEvent, useEffect, useMemo, useRef, useState } from "react";
 import { parseQuickExpenseLines, type QuickExpenseResult } from "../lib/quickExpenseParser";
 import type { LocalLedgerRecord } from "../lib/localLedgerParser";
 import { prefersReducedMotion } from "../hooks/useGsapContext";
+import { applyTemplateSlot, pickRandomTemplates } from "../lib/quickTemplates";
 
 function resolveEntryScrollTarget(section: HTMLElement | null) {
   return (
@@ -13,9 +12,14 @@ function resolveEntryScrollTarget(section: HTMLElement | null) {
   );
 }
 
-function focusTextareaAfterScroll(textarea: HTMLTextAreaElement | null) {
+function focusTextareaAfterScroll(textarea: HTMLTextAreaElement | null, cursor?: number) {
   if (!textarea) return;
-  const focus = () => textarea.focus({ preventScroll: true });
+  const focus = () => {
+    textarea.focus({ preventScroll: true });
+    if (typeof cursor === "number") {
+      textarea.setSelectionRange(cursor, cursor);
+    }
+  };
   if (typeof window !== "undefined" && "onscrollend" in window) {
     window.addEventListener("scrollend", focus, { once: true });
     return;
@@ -49,14 +53,6 @@ type NaturalLanguageInputProps = {
   submittedInput?: string;
 };
 
-const QUICK_TEMPLATES = [
-  "这一周每天地铁来回 __ HKD",
-  "午餐 __ 元",
-  "朋友还我 __",
-  "大前天奶茶 __ 块",
-  "发工资 __",
-];
-
 export function NaturalLanguageInput({
   defaultCurrency,
   categories,
@@ -80,16 +76,15 @@ export function NaturalLanguageInput({
 }: NaturalLanguageInputProps) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const composerRef = useRef<HTMLFormElement | null>(null);
-  const dockRef = useRef<HTMLElement | null>(null);
-  const previewRef = useRef<HTMLDivElement | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-  const flipFromRef = useRef<DOMRect | null>(null);
   const pendingCompactScrollRef = useRef(false);
   const [input, setInput] = useState("");
   const [previews, setPreviews] = useState<QuickExpenseResult[]>([]);
   const [error, setError] = useState("");
   const [compactVisible, setCompactVisible] = useState(false);
   const [isComposing, setIsComposing] = useState(false);
+  const [templateSeed] = useState(() => Math.floor(Math.random() * 1_000_000));
+  const visibleTemplates = useMemo(() => pickRandomTemplates(3, templateSeed), [templateSeed]);
 
   const previewMode = previewRecords.length > 0;
   const bubbleText = submittedInput.trim() || input.trim();
@@ -130,7 +125,6 @@ export function NaturalLanguageInput({
     if (!resetSignal) return;
     setInput("");
     setPreviews([]);
-    flipFromRef.current = null;
     pendingCompactScrollRef.current = false;
   }, [resetSignal]);
 
@@ -144,77 +138,6 @@ export function NaturalLanguageInput({
     });
   }, [isParsing, previewRecords]);
 
-  useLayoutEffect(() => {
-    if (!previewMode) return;
-    const dock = dockRef.current;
-    const answer = previewRef.current;
-    if (!dock) return;
-
-    const from = flipFromRef.current;
-    flipFromRef.current = null;
-
-    if (prefersReducedMotion()) {
-      gsap.set([dock, answer].filter(Boolean), { clearProps: "all" });
-      return;
-    }
-
-    if (from) {
-      const to = dock.getBoundingClientRect();
-      const dx = from.left - to.left;
-      const dy = from.top - to.top;
-      const sx = Math.max(0.35, from.width / Math.max(to.width, 1));
-      const sy = Math.max(0.35, from.height / Math.max(to.height, 1));
-      gsap.fromTo(
-        dock,
-        {
-          x: dx,
-          y: dy,
-          scaleX: sx,
-          scaleY: sy,
-          transformOrigin: "top left",
-          autoAlpha: 0.92,
-        },
-        {
-          x: 0,
-          y: 0,
-          scaleX: 1,
-          scaleY: 1,
-          autoAlpha: 1,
-          duration: 0.58,
-          ease: "power3.inOut",
-          clearProps: "transform",
-        },
-      );
-    } else {
-      gsap.fromTo(
-        dock,
-        { autoAlpha: 0, y: -12, x: 18 },
-        { autoAlpha: 1, y: 0, x: 0, duration: 0.4, ease: "power2.out" },
-      );
-    }
-
-    if (answer) {
-      gsap.fromTo(
-        answer,
-        { autoAlpha: 0, y: 18 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.42,
-          delay: 0.12,
-          ease: "power2.out",
-          clearProps: "transform,opacity,visibility",
-        },
-      );
-    }
-  }, [previewMode]);
-
-  const captureComposerFlip = () => {
-    if (composerRef.current) {
-      flipFromRef.current = composerRef.current.getBoundingClientRect();
-    }
-  };
-
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const fromCompact = event.currentTarget.classList.contains("nl-compact-entry");
@@ -224,7 +147,6 @@ export function NaturalLanguageInput({
       setError("无法解析，请检查是否包含金额");
       return;
     }
-    if (!fromCompact) captureComposerFlip();
     onSubmit(parsed, rawInput);
     setError("");
     if (fromCompact) {
@@ -239,12 +161,12 @@ export function NaturalLanguageInput({
     event.currentTarget.form?.requestSubmit();
   };
 
-  const focusMainInput = () => {
+  const focusMainInput = (cursor?: number) => {
     sectionRef.current?.scrollIntoView({
       behavior: prefersReducedMotion() ? "auto" : "smooth",
       block: "center",
     });
-    requestAnimationFrame(() => textareaRef.current?.focus());
+    requestAnimationFrame(() => focusTextareaAfterScroll(textareaRef.current, cursor));
   };
 
   const scrollToEntryFromCompact = () => {
@@ -262,11 +184,14 @@ export function NaturalLanguageInput({
   };
 
   const applyTemplate = (template: string) => {
+    const { text, cursor } = applyTemplateSlot(template);
     setInput((current) => {
       const trimmed = current.trim();
-      return trimmed ? `${trimmed}\n${template}` : template;
+      const next = trimmed ? `${trimmed}\n${text}` : text;
+      const focusAt = trimmed ? trimmed.length + 1 + cursor : cursor;
+      requestAnimationFrame(() => focusMainInput(focusAt));
+      return next;
     });
-    focusMainInput();
   };
 
   const handleEditPreview = () => {
@@ -288,23 +213,6 @@ export function NaturalLanguageInput({
         id="entry"
         data-section="quick-entry"
       >
-        {previewMode
-          ? createPortal(
-              <aside ref={dockRef} className="nl-query-dock" aria-label="已提交的记账语句">
-                <p className="nl-query-dock__text">{bubbleText || "（已生成预览）"}</p>
-                <button
-                  type="button"
-                  className="ghost-button nl-query-dock__edit"
-                  data-action="preview-edit-input"
-                  onClick={handleEditPreview}
-                >
-                  更改记账预览
-                </button>
-              </aside>,
-              document.body,
-            )
-          : null}
-
         {!previewMode ? (
           <div className="nl-idle">
             <div className="nl-idle__bar">
@@ -326,7 +234,7 @@ export function NaturalLanguageInput({
 
             <form
               ref={composerRef}
-              className="nl-composer"
+              className="nl-composer surface-secondary"
               onSubmit={handleSubmit}
               data-action="quick-entry-submit"
             >
@@ -358,7 +266,7 @@ export function NaturalLanguageInput({
             <div className="nl-suggest" aria-label="快捷模板">
               <span className="nl-suggest__label">快捷模板</span>
               <div className="nl-suggest__chips">
-                {QUICK_TEMPLATES.map((template) => (
+                {visibleTemplates.map((template) => (
                   <button
                     key={template}
                     type="button"
@@ -380,131 +288,151 @@ export function NaturalLanguageInput({
             ) : null}
           </div>
         ) : (
-          <div ref={previewRef} className="nl-answer" role="status">
-            <header className="nl-answer__header">
-              <div>
-                <p className="eyebrow">Preview</p>
-                <h3>记账预览</h3>
-                <p className="muted">可直接改日期、分类、金额；确认后写入账本。</p>
+          <div className="nl-thread" role="log" aria-live="polite">
+            <div className="nl-thread__row nl-thread__row--user">
+              <div className="nl-bubble nl-bubble--user surface-secondary">
+                <p>{bubbleText || "（已生成预览）"}</p>
+                <button
+                  type="button"
+                  className="ghost-button nl-bubble__edit"
+                  data-action="preview-edit-input"
+                  onClick={handleEditPreview}
+                >
+                  修改语句
+                </button>
               </div>
-              <button
-                type="button"
-                className="ghost-button"
-                data-action="preview-add-record"
-                onClick={onPreviewAdd}
-              >
-                补一笔
-              </button>
-            </header>
-
-            <div className="nl-answer__table-wrap">
-              <table className="nl-preview-table">
-                <thead>
-                  <tr>
-                    <th scope="col">日期</th>
-                    <th scope="col">分类</th>
-                    <th scope="col">金额</th>
-                    <th scope="col">货币</th>
-                    <th scope="col">备注</th>
-                    <th scope="col">
-                      <span className="sr-only">操作</span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {previewRecords.map((preview, index) => (
-                    <tr key={`${preview.date}-${preview.amount}-${preview.note}-${index}`}>
-                      <td>
-                        <input
-                          type="date"
-                          aria-label={`第 ${index + 1} 笔日期`}
-                          value={preview.date}
-                          onChange={(event) => onPreviewChange(index, "date", event.target.value)}
-                        />
-                      </td>
-                      <td>
-                        <select
-                          aria-label={`第 ${index + 1} 笔分类`}
-                          value={preview.category}
-                          onChange={(event) =>
-                            onPreviewChange(index, "category", event.target.value)
-                          }
-                        >
-                          {categories.map((category) => (
-                            <option key={category} value={category}>
-                              {category}
-                            </option>
-                          ))}
-                        </select>
-                      </td>
-                      <td>
-                        <input
-                          inputMode="decimal"
-                          aria-label={`第 ${index + 1} 笔金额`}
-                          value={preview.amount}
-                          onChange={(event) => onPreviewChange(index, "amount", event.target.value)}
-                        />
-                      </td>
-                      <td>
-                        <select
-                          aria-label={`第 ${index + 1} 笔货币`}
-                          value={preview.currency}
-                          onChange={(event) =>
-                            onPreviewChange(index, "currency", event.target.value)
-                          }
-                        >
-                          {currencies.map((currency) => (
-                            <option key={currency} value={currency}>
-                              {currency}
-                            </option>
-                          ))}
-                        </select>
-                      </td>
-                      <td className="nl-preview-table__note">
-                        <input
-                          aria-label={`第 ${index + 1} 笔备注`}
-                          value={preview.note}
-                          onChange={(event) => onPreviewChange(index, "note", event.target.value)}
-                        />
-                      </td>
-                      <td className="nl-preview-table__actions">
-                        <button
-                          type="button"
-                          className="delete-record-button"
-                          data-action="preview-delete-record"
-                          onClick={() => onPreviewDelete(index)}
-                          aria-label="删除预览记录"
-                        >
-                          ×
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              {previewRecords.some((_, index) => previewIssues[index]?.length) ? (
-                <div className="nl-preview-table__issues">
-                  {previewRecords.map((preview, index) =>
-                    previewIssues[index]?.length ? (
-                      <p key={`issue-${index}`}>
-                        第 {index + 1} 笔（{preview.category || "未分类"}）：
-                        {previewIssues[index].join(" / ")}
-                      </p>
-                    ) : null,
-                  )}
-                </div>
-              ) : null}
             </div>
 
-            {warnings.length ? (
-              <div className="nl-preview-warnings">
-                {warnings.map((warning) => (
-                  <small key={warning}>{warning}</small>
-                ))}
-              </div>
-            ) : null}
+            <div className="nl-thread__row nl-thread__row--assistant">
+              <div className="nl-bubble nl-bubble--assistant surface-secondary">
+                <header className="nl-bubble__header">
+                  <h3>识别结果</h3>
+                  <button
+                    type="button"
+                    className="ghost-button"
+                    data-action="preview-add-record"
+                    onClick={onPreviewAdd}
+                  >
+                    补一笔
+                  </button>
+                </header>
 
-            <div className="nl-answer__footer">
+                <div className="nl-preview-table-wrap">
+                  <table className="nl-preview-table">
+                    <thead>
+                      <tr>
+                        <th scope="col">日期</th>
+                        <th scope="col">分类</th>
+                        <th scope="col">金额</th>
+                        <th scope="col">货币</th>
+                        <th scope="col">备注</th>
+                        <th scope="col">
+                          <span className="sr-only">操作</span>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {previewRecords.map((preview, index) => (
+                        <tr key={`${preview.date}-${preview.amount}-${preview.note}-${index}`}>
+                          <td>
+                            <input
+                              type="date"
+                              aria-label={`第 ${index + 1} 笔日期`}
+                              value={preview.date}
+                              onChange={(event) =>
+                                onPreviewChange(index, "date", event.target.value)
+                              }
+                            />
+                          </td>
+                          <td>
+                            <select
+                              aria-label={`第 ${index + 1} 笔分类`}
+                              value={preview.category}
+                              onChange={(event) =>
+                                onPreviewChange(index, "category", event.target.value)
+                              }
+                            >
+                              {categories.map((category) => (
+                                <option key={category} value={category}>
+                                  {category}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                          <td>
+                            <input
+                              inputMode="decimal"
+                              aria-label={`第 ${index + 1} 笔金额`}
+                              value={preview.amount}
+                              onChange={(event) =>
+                                onPreviewChange(index, "amount", event.target.value)
+                              }
+                            />
+                          </td>
+                          <td>
+                            <select
+                              aria-label={`第 ${index + 1} 笔货币`}
+                              value={preview.currency}
+                              onChange={(event) =>
+                                onPreviewChange(index, "currency", event.target.value)
+                              }
+                            >
+                              {currencies.map((currency) => (
+                                <option key={currency} value={currency}>
+                                  {currency}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                          <td className="nl-preview-table__note">
+                            <input
+                              aria-label={`第 ${index + 1} 笔备注`}
+                              value={preview.note}
+                              onChange={(event) =>
+                                onPreviewChange(index, "note", event.target.value)
+                              }
+                            />
+                          </td>
+                          <td className="nl-preview-table__actions">
+                            <button
+                              type="button"
+                              className="delete-record-button"
+                              data-action="preview-delete-record"
+                              onClick={() => onPreviewDelete(index)}
+                              aria-label="删除预览记录"
+                            >
+                              ×
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  {previewRecords.some((_, index) => previewIssues[index]?.length) ? (
+                    <div className="nl-preview-table__issues">
+                      {previewRecords.map((preview, index) =>
+                        previewIssues[index]?.length ? (
+                          <p key={`issue-${index}`}>
+                            第 {index + 1} 笔（{preview.category || "未分类"}）：
+                            {previewIssues[index].join(" / ")}
+                          </p>
+                        ) : null,
+                      )}
+                    </div>
+                  ) : null}
+                </div>
+
+                {warnings.length ? (
+                  <div className="nl-preview-warnings">
+                    {warnings.map((warning) => (
+                      <small key={warning}>{warning}</small>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+            </div>
+
+            <div className="nl-thread__actions">
               <button
                 type="button"
                 className="secondary-button"
@@ -532,7 +460,7 @@ export function NaturalLanguageInput({
       {compactVisible && !previewMode ? (
         <div className="nl-compact-entry-host">
           <form
-            className="nl-compact-entry"
+            className="nl-compact-entry surface-secondary"
             onSubmit={handleSubmit}
             data-action="compact-quick-entry-submit"
           >

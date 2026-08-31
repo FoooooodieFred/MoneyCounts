@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { ContentRail } from "../components/ContentRail";
 
 type SectionPageProps = {
   children: ReactNode;
@@ -13,7 +14,9 @@ export function SectionPage({ children, className, "data-section": dataSection }
       className={`app-shell app-shell--below-nav section-page-shell${className ? ` ${className}` : ""}`}
       data-section={dataSection}
     >
-      <main className="app-main section-main">{children}</main>
+      <main className="app-main section-main">
+        <ContentRail>{children}</ContentRail>
+      </main>
     </div>
   );
 }

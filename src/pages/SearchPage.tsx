@@ -58,15 +58,16 @@ export function SearchPage({
 
   return (
     <main className="app-shell app-shell--below-nav search-page-shell" data-section="search-page">
-      <section className="search-hero" data-section="search-hero">
-        <p className="eyebrow">Search</p>
-        <h1>搜索与高级筛选</h1>
-        <p className="muted">
-          按备注、分类、金额和日期组合筛选。当前账本暂无标签字段，可用备注关键词作为标签搜索，例如输入「咖啡」或「#通勤」。
-        </p>
-      </section>
+      <div className="content-rail search-stack">
+        <header className="page-intro" data-section="search-hero">
+          <p className="eyebrow">Search</p>
+          <h1>搜索与高级筛选</h1>
+          <p className="muted">
+            按备注、分类、金额和日期组合筛选。当前账本暂无标签字段，可用备注关键词作为标签搜索，例如输入「咖啡」或「#通勤」。
+          </p>
+        </header>
 
-      <section className="card search-filter-card" data-section="search-filters">
+        <section className="surface-secondary search-filter-card" data-section="search-filters">
         <div className="search-filter-grid">
           <label>
             关键词
@@ -142,7 +143,7 @@ export function SearchPage({
           filteredRecords.map((record, index) => (
             <article
               key={`${record.date}-${record.category}-${index}`}
-              className="card search-result-item"
+              className="surface-secondary search-result-item"
             >
               <div>
                 <span>{record.date}</span>
@@ -168,12 +169,13 @@ export function SearchPage({
             </article>
           ))
         ) : (
-          <article className="card search-result-empty">
+          <article className="surface-secondary search-result-empty">
             <h2>没有找到匹配记录</h2>
             <p className="muted">试着放宽日期、金额区间，或用备注里的关键词继续搜索。</p>
           </article>
         )}
       </section>
+      </div>
     </main>
   );
 }

@@ -10,7 +10,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate, Navigate } from "react-router-dom";
 import { gsap } from "gsap";
 import { LocalLedgerRecord, parseNaturalLedger } from "./lib/localLedgerParser";
 import { HeroSection } from "./components/HeroSection";
@@ -3789,30 +3789,15 @@ function App() {
           path="/"
           element={
             <div className="app-shell home-shell journal-scroll" ref={appRootRef}>
-              <header
-                className="home-screen home-screen--hero"
-                id="hero-screen"
-                data-section="screen-hero"
-              >
+              <main className="home-main content-rail">
                 {renderHomeSection("heroCards")}
                 {renderHomeSection("quickEntry")}
-              </header>
-              <div
-                className="home-screen home-screen--footer"
-                id="screen-footer"
-                data-section="screen-footer"
-              >
-                {renderHomeSection("footer")}
-              </div>
+              </main>
+              {renderHomeSection("footer")}
             </div>
           }
         />
-        <Route
-          path="/entry"
-          element={
-            <SectionPage data-section="screen-entry">{renderHomeSection("quickEntry")}</SectionPage>
-          }
-        />
+        <Route path="/entry" element={<Navigate to="/" replace />} />
         <Route
           path="/today"
           element={
