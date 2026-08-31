@@ -33,4 +33,6 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
+# generated dataset staging
+/data/nl-ledger/staging-by-cat
+/data/nl-ledger/staging-zh.json

@@ -1,0 +1,1751 @@
+id,lang,category_id,category_zh,category_en,kind,text,amount,currency,note,date_spec,dates,anchor_date
+food_dining-zh-001,zh,food_dining,餐饮美食,Food and Dining,expense,今早买包子豆浆当早餐花了8元,8,CNY,早餐,rel:0,2026-08-31,2026-08-31
+food_dining-zh-002,zh,food_dining,餐饮美食,Food and Dining,expense,昨天中午点黄焖鸡米饭外卖花了28块,28,CNY,外卖午餐,rel:-1,2026-08-30,2026-08-31
+food_dining-zh-003,zh,food_dining,餐饮美食,Food and Dining,expense,晚上和朋友吃火锅AA付了180HKD,180,HKD,聚餐AA,anchor,2026-08-31,2026-08-31
+food_dining-zh-004,zh,food_dining,餐饮美食,Food and Dining,expense,下午摸鱼买了杯珍珠奶茶花了22元,22,CNY,奶茶,anchor,2026-08-31,2026-08-31
+food_dining-zh-005,zh,food_dining,餐饮美食,Food and Dining,expense,这一周每天公司楼下买冰美式花了30HKD,30,HKD,咖啡,week:0,2026-08-31|2026-09-01|2026-09-02|2026-09-03|2026-09-04|2026-09-05|2026-09-06,2026-08-31
+food_dining-zh-006,zh,food_dining,餐饮美食,Food and Dining,expense,周末去茶餐厅吃早茶花了128块,128,CNY,早茶,weekday:6,2026-09-05,2026-08-31
+food_dining-zh-007,zh,food_dining,餐饮美食,Food and Dining,expense,食堂窗口再打一份红烧肉花了12元,12,CNY,食堂加菜,anchor,2026-08-31,2026-08-31
+food_dining-zh-008,zh,food_dining,餐饮美食,Food and Dining,expense,夜宵吃烧烤喝啤酒花了150块钱,150,CNY,夜宵,anchor,2026-08-31,2026-08-31
+food_dining-zh-009,zh,food_dining,餐饮美食,Food and Dining,expense,买了杯星巴克拿铁花了38HKD,38,HKD,咖啡,anchor,2026-08-31,2026-08-31
+food_dining-zh-010,zh,food_dining,餐饮美食,Food and Dining,expense,今天明天食堂午饭都刷15元,15,CNY,食堂,"rel:0,1",2026-08-31|2026-09-01,2026-08-31
+food_dining-zh-011,zh,food_dining,餐饮美食,Food and Dining,expense,水果店买了一斤草莓花了35块,35,CNY,水果,anchor,2026-08-31,2026-08-31
+food_dining-zh-012,zh,food_dining,餐饮美食,Food and Dining,expense,面包店买吐司和可颂花了42元,42,CNY,面包,anchor,2026-08-31,2026-08-31
+food_dining-zh-013,zh,food_dining,餐饮美食,Food and Dining,expense,麦当劳吃板烧鸡腿堡套餐花了36块,36,CNY,快餐,anchor,2026-08-31,2026-08-31
+food_dining-zh-014,zh,food_dining,餐饮美食,Food and Dining,expense,寿司店吃三文鱼刺身饭花了78HKD,78,HKD,日料,anchor,2026-08-31,2026-08-31
+food_dining-zh-015,zh,food_dining,餐饮美食,Food and Dining,expense,蜜雪冰城买柠檬水花了6元,6,CNY,饮品,anchor,2026-08-31,2026-08-31
+food_dining-zh-016,zh,food_dining,餐饮美食,Food and Dining,expense,昨晚自己煮面加煎蛋花了9块,9,CNY,自己做饭,anchor,2026-08-31,2026-08-31
+food_dining-zh-017,zh,food_dining,餐饮美食,Food and Dining,expense,深夜点了份黄焖鸡米饭花了26元,26,CNY,夜宵外卖,anchor,2026-08-31,2026-08-31
+food_dining-zh-018,zh,food_dining,餐饮美食,Food and Dining,expense,瑞幸买生椰拿铁花了19块,19,CNY,咖啡,anchor,2026-08-31,2026-08-31
+food_dining-zh-019,zh,food_dining,餐饮美食,Food and Dining,expense,今天到后天兰州拉面馆牛肉面加蛋都花22元,22,CNY,面食,span:0:2,2026-08-31|2026-09-01|2026-09-02,2026-08-31
+food_dining-zh-020,zh,food_dining,餐饮美食,Food and Dining,expense,东北饺子馆吃晚餐花了45块,45,CNY,饺子,anchor,2026-08-31,2026-08-31
+food_dining-zh-021,zh,food_dining,餐饮美食,Food and Dining,expense,港式茶餐厅下午茶冻柠茶加菠萝油花了58HKD,58,HKD,下午茶,anchor,2026-08-31,2026-08-31
+food_dining-zh-022,zh,food_dining,餐饮美食,Food and Dining,expense,冰淇淋店买两个甜筒花了16元,16,CNY,甜品,anchor,2026-08-31,2026-08-31
+food_dining-zh-023,zh,food_dining,餐饮美食,Food and Dining,expense,绝味鸭脖买鸭货花了32块,32,CNY,卤味,anchor,2026-08-31,2026-08-31
+food_dining-zh-024,zh,food_dining,餐饮美食,Food and Dining,expense,水果店买切果盒花了28元,28,CNY,水果,anchor,2026-08-31,2026-08-31
+food_dining-zh-025,zh,food_dining,餐饮美食,Food and Dining,expense,公司楼下买便当盒饭花了25块,25,CNY,盒饭,anchor,2026-08-31,2026-08-31
+food_dining-zh-026,zh,food_dining,餐饮美食,Food and Dining,expense,本周三外卖点了份意式披萨花了68元,68,CNY,披萨,weekday:3,2026-09-02,2026-08-31
+food_dining-zh-027,zh,food_dining,餐饮美食,Food and Dining,expense,半夜饿了点串串香夜宵花了55块,55,CNY,夜宵,anchor,2026-08-31,2026-08-31
+food_dining-zh-028,zh,food_dining,餐饮美食,Food and Dining,expense,粤式早茶点虾饺烧卖花了138元,138,CNY,早茶,anchor,2026-08-31,2026-08-31
+food_dining-zh-029,zh,food_dining,餐饮美食,Food and Dining,expense,同事聚餐吃日式定食花了72块,72,CNY,定食,anchor,2026-08-31,2026-08-31
+food_dining-zh-030,zh,food_dining,餐饮美食,Food and Dining,expense,好利来买半熟芝士蛋糕花了49元,49,CNY,甜品,anchor,2026-08-31,2026-08-31
+food_dining-zh-031,zh,food_dining,餐饮美食,Food and Dining,expense,肯德基买全家桶花了99块,99,CNY,快餐,anchor,2026-08-31,2026-08-31
+food_dining-zh-032,zh,food_dining,餐饮美食,Food and Dining,expense,8月20日居酒屋吃日料小酌花了280HKD,280,HKD,日料,ymd:2026-08-20,2026-08-20,2026-08-31
+food_dining-zh-033,zh,food_dining,餐饮美食,Food and Dining,expense,丘大叔买鸭屎香柠檬茶花了18元,18,CNY,饮品,anchor,2026-08-31,2026-08-31
+food_dining-zh-034,zh,food_dining,餐饮美食,Food and Dining,expense,上周每天早餐店肠粉加粥花了12块,12,CNY,早餐,week:-1,2026-08-24|2026-08-25|2026-08-26|2026-08-27|2026-08-28|2026-08-29|2026-08-30,2026-08-31
+food_dining-zh-035,zh,food_dining,餐饮美食,Food and Dining,expense,正宗兰州拉面吃大碗面花了20元,20,CNY,面食,anchor,2026-08-31,2026-08-31
+food_dining-zh-036,zh,food_dining,餐饮美食,Food and Dining,expense,杨国福吃麻辣烫午餐花了35块,35,CNY,麻辣烫,anchor,2026-08-31,2026-08-31
+food_dining-zh-037,zh,food_dining,餐饮美食,Food and Dining,expense,韩式烤肉店聚餐人均花了160元,160,CNY,聚餐,anchor,2026-08-31,2026-08-31
+food_dining-zh-038,zh,food_dining,餐饮美食,Food and Dining,expense,夏天买半个西瓜花了28块,28,CNY,水果,anchor,2026-08-31,2026-08-31
+food_dining-zh-039,zh,food_dining,餐饮美食,Food and Dining,expense,便利店买关东煮花了18元,18,CNY,便利店,anchor,2026-08-31,2026-08-31
+food_dining-zh-040,zh,food_dining,餐饮美食,Food and Dining,expense,咖啡店买燕麦拿铁花了32块,32,CNY,咖啡,anchor,2026-08-31,2026-08-31
+food_dining-zh-041,zh,food_dining,餐饮美食,Food and Dining,expense,粥铺点皮蛋瘦肉粥加油条花了15元,15,CNY,早餐,anchor,2026-08-31,2026-08-31
+food_dining-zh-042,zh,food_dining,餐饮美食,Food and Dining,expense,汉堡王吃皇堡套餐花了41块,41,CNY,快餐,anchor,2026-08-31,2026-08-31
+food_dining-zh-043,zh,food_dining,餐饮美食,Food and Dining,expense,泰式餐厅吃冬阴功汤饭花了68元,68,CNY,泰餐,anchor,2026-08-31,2026-08-31
+food_dining-zh-044,zh,food_dining,餐饮美食,Food and Dining,expense,甜品店买双皮奶和姜撞奶花了30块,30,CNY,甜品,anchor,2026-08-31,2026-08-31
+food_dining-zh-045,zh,food_dining,餐饮美食,Food and Dining,expense,下午茶点了蛋糕卷花了18元,18,CNY,下午茶,anchor,2026-08-31,2026-08-31
+food_dining-zh-046,zh,food_dining,餐饮美食,Food and Dining,expense,外卖点麻辣小龙虾花了188块,188,CNY,小龙虾,anchor,2026-08-31,2026-08-31
+food_dining-zh-047,zh,food_dining,餐饮美食,Food and Dining,expense,茶餐厅冻柠茶走冰花了24HKD,24,HKD,饮品,anchor,2026-08-31,2026-08-31
+food_dining-zh-048,zh,food_dining,餐饮美食,Food and Dining,expense,大前天包子铺买一笼小笼包花了16元,16,CNY,早餐,rel:-3,2026-08-28,2026-08-31
+food_dining-zh-049,zh,food_dining,餐饮美食,Food and Dining,expense,西餐厅吃牛排套餐花了268块,268,CNY,西餐,anchor,2026-08-31,2026-08-31
+food_dining-zh-050,zh,food_dining,餐饮美食,Food and Dining,expense,自助餐厅吃午餐花了128元,128,CNY,自助餐,anchor,2026-08-31,2026-08-31
+transport-zh-001,zh,transport,交通出行,Transport,expense,今天坐地铁上下班花了8HKD,8,HKD,地铁,rel:0,2026-08-31,2026-08-31
+transport-zh-002,zh,transport,交通出行,Transport,expense,昨天打车去公司付了45块钱,45,CNY,打车,rel:-1,2026-08-30,2026-08-31
+transport-zh-003,zh,transport,交通出行,Transport,expense,给车加92号油花了300元,300,CNY,加油,anchor,2026-08-31,2026-08-31
+transport-zh-004,zh,transport,交通出行,Transport,expense,公交卡充值100元,100,CNY,公交卡,anchor,2026-08-31,2026-08-31
+transport-zh-005,zh,transport,交通出行,Transport,expense,打滴滴去商圈花了38块,38,CNY,网约车,anchor,2026-08-31,2026-08-31
+transport-zh-006,zh,transport,交通出行,Transport,expense,买高铁二等座票花了550元,550,CNY,高铁,anchor,2026-08-31,2026-08-31
+transport-zh-007,zh,transport,交通出行,Transport,expense,小区停车场交停车费20HKD,20,HKD,停车,anchor,2026-08-31,2026-08-31
+transport-zh-008,zh,transport,交通出行,Transport,expense,这一周每天骑共享单车通勤花了3块钱,3,CNY,共享单车,week:0,2026-08-31|2026-09-01|2026-09-02|2026-09-03|2026-09-04|2026-09-05|2026-09-06,2026-08-31
+transport-zh-009,zh,transport,交通出行,Transport,expense,机场大巴车票花了25元,25,CNY,机场大巴,anchor,2026-08-31,2026-08-31
+transport-zh-010,zh,transport,交通出行,Transport,expense,高速过路费花了120块,120,CNY,过路费,anchor,2026-08-31,2026-08-31
+transport-zh-011,zh,transport,交通出行,Transport,expense,今天明天坐公交去市区都花2元,2,CNY,公交,"rel:0,1",2026-08-31|2026-09-01,2026-08-31
+transport-zh-012,zh,transport,交通出行,Transport,expense,网约车去机场花了120块,120,CNY,网约车,anchor,2026-08-31,2026-08-31
+transport-zh-013,zh,transport,交通出行,Transport,expense,电动车充电花了15元,15,CNY,充电,anchor,2026-08-31,2026-08-31
+transport-zh-014,zh,transport,交通出行,Transport,expense,买动车票花了180块,180,CNY,动车,anchor,2026-08-31,2026-08-31
+transport-zh-015,zh,transport,交通出行,Transport,expense,出租车打表花了56元,56,CNY,出租车,anchor,2026-08-31,2026-08-31
+transport-zh-016,zh,transport,交通出行,Transport,expense,摩托车加油花了80块,80,CNY,加油,anchor,2026-08-31,2026-08-31
+transport-zh-017,zh,transport,交通出行,Transport,expense,坐轮渡去对岸花了15HKD,15,HKD,轮渡,anchor,2026-08-31,2026-08-31
+transport-zh-018,zh,transport,交通出行,Transport,expense,代驾回家花了80元,80,CNY,代驾,anchor,2026-08-31,2026-08-31
+transport-zh-019,zh,transport,交通出行,Transport,expense,租车一天花了300块,300,CNY,租车,anchor,2026-08-31,2026-08-31
+transport-zh-020,zh,transport,交通出行,Transport,expense,地铁月卡充值200元,200,CNY,地铁卡,anchor,2026-08-31,2026-08-31
+transport-zh-021,zh,transport,交通出行,Transport,expense,顺风车去邻市花了120块,120,CNY,顺风车,anchor,2026-08-31,2026-08-31
+transport-zh-022,zh,transport,交通出行,Transport,expense,买飞机票经济舱花了1200元,1200,CNY,机票,anchor,2026-08-31,2026-08-31
+transport-zh-023,zh,transport,交通出行,Transport,expense,停车场包月费300元,300,CNY,停车月费,anchor,2026-08-31,2026-08-31
+transport-zh-024,zh,transport,交通出行,Transport,expense,坐大巴回老家花了150块,150,CNY,大巴,anchor,2026-08-31,2026-08-31
+transport-zh-025,zh,transport,交通出行,Transport,expense,今天到后天骑共享电动车都花5元,5,CNY,共享电动车,span:0:2,2026-08-31|2026-09-01|2026-09-02,2026-08-31
+transport-zh-026,zh,transport,交通出行,Transport,expense,本周五滴滴打快车花了28块,28,CNY,网约车,weekday:5,2026-09-04,2026-08-31
+transport-zh-027,zh,transport,交通出行,Transport,expense,给车做保养花了500元,500,CNY,保养,anchor,2026-08-31,2026-08-31
+transport-zh-028,zh,transport,交通出行,Transport,expense,买船票去海岛玩花了180块,180,CNY,船票,anchor,2026-08-31,2026-08-31
+transport-zh-029,zh,transport,交通出行,Transport,expense,公交转地铁一共花了6元,6,CNY,公交换乘,anchor,2026-08-31,2026-08-31
+transport-zh-030,zh,transport,交通出行,Transport,expense,8月15日打车去高铁站花了60块,60,CNY,打车,ymd:2026-08-15,2026-08-15,2026-08-31
+transport-zh-031,zh,transport,交通出行,Transport,expense,ETC扣费85元,85,CNY,ETC,anchor,2026-08-31,2026-08-31
+transport-zh-032,zh,transport,交通出行,Transport,expense,坐轻轨去郊区花了20块,20,CNY,轻轨,anchor,2026-08-31,2026-08-31
+transport-zh-033,zh,transport,交通出行,Transport,expense,网约车拼车花了18元,18,CNY,拼车,anchor,2026-08-31,2026-08-31
+transport-zh-034,zh,transport,交通出行,Transport,expense,自行车补胎花了15块,15,CNY,修车,anchor,2026-08-31,2026-08-31
+transport-zh-035,zh,transport,交通出行,Transport,expense,买火车票卧铺花了320元,320,CNY,火车票,anchor,2026-08-31,2026-08-31
+transport-zh-036,zh,transport,交通出行,Transport,expense,小区停车费一天10元,10,CNY,停车,anchor,2026-08-31,2026-08-31
+transport-zh-037,zh,transport,交通出行,Transport,expense,坐叮叮车花了3HKD,3,HKD,叮叮车,anchor,2026-08-31,2026-08-31
+transport-zh-038,zh,transport,交通出行,Transport,expense,打车去医院花了35块,35,CNY,打车,anchor,2026-08-31,2026-08-31
+transport-zh-039,zh,transport,交通出行,Transport,expense,汽车年检花了280元,280,CNY,年检,anchor,2026-08-31,2026-08-31
+transport-zh-040,zh,transport,交通出行,Transport,expense,坐长途客车花了220块,220,CNY,长途车,anchor,2026-08-31,2026-08-31
+transport-zh-041,zh,transport,交通出行,Transport,expense,共享汽车用了两小时花了60元,60,CNY,共享汽车,anchor,2026-08-31,2026-08-31
+transport-zh-042,zh,transport,交通出行,Transport,expense,上周每天地铁通勤刷了50元,50,CNY,地铁充值,week:-1,2026-08-24|2026-08-25|2026-08-26|2026-08-27|2026-08-28|2026-08-29|2026-08-30,2026-08-31
+transport-zh-043,zh,transport,交通出行,Transport,expense,打车去酒吧花了45块,45,CNY,打车,anchor,2026-08-31,2026-08-31
+transport-zh-044,zh,transport,交通出行,Transport,expense,给车换轮胎花了800元,800,CNY,换轮胎,anchor,2026-08-31,2026-08-31
+transport-zh-045,zh,transport,交通出行,Transport,expense,坐港铁去尖沙咀花了22HKD,22,HKD,港铁,anchor,2026-08-31,2026-08-31
+transport-zh-046,zh,transport,交通出行,Transport,expense,顺风车拼单花了25元,25,CNY,拼车,anchor,2026-08-31,2026-08-31
+transport-zh-047,zh,transport,交通出行,Transport,expense,过收费站交了50块,50,CNY,过路费,anchor,2026-08-31,2026-08-31
+transport-zh-048,zh,transport,交通出行,Transport,expense,买机票燃油附加费150元,150,CNY,机票附加,anchor,2026-08-31,2026-08-31
+transport-zh-049,zh,transport,交通出行,Transport,expense,电动车上牌花了100块,100,CNY,上牌,anchor,2026-08-31,2026-08-31
+transport-zh-050,zh,transport,交通出行,Transport,expense,坐巴士去深圳湾花了45HKD,45,HKD,巴士,anchor,2026-08-31,2026-08-31
+groceries-zh-001,zh,groceries,商超购物,Groceries,expense,昨天永辉超市买菜花了90元,90,CNY,超市买菜,rel:-1,2026-08-30,2026-08-31
+groceries-zh-002,zh,groceries,商超购物,Groceries,expense,便利店囤零食花了75块,75,CNY,囤零食,anchor,2026-08-31,2026-08-31
+groceries-zh-003,zh,groceries,商超购物,Groceries,expense,逛百货商场买东西花了500HKD,500,HKD,商场购物,anchor,2026-08-31,2026-08-31
+groceries-zh-004,zh,groceries,商超购物,Groceries,expense,进口超市买牛排花了220元,220,CNY,进口超市,anchor,2026-08-31,2026-08-31
+groceries-zh-005,zh,groceries,商超购物,Groceries,expense,楼下超市买烟花了45块,45,CNY,买烟,anchor,2026-08-31,2026-08-31
+groceries-zh-006,zh,groceries,商超购物,Groceries,expense,本周六山姆会员店囤货花了680元,680,CNY,会员店,weekday:6,2026-09-05,2026-08-31
+groceries-zh-007,zh,groceries,商超购物,Groceries,expense,超市买洗衣液花了69块,69,CNY,日化,anchor,2026-08-31,2026-08-31
+groceries-zh-008,zh,groceries,商超购物,Groceries,expense,8月18日海外超市买伴手礼花了120USD,120,USD,伴手礼,ymd:2026-08-18,2026-08-18,2026-08-31
+groceries-zh-009,zh,groceries,商超购物,Groceries,expense,菜市场买食材花了150块,150,CNY,菜市场,anchor,2026-08-31,2026-08-31
+groceries-zh-010,zh,groceries,商超购物,Groceries,expense,沃尔玛买日用品花了180元,180,CNY,日用品,anchor,2026-08-31,2026-08-31
+groceries-zh-011,zh,groceries,商超购物,Groceries,expense,这一周每天711买水和纸巾花了12HKD,12,HKD,便利店,week:0,2026-08-31|2026-09-01|2026-09-02|2026-09-03|2026-09-04|2026-09-05|2026-09-06,2026-08-31
+groceries-zh-012,zh,groceries,商超购物,Groceries,expense,大润发买米面粮油花了260块,260,CNY,粮油,anchor,2026-08-31,2026-08-31
+groceries-zh-013,zh,groceries,商超购物,Groceries,expense,超市买土鸡蛋一盒花了15元,15,CNY,鸡蛋,anchor,2026-08-31,2026-08-31
+groceries-zh-014,zh,groceries,商超购物,Groceries,expense,免税店买化妆品花了800HKD,800,HKD,免税店,anchor,2026-08-31,2026-08-31
+groceries-zh-015,zh,groceries,商超购物,Groceries,expense,生鲜超市买海鲜花了350块,350,CNY,海鲜,anchor,2026-08-31,2026-08-31
+groceries-zh-016,zh,groceries,商超购物,Groceries,expense,超市买卫生纸花了89元,89,CNY,纸品,anchor,2026-08-31,2026-08-31
+groceries-zh-017,zh,groceries,商超购物,Groceries,expense,全家买便当和饮料花了32块,32,CNY,便利店,anchor,2026-08-31,2026-08-31
+groceries-zh-018,zh,groceries,商超购物,Groceries,expense,百佳超市买水果花了128HKD,128,HKD,水果,anchor,2026-08-31,2026-08-31
+groceries-zh-019,zh,groceries,商超购物,Groceries,expense,今天明天小卖部买饮料都花8元,8,CNY,小卖部,"rel:0,1",2026-08-31|2026-09-01,2026-08-31
+groceries-zh-020,zh,groceries,商超购物,Groceries,expense,仓储超市买纸巾洗衣液花了199块,199,CNY,囤货,anchor,2026-08-31,2026-08-31
+groceries-zh-021,zh,groceries,商超购物,Groceries,expense,超市买牛奶面包花了56元,56,CNY,牛奶面包,anchor,2026-08-31,2026-08-31
+groceries-zh-022,zh,groceries,商超购物,Groceries,expense,OK便利店买咖啡花了18HKD,18,HKD,便利店,anchor,2026-08-31,2026-08-31
+groceries-zh-023,zh,groceries,商超购物,Groceries,expense,上周每天菜市场买肉和菜花了120块,120,CNY,买菜,week:-1,2026-08-24|2026-08-25|2026-08-26|2026-08-27|2026-08-28|2026-08-29|2026-08-30,2026-08-31
+groceries-zh-024,zh,groceries,商超购物,Groceries,expense,进口超市买巧克力花了88元,88,CNY,进口超市,anchor,2026-08-31,2026-08-31
+groceries-zh-025,zh,groceries,商超购物,Groceries,expense,超市搞促销囤货花了300块,300,CNY,促销囤货,anchor,2026-08-31,2026-08-31
+groceries-zh-026,zh,groceries,商超购物,Groceries,expense,便利店买雨伞花了25元,25,CNY,便利店,anchor,2026-08-31,2026-08-31
+groceries-zh-027,zh,groceries,商超购物,Groceries,expense,惠康超市买零食花了98HKD,98,HKD,零食,anchor,2026-08-31,2026-08-31
+groceries-zh-028,zh,groceries,商超购物,Groceries,expense,超市买洗洁精和垃圾袋花了35元,35,CNY,日用品,anchor,2026-08-31,2026-08-31
+groceries-zh-029,zh,groceries,商超购物,Groceries,expense,生鲜店买排骨花了78块,78,CNY,生鲜,anchor,2026-08-31,2026-08-31
+groceries-zh-030,zh,groceries,商超购物,Groceries,expense,超市买牙膏牙刷花了42元,42,CNY,日用品,anchor,2026-08-31,2026-08-31
+groceries-zh-031,zh,groceries,商超购物,Groceries,expense,今天到后天便利店买冰棍都花10块,10,CNY,便利店,span:0:2,2026-08-31|2026-09-01|2026-09-02,2026-08-31
+groceries-zh-032,zh,groceries,商超购物,Groceries,expense,城市超市买进口水果花了168元,168,CNY,进口水果,anchor,2026-08-31,2026-08-31
+groceries-zh-033,zh,groceries,商超购物,Groceries,expense,超市买拖鞋花了29块,29,CNY,日用品,anchor,2026-08-31,2026-08-31
+groceries-zh-034,zh,groceries,商超购物,Groceries,expense,便利店买充电宝花了99元,99,CNY,便利店,anchor,2026-08-31,2026-08-31
+groceries-zh-035,zh,groceries,商超购物,Groceries,expense,菜市场买海鲜花了280块,280,CNY,海鲜,anchor,2026-08-31,2026-08-31
+groceries-zh-036,zh,groceries,商超购物,Groceries,expense,超市买洗发水沐浴露花了118元,118,CNY,洗护,anchor,2026-08-31,2026-08-31
+groceries-zh-037,zh,groceries,商超购物,Groceries,expense,便利店买口罩花了15块,15,CNY,便利店,anchor,2026-08-31,2026-08-31
+groceries-zh-038,zh,groceries,商超购物,Groceries,expense,精品超市买牛排花了198元,198,CNY,进口超市,anchor,2026-08-31,2026-08-31
+groceries-zh-039,zh,groceries,商超购物,Groceries,expense,超市买酱油醋调料花了45块,45,CNY,调料,anchor,2026-08-31,2026-08-31
+groceries-zh-040,zh,groceries,商超购物,Groceries,expense,便利店买口香糖花了10元,10,CNY,便利店,anchor,2026-08-31,2026-08-31
+groceries-zh-041,zh,groceries,商超购物,Groceries,expense,超市买坚果礼盒花了128块,128,CNY,坚果,anchor,2026-08-31,2026-08-31
+groceries-zh-042,zh,groceries,商超购物,Groceries,expense,超市买卫生巾花了56元,56,CNY,日用品,anchor,2026-08-31,2026-08-31
+groceries-zh-043,zh,groceries,商超购物,Groceries,expense,便利店买矿泉水花了5块,5,CNY,便利店,anchor,2026-08-31,2026-08-31
+groceries-zh-044,zh,groceries,商超购物,Groceries,expense,超市买速冻饺子花了38元,38,CNY,速冻食品,anchor,2026-08-31,2026-08-31
+groceries-zh-045,zh,groceries,商超购物,Groceries,expense,菜市场买水果花了60块,60,CNY,水果,anchor,2026-08-31,2026-08-31
+groceries-zh-046,zh,groceries,商超购物,Groceries,expense,超市买洗衣液补充装花了49元,49,CNY,日化,anchor,2026-08-31,2026-08-31
+groceries-zh-047,zh,groceries,商超购物,Groceries,expense,便利店买面包花了12块,12,CNY,便利店,anchor,2026-08-31,2026-08-31
+groceries-zh-048,zh,groceries,商超购物,Groceries,expense,超市买床上四件套花了299元,299,CNY,家纺,anchor,2026-08-31,2026-08-31
+groceries-zh-049,zh,groceries,商超购物,Groceries,expense,超市买锅碗瓢盆花了150块,150,CNY,厨具,anchor,2026-08-31,2026-08-31
+groceries-zh-050,zh,groceries,商超购物,Groceries,expense,超市买零食大礼包花了88元,88,CNY,零食,anchor,2026-08-31,2026-08-31
+household_goods-zh-001,zh,household_goods,日用百货,Household Goods,expense,昨天买垃圾袋洗洁精花了35元,35,CNY,清洁用品,rel:-1,2026-08-30,2026-08-31
+household_goods-zh-002,zh,household_goods,日用百货,Household Goods,expense,囤卫生纸花了89块钱,89,CNY,纸品,anchor,2026-08-31,2026-08-31
+household_goods-zh-003,zh,household_goods,日用百货,Household Goods,expense,买洗漱用品花了120HKD,120,HKD,洗漱用品,anchor,2026-08-31,2026-08-31
+household_goods-zh-004,zh,household_goods,日用百货,Household Goods,expense,本周三买厨房清洁用品花了56元,56,CNY,清洁用品,weekday:3,2026-09-02,2026-08-31
+household_goods-zh-005,zh,household_goods,日用百货,Household Goods,expense,买一次性口罩花了45块,45,CNY,口罩,anchor,2026-08-31,2026-08-31
+household_goods-zh-006,zh,household_goods,日用百货,Household Goods,expense,买雨伞拖鞋花了78元,78,CNY,日常用品,anchor,2026-08-31,2026-08-31
+household_goods-zh-007,zh,household_goods,日用百货,Household Goods,expense,买收纳盒花了99HKD,99,HKD,收纳,anchor,2026-08-31,2026-08-31
+household_goods-zh-008,zh,household_goods,日用百货,Household Goods,expense,买洗衣液柔顺剂花了109元,109,CNY,日化,anchor,2026-08-31,2026-08-31
+household_goods-zh-009,zh,household_goods,日用百货,Household Goods,expense,8月12日买驱蚊用品花了32USD,32,USD,驱蚊,ymd:2026-08-12,2026-08-12,2026-08-31
+household_goods-zh-010,zh,household_goods,日用百货,Household Goods,expense,买保鲜膜锡纸花了28块,28,CNY,厨房用品,anchor,2026-08-31,2026-08-31
+household_goods-zh-011,zh,household_goods,日用百货,Household Goods,expense,买牙膏牙刷套装花了42元,42,CNY,洗漱,anchor,2026-08-31,2026-08-31
+household_goods-zh-012,zh,household_goods,日用百货,Household Goods,expense,买拖把扫帚花了65块,65,CNY,清洁工具,anchor,2026-08-31,2026-08-31
+household_goods-zh-013,zh,household_goods,日用百货,Household Goods,expense,买垃圾桶花了25元,25,CNY,日用品,anchor,2026-08-31,2026-08-31
+household_goods-zh-014,zh,household_goods,日用百货,Household Goods,expense,买衣架裤架花了38块,38,CNY,收纳,anchor,2026-08-31,2026-08-31
+household_goods-zh-015,zh,household_goods,日用百货,Household Goods,expense,买洗碗布钢丝球花了12元,12,CNY,清洁,anchor,2026-08-31,2026-08-31
+household_goods-zh-016,zh,household_goods,日用百货,Household Goods,expense,今天明天都补了纸巾抽纸整箱花了99块,99,CNY,纸品,"rel:0,1",2026-08-31|2026-09-01,2026-08-31
+household_goods-zh-017,zh,household_goods,日用百货,Household Goods,expense,买洁厕灵花了18元,18,CNY,清洁,anchor,2026-08-31,2026-08-31
+household_goods-zh-018,zh,household_goods,日用百货,Household Goods,expense,买一次性手套花了15块,15,CNY,日用品,anchor,2026-08-31,2026-08-31
+household_goods-zh-019,zh,household_goods,日用百货,Household Goods,expense,买厨房抹布花了20元,20,CNY,清洁,anchor,2026-08-31,2026-08-31
+household_goods-zh-020,zh,household_goods,日用百货,Household Goods,expense,买真空收纳袋花了56块,56,CNY,收纳,anchor,2026-08-31,2026-08-31
+household_goods-zh-021,zh,household_goods,日用百货,Household Goods,expense,买插排插座花了49元,49,CNY,电器配件,anchor,2026-08-31,2026-08-31
+household_goods-zh-022,zh,household_goods,日用百货,Household Goods,expense,买电池五号七号花了25块,25,CNY,电池,anchor,2026-08-31,2026-08-31
+household_goods-zh-023,zh,household_goods,日用百货,Household Goods,expense,买灯泡LED花了30元,30,CNY,灯具,anchor,2026-08-31,2026-08-31
+household_goods-zh-024,zh,household_goods,日用百货,Household Goods,expense,买粘毛器花了19块,19,CNY,日用品,anchor,2026-08-31,2026-08-31
+household_goods-zh-025,zh,household_goods,日用百货,Household Goods,expense,买鞋刷鞋油花了22元,22,CNY,日用品,anchor,2026-08-31,2026-08-31
+household_goods-zh-026,zh,household_goods,日用百货,Household Goods,expense,买针线盒花了15块,15,CNY,日用品,anchor,2026-08-31,2026-08-31
+household_goods-zh-027,zh,household_goods,日用百货,Household Goods,expense,买马桶垫花了18元,18,CNY,日用品,anchor,2026-08-31,2026-08-31
+household_goods-zh-028,zh,household_goods,日用百货,Household Goods,expense,买樟脑丸花了10块,10,CNY,日用品,anchor,2026-08-31,2026-08-31
+household_goods-zh-029,zh,household_goods,日用百货,Household Goods,expense,买雨衣雨鞋花了68元,68,CNY,雨具,anchor,2026-08-31,2026-08-31
+household_goods-zh-030,zh,household_goods,日用百货,Household Goods,expense,买保温壶花了89块,89,CNY,水具,anchor,2026-08-31,2026-08-31
+household_goods-zh-031,zh,household_goods,日用百货,Household Goods,expense,买菜板菜刀花了128元,128,CNY,厨具,anchor,2026-08-31,2026-08-31
+household_goods-zh-032,zh,household_goods,日用百货,Household Goods,expense,买碗碟套装花了199块,199,CNY,餐具,anchor,2026-08-31,2026-08-31
+household_goods-zh-033,zh,household_goods,日用百货,Household Goods,expense,买调味罐花了35元,35,CNY,厨房用品,anchor,2026-08-31,2026-08-31
+household_goods-zh-034,zh,household_goods,日用百货,Household Goods,expense,买水果盘花了28块,28,CNY,餐具,anchor,2026-08-31,2026-08-31
+household_goods-zh-035,zh,household_goods,日用百货,Household Goods,expense,买漱口杯花了15元,15,CNY,洗漱,anchor,2026-08-31,2026-08-31
+household_goods-zh-036,zh,household_goods,日用百货,Household Goods,expense,买毛巾浴巾花了79块,79,CNY,毛巾,anchor,2026-08-31,2026-08-31
+household_goods-zh-037,zh,household_goods,日用百货,Household Goods,expense,买洗脸巾花了45元,45,CNY,洗漱,anchor,2026-08-31,2026-08-31
+household_goods-zh-038,zh,household_goods,日用百货,Household Goods,expense,买棉签牙线花了18块,18,CNY,洗漱,anchor,2026-08-31,2026-08-31
+household_goods-zh-039,zh,household_goods,日用百货,Household Goods,expense,买洗手液花了25元,25,CNY,清洁,anchor,2026-08-31,2026-08-31
+household_goods-zh-040,zh,household_goods,日用百货,Household Goods,expense,买身体乳花了68块,68,CNY,洗护,anchor,2026-08-31,2026-08-31
+household_goods-zh-041,zh,household_goods,日用百货,Household Goods,expense,买香皂肥皂花了12元,12,CNY,洗护,anchor,2026-08-31,2026-08-31
+household_goods-zh-042,zh,household_goods,日用百货,Household Goods,expense,买垃圾桶垃圾袋套装花了39块,39,CNY,清洁,anchor,2026-08-31,2026-08-31
+household_goods-zh-043,zh,household_goods,日用百货,Household Goods,expense,买百洁布花了8元,8,CNY,清洁,anchor,2026-08-31,2026-08-31
+household_goods-zh-044,zh,household_goods,日用百货,Household Goods,expense,买一次性餐盒花了22块,22,CNY,厨房用品,anchor,2026-08-31,2026-08-31
+household_goods-zh-045,zh,household_goods,日用百货,Household Goods,expense,买空气清新剂花了19元,19,CNY,日用品,anchor,2026-08-31,2026-08-31
+household_goods-zh-046,zh,household_goods,日用百货,Household Goods,expense,买除湿袋花了25块,25,CNY,日用品,anchor,2026-08-31,2026-08-31
+household_goods-zh-047,zh,household_goods,日用百货,Household Goods,expense,买密封罐花了48元,48,CNY,厨房用品,anchor,2026-08-31,2026-08-31
+household_goods-zh-048,zh,household_goods,日用百货,Household Goods,expense,买削皮刀水果刀花了28块,28,CNY,厨具,anchor,2026-08-31,2026-08-31
+household_goods-zh-049,zh,household_goods,日用百货,Household Goods,expense,买锅铲汤勺花了35元,35,CNY,厨具,anchor,2026-08-31,2026-08-31
+household_goods-zh-050,zh,household_goods,日用百货,Household Goods,expense,买清洁海绵花了10块,10,CNY,清洁,anchor,2026-08-31,2026-08-31
+rent-zh-001,zh,rent,房屋租金,Rent,expense,昨天把这个月房租3500元交了,3500,CNY,月租,rel:-1,2026-08-30,2026-08-31
+rent-zh-002,zh,rent,房屋租金,Rent,expense,季度付房租花了12000块,12000,CNY,季付,anchor,2026-08-31,2026-08-31
+rent-zh-003,zh,rent,房屋租金,Rent,expense,香港租房月租8000HKD,8000,HKD,香港月租,anchor,2026-08-31,2026-08-31
+rent-zh-004,zh,rent,房屋租金,Rent,expense,单间房租每月2200元,2200,CNY,单间,anchor,2026-08-31,2026-08-31
+rent-zh-005,zh,rent,房屋租金,Rent,expense,公寓租金交了4500块,4500,CNY,公寓,anchor,2026-08-31,2026-08-31
+rent-zh-006,zh,rent,房屋租金,Rent,expense,本周一交商铺月租金12000元,12000,CNY,商铺,weekday:1,2026-08-31,2026-08-31
+rent-zh-007,zh,rent,房屋租金,Rent,expense,次卧转租收到1800HKD,1800,HKD,转租收入,anchor,2026-08-31,2026-08-31
+rent-zh-008,zh,rent,房屋租金,Rent,expense,年付房租优惠后36000元,36000,CNY,年付,anchor,2026-08-31,2026-08-31
+rent-zh-009,zh,rent,房屋租金,Rent,expense,海外租房月付1200USD,1200,USD,海外租房,anchor,2026-08-31,2026-08-31
+rent-zh-010,zh,rent,房屋租金,Rent,expense,loft公寓租金5500块,5500,CNY,loft,anchor,2026-08-31,2026-08-31
+rent-zh-011,zh,rent,房屋租金,Rent,expense,8月1日交了一室一厅月租3000元,3000,CNY,一室一厅,ymd:2026-08-01,2026-08-01,2026-08-31
+rent-zh-012,zh,rent,房屋租金,Rent,expense,两居室房租每月4800块,4800,CNY,两居,anchor,2026-08-31,2026-08-31
+rent-zh-013,zh,rent,房屋租金,Rent,expense,旺角租房月租9500HKD,9500,HKD,旺角,anchor,2026-08-31,2026-08-31
+rent-zh-014,zh,rent,房屋租金,Rent,expense,城中村房租每月1500元,1500,CNY,城中村,anchor,2026-08-31,2026-08-31
+rent-zh-015,zh,rent,房屋租金,Rent,expense,写字楼租金每月8000块,8000,CNY,写字楼,anchor,2026-08-31,2026-08-31
+rent-zh-016,zh,rent,房屋租金,Rent,expense,小区三居室月租6500元,6500,CNY,三居,anchor,2026-08-31,2026-08-31
+rent-zh-017,zh,rent,房屋租金,Rent,expense,学生宿舍床位费每月800块,800,CNY,宿舍,anchor,2026-08-31,2026-08-31
+rent-zh-018,zh,rent,房屋租金,Rent,expense,中环公寓月租15000HKD,15000,HKD,中环,anchor,2026-08-31,2026-08-31
+rent-zh-019,zh,rent,房屋租金,Rent,expense,厂房租金每月20000元,20000,CNY,厂房,anchor,2026-08-31,2026-08-31
+rent-zh-020,zh,rent,房屋租金,Rent,expense,单身公寓月租2800块,2800,CNY,单身公寓,anchor,2026-08-31,2026-08-31
+rent-zh-021,zh,rent,房屋租金,Rent,expense,大前天房租押金交了7000元,7000,CNY,押金,rel:-3,2026-08-28,2026-08-31
+rent-zh-022,zh,rent,房屋租金,Rent,expense,半年付房租21000块,21000,CNY,半年付,anchor,2026-08-31,2026-08-31
+rent-zh-023,zh,rent,房屋租金,Rent,expense,唐楼月租6500HKD,6500,HKD,唐楼,anchor,2026-08-31,2026-08-31
+rent-zh-024,zh,rent,房屋租金,Rent,expense,主卧带独卫月租3200元,3200,CNY,主卧,anchor,2026-08-31,2026-08-31
+rent-zh-025,zh,rent,房屋租金,Rent,expense,门面房租金每月10000块,10000,CNY,门面,anchor,2026-08-31,2026-08-31
+rent-zh-026,zh,rent,房屋租金,Rent,expense,海景房月租12000元,12000,CNY,海景房,anchor,2026-08-31,2026-08-31
+rent-zh-027,zh,rent,房屋租金,Rent,expense,公租房每月租金800块,800,CNY,公租房,anchor,2026-08-31,2026-08-31
+rent-zh-028,zh,rent,房屋租金,Rent,expense,铜锣湾商铺月租30000HKD,30000,HKD,商铺,anchor,2026-08-31,2026-08-31
+rent-zh-029,zh,rent,房屋租金,Rent,expense,人才公寓月租1800元,1800,CNY,人才公寓,anchor,2026-08-31,2026-08-31
+rent-zh-030,zh,rent,房屋租金,Rent,expense,合租房分摊房租1500块,1500,CNY,合租,anchor,2026-08-31,2026-08-31
+rent-zh-031,zh,rent,房屋租金,Rent,expense,别墅月租25000元,25000,CNY,别墅,anchor,2026-08-31,2026-08-31
+rent-zh-032,zh,rent,房屋租金,Rent,expense,仓库租金每月5000块,5000,CNY,仓库,anchor,2026-08-31,2026-08-31
+rent-zh-033,zh,rent,房屋租金,Rent,expense,太子公寓月租7500HKD,7500,HKD,太子,anchor,2026-08-31,2026-08-31
+rent-zh-034,zh,rent,房屋租金,Rent,expense,精装两居月租5500元,5500,CNY,精装,anchor,2026-08-31,2026-08-31
+rent-zh-035,zh,rent,房屋租金,Rent,expense,简装一居月租1800块,1800,CNY,简装,anchor,2026-08-31,2026-08-31
+rent-zh-036,zh,rent,房屋租金,Rent,expense,办公室租金每月15000元,15000,CNY,办公室,anchor,2026-08-31,2026-08-31
+rent-zh-037,zh,rent,房屋租金,Rent,expense,员工宿舍房租每月3000块,3000,CNY,员工宿舍,anchor,2026-08-31,2026-08-31
+rent-zh-038,zh,rent,房屋租金,Rent,expense,油麻地租房月租5800HKD,5800,HKD,油麻地,anchor,2026-08-31,2026-08-31
+rent-zh-039,zh,rent,房屋租金,Rent,expense,学区房月租7000元,7000,CNY,学区房,anchor,2026-08-31,2026-08-31
+rent-zh-040,zh,rent,房屋租金,Rent,expense,底商租金每月18000块,18000,CNY,底商,anchor,2026-08-31,2026-08-31
+rent-zh-041,zh,rent,房屋租金,Rent,expense,复式公寓月租8000元,8000,CNY,复式,anchor,2026-08-31,2026-08-31
+rent-zh-042,zh,rent,房屋租金,Rent,expense,农民房月租1200块,1200,CNY,农民房,anchor,2026-08-31,2026-08-31
+rent-zh-043,zh,rent,房屋租金,Rent,expense,尖沙咀酒店式公寓月租20000HKD,20000,HKD,酒店式公寓,anchor,2026-08-31,2026-08-31
+rent-zh-044,zh,rent,房屋租金,Rent,expense,老小区两居月租2500元,2500,CNY,老小区,anchor,2026-08-31,2026-08-31
+rent-zh-045,zh,rent,房屋租金,Rent,expense,新小区三居月租6000块,6000,CNY,新小区,anchor,2026-08-31,2026-08-31
+rent-zh-046,zh,rent,房屋租金,Rent,expense,工作室租金每月4000元,4000,CNY,工作室,anchor,2026-08-31,2026-08-31
+rent-zh-047,zh,rent,房屋租金,Rent,expense,车位租金每月300块,300,CNY,车位,anchor,2026-08-31,2026-08-31
+rent-zh-048,zh,rent,房屋租金,Rent,expense,北角租房月租9000HKD,9000,HKD,北角,anchor,2026-08-31,2026-08-31
+rent-zh-049,zh,rent,房屋租金,Rent,expense,回迁房月租2000元,2000,CNY,回迁房,anchor,2026-08-31,2026-08-31
+rent-zh-050,zh,rent,房屋租金,Rent,expense,公寓式酒店月租4500块,4500,CNY,公寓酒店,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-001,zh,property_mgmt,物业费用,Property Fees,expense,昨天交这个月物业费280元,280,CNY,月物业费,rel:-1,2026-08-30,2026-08-31
+property_mgmt-zh-002,zh,property_mgmt,物业费用,Property Fees,expense,季度物业费花了840块,840,CNY,季物业费,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-003,zh,property_mgmt,物业费用,Property Fees,expense,小区物业费每月3.5元每平合计320HKD,320,HKD,按平米计,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-004,zh,property_mgmt,物业费用,Property Fees,expense,写字楼物业费交了1500元,1500,CNY,写字楼,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-005,zh,property_mgmt,物业费用,Property Fees,expense,本周五物业公摊费交了50块,50,CNY,公摊,weekday:5,2026-09-04,2026-08-31
+property_mgmt-zh-006,zh,property_mgmt,物业费用,Property Fees,expense,全年物业费优惠后2800元,2800,CNY,年物业费,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-007,zh,property_mgmt,物业费用,Property Fees,expense,公寓管理费每月150HKD,150,HKD,管理费,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-008,zh,property_mgmt,物业费用,Property Fees,expense,垃圾清运费交了80元,80,CNY,垃圾清运,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-009,zh,property_mgmt,物业费用,Property Fees,expense,8月5日缴了海外公寓物业费180USD,180,USD,海外物业,ymd:2026-08-05,2026-08-05,2026-08-31
+property_mgmt-zh-010,zh,property_mgmt,物业费用,Property Fees,expense,园区物业费交了450块,450,CNY,园区,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-011,zh,property_mgmt,物业费用,Property Fees,expense,高层住宅物业费每月350元,350,CNY,高层,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-012,zh,property_mgmt,物业费用,Property Fees,expense,别墅物业费每月800块,800,CNY,别墅,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-013,zh,property_mgmt,物业费用,Property Fees,expense,商业楼物业费每平10元合计1200HKD,1200,HKD,商业物业,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-014,zh,property_mgmt,物业费用,Property Fees,expense,小区停车管理费每月100元,100,CNY,停车管理,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-015,zh,property_mgmt,物业费用,Property Fees,expense,物业维修费花了200块,200,CNY,维修,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-016,zh,property_mgmt,物业费用,Property Fees,expense,半年物业费1500元,1500,CNY,半年物业,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-017,zh,property_mgmt,物业费用,Property Fees,expense,酒店式公寓管理费每月300HKD,300,HKD,管理费,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-018,zh,property_mgmt,物业费用,Property Fees,expense,装修垃圾清运费500元,500,CNY,装修清运,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-019,zh,property_mgmt,物业费用,Property Fees,expense,物业费滞纳金20块,20,CNY,滞纳金,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-020,zh,property_mgmt,物业费用,Property Fees,expense,工业园物业费每月2000元,2000,CNY,工业园,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-021,zh,property_mgmt,物业费用,Property Fees,expense,小区绿化费分摊50元,50,CNY,绿化费,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-022,zh,property_mgmt,物业费用,Property Fees,expense,电梯维护费每月80块,80,CNY,电梯维护,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-023,zh,property_mgmt,物业费用,Property Fees,expense,香港屋苑管理费每月400HKD,400,HKD,屋苑管理,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-024,zh,property_mgmt,物业费用,Property Fees,expense,商住楼物业费每月600元,600,CNY,商住楼,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-025,zh,property_mgmt,物业费用,Property Fees,expense,安保费分摊每月30块,30,CNY,安保费,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-026,zh,property_mgmt,物业费用,Property Fees,expense,全年物业费3360元,3360,CNY,年物业费,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-027,zh,property_mgmt,物业费用,Property Fees,expense,公共区域能耗费每月50HKD,50,HKD,公共能耗,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-028,zh,property_mgmt,物业费用,Property Fees,expense,门禁系统维护费80元,80,CNY,门禁维护,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-029,zh,property_mgmt,物业费用,Property Fees,expense,泳池维护费分摊100块,100,CNY,泳池维护,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-030,zh,property_mgmt,物业费用,Property Fees,expense,写字楼空调费每月500元,500,CNY,空调费,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-031,zh,property_mgmt,物业费用,Property Fees,expense,小区公共水电费每月60块,60,CNY,公共水电,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-032,zh,property_mgmt,物业费用,Property Fees,expense,公屋管理费每月80HKD,80,HKD,公屋,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-033,zh,property_mgmt,物业费用,Property Fees,expense,商铺物业费每月200元,200,CNY,商铺物业,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-034,zh,property_mgmt,物业费用,Property Fees,expense,物业费预交一年3000块,3000,CNY,预交物业,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-035,zh,property_mgmt,物业费用,Property Fees,expense,多层住宅物业费每月180元,180,CNY,多层,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-036,zh,property_mgmt,物业费用,Property Fees,expense,商务中心物业费每月800块,800,CNY,商务中心,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-037,zh,property_mgmt,物业费用,Property Fees,expense,居屋管理费每月250HKD,250,HKD,居屋,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-038,zh,property_mgmt,物业费用,Property Fees,expense,小区改造费分摊500元,500,CNY,改造费,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-039,zh,property_mgmt,物业费用,Property Fees,expense,车位管理费每月50块,50,CNY,车位管理,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-040,zh,property_mgmt,物业费用,Property Fees,expense,公寓物业费每月220元,220,CNY,公寓物业,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-041,zh,property_mgmt,物业费用,Property Fees,expense,商场物业费每月1500块,1500,CNY,商场物业,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-042,zh,property_mgmt,物业费用,Property Fees,expense,豪宅物业费每月1200HKD,1200,HKD,豪宅物业,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-043,zh,property_mgmt,物业费用,Property Fees,expense,普通住宅物业费每月200元,200,CNY,普通住宅,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-044,zh,property_mgmt,物业费用,Property Fees,expense,物业费涨价后每月320块,320,CNY,涨价后,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-045,zh,property_mgmt,物业费用,Property Fees,expense,产业园物业费每月1000元,1000,CNY,产业园,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-046,zh,property_mgmt,物业费用,Property Fees,expense,卫生费每月15块,15,CNY,卫生费,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-047,zh,property_mgmt,物业费用,Property Fees,expense,丁屋管理费每月180HKD,180,HKD,丁屋,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-048,zh,property_mgmt,物业费用,Property Fees,expense,商住两用物业费每月450元,450,CNY,商住两用,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-049,zh,property_mgmt,物业费用,Property Fees,expense,物业代收排污费30块,30,CNY,排污费,anchor,2026-08-31,2026-08-31
+property_mgmt-zh-050,zh,property_mgmt,物业费用,Property Fees,expense,小区物业费年付打九折2900元,2900,CNY,年付折扣,anchor,2026-08-31,2026-08-31
+utilities-zh-001,zh,utilities,水电燃气,Utilities,expense,昨天交这个月电费180元,180,CNY,电费,rel:-1,2026-08-30,2026-08-31
+utilities-zh-002,zh,utilities,水电燃气,Utilities,expense,水费花了45块钱,45,CNY,水费,anchor,2026-08-31,2026-08-31
+utilities-zh-003,zh,utilities,水电燃气,Utilities,expense,本周二燃气费充值200HKD,200,HKD,燃气费,weekday:2,2026-09-01,2026-08-31
+utilities-zh-004,zh,utilities,水电燃气,Utilities,expense,水电费合计交了260元,260,CNY,水电合计,anchor,2026-08-31,2026-08-31
+utilities-zh-005,zh,utilities,水电燃气,Utilities,expense,夏天开空调电费320块,320,CNY,夏天空调,anchor,2026-08-31,2026-08-31
+utilities-zh-006,zh,utilities,水电燃气,Utilities,expense,燃气热水器用气花了85元,85,CNY,燃气,anchor,2026-08-31,2026-08-31
+utilities-zh-007,zh,utilities,水电燃气,Utilities,expense,8月10日商用电费交了560HKD,560,HKD,商业用电,ymd:2026-08-10,2026-08-10,2026-08-31
+utilities-zh-008,zh,utilities,水电燃气,Utilities,expense,桶装水订了10桶花了120元,120,CNY,桶装水,anchor,2026-08-31,2026-08-31
+utilities-zh-009,zh,utilities,水电燃气,Utilities,expense,海外公寓水电费150USD,150,USD,海外水电,anchor,2026-08-31,2026-08-31
+utilities-zh-010,zh,utilities,水电燃气,Utilities,expense,暖气费交了2400块,2400,CNY,暖气费,anchor,2026-08-31,2026-08-31
+utilities-zh-011,zh,utilities,水电燃气,Utilities,expense,电费充值200元,200,CNY,电费充值,anchor,2026-08-31,2026-08-31
+utilities-zh-012,zh,utilities,水电燃气,Utilities,expense,污水处理费每月15块,15,CNY,污水费,anchor,2026-08-31,2026-08-31
+utilities-zh-013,zh,utilities,水电燃气,Utilities,expense,今天明天煤气罐换气都花120HKD,120,HKD,换煤气,"rel:0,1",2026-08-31|2026-09-01,2026-08-31
+utilities-zh-014,zh,utilities,水电燃气,Utilities,expense,阶梯电费第二档花了210元,210,CNY,阶梯电费,anchor,2026-08-31,2026-08-31
+utilities-zh-015,zh,utilities,水电燃气,Utilities,expense,水费加污水处理费一共60块,60,CNY,水费合计,anchor,2026-08-31,2026-08-31
+utilities-zh-016,zh,utilities,水电燃气,Utilities,expense,天然气开户费300元,300,CNY,开户费,anchor,2026-08-31,2026-08-31
+utilities-zh-017,zh,utilities,水电燃气,Utilities,expense,桶装水押金50块,50,CNY,押金,anchor,2026-08-31,2026-08-31
+utilities-zh-018,zh,utilities,水电燃气,Utilities,expense,香港电费每月400HKD,400,HKD,香港电费,anchor,2026-08-31,2026-08-31
+utilities-zh-019,zh,utilities,水电燃气,Utilities,expense,商业用电电费800元,800,CNY,商业用电,anchor,2026-08-31,2026-08-31
+utilities-zh-020,zh,utilities,水电燃气,Utilities,expense,燃气报警器安装费150块,150,CNY,报警器,anchor,2026-08-31,2026-08-31
+utilities-zh-021,zh,utilities,水电燃气,Utilities,expense,插卡电表充值300元,300,CNY,电表充值,anchor,2026-08-31,2026-08-31
+utilities-zh-022,zh,utilities,水电燃气,Utilities,expense,自来水开户费200块,200,CNY,开户费,anchor,2026-08-31,2026-08-31
+utilities-zh-023,zh,utilities,水电燃气,Utilities,expense,瓶装水配送每月80HKD,80,HKD,瓶装水,anchor,2026-08-31,2026-08-31
+utilities-zh-024,zh,utilities,水电燃气,Utilities,expense,峰谷电费合计250元,250,CNY,峰谷电价,anchor,2026-08-31,2026-08-31
+utilities-zh-025,zh,utilities,水电燃气,Utilities,expense,燃气灶具维修费80块,80,CNY,维修,anchor,2026-08-31,2026-08-31
+utilities-zh-026,zh,utilities,水电燃气,Utilities,expense,水电费代缴手续费5元,5,CNY,代缴费,anchor,2026-08-31,2026-08-31
+utilities-zh-027,zh,utilities,水电燃气,Utilities,expense,工业用电电费1500块,1500,CNY,工业用电,anchor,2026-08-31,2026-08-31
+utilities-zh-028,zh,utilities,水电燃气,Utilities,expense,香港水费每月80HKD,80,HKD,香港水费,anchor,2026-08-31,2026-08-31
+utilities-zh-029,zh,utilities,水电燃气,Utilities,expense,家里电费欠费补交220元,220,CNY,欠费补交,anchor,2026-08-31,2026-08-31
+utilities-zh-030,zh,utilities,水电燃气,Utilities,expense,燃气胶管更换花了30块,30,CNY,胶管更换,anchor,2026-08-31,2026-08-31
+utilities-zh-031,zh,utilities,水电燃气,Utilities,expense,饮水机换水花了25元,25,CNY,换水,anchor,2026-08-31,2026-08-31
+utilities-zh-032,zh,utilities,水电燃气,Utilities,expense,电费违约金10块,10,CNY,违约金,anchor,2026-08-31,2026-08-31
+utilities-zh-033,zh,utilities,水电燃气,Utilities,expense,管道燃气初装费2500元,2500,CNY,初装费,anchor,2026-08-31,2026-08-31
+utilities-zh-034,zh,utilities,水电燃气,Utilities,expense,水电过户费50块,50,CNY,过户费,anchor,2026-08-31,2026-08-31
+utilities-zh-035,zh,utilities,水电燃气,Utilities,expense,香港燃气费每月300HKD,300,HKD,香港燃气,anchor,2026-08-31,2026-08-31
+utilities-zh-036,zh,utilities,水电燃气,Utilities,expense,出租屋水电费每月200元,200,CNY,出租屋,anchor,2026-08-31,2026-08-31
+utilities-zh-037,zh,utilities,水电燃气,Utilities,expense,电热水器清洗费80块,80,CNY,清洗,anchor,2026-08-31,2026-08-31
+utilities-zh-038,zh,utilities,水电燃气,Utilities,expense,水表更换花了150元,150,CNY,换水表,anchor,2026-08-31,2026-08-31
+utilities-zh-039,zh,utilities,水电燃气,Utilities,expense,电表校准费50块,50,CNY,电表校准,anchor,2026-08-31,2026-08-31
+utilities-zh-040,zh,utilities,水电燃气,Utilities,expense,商业水费每吨5元合计120元,120,CNY,商业水费,anchor,2026-08-31,2026-08-31
+utilities-zh-041,zh,utilities,水电燃气,Utilities,expense,燃气保险费20元每年,20,CNY,燃气保险,anchor,2026-08-31,2026-08-31
+utilities-zh-042,zh,utilities,水电燃气,Utilities,expense,桶装水买十送二花了200块,200,CNY,桶装水,anchor,2026-08-31,2026-08-31
+utilities-zh-043,zh,utilities,水电燃气,Utilities,expense,香港电费补贴后每月350HKD,350,HKD,补贴后,anchor,2026-08-31,2026-08-31
+utilities-zh-044,zh,utilities,水电燃气,Utilities,expense,民用电费每度0.5元合计180元,180,CNY,民用电,anchor,2026-08-31,2026-08-31
+utilities-zh-045,zh,utilities,水电燃气,Utilities,expense,燃气表更换花了280块,280,CNY,换燃气表,anchor,2026-08-31,2026-08-31
+utilities-zh-046,zh,utilities,水电燃气,Utilities,expense,楼道灯公摊电费每月10元,10,CNY,公摊电费,anchor,2026-08-31,2026-08-31
+utilities-zh-047,zh,utilities,水电燃气,Utilities,expense,二次供水费每月20块,20,CNY,二次供水,anchor,2026-08-31,2026-08-31
+utilities-zh-048,zh,utilities,水电燃气,Utilities,expense,大功率用电增容费500元,500,CNY,增容费,anchor,2026-08-31,2026-08-31
+utilities-zh-049,zh,utilities,水电燃气,Utilities,expense,水电维修上门费60块,60,CNY,上门费,anchor,2026-08-31,2026-08-31
+utilities-zh-050,zh,utilities,水电燃气,Utilities,expense,瓶装液化气一罐130元,130,CNY,液化气,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-001,zh,mobile_phone,通讯话费,Mobile and Phone,expense,昨天手机话费充值100元,100,CNY,话费充值,rel:-1,2026-08-30,2026-08-31
+mobile_phone-zh-002,zh,mobile_phone,通讯话费,Mobile and Phone,expense,交电话费花了58块,58,CNY,话费,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-003,zh,mobile_phone,通讯话费,Mobile and Phone,expense,香港电话卡充值200HKD,200,HKD,电话卡充值,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-004,zh,mobile_phone,通讯话费,Mobile and Phone,expense,这一周每天流量包续费花了30元,30,CNY,流量包,week:0,2026-08-31|2026-09-01|2026-09-02|2026-09-03|2026-09-04|2026-09-05|2026-09-06,2026-08-31
+mobile_phone-zh-005,zh,mobile_phone,通讯话费,Mobile and Phone,expense,国际长途话费花了120块,120,CNY,国际长途,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-006,zh,mobile_phone,通讯话费,Mobile and Phone,expense,手机号套餐扣费99元,99,CNY,套餐扣费,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-007,zh,mobile_phone,通讯话费,Mobile and Phone,expense,电话卡月费68HKD,68,HKD,月费,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-008,zh,mobile_phone,通讯话费,Mobile and Phone,expense,漫游话费扣了45元,45,CNY,漫游,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-009,zh,mobile_phone,通讯话费,Mobile and Phone,expense,今天明天海外电话卡都充值50USD,50,USD,海外电话卡,"rel:0,1",2026-08-31|2026-09-01,2026-08-31
+mobile_phone-zh-010,zh,mobile_phone,通讯话费,Mobile and Phone,expense,宽带绑定话费扣了129块,129,CNY,宽带绑定,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-011,zh,mobile_phone,通讯话费,Mobile and Phone,expense,手机号停机保号费每月5元,5,CNY,保号费,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-012,zh,mobile_phone,通讯话费,Mobile and Phone,expense,话费余额不足充值200块,200,CNY,充值,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-013,zh,mobile_phone,通讯话费,Mobile and Phone,expense,香港上台套餐每月128HKD,128,HKD,上台套餐,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-014,zh,mobile_phone,通讯话费,Mobile and Phone,expense,短信包10元100条,10,CNY,短信包,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-015,zh,mobile_phone,通讯话费,Mobile and Phone,expense,本周四来电显示费每月6块,6,CNY,来电显示,weekday:4,2026-09-03,2026-08-31
+mobile_phone-zh-016,zh,mobile_phone,通讯话费,Mobile and Phone,expense,异地通话费25元,25,CNY,异地通话,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-017,zh,mobile_phone,通讯话费,Mobile and Phone,expense,手机卡补办费20元,20,CNY,补卡,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-018,zh,mobile_phone,通讯话费,Mobile and Phone,expense,香港储值卡充值100HKD,100,HKD,储值卡,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-019,zh,mobile_phone,通讯话费,Mobile and Phone,expense,集团短号费每月10元,10,CNY,短号费,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-020,zh,mobile_phone,通讯话费,Mobile and Phone,expense,话费欠费补交80块,80,CNY,欠费补交,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-021,zh,mobile_phone,通讯话费,Mobile and Phone,expense,8月9日增值业务费15元每月,15,CNY,增值业务,ymd:2026-08-09,2026-08-09,2026-08-31
+mobile_phone-zh-022,zh,mobile_phone,通讯话费,Mobile and Phone,expense,国际漫游包天30元,30,CNY,国际漫游,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-023,zh,mobile_phone,通讯话费,Mobile and Phone,expense,和记电讯月费98HKD,98,HKD,月费,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-024,zh,mobile_phone,通讯话费,Mobile and Phone,expense,亲情号业务费每月5元,5,CNY,亲情号,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-025,zh,mobile_phone,通讯话费,Mobile and Phone,expense,话费发票打印费2块,2,CNY,打印费,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-026,zh,mobile_phone,通讯话费,Mobile and Phone,expense,4G升级5G套餐费129元每月,129,CNY,升级套餐,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-027,zh,mobile_phone,通讯话费,Mobile and Phone,expense,香港手机号过户费50HKD,50,HKD,过户费,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-028,zh,mobile_phone,通讯话费,Mobile and Phone,expense,彩铃业务费每月8元,8,CNY,彩铃,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-029,zh,mobile_phone,通讯话费,Mobile and Phone,expense,通话时长超出扣费30块,30,CNY,超时扣费,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-030,zh,mobile_phone,通讯话费,Mobile and Phone,expense,手机副卡费每月10元,10,CNY,副卡,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-031,zh,mobile_phone,通讯话费,Mobile and Phone,expense,上周每天香港漫游到内地每日28HKD,28,HKD,漫游,week:-1,2026-08-24|2026-08-25|2026-08-26|2026-08-27|2026-08-28|2026-08-29|2026-08-30,2026-08-31
+mobile_phone-zh-032,zh,mobile_phone,通讯话费,Mobile and Phone,expense,话费积分兑换抵扣50元,50,CNY,积分抵扣,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-033,zh,mobile_phone,通讯话费,Mobile and Phone,expense,骚扰电话拦截费每月3元,3,CNY,拦截费,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-034,zh,mobile_phone,通讯话费,Mobile and Phone,expense,号码靓号预存500元,500,CNY,靓号预存,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-035,zh,mobile_phone,通讯话费,Mobile and Phone,expense,香港电话卡上台押金200HKD,200,HKD,上台押金,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-036,zh,mobile_phone,通讯话费,Mobile and Phone,expense,夜间通话包每月10元,10,CNY,夜间包,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-037,zh,mobile_phone,通讯话费,Mobile and Phone,expense,国内通话套餐68元每月,68,CNY,通话套餐,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-038,zh,mobile_phone,通讯话费,Mobile and Phone,expense,香港本地通话无限量套餐88HKD,88,HKD,无限量,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-039,zh,mobile_phone,通讯话费,Mobile and Phone,expense,话费查询余额剩52元,52,CNY,查余额,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-040,zh,mobile_phone,通讯话费,Mobile and Phone,expense,多收话费退还30块,30,CNY,退费,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-041,zh,mobile_phone,通讯话费,Mobile and Phone,expense,手机卡注销结清话费45元,45,CNY,注销结清,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-042,zh,mobile_phone,通讯话费,Mobile and Phone,expense,香港一卡两号月费50HKD,50,HKD,一卡两号,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-043,zh,mobile_phone,通讯话费,Mobile and Phone,expense,定向流量包19元每月,19,CNY,定向流量,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-044,zh,mobile_phone,通讯话费,Mobile and Phone,expense,通用流量包50元20G,50,CNY,通用流量,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-045,zh,mobile_phone,通讯话费,Mobile and Phone,expense,香港数据套餐每日20HKD,20,HKD,数据套餐,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-046,zh,mobile_phone,通讯话费,Mobile and Phone,expense,话费自动扣款99元,99,CNY,自动扣款,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-047,zh,mobile_phone,通讯话费,Mobile and Phone,expense,异地补卡费30块,30,CNY,异地补卡,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-048,zh,mobile_phone,通讯话费,Mobile and Phone,expense,香港电话卡充值优惠充200送50HKD,200,HKD,充值优惠,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-049,zh,mobile_phone,通讯话费,Mobile and Phone,expense,香港5G套餐月费168HKD,168,HKD,5G套餐,anchor,2026-08-31,2026-08-31
+mobile_phone-zh-050,zh,mobile_phone,通讯话费,Mobile and Phone,expense,话费余额充值50元,50,CNY,充值,anchor,2026-08-31,2026-08-31
+broadband-zh-001,zh,broadband,宽带网络,Broadband,expense,宽带年费交了600元,600,CNY,年费,anchor,2026-08-31,2026-08-31
+broadband-zh-002,zh,broadband,宽带网络,Broadband,expense,昨天月网费扣了50块,50,CNY,月费,rel:-1,2026-08-30,2026-08-31
+broadband-zh-003,zh,broadband,宽带网络,Broadband,expense,香港光纤宽带月费128HKD,128,HKD,光纤月费,anchor,2026-08-31,2026-08-31
+broadband-zh-004,zh,broadband,宽带网络,Broadband,expense,宽带升级提速花了200元,200,CNY,提速,anchor,2026-08-31,2026-08-31
+broadband-zh-005,zh,broadband,宽带网络,Broadband,expense,安装宽带初装费100块,100,CNY,初装费,anchor,2026-08-31,2026-08-31
+broadband-zh-006,zh,broadband,宽带网络,Broadband,expense,本周一家庭千兆宽带年费960元,960,CNY,千兆年费,weekday:1,2026-08-31,2026-08-31
+broadband-zh-007,zh,broadband,宽带网络,Broadband,expense,商业宽带月费380HKD,380,HKD,商业宽带,anchor,2026-08-31,2026-08-31
+broadband-zh-008,zh,broadband,宽带网络,Broadband,expense,路由器租赁费每月20元,20,CNY,路由器租赁,anchor,2026-08-31,2026-08-31
+broadband-zh-009,zh,broadband,宽带网络,Broadband,expense,海外网络费80USD,80,USD,海外网络,anchor,2026-08-31,2026-08-31
+broadband-zh-010,zh,broadband,宽带网络,Broadband,expense,宽带续约优惠后500块,500,CNY,续约,anchor,2026-08-31,2026-08-31
+broadband-zh-011,zh,broadband,宽带网络,Broadband,expense,8月3日宽带移机费80元,80,CNY,移机,ymd:2026-08-03,2026-08-03,2026-08-31
+broadband-zh-012,zh,broadband,宽带网络,Broadband,expense,光猫押金100块,100,CNY,光猫押金,anchor,2026-08-31,2026-08-31
+broadband-zh-013,zh,broadband,宽带网络,Broadband,expense,香港1000M宽带月费198HKD,198,HKD,千兆月费,anchor,2026-08-31,2026-08-31
+broadband-zh-014,zh,broadband,宽带网络,Broadband,expense,宽带测速不达标退费50元,50,CNY,退费,anchor,2026-08-31,2026-08-31
+broadband-zh-015,zh,broadband,宽带网络,Broadband,expense,宽带安装人工费150块,150,CNY,安装费,anchor,2026-08-31,2026-08-31
+broadband-zh-016,zh,broadband,宽带网络,Broadband,expense,校园宽带半年280元,280,CNY,校园宽带,anchor,2026-08-31,2026-08-31
+broadband-zh-017,zh,broadband,宽带网络,Broadband,expense,香港住宅宽带月费99HKD,99,HKD,住宅宽带,anchor,2026-08-31,2026-08-31
+broadband-zh-018,zh,broadband,宽带网络,Broadband,expense,宽带故障上门维修费50元,50,CNY,维修,anchor,2026-08-31,2026-08-31
+broadband-zh-019,zh,broadband,宽带网络,Broadband,expense,宽带叠加IPTV每月30块,30,CNY,IPTV,anchor,2026-08-31,2026-08-31
+broadband-zh-020,zh,broadband,宽带网络,Broadband,expense,企业宽带年费5000元,5000,CNY,企业宽带,anchor,2026-08-31,2026-08-31
+broadband-zh-021,zh,broadband,宽带网络,Broadband,expense,宽带销户违约金80块,80,CNY,销户,anchor,2026-08-31,2026-08-31
+broadband-zh-022,zh,broadband,宽带网络,Broadband,expense,香港商用宽带月费480HKD,480,HKD,商用宽带,anchor,2026-08-31,2026-08-31
+broadband-zh-023,zh,broadband,宽带网络,Broadband,expense,无线宽带每月60元,60,CNY,无线宽带,anchor,2026-08-31,2026-08-31
+broadband-zh-024,zh,broadband,宽带网络,Broadband,expense,宽带套餐含话费每月129块,129,CNY,含话费,anchor,2026-08-31,2026-08-31
+broadband-zh-025,zh,broadband,宽带网络,Broadband,expense,光纤入户施工费200元,200,CNY,施工费,anchor,2026-08-31,2026-08-31
+broadband-zh-026,zh,broadband,宽带网络,Broadband,expense,宽带猫更换花了150块,150,CNY,换猫,anchor,2026-08-31,2026-08-31
+broadband-zh-027,zh,broadband,宽带网络,Broadband,expense,香港宽带续约优惠200HKD,200,HKD,续约优惠,anchor,2026-08-31,2026-08-31
+broadband-zh-028,zh,broadband,宽带网络,Broadband,expense,小区宽带包月80元,80,CNY,小区宽带,anchor,2026-08-31,2026-08-31
+broadband-zh-029,zh,broadband,宽带网络,Broadband,expense,宽带流量超出扣费50块,50,CNY,超额扣费,anchor,2026-08-31,2026-08-31
+broadband-zh-030,zh,broadband,宽带网络,Broadband,expense,专线宽带每月1000元,1000,CNY,专线,anchor,2026-08-31,2026-08-31
+broadband-zh-031,zh,broadband,宽带网络,Broadband,expense,香港宽频100M月费88HKD,88,HKD,百兆月费,anchor,2026-08-31,2026-08-31
+broadband-zh-032,zh,broadband,宽带网络,Broadband,expense,宽带暂停保号费每月10元,10,CNY,保号,anchor,2026-08-31,2026-08-31
+broadband-zh-033,zh,broadband,宽带网络,Broadband,expense,宽带过户费30块,30,CNY,过户,anchor,2026-08-31,2026-08-31
+broadband-zh-034,zh,broadband,宽带网络,Broadband,expense,家庭宽带捆绑手机号每月99元,99,CNY,捆绑套餐,anchor,2026-08-31,2026-08-31
+broadband-zh-035,zh,broadband,宽带网络,Broadband,expense,香港宽带安装费300HKD,300,HKD,安装费,anchor,2026-08-31,2026-08-31
+broadband-zh-036,zh,broadband,宽带网络,Broadband,expense,宽带提速到500M每月加30元,30,CNY,提速加价,anchor,2026-08-31,2026-08-31
+broadband-zh-037,zh,broadband,宽带网络,Broadband,expense,宽带欠费停机补交120块,120,CNY,欠费补交,anchor,2026-08-31,2026-08-31
+broadband-zh-038,zh,broadband,宽带网络,Broadband,expense,香港网上行宽带月费158HKD,158,HKD,网上行,anchor,2026-08-31,2026-08-31
+broadband-zh-039,zh,broadband,宽带网络,Broadband,expense,农村宽带每年480元,480,CNY,农村宽带,anchor,2026-08-31,2026-08-31
+broadband-zh-040,zh,broadband,宽带网络,Broadband,expense,宽带路由器调试费50块,50,CNY,调试费,anchor,2026-08-31,2026-08-31
+broadband-zh-041,zh,broadband,宽带网络,Broadband,expense,公寓宽带每月50元,50,CNY,公寓宽带,anchor,2026-08-31,2026-08-31
+broadband-zh-042,zh,broadband,宽带网络,Broadband,expense,香港有线宽带月费78HKD,78,HKD,有线宽带,anchor,2026-08-31,2026-08-31
+broadband-zh-043,zh,broadband,宽带网络,Broadband,expense,宽带年付送两个月共600元,600,CNY,年付优惠,anchor,2026-08-31,2026-08-31
+broadband-zh-044,zh,broadband,宽带网络,Broadband,expense,宽带光模块更换80块,80,CNY,光模块,anchor,2026-08-31,2026-08-31
+broadband-zh-045,zh,broadband,宽带网络,Broadband,expense,商铺宽带每月150元,150,CNY,商铺宽带,anchor,2026-08-31,2026-08-31
+broadband-zh-046,zh,broadband,宽带网络,Broadband,expense,香港宽带公共天线费每月30HKD,30,HKD,公共天线,anchor,2026-08-31,2026-08-31
+broadband-zh-047,zh,broadband,宽带网络,Broadband,expense,宽带客服投诉返还话费50元,50,CNY,投诉返还,anchor,2026-08-31,2026-08-31
+broadband-zh-048,zh,broadband,宽带网络,Broadband,expense,宽带网线更换材料费20块,20,CNY,网线,anchor,2026-08-31,2026-08-31
+broadband-zh-049,zh,broadband,宽带网络,Broadband,expense,千兆宽带每月120元,120,CNY,千兆月费,anchor,2026-08-31,2026-08-31
+broadband-zh-050,zh,broadband,宽带网络,Broadband,expense,香港宽带合约到期续约优惠100HKD,100,HKD,续约优惠,anchor,2026-08-31,2026-08-31
+medical-zh-001,zh,medical,医疗诊疗,Medical Care,expense,昨天去医院挂号看病花了300元,300,CNY,门诊,rel:-1,2026-08-30,2026-08-31
+medical-zh-002,zh,medical,医疗诊疗,Medical Care,expense,看牙医付了800块,800,CNY,看牙,anchor,2026-08-31,2026-08-31
+medical-zh-003,zh,medical,医疗诊疗,Medical Care,expense,私立医院问诊花了500HKD,500,HKD,私立问诊,anchor,2026-08-31,2026-08-31
+medical-zh-004,zh,medical,医疗诊疗,Medical Care,expense,体检套餐花了1200元,1200,CNY,体检,anchor,2026-08-31,2026-08-31
+medical-zh-005,zh,medical,医疗诊疗,Medical Care,expense,打针输液花了280块,280,CNY,输液,anchor,2026-08-31,2026-08-31
+medical-zh-006,zh,medical,医疗诊疗,Medical Care,expense,眼科检查花了150元,150,CNY,眼科,anchor,2026-08-31,2026-08-31
+medical-zh-007,zh,medical,医疗诊疗,Medical Care,expense,中医理疗花了380HKD,380,HKD,中医理疗,anchor,2026-08-31,2026-08-31
+medical-zh-008,zh,medical,医疗诊疗,Medical Care,expense,产检费用花了600元,600,CNY,产检,anchor,2026-08-31,2026-08-31
+medical-zh-009,zh,medical,医疗诊疗,Medical Care,expense,海外看病挂号200USD,200,USD,海外挂号,anchor,2026-08-31,2026-08-31
+medical-zh-010,zh,medical,医疗诊疗,Medical Care,expense,皮肤科就诊花了450块,450,CNY,皮肤科,anchor,2026-08-31,2026-08-31
+medical-zh-011,zh,medical,医疗诊疗,Medical Care,expense,骨科拍X光片花了180元,180,CNY,拍片,anchor,2026-08-31,2026-08-31
+medical-zh-012,zh,medical,医疗诊疗,Medical Care,expense,今天明天牙科洗牙都花200块,200,CNY,洗牙,"rel:0,1",2026-08-31|2026-09-01,2026-08-31
+medical-zh-013,zh,medical,医疗诊疗,Medical Care,expense,香港私家医院诊金800HKD,800,HKD,私家诊金,anchor,2026-08-31,2026-08-31
+medical-zh-014,zh,medical,医疗诊疗,Medical Care,expense,血常规检查花了50元,50,CNY,血常规,anchor,2026-08-31,2026-08-31
+medical-zh-015,zh,medical,医疗诊疗,Medical Care,expense,心电图检查花了80块,80,CNY,心电图,anchor,2026-08-31,2026-08-31
+medical-zh-016,zh,medical,医疗诊疗,Medical Care,expense,妇科检查花了300元,300,CNY,妇科,anchor,2026-08-31,2026-08-31
+medical-zh-017,zh,medical,医疗诊疗,Medical Care,expense,今天到后天针灸推拿都花120块,120,CNY,针灸推拿,span:0:2,2026-08-31|2026-09-01|2026-09-02,2026-08-31
+medical-zh-018,zh,medical,医疗诊疗,Medical Care,expense,香港公立医院挂号费50HKD,50,HKD,公立挂号,anchor,2026-08-31,2026-08-31
+medical-zh-019,zh,medical,医疗诊疗,Medical Care,expense,CT检查花了800元,800,CNY,CT检查,anchor,2026-08-31,2026-08-31
+medical-zh-020,zh,medical,医疗诊疗,Medical Care,expense,打破伤风针花了150块,150,CNY,破伤风针,anchor,2026-08-31,2026-08-31
+medical-zh-021,zh,medical,医疗诊疗,Medical Care,expense,耳鼻喉科检查花了200元,200,CNY,耳鼻喉,anchor,2026-08-31,2026-08-31
+medical-zh-022,zh,medical,医疗诊疗,Medical Care,expense,拔罐刮痧花了80块,80,CNY,拔罐刮痧,anchor,2026-08-31,2026-08-31
+medical-zh-023,zh,medical,医疗诊疗,Medical Care,expense,香港体检套餐1500HKD,1500,HKD,体检,anchor,2026-08-31,2026-08-31
+medical-zh-024,zh,medical,医疗诊疗,Medical Care,expense,B超检查花了120元,120,CNY,B超,anchor,2026-08-31,2026-08-31
+medical-zh-025,zh,medical,医疗诊疗,Medical Care,expense,外科缝合花了300块,300,CNY,缝合,anchor,2026-08-31,2026-08-31
+medical-zh-026,zh,medical,医疗诊疗,Medical Care,expense,本周三内科专家挂号费100元,100,CNY,专家号,weekday:3,2026-09-02,2026-08-31
+medical-zh-027,zh,medical,医疗诊疗,Medical Care,expense,艾灸调理一次90块,90,CNY,艾灸,anchor,2026-08-31,2026-08-31
+medical-zh-028,zh,medical,医疗诊疗,Medical Care,expense,香港牙科补牙500HKD一颗,500,HKD,补牙,anchor,2026-08-31,2026-08-31
+medical-zh-029,zh,medical,医疗诊疗,Medical Care,expense,核磁共振检查花了1200元,1200,CNY,核磁共振,anchor,2026-08-31,2026-08-31
+medical-zh-030,zh,medical,医疗诊疗,Medical Care,expense,狂犬疫苗五针400块,400,CNY,疫苗,anchor,2026-08-31,2026-08-31
+medical-zh-031,zh,medical,医疗诊疗,Medical Care,expense,儿科门诊看病花了180元,180,CNY,儿科,anchor,2026-08-31,2026-08-31
+medical-zh-032,zh,medical,医疗诊疗,Medical Care,expense,中药熏蒸花了150块,150,CNY,中药熏蒸,anchor,2026-08-31,2026-08-31
+medical-zh-033,zh,medical,医疗诊疗,Medical Care,expense,8月22日香港急症室就诊180HKD,180,HKD,急症室,ymd:2026-08-22,2026-08-22,2026-08-31
+medical-zh-034,zh,medical,医疗诊疗,Medical Care,expense,尿常规检查花了30元,30,CNY,尿常规,anchor,2026-08-31,2026-08-31
+medical-zh-035,zh,medical,医疗诊疗,Medical Care,expense,上周每天康复治疗一次200块,200,CNY,康复,week:-1,2026-08-24|2026-08-25|2026-08-26|2026-08-27|2026-08-28|2026-08-29|2026-08-30,2026-08-31
+medical-zh-036,zh,medical,医疗诊疗,Medical Care,expense,呼吸科挂号花了25元,25,CNY,呼吸科,anchor,2026-08-31,2026-08-31
+medical-zh-037,zh,medical,医疗诊疗,Medical Care,expense,小手术清创缝合花了500块,500,CNY,小手术,anchor,2026-08-31,2026-08-31
+medical-zh-038,zh,medical,医疗诊疗,Medical Care,expense,香港专科门诊诊金600HKD,600,HKD,专科门诊,anchor,2026-08-31,2026-08-31
+medical-zh-039,zh,medical,医疗诊疗,Medical Care,expense,肝功能检查花了120元,120,CNY,肝功能,anchor,2026-08-31,2026-08-31
+medical-zh-040,zh,medical,医疗诊疗,Medical Care,expense,腰椎牵引治疗一次80块,80,CNY,腰椎牵引,anchor,2026-08-31,2026-08-31
+medical-zh-041,zh,medical,医疗诊疗,Medical Care,expense,皮肤科激光治疗花了800元,800,CNY,激光治疗,anchor,2026-08-31,2026-08-31
+medical-zh-042,zh,medical,医疗诊疗,Medical Care,expense,视力验光花了50块,50,CNY,验光,anchor,2026-08-31,2026-08-31
+medical-zh-043,zh,medical,医疗诊疗,Medical Care,expense,香港中医诊症300HKD,300,HKD,中医诊症,anchor,2026-08-31,2026-08-31
+medical-zh-044,zh,medical,医疗诊疗,Medical Care,expense,胃镜检查花了400元,400,CNY,胃镜,anchor,2026-08-31,2026-08-31
+medical-zh-045,zh,medical,医疗诊疗,Medical Care,expense,伤口换药花了30块,30,CNY,换药,anchor,2026-08-31,2026-08-31
+medical-zh-046,zh,medical,医疗诊疗,Medical Care,expense,过敏原检测花了600元,600,CNY,过敏检测,anchor,2026-08-31,2026-08-31
+medical-zh-047,zh,medical,医疗诊疗,Medical Care,expense,推拿按摩一小时100块,100,CNY,推拿,anchor,2026-08-31,2026-08-31
+medical-zh-048,zh,medical,医疗诊疗,Medical Care,expense,香港健康检查2000HKD,2000,HKD,健康检查,anchor,2026-08-31,2026-08-31
+medical-zh-049,zh,medical,医疗诊疗,Medical Care,expense,牙齿矫正检查花了200元,200,CNY,矫正检查,anchor,2026-08-31,2026-08-31
+medical-zh-050,zh,medical,医疗诊疗,Medical Care,expense,口腔科拍牙片花了80元,80,CNY,牙片,anchor,2026-08-31,2026-08-31
+pharmacy-zh-001,zh,pharmacy,药品保健,Pharmacy,expense,昨天买感冒药花了45元,45,CNY,感冒药,rel:-1,2026-08-30,2026-08-31
+pharmacy-zh-002,zh,pharmacy,药品保健,Pharmacy,expense,囤退烧药花了120块,120,CNY,退烧药,anchor,2026-08-31,2026-08-31
+pharmacy-zh-003,zh,pharmacy,药品保健,Pharmacy,expense,买维生素片花了180HKD,180,HKD,维生素,anchor,2026-08-31,2026-08-31
+pharmacy-zh-004,zh,pharmacy,药品保健,Pharmacy,expense,买创可贴碘伏花了25元,25,CNY,外伤用品,anchor,2026-08-31,2026-08-31
+pharmacy-zh-005,zh,pharmacy,药品保健,Pharmacy,expense,蛋白粉花了320块,320,CNY,蛋白粉,anchor,2026-08-31,2026-08-31
+pharmacy-zh-006,zh,pharmacy,药品保健,Pharmacy,expense,这一周每天降压药按150元记,150,CNY,降压药,week:0,2026-08-31|2026-09-01|2026-09-02|2026-09-03|2026-09-04|2026-09-05|2026-09-06,2026-08-31
+pharmacy-zh-007,zh,pharmacy,药品保健,Pharmacy,expense,买益生菌花了260HKD,260,HKD,益生菌,anchor,2026-08-31,2026-08-31
+pharmacy-zh-008,zh,pharmacy,药品保健,Pharmacy,expense,眼药水花了68元,68,CNY,眼药水,anchor,2026-08-31,2026-08-31
+pharmacy-zh-009,zh,pharmacy,药品保健,Pharmacy,expense,今天明天海外保健品都按80USD记,80,USD,保健品,"rel:0,1",2026-08-31|2026-09-01,2026-08-31
+pharmacy-zh-010,zh,pharmacy,药品保健,Pharmacy,expense,钙片花了110块,110,CNY,钙片,anchor,2026-08-31,2026-08-31
+pharmacy-zh-011,zh,pharmacy,药品保健,Pharmacy,expense,买布洛芬花了30元,30,CNY,止痛药,anchor,2026-08-31,2026-08-31
+pharmacy-zh-012,zh,pharmacy,药品保健,Pharmacy,expense,健胃消食片花了15块,15,CNY,消食片,anchor,2026-08-31,2026-08-31
+pharmacy-zh-013,zh,pharmacy,药品保健,Pharmacy,expense,本周六香港买鱼肝油150HKD,150,HKD,鱼肝油,weekday:6,2026-09-05,2026-08-31
+pharmacy-zh-014,zh,pharmacy,药品保健,Pharmacy,expense,碘伏棉签花了10元,10,CNY,外伤用品,anchor,2026-08-31,2026-08-31
+pharmacy-zh-015,zh,pharmacy,药品保健,Pharmacy,expense,氨糖软骨素花了198块,198,CNY,软骨素,anchor,2026-08-31,2026-08-31
+pharmacy-zh-016,zh,pharmacy,药品保健,Pharmacy,expense,避孕药花了45元,45,CNY,避孕药,anchor,2026-08-31,2026-08-31
+pharmacy-zh-017,zh,pharmacy,药品保健,Pharmacy,expense,褪黑素花了89块,89,CNY,褪黑素,anchor,2026-08-31,2026-08-31
+pharmacy-zh-018,zh,pharmacy,药品保健,Pharmacy,expense,香港买整肠丸80HKD,80,HKD,肠胃药,anchor,2026-08-31,2026-08-31
+pharmacy-zh-019,zh,pharmacy,药品保健,Pharmacy,expense,8月11日感冒药口服液花了58元,58,CNY,感冒药,ymd:2026-08-11,2026-08-11,2026-08-31
+pharmacy-zh-020,zh,pharmacy,药品保健,Pharmacy,expense,护肝片花了128块,128,CNY,护肝片,anchor,2026-08-31,2026-08-31
+pharmacy-zh-021,zh,pharmacy,药品保健,Pharmacy,expense,医用口罩一盒25元,25,CNY,口罩,anchor,2026-08-31,2026-08-31
+pharmacy-zh-022,zh,pharmacy,药品保健,Pharmacy,expense,血糖仪花了299块,299,CNY,血糖仪,anchor,2026-08-31,2026-08-31
+pharmacy-zh-023,zh,pharmacy,药品保健,Pharmacy,expense,香港买维生素C100HKD,100,HKD,维生素,anchor,2026-08-31,2026-08-31
+pharmacy-zh-024,zh,pharmacy,药品保健,Pharmacy,expense,体温计花了15元,15,CNY,体温计,anchor,2026-08-31,2026-08-31
+pharmacy-zh-025,zh,pharmacy,药品保健,Pharmacy,expense,鱼油软胶囊花了168块,168,CNY,鱼油,anchor,2026-08-31,2026-08-31
+pharmacy-zh-026,zh,pharmacy,药品保健,Pharmacy,expense,皮炎平药膏花了22元,22,CNY,药膏,anchor,2026-08-31,2026-08-31
+pharmacy-zh-027,zh,pharmacy,药品保健,Pharmacy,expense,香港买活络油68HKD,68,HKD,活络油,anchor,2026-08-31,2026-08-31
+pharmacy-zh-028,zh,pharmacy,药品保健,Pharmacy,expense,止咳糖浆花了35元,35,CNY,止咳药,anchor,2026-08-31,2026-08-31
+pharmacy-zh-029,zh,pharmacy,药品保健,Pharmacy,expense,六味地黄丸花了48块,48,CNY,中成药,anchor,2026-08-31,2026-08-31
+pharmacy-zh-030,zh,pharmacy,药品保健,Pharmacy,expense,血压计花了259元,259,CNY,血压计,anchor,2026-08-31,2026-08-31
+pharmacy-zh-031,zh,pharmacy,药品保健,Pharmacy,expense,香港买保健品礼盒380HKD,380,HKD,礼盒,anchor,2026-08-31,2026-08-31
+pharmacy-zh-032,zh,pharmacy,药品保健,Pharmacy,expense,口腔溃疡散花了12元,12,CNY,口腔药,anchor,2026-08-31,2026-08-31
+pharmacy-zh-033,zh,pharmacy,药品保健,Pharmacy,expense,阿胶糕花了298块,298,CNY,阿胶,anchor,2026-08-31,2026-08-31
+pharmacy-zh-034,zh,pharmacy,药品保健,Pharmacy,expense,红霉素软膏花了8元,8,CNY,软膏,anchor,2026-08-31,2026-08-31
+pharmacy-zh-035,zh,pharmacy,药品保健,Pharmacy,expense,香港买感冒灵50HKD,50,HKD,感冒药,anchor,2026-08-31,2026-08-31
+pharmacy-zh-036,zh,pharmacy,药品保健,Pharmacy,expense,胃药奥美拉唑花了45元,45,CNY,胃药,anchor,2026-08-31,2026-08-31
+pharmacy-zh-037,zh,pharmacy,药品保健,Pharmacy,expense,叶黄素片花了79块,79,CNY,叶黄素,anchor,2026-08-31,2026-08-31
+pharmacy-zh-038,zh,pharmacy,药品保健,Pharmacy,expense,医用酒精花了10元,10,CNY,消毒,anchor,2026-08-31,2026-08-31
+pharmacy-zh-039,zh,pharmacy,药品保健,Pharmacy,expense,香港买双飞人药水45HKD,45,HKD,药水,anchor,2026-08-31,2026-08-31
+pharmacy-zh-040,zh,pharmacy,药品保健,Pharmacy,expense,咽炎片花了28元,28,CNY,咽炎药,anchor,2026-08-31,2026-08-31
+pharmacy-zh-041,zh,pharmacy,药品保健,Pharmacy,expense,丹参滴丸花了65块,65,CNY,中成药,anchor,2026-08-31,2026-08-31
+pharmacy-zh-042,zh,pharmacy,药品保健,Pharmacy,expense,创可贴防水型15元,15,CNY,创可贴,anchor,2026-08-31,2026-08-31
+pharmacy-zh-043,zh,pharmacy,药品保健,Pharmacy,expense,香港买补钙奶粉200HKD,200,HKD,补钙,anchor,2026-08-31,2026-08-31
+pharmacy-zh-044,zh,pharmacy,药品保健,Pharmacy,expense,抗过敏药氯雷他定花了30元,30,CNY,抗过敏,anchor,2026-08-31,2026-08-31
+pharmacy-zh-045,zh,pharmacy,药品保健,Pharmacy,expense,三七粉花了128块,128,CNY,三七粉,anchor,2026-08-31,2026-08-31
+pharmacy-zh-046,zh,pharmacy,药品保健,Pharmacy,expense,纱布绷带花了18元,18,CNY,纱布,anchor,2026-08-31,2026-08-31
+pharmacy-zh-047,zh,pharmacy,药品保健,Pharmacy,expense,香港买必理痛60HKD,60,HKD,止痛药,anchor,2026-08-31,2026-08-31
+pharmacy-zh-048,zh,pharmacy,药品保健,Pharmacy,expense,开塞露花了5元,5,CNY,开塞露,anchor,2026-08-31,2026-08-31
+pharmacy-zh-049,zh,pharmacy,药品保健,Pharmacy,expense,灵芝孢子粉花了398块,398,CNY,灵芝粉,anchor,2026-08-31,2026-08-31
+pharmacy-zh-050,zh,pharmacy,药品保健,Pharmacy,expense,香港买退烧药100HKD,100,HKD,退烧药,anchor,2026-08-31,2026-08-31
+education-zh-001,zh,education,教育学习,Education,expense,昨天报英语培训班花了3000元,3000,CNY,英语班,rel:-1,2026-08-30,2026-08-31
+education-zh-002,zh,education,教育学习,Education,expense,网课报名费花了1200块,1200,CNY,网课,anchor,2026-08-31,2026-08-31
+education-zh-003,zh,education,教育学习,Education,expense,雅思考试费花了2170HKD,2170,HKD,雅思,anchor,2026-08-31,2026-08-31
+education-zh-004,zh,education,教育学习,Education,expense,驾照报名费花了4500元,4500,CNY,考驾照,anchor,2026-08-31,2026-08-31
+education-zh-005,zh,education,教育学习,Education,expense,技能培训课花了800块,800,CNY,技能培训,anchor,2026-08-31,2026-08-31
+education-zh-006,zh,education,教育学习,Education,expense,考研辅导班花了6800元,6800,CNY,考研班,anchor,2026-08-31,2026-08-31
+education-zh-007,zh,education,教育学习,Education,expense,本周六编程课学费3500HKD,3500,HKD,编程课,weekday:6,2026-09-05,2026-08-31
+education-zh-008,zh,education,教育学习,Education,expense,钢琴课一节200元,200,CNY,钢琴课,anchor,2026-08-31,2026-08-31
+education-zh-009,zh,education,教育学习,Education,expense,海外留学申请费500USD,500,USD,留学申请,anchor,2026-08-31,2026-08-31
+education-zh-010,zh,education,教育学习,Education,expense,职业资格考试报名花了300块,300,CNY,考证,anchor,2026-08-31,2026-08-31
+education-zh-011,zh,education,教育学习,Education,expense,公务员考试培训费2500元,2500,CNY,考公,anchor,2026-08-31,2026-08-31
+education-zh-012,zh,education,教育学习,Education,expense,日语入门班1200块,1200,CNY,日语班,anchor,2026-08-31,2026-08-31
+education-zh-013,zh,education,教育学习,Education,expense,8月8日香港DSE补习费3000HKD,3000,HKD,DSE补习,ymd:2026-08-08,2026-08-08,2026-08-31
+education-zh-014,zh,education,教育学习,Education,expense,会计实操培训1500元,1500,CNY,会计培训,anchor,2026-08-31,2026-08-31
+education-zh-015,zh,education,教育学习,Education,expense,舞蹈培训班年费3600块,3600,CNY,舞蹈班,anchor,2026-08-31,2026-08-31
+education-zh-016,zh,education,教育学习,Education,expense,托福考试费2100元,2100,CNY,托福,anchor,2026-08-31,2026-08-31
+education-zh-017,zh,education,教育学习,Education,expense,设计软件课程2800HKD,2800,HKD,设计课,anchor,2026-08-31,2026-08-31
+education-zh-018,zh,education,教育学习,Education,expense,书法班一期800元,800,CNY,书法班,anchor,2026-08-31,2026-08-31
+education-zh-019,zh,education,教育学习,Education,expense,健身教练证培训2000块,2000,CNY,教练证,anchor,2026-08-31,2026-08-31
+education-zh-020,zh,education,教育学习,Education,expense,GRE考试费1600元,1600,CNY,GRE,anchor,2026-08-31,2026-08-31
+education-zh-021,zh,education,教育学习,Education,expense,今天明天香港普通话培训都按1500HKD记,1500,HKD,普通话,"rel:0,1",2026-08-31|2026-09-01,2026-08-31
+education-zh-022,zh,education,教育学习,Education,expense,教师资格证面试班1200元,1200,CNY,教资,anchor,2026-08-31,2026-08-31
+education-zh-023,zh,education,教育学习,Education,expense,西点烘焙培训2800块,2800,CNY,烘焙课,anchor,2026-08-31,2026-08-31
+education-zh-024,zh,education,教育学习,Education,expense,粤语学习班600元,600,CNY,粤语班,anchor,2026-08-31,2026-08-31
+education-zh-025,zh,education,教育学习,Education,expense,法律职业资格考试报名费200块,200,CNY,法考,anchor,2026-08-31,2026-08-31
+education-zh-026,zh,education,教育学习,Education,expense,香港进修移民咨询费5000HKD,5000,HKD,进修咨询,anchor,2026-08-31,2026-08-31
+education-zh-027,zh,education,教育学习,Education,expense,PS软件教程399元,399,CNY,PS教程,anchor,2026-08-31,2026-08-31
+education-zh-028,zh,education,教育学习,Education,expense,演讲与口才培训1500块,1500,CNY,口才培训,anchor,2026-08-31,2026-08-31
+education-zh-029,zh,education,教育学习,Education,expense,专升本学费每年3000元,3000,CNY,专升本,anchor,2026-08-31,2026-08-31
+education-zh-030,zh,education,教育学习,Education,expense,保育员证培训800块,800,CNY,保育员证,anchor,2026-08-31,2026-08-31
+education-zh-031,zh,education,教育学习,Education,expense,香港MBA申请费10000HKD,10000,HKD,MBA申请,anchor,2026-08-31,2026-08-31
+education-zh-032,zh,education,教育学习,Education,expense,原画设计网课4500元,4500,CNY,原画课,anchor,2026-08-31,2026-08-31
+education-zh-033,zh,education,教育学习,Education,expense,叉车证考试报名600块,600,CNY,叉车证,anchor,2026-08-31,2026-08-31
+education-zh-034,zh,education,教育学习,Education,expense,一级建造师培训5000元,5000,CNY,建造师,anchor,2026-08-31,2026-08-31
+education-zh-035,zh,education,教育学习,Education,expense,心理咨询师培训2800块,2800,CNY,心理师,anchor,2026-08-31,2026-08-31
+education-zh-036,zh,education,教育学习,Education,expense,香港雅思一对一500HKD每小时,500,HKD,雅思一对一,anchor,2026-08-31,2026-08-31
+education-zh-037,zh,education,教育学习,Education,expense,证券从业资格考试报名61元,61,CNY,证券考试,anchor,2026-08-31,2026-08-31
+education-zh-038,zh,education,教育学习,Education,expense,主持人培训1800块,1800,CNY,主持人,anchor,2026-08-31,2026-08-31
+education-zh-039,zh,education,教育学习,Education,expense,注册会计师网课3200元,3200,CNY,注会网课,anchor,2026-08-31,2026-08-31
+education-zh-040,zh,education,教育学习,Education,expense,化妆师培训3500块,3500,CNY,化妆培训,anchor,2026-08-31,2026-08-31
+education-zh-041,zh,education,教育学习,Education,expense,香港升学规划咨询2000HKD,2000,HKD,升学咨询,anchor,2026-08-31,2026-08-31
+education-zh-042,zh,education,教育学习,Education,expense,Python编程入门课99元,99,CNY,Python课,anchor,2026-08-31,2026-08-31
+education-zh-043,zh,education,教育学习,Education,expense,人力资源管理师培训1200块,1200,CNY,人力证,anchor,2026-08-31,2026-08-31
+education-zh-044,zh,education,教育学习,Education,expense,执业药师考试报名150元,150,CNY,药师考试,anchor,2026-08-31,2026-08-31
+education-zh-045,zh,education,教育学习,Education,expense,电商运营培训2000块,2000,CNY,电商培训,anchor,2026-08-31,2026-08-31
+education-zh-046,zh,education,教育学习,Education,expense,香港粤语一对一300HKD每小时,300,HKD,粤语一对一,anchor,2026-08-31,2026-08-31
+education-zh-047,zh,education,教育学习,Education,expense,新媒体运营课899元,899,CNY,新媒体课,anchor,2026-08-31,2026-08-31
+education-zh-048,zh,education,教育学习,Education,expense,塔吊司机证培训1500块,1500,CNY,塔吊证,anchor,2026-08-31,2026-08-31
+education-zh-049,zh,education,教育学习,Education,expense,考研资料费200元,200,CNY,考研资料,anchor,2026-08-31,2026-08-31
+education-zh-050,zh,education,教育学习,Education,expense,香港补习社补习每小时200HKD,200,HKD,补习,anchor,2026-08-31,2026-08-31
+books_stationery-zh-001,zh,books_stationery,书籍文具,Books and Stationery,expense,买专业书花了120元,120,CNY,专业书,anchor,2026-08-31,2026-08-31
+books_stationery-zh-002,zh,books_stationery,书籍文具,Books and Stationery,expense,昨天买笔记本笔花了35块,35,CNY,文具,rel:-1,2026-08-30,2026-08-31
+books_stationery-zh-003,zh,books_stationery,书籍文具,Books and Stationery,expense,买英文原版书花了180HKD,180,HKD,原版书,anchor,2026-08-31,2026-08-31
+books_stationery-zh-004,zh,books_stationery,书籍文具,Books and Stationery,expense,打印资料花了50元,50,CNY,打印,anchor,2026-08-31,2026-08-31
+books_stationery-zh-005,zh,books_stationery,书籍文具,Books and Stationery,expense,本周三买文具套装花了88块,88,CNY,文具,weekday:3,2026-09-02,2026-08-31
+books_stationery-zh-006,zh,books_stationery,书籍文具,Books and Stationery,expense,小说实体书花了49元,49,CNY,小说,anchor,2026-08-31,2026-08-31
+books_stationery-zh-007,zh,books_stationery,书籍文具,Books and Stationery,expense,买画笔纸花了150HKD,150,HKD,画材,anchor,2026-08-31,2026-08-31
+books_stationery-zh-008,zh,books_stationery,书籍文具,Books and Stationery,expense,订书器文件夹花了60元,60,CNY,办公用品,anchor,2026-08-31,2026-08-31
+books_stationery-zh-009,zh,books_stationery,书籍文具,Books and Stationery,expense,海外买教材120USD,120,USD,海外教材,anchor,2026-08-31,2026-08-31
+books_stationery-zh-010,zh,books_stationery,书籍文具,Books and Stationery,expense,买字帖花了28块,28,CNY,字帖,anchor,2026-08-31,2026-08-31
+books_stationery-zh-011,zh,books_stationery,书籍文具,Books and Stationery,expense,考研参考书花了200元,200,CNY,参考书,anchor,2026-08-31,2026-08-31
+books_stationery-zh-012,zh,books_stationery,书籍文具,Books and Stationery,expense,这一周每天中性笔按盒15块,15,CNY,文具,week:0,2026-08-31|2026-09-01|2026-09-02|2026-09-03|2026-09-04|2026-09-05|2026-09-06,2026-08-31
+books_stationery-zh-013,zh,books_stationery,书籍文具,Books and Stationery,expense,香港诚品书店买书250HKD,250,HKD,书店,anchor,2026-08-31,2026-08-31
+books_stationery-zh-014,zh,books_stationery,书籍文具,Books and Stationery,expense,8月16日复印身份证花了2元,2,CNY,复印,ymd:2026-08-16,2026-08-16,2026-08-31
+books_stationery-zh-015,zh,books_stationery,书籍文具,Books and Stationery,expense,装订论文花了30块,30,CNY,装订,anchor,2026-08-31,2026-08-31
+books_stationery-zh-016,zh,books_stationery,书籍文具,Books and Stationery,expense,精装版图书花了98元,98,CNY,精装书,anchor,2026-08-31,2026-08-31
+books_stationery-zh-017,zh,books_stationery,书籍文具,Books and Stationery,expense,彩铅套装花了128块,128,CNY,画材,anchor,2026-08-31,2026-08-31
+books_stationery-zh-018,zh,books_stationery,书籍文具,Books and Stationery,expense,香港教材书300HKD,300,HKD,教材,anchor,2026-08-31,2026-08-31
+books_stationery-zh-019,zh,books_stationery,书籍文具,Books and Stationery,expense,今天明天便利贴都花了8元,8,CNY,文具,"rel:0,1",2026-08-31|2026-09-01,2026-08-31
+books_stationery-zh-020,zh,books_stationery,书籍文具,Books and Stationery,expense,胶棒剪刀花了15块,15,CNY,文具,anchor,2026-08-31,2026-08-31
+books_stationery-zh-021,zh,books_stationery,书籍文具,Books and Stationery,expense,技术开发文档书籍158元,158,CNY,技术书,anchor,2026-08-31,2026-08-31
+books_stationery-zh-022,zh,books_stationery,书籍文具,Books and Stationery,expense,素描本花了25块,25,CNY,素描本,anchor,2026-08-31,2026-08-31
+books_stationery-zh-023,zh,books_stationery,书籍文具,Books and Stationery,expense,香港漫画书100HKD,100,HKD,漫画,anchor,2026-08-31,2026-08-31
+books_stationery-zh-024,zh,books_stationery,书籍文具,Books and Stationery,expense,文件袋十个10元,10,CNY,办公用品,anchor,2026-08-31,2026-08-31
+books_stationery-zh-025,zh,books_stationery,书籍文具,Books and Stationery,expense,钢笔墨水花了45块,45,CNY,钢笔,anchor,2026-08-31,2026-08-31
+books_stationery-zh-026,zh,books_stationery,书籍文具,Books and Stationery,expense,畅销书排行榜书籍59元,59,CNY,畅销书,anchor,2026-08-31,2026-08-31
+books_stationery-zh-027,zh,books_stationery,书籍文具,Books and Stationery,expense,马克笔套装88块,88,CNY,画材,anchor,2026-08-31,2026-08-31
+books_stationery-zh-028,zh,books_stationery,书籍文具,Books and Stationery,expense,香港考试用书350HKD,350,HKD,考试书,anchor,2026-08-31,2026-08-31
+books_stationery-zh-029,zh,books_stationery,书籍文具,Books and Stationery,expense,回形针长尾夹花了12元,12,CNY,办公用品,anchor,2026-08-31,2026-08-31
+books_stationery-zh-030,zh,books_stationery,书籍文具,Books and Stationery,expense,笔记本电脑支架89块,89,CNY,电脑配件,anchor,2026-08-31,2026-08-31
+books_stationery-zh-031,zh,books_stationery,书籍文具,Books and Stationery,expense,诗集散文集花了68元,68,CNY,文学书,anchor,2026-08-31,2026-08-31
+books_stationery-zh-032,zh,books_stationery,书籍文具,Books and Stationery,expense,水彩颜料套装128块,128,CNY,画材,anchor,2026-08-31,2026-08-31
+books_stationery-zh-033,zh,books_stationery,书籍文具,Books and Stationery,expense,香港字典词典180HKD,180,HKD,词典,anchor,2026-08-31,2026-08-31
+books_stationery-zh-034,zh,books_stationery,书籍文具,Books and Stationery,expense,书签套装花了20元,20,CNY,文具,anchor,2026-08-31,2026-08-31
+books_stationery-zh-035,zh,books_stationery,书籍文具,Books and Stationery,expense,计算器花了50块,50,CNY,文具,anchor,2026-08-31,2026-08-31
+books_stationery-zh-036,zh,books_stationery,书籍文具,Books and Stationery,expense,历史类书籍78元,78,CNY,历史书,anchor,2026-08-31,2026-08-31
+books_stationery-zh-037,zh,books_stationery,书籍文具,Books and Stationery,expense,画架画板花了150块,150,CNY,画材,anchor,2026-08-31,2026-08-31
+books_stationery-zh-038,zh,books_stationery,书籍文具,Books and Stationery,expense,香港儿童绘本120HKD,120,HKD,绘本,anchor,2026-08-31,2026-08-31
+books_stationery-zh-039,zh,books_stationery,书籍文具,Books and Stationery,expense,橡皮尺子套装8元,8,CNY,文具,anchor,2026-08-31,2026-08-31
+books_stationery-zh-040,zh,books_stationery,书籍文具,Books and Stationery,expense,文件夹收纳盒35块,35,CNY,办公用品,anchor,2026-08-31,2026-08-31
+books_stationery-zh-041,zh,books_stationery,书籍文具,Books and Stationery,expense,心理学书籍128元,128,CNY,心理书,anchor,2026-08-31,2026-08-31
+books_stationery-zh-042,zh,books_stationery,书籍文具,Books and Stationery,expense,宣纸毛边纸50块,50,CNY,文房,anchor,2026-08-31,2026-08-31
+books_stationery-zh-043,zh,books_stationery,书籍文具,Books and Stationery,expense,香港商业书籍280HKD,280,HKD,商业书,anchor,2026-08-31,2026-08-31
+books_stationery-zh-044,zh,books_stationery,书籍文具,Books and Stationery,expense,便签本花了10元,10,CNY,文具,anchor,2026-08-31,2026-08-31
+books_stationery-zh-045,zh,books_stationery,书籍文具,Books and Stationery,expense,订书钉回形针5块,5,CNY,办公用品,anchor,2026-08-31,2026-08-31
+books_stationery-zh-046,zh,books_stationery,书籍文具,Books and Stationery,expense,编程技术书籍199元,199,CNY,技术书,anchor,2026-08-31,2026-08-31
+books_stationery-zh-047,zh,books_stationery,书籍文具,Books and Stationery,expense,毛笔砚台套装200块,200,CNY,文房,anchor,2026-08-31,2026-08-31
+books_stationery-zh-048,zh,books_stationery,书籍文具,Books and Stationery,expense,香港旅游攻略书88HKD,88,HKD,旅游书,anchor,2026-08-31,2026-08-31
+books_stationery-zh-049,zh,books_stationery,书籍文具,Books and Stationery,expense,错题本花了12元,12,CNY,文具,anchor,2026-08-31,2026-08-31
+books_stationery-zh-050,zh,books_stationery,书籍文具,Books and Stationery,expense,精装笔记本68块,68,CNY,笔记本,anchor,2026-08-31,2026-08-31
+leisure-zh-001,zh,leisure,休闲娱乐,Leisure,expense,昨天去KTV唱歌花了380元,380,CNY,KTV,rel:-1,2026-08-30,2026-08-31
+leisure-zh-002,zh,leisure,休闲娱乐,Leisure,expense,剧本杀人均花了128块,128,CNY,剧本杀,anchor,2026-08-31,2026-08-31
+leisure-zh-003,zh,leisure,休闲娱乐,Leisure,expense,密室逃脱门票花了298HKD,298,HKD,密室,anchor,2026-08-31,2026-08-31
+leisure-zh-004,zh,leisure,休闲娱乐,Leisure,expense,这一周每天桌游吧消费花了80元,80,CNY,桌游,week:0,2026-08-31|2026-09-01|2026-09-02|2026-09-03|2026-09-04|2026-09-05|2026-09-06,2026-08-31
+leisure-zh-005,zh,leisure,休闲娱乐,Leisure,expense,抓娃娃花了50块,50,CNY,抓娃娃,anchor,2026-08-31,2026-08-31
+leisure-zh-006,zh,leisure,休闲娱乐,Leisure,expense,酒吧喝酒花了600元,600,CNY,酒吧,anchor,2026-08-31,2026-08-31
+leisure-zh-007,zh,leisure,休闲娱乐,Leisure,expense,轰趴馆团建花了800HKD,800,HKD,轰趴,anchor,2026-08-31,2026-08-31
+leisure-zh-008,zh,leisure,休闲娱乐,Leisure,expense,射箭馆体验花了150元,150,CNY,射箭,anchor,2026-08-31,2026-08-31
+leisure-zh-009,zh,leisure,休闲娱乐,Leisure,expense,海外赌场小费100USD,100,USD,赌场小费,anchor,2026-08-31,2026-08-31
+leisure-zh-010,zh,leisure,休闲娱乐,Leisure,expense,今天明天网吧上网都花40块,40,CNY,网吧,"rel:0,1",2026-08-31|2026-09-01,2026-08-31
+leisure-zh-011,zh,leisure,休闲娱乐,Leisure,expense,今天到后天台球厅打球都花80元,80,CNY,台球,span:0:2,2026-08-31|2026-09-01|2026-09-02,2026-08-31
+leisure-zh-012,zh,leisure,休闲娱乐,Leisure,expense,棋牌室麻将一下午120块,120,CNY,棋牌,anchor,2026-08-31,2026-08-31
+leisure-zh-013,zh,leisure,休闲娱乐,Leisure,expense,香港桌游吧每人150HKD,150,HKD,桌游,anchor,2026-08-31,2026-08-31
+leisure-zh-014,zh,leisure,休闲娱乐,Leisure,expense,电玩城买游戏币花了100元,100,CNY,电玩城,anchor,2026-08-31,2026-08-31
+leisure-zh-015,zh,leisure,休闲娱乐,Leisure,expense,DIY手工坊做陶艺128块,128,CNY,DIY,anchor,2026-08-31,2026-08-31
+leisure-zh-016,zh,leisure,休闲娱乐,Leisure,expense,本周五舞厅跳舞门票50元,50,CNY,舞厅,weekday:5,2026-09-04,2026-08-31
+leisure-zh-017,zh,leisure,休闲娱乐,Leisure,expense,轰趴别墅一天1500块,1500,CNY,轰趴别墅,anchor,2026-08-31,2026-08-31
+leisure-zh-018,zh,leisure,休闲娱乐,Leisure,expense,香港卡丁车体验200HKD,200,HKD,卡丁车,anchor,2026-08-31,2026-08-31
+leisure-zh-019,zh,leisure,休闲娱乐,Leisure,expense,VR体验馆一小时80元,80,CNY,VR体验,anchor,2026-08-31,2026-08-31
+leisure-zh-020,zh,leisure,休闲娱乐,Leisure,expense,狼人杀桌游吧50块每人,50,CNY,狼人杀,anchor,2026-08-31,2026-08-31
+leisure-zh-021,zh,leisure,休闲娱乐,Leisure,expense,茶棋牌室喝茶打牌100元,100,CNY,茶棋牌,anchor,2026-08-31,2026-08-31
+leisure-zh-022,zh,leisure,休闲娱乐,Leisure,expense,蹦床公园门票98块,98,CNY,蹦床,anchor,2026-08-31,2026-08-31
+leisure-zh-023,zh,leisure,休闲娱乐,Leisure,expense,香港室内跳伞500HKD,500,HKD,室内跳伞,anchor,2026-08-31,2026-08-31
+leisure-zh-024,zh,leisure,休闲娱乐,Leisure,expense,溜冰场门票40元,40,CNY,溜冰,anchor,2026-08-31,2026-08-31
+leisure-zh-025,zh,leisure,休闲娱乐,Leisure,expense,真人CS野战150块,150,CNY,真人CS,anchor,2026-08-31,2026-08-31
+leisure-zh-026,zh,leisure,休闲娱乐,Leisure,expense,插花体验课88元,88,CNY,插花课,anchor,2026-08-31,2026-08-31
+leisure-zh-027,zh,leisure,休闲娱乐,Leisure,expense,朋友局再开一局剧本杀花了138元,138,CNY,剧本杀,anchor,2026-08-31,2026-08-31
+leisure-zh-028,zh,leisure,休闲娱乐,Leisure,expense,攀岩馆体验120元,120,CNY,攀岩,anchor,2026-08-31,2026-08-31
+leisure-zh-029,zh,leisure,休闲娱乐,Leisure,expense,桌游卡牌购买80块,80,CNY,桌游卡,anchor,2026-08-31,2026-08-31
+leisure-zh-030,zh,leisure,休闲娱乐,Leisure,expense,密室逃脱恐怖主题198元,198,CNY,密室,anchor,2026-08-31,2026-08-31
+leisure-zh-031,zh,leisure,休闲娱乐,Leisure,expense,酒吧台费最低消费200块,200,CNY,酒吧,anchor,2026-08-31,2026-08-31
+leisure-zh-032,zh,leisure,休闲娱乐,Leisure,expense,香港杜莎夫人蜡像馆门票290HKD,290,HKD,蜡像馆,anchor,2026-08-31,2026-08-31
+leisure-zh-033,zh,leisure,休闲娱乐,Leisure,expense,电竞酒店开黑一晚300元,300,CNY,电竞酒店,anchor,2026-08-31,2026-08-31
+leisure-zh-034,zh,leisure,休闲娱乐,Leisure,expense,DIY蛋糕烘焙168块,168,CNY,烘焙DIY,anchor,2026-08-31,2026-08-31
+leisure-zh-035,zh,leisure,休闲娱乐,Leisure,expense,8月21日脱口秀开放麦门票50元,50,CNY,脱口秀,ymd:2026-08-21,2026-08-21,2026-08-31
+leisure-zh-036,zh,leisure,休闲娱乐,Leisure,expense,室内滑雪场三小时300块,300,CNY,室内滑雪,anchor,2026-08-31,2026-08-31
+leisure-zh-037,zh,leisure,休闲娱乐,Leisure,expense,香港天际100观景台门票188HKD,188,HKD,观景台,anchor,2026-08-31,2026-08-31
+leisure-zh-038,zh,leisure,休闲娱乐,Leisure,expense,射箭馆办卡500元,500,CNY,射箭办卡,anchor,2026-08-31,2026-08-31
+leisure-zh-039,zh,leisure,休闲娱乐,Leisure,expense,剧本杀城限本198块,198,CNY,城限本,anchor,2026-08-31,2026-08-31
+leisure-zh-040,zh,leisure,休闲娱乐,Leisure,expense,温泉会馆门票128元,128,CNY,温泉,anchor,2026-08-31,2026-08-31
+leisure-zh-041,zh,leisure,休闲娱乐,Leisure,expense,轰趴馆包场1200块,1200,CNY,轰趴包场,anchor,2026-08-31,2026-08-31
+leisure-zh-042,zh,leisure,休闲娱乐,Leisure,expense,香港挪亚方舟门票168HKD,168,HKD,景点门票,anchor,2026-08-31,2026-08-31
+leisure-zh-043,zh,leisure,休闲娱乐,Leisure,expense,上周每天网吧包夜30元,30,CNY,网吧包夜,week:-1,2026-08-24|2026-08-25|2026-08-26|2026-08-27|2026-08-28|2026-08-29|2026-08-30,2026-08-31
+leisure-zh-044,zh,leisure,休闲娱乐,Leisure,expense,抓娃娃充值100块,100,CNY,抓娃娃,anchor,2026-08-31,2026-08-31
+leisure-zh-045,zh,leisure,休闲娱乐,Leisure,expense,棋牌室包房200元,200,CNY,棋牌包房,anchor,2026-08-31,2026-08-31
+leisure-zh-046,zh,leisure,休闲娱乐,Leisure,expense,真人密室逃脱88块每人,88,CNY,密室,anchor,2026-08-31,2026-08-31
+leisure-zh-047,zh,leisure,休闲娱乐,Leisure,expense,香港坪洲岛一日游套票300HKD,300,HKD,一日游,anchor,2026-08-31,2026-08-31
+leisure-zh-048,zh,leisure,休闲娱乐,Leisure,expense,桌游吧通宵场100元,100,CNY,桌游通宵,anchor,2026-08-31,2026-08-31
+leisure-zh-049,zh,leisure,休闲娱乐,Leisure,expense,KTV包厢费580块,580,CNY,KTV包厢,anchor,2026-08-31,2026-08-31
+leisure-zh-050,zh,leisure,休闲娱乐,Leisure,expense,香港保龄球馆50HKD一局,50,HKD,保龄球,anchor,2026-08-31,2026-08-31
+shows_media-zh-001,zh,shows_media,影视演出,Shows and Media,expense,昨天电影票两张花了80元,80,CNY,电影,rel:-1,2026-08-30,2026-08-31
+shows_media-zh-002,zh,shows_media,影视演出,Shows and Media,expense,演唱会门票花了1280块,1280,CNY,演唱会,anchor,2026-08-31,2026-08-31
+shows_media-zh-003,zh,shows_media,影视演出,Shows and Media,expense,话剧票花了380HKD,380,HKD,话剧,anchor,2026-08-31,2026-08-31
+shows_media-zh-004,zh,shows_media,影视演出,Shows and Media,expense,视频会员年卡花了198元,198,CNY,视频会员,anchor,2026-08-31,2026-08-31
+shows_media-zh-005,zh,shows_media,影视演出,Shows and Media,expense,音乐节门票花了580块,580,CNY,音乐节,anchor,2026-08-31,2026-08-31
+shows_media-zh-006,zh,shows_media,影视演出,Shows and Media,expense,本周六相声演出票花了299元,299,CNY,相声,weekday:6,2026-09-05,2026-08-31
+shows_media-zh-007,zh,shows_media,影视演出,Shows and Media,expense,迪士尼门票花了650HKD,650,HKD,迪士尼,anchor,2026-08-31,2026-08-31
+shows_media-zh-008,zh,shows_media,影视演出,Shows and Media,expense,爱奇艺会员月费25元,25,CNY,视频会员,anchor,2026-08-31,2026-08-31
+shows_media-zh-009,zh,shows_media,影视演出,Shows and Media,expense,百老汇门票150USD,150,USD,百老汇,anchor,2026-08-31,2026-08-31
+shows_media-zh-010,zh,shows_media,影视演出,Shows and Media,expense,脱口秀演出花了180块,180,CNY,脱口秀,anchor,2026-08-31,2026-08-31
+shows_media-zh-011,zh,shows_media,影视演出,Shows and Media,expense,8月19日IMAX电影票一张65元,65,CNY,IMAX,ymd:2026-08-19,2026-08-19,2026-08-31
+shows_media-zh-012,zh,shows_media,影视演出,Shows and Media,expense,林俊杰演唱会内场1880块,1880,CNY,演唱会,anchor,2026-08-31,2026-08-31
+shows_media-zh-013,zh,shows_media,影视演出,Shows and Media,expense,香港话剧团演出280HKD,280,HKD,话剧,anchor,2026-08-31,2026-08-31
+shows_media-zh-014,zh,shows_media,影视演出,Shows and Media,expense,腾讯视频季卡58元,58,CNY,视频会员,anchor,2026-08-31,2026-08-31
+shows_media-zh-015,zh,shows_media,影视演出,Shows and Media,expense,草莓音乐节门票380块,380,CNY,音乐节,anchor,2026-08-31,2026-08-31
+shows_media-zh-016,zh,shows_media,影视演出,Shows and Media,expense,京剧演出票180元,180,CNY,京剧,anchor,2026-08-31,2026-08-31
+shows_media-zh-017,zh,shows_media,影视演出,Shows and Media,expense,香港迪士尼乐园一日票639HKD,639,HKD,迪士尼,anchor,2026-08-31,2026-08-31
+shows_media-zh-018,zh,shows_media,影视演出,Shows and Media,expense,优酷会员月卡20元,20,CNY,视频会员,anchor,2026-08-31,2026-08-31
+shows_media-zh-019,zh,shows_media,影视演出,Shows and Media,expense,音乐剧门票480块,480,CNY,音乐剧,anchor,2026-08-31,2026-08-31
+shows_media-zh-020,zh,shows_media,影视演出,Shows and Media,expense,舞剧演出票380元,380,CNY,舞剧,anchor,2026-08-31,2026-08-31
+shows_media-zh-021,zh,shows_media,影视演出,Shows and Media,expense,8月31日跨年演唱会门票880块,880,CNY,跨年演唱会,ymd:2026-08-31,2026-08-31,2026-08-31
+shows_media-zh-022,zh,shows_media,影视演出,Shows and Media,expense,香港电影节开幕影片120HKD,120,HKD,电影节,anchor,2026-08-31,2026-08-31
+shows_media-zh-023,zh,shows_media,影视演出,Shows and Media,expense,B站大会员年卡148元,148,CNY,视频会员,anchor,2026-08-31,2026-08-31
+shows_media-zh-024,zh,shows_media,影视演出,Shows and Media,expense,Livehouse演出票150块,150,CNY,Livehouse,anchor,2026-08-31,2026-08-31
+shows_media-zh-025,zh,shows_media,影视演出,Shows and Media,expense,杂技表演门票80元,80,CNY,杂技,anchor,2026-08-31,2026-08-31
+shows_media-zh-026,zh,shows_media,影视演出,Shows and Media,expense,看了场话剧门票花了180元,180,CNY,话剧,anchor,2026-08-31,2026-08-31
+shows_media-zh-027,zh,shows_media,影视演出,Shows and Media,expense,芒果TV会员月卡19元,19,CNY,视频会员,anchor,2026-08-31,2026-08-31
+shows_media-zh-028,zh,shows_media,影视演出,Shows and Media,expense,德云社相声票280块,280,CNY,相声,anchor,2026-08-31,2026-08-31
+shows_media-zh-029,zh,shows_media,影视演出,Shows and Media,expense,儿童剧门票120元,120,CNY,儿童剧,anchor,2026-08-31,2026-08-31
+shows_media-zh-030,zh,shows_media,影视演出,Shows and Media,expense,电音节门票680块,680,CNY,电音节,anchor,2026-08-31,2026-08-31
+shows_media-zh-031,zh,shows_media,影视演出,Shows and Media,expense,香港文化中心演出200HKD,200,HKD,演出,anchor,2026-08-31,2026-08-31
+shows_media-zh-032,zh,shows_media,影视演出,Shows and Media,expense,私人影院两小时100元,100,CNY,私人影院,anchor,2026-08-31,2026-08-31
+shows_media-zh-033,zh,shows_media,影视演出,Shows and Media,expense,摇滚乐队巡演280块,280,CNY,巡演,anchor,2026-08-31,2026-08-31
+shows_media-zh-034,zh,shows_media,影视演出,Shows and Media,expense,戏曲表演门票50元,50,CNY,戏曲,anchor,2026-08-31,2026-08-31
+shows_media-zh-035,zh,shows_media,影视演出,Shows and Media,expense,香港昂坪360缆车门票235HKD,235,HKD,缆车,anchor,2026-08-31,2026-08-31
+shows_media-zh-036,zh,shows_media,影视演出,Shows and Media,expense,网易云音乐黑胶年卡128元,128,CNY,音乐会员,anchor,2026-08-31,2026-08-31
+shows_media-zh-037,zh,shows_media,影视演出,Shows and Media,expense,脱口秀专场128块,128,CNY,脱口秀,anchor,2026-08-31,2026-08-31
+shows_media-zh-038,zh,shows_media,影视演出,Shows and Media,expense,芭蕾舞剧门票580元,580,CNY,芭蕾舞剧,anchor,2026-08-31,2026-08-31
+shows_media-zh-039,zh,shows_media,影视演出,Shows and Media,expense,音乐节VIP票980块,980,CNY,音乐节VIP,anchor,2026-08-31,2026-08-31
+shows_media-zh-040,zh,shows_media,影视演出,Shows and Media,expense,香港太空馆天象厅30HKD,30,HKD,太空馆,anchor,2026-08-31,2026-08-31
+shows_media-zh-041,zh,shows_media,影视演出,Shows and Media,expense,腾讯体育会员月卡30元,30,CNY,体育会员,anchor,2026-08-31,2026-08-31
+shows_media-zh-042,zh,shows_media,影视演出,Shows and Media,expense,话剧暗恋桃花源380块,380,CNY,话剧,anchor,2026-08-31,2026-08-31
+shows_media-zh-043,zh,shows_media,影视演出,Shows and Media,expense,木偶剧演出60元,60,CNY,木偶剧,anchor,2026-08-31,2026-08-31
+shows_media-zh-044,zh,shows_media,影视演出,Shows and Media,expense,香港科学馆门票30HKD,30,HKD,科学馆,anchor,2026-08-31,2026-08-31
+shows_media-zh-045,zh,shows_media,影视演出,Shows and Media,expense,爱奇艺奇异果会员年卡298元,298,CNY,视频会员,anchor,2026-08-31,2026-08-31
+shows_media-zh-046,zh,shows_media,影视演出,Shows and Media,expense,相声专场演出199块,199,CNY,相声,anchor,2026-08-31,2026-08-31
+shows_media-zh-047,zh,shows_media,影视演出,Shows and Media,expense,经典电影重映票40元,40,CNY,电影,anchor,2026-08-31,2026-08-31
+shows_media-zh-048,zh,shows_media,影视演出,Shows and Media,expense,香港红馆演唱会门票880HKD,880,HKD,红馆演唱会,anchor,2026-08-31,2026-08-31
+shows_media-zh-049,zh,shows_media,影视演出,Shows and Media,expense,优酷酷喵会员年卡248元,248,CNY,视频会员,anchor,2026-08-31,2026-08-31
+shows_media-zh-050,zh,shows_media,影视演出,Shows and Media,expense,漫展门票80块,80,CNY,漫展,anchor,2026-08-31,2026-08-31
+fitness-zh-001,zh,fitness,运动健身,Fitness,expense,昨天健身卡年卡花了2400元,2400,CNY,健身年卡,rel:-1,2026-08-30,2026-08-31
+fitness-zh-002,zh,fitness,运动健身,Fitness,expense,私教课一节花了300块,300,CNY,私教,anchor,2026-08-31,2026-08-31
+fitness-zh-003,zh,fitness,运动健身,Fitness,expense,这一周每天羽毛球场地费花了120HKD,120,HKD,羽毛球,week:0,2026-08-31|2026-09-01|2026-09-02|2026-09-03|2026-09-04|2026-09-05|2026-09-06,2026-08-31
+fitness-zh-004,zh,fitness,运动健身,Fitness,expense,游泳票花了50元,50,CNY,游泳,anchor,2026-08-31,2026-08-31
+fitness-zh-005,zh,fitness,运动健身,Fitness,expense,瑜伽课月卡花了800块,800,CNY,瑜伽,anchor,2026-08-31,2026-08-31
+fitness-zh-006,zh,fitness,运动健身,Fitness,expense,篮球馆包场花了400元,400,CNY,篮球,anchor,2026-08-31,2026-08-31
+fitness-zh-007,zh,fitness,运动健身,Fitness,expense,高尔夫练习场花了500HKD,500,HKD,高尔夫,anchor,2026-08-31,2026-08-31
+fitness-zh-008,zh,fitness,运动健身,Fitness,expense,跑步装备花了350元,350,CNY,跑步装备,anchor,2026-08-31,2026-08-31
+fitness-zh-009,zh,fitness,运动健身,Fitness,expense,8月16日海外滑雪票200USD,200,USD,滑雪,ymd:2026-08-16,2026-08-16,2026-08-31
+fitness-zh-010,zh,fitness,运动健身,Fitness,expense,乒乓球台租赁花了60块,60,CNY,乒乓球,anchor,2026-08-31,2026-08-31
+fitness-zh-011,zh,fitness,运动健身,Fitness,expense,健身房季卡800元,800,CNY,健身季卡,anchor,2026-08-31,2026-08-31
+fitness-zh-012,zh,fitness,运动健身,Fitness,expense,拳击课一节180块,180,CNY,拳击,anchor,2026-08-31,2026-08-31
+fitness-zh-013,zh,fitness,运动健身,Fitness,expense,今天到后天香港网球场一小时都150HKD,150,HKD,网球,span:0:2,2026-08-31|2026-09-01|2026-09-02,2026-08-31
+fitness-zh-014,zh,fitness,运动健身,Fitness,expense,保龄球三局80元,80,CNY,保龄球,anchor,2026-08-31,2026-08-31
+fitness-zh-015,zh,fitness,运动健身,Fitness,expense,舞蹈班月卡600块,600,CNY,舞蹈班,anchor,2026-08-31,2026-08-31
+fitness-zh-016,zh,fitness,运动健身,Fitness,expense,击剑体验课198元,198,CNY,击剑,anchor,2026-08-31,2026-08-31
+fitness-zh-017,zh,fitness,运动健身,Fitness,expense,香港健身中心月卡800HKD,800,HKD,健身月卡,anchor,2026-08-31,2026-08-31
+fitness-zh-018,zh,fitness,运动健身,Fitness,expense,轮滑场地费30元,30,CNY,轮滑,anchor,2026-08-31,2026-08-31
+fitness-zh-019,zh,fitness,运动健身,Fitness,expense,本周日散打课一节150块,150,CNY,散打,weekday:7,2026-09-06,2026-08-31
+fitness-zh-020,zh,fitness,运动健身,Fitness,expense,壁球馆一小时100元,100,CNY,壁球,anchor,2026-08-31,2026-08-31
+fitness-zh-021,zh,fitness,运动健身,Fitness,expense,香港保龄球城50HKD一局,50,HKD,保龄球,anchor,2026-08-31,2026-08-31
+fitness-zh-022,zh,fitness,运动健身,Fitness,expense,动感单车月卡300元,300,CNY,动感单车,anchor,2026-08-31,2026-08-31
+fitness-zh-023,zh,fitness,运动健身,Fitness,expense,普拉提一节280块,280,CNY,普拉提,anchor,2026-08-31,2026-08-31
+fitness-zh-024,zh,fitness,运动健身,Fitness,expense,射箭馆一小时80元,80,CNY,射箭,anchor,2026-08-31,2026-08-31
+fitness-zh-025,zh,fitness,运动健身,Fitness,expense,香港攀石场180HKD,180,HKD,攀石,anchor,2026-08-31,2026-08-31
+fitness-zh-026,zh,fitness,运动健身,Fitness,expense,8月14日健身房次卡20次500元,500,CNY,次卡,ymd:2026-08-14,2026-08-14,2026-08-31
+fitness-zh-027,zh,fitness,运动健身,Fitness,expense,跆拳道月卡400块,400,CNY,跆拳道,anchor,2026-08-31,2026-08-31
+fitness-zh-028,zh,fitness,运动健身,Fitness,expense,潜水体验课380元,380,CNY,潜水,anchor,2026-08-31,2026-08-31
+fitness-zh-029,zh,fitness,运动健身,Fitness,expense,香港冲浪教学500HKD,500,HKD,冲浪,anchor,2026-08-31,2026-08-31
+fitness-zh-030,zh,fitness,运动健身,Fitness,expense,乒乓球培训一期1200元,1200,CNY,乒乓球培训,anchor,2026-08-31,2026-08-31
+fitness-zh-031,zh,fitness,运动健身,Fitness,expense,上周六买了羽毛球拍一支800块,800,CNY,球拍,weekday:-1:6,2026-08-29,2026-08-31
+fitness-zh-032,zh,fitness,运动健身,Fitness,expense,瑜伽垫一张128元,128,CNY,瑜伽垫,anchor,2026-08-31,2026-08-31
+fitness-zh-033,zh,fitness,运动健身,Fitness,expense,香港健身私教400HKD一节,400,HKD,私教,anchor,2026-08-31,2026-08-31
+fitness-zh-034,zh,fitness,运动健身,Fitness,expense,篮球一双600元,600,CNY,篮球鞋,anchor,2026-08-31,2026-08-31
+fitness-zh-035,zh,fitness,运动健身,Fitness,expense,游泳培训10节课1500块,1500,CNY,游泳培训,anchor,2026-08-31,2026-08-31
+fitness-zh-036,zh,fitness,运动健身,Fitness,expense,跑步机一台2999元,2999,CNY,跑步机,anchor,2026-08-31,2026-08-31
+fitness-zh-037,zh,fitness,运动健身,Fitness,expense,香港瑜伽中心月卡900HKD,900,HKD,瑜伽月卡,anchor,2026-08-31,2026-08-31
+fitness-zh-038,zh,fitness,运动健身,Fitness,expense,哑铃套装500元,500,CNY,哑铃,anchor,2026-08-31,2026-08-31
+fitness-zh-039,zh,fitness,运动健身,Fitness,expense,羽毛球线更换30块,30,CNY,换线,anchor,2026-08-31,2026-08-31
+fitness-zh-040,zh,fitness,运动健身,Fitness,expense,护膝护腕套装88元,88,CNY,护具,anchor,2026-08-31,2026-08-31
+fitness-zh-041,zh,fitness,运动健身,Fitness,expense,香港运动用品店买鞋800HKD,800,HKD,运动鞋,anchor,2026-08-31,2026-08-31
+fitness-zh-042,zh,fitness,运动健身,Fitness,expense,健身蛋白粉320元,320,CNY,蛋白粉,anchor,2026-08-31,2026-08-31
+fitness-zh-043,zh,fitness,运动健身,Fitness,expense,乒乓球拍一副200块,200,CNY,球拍,anchor,2026-08-31,2026-08-31
+fitness-zh-044,zh,fitness,运动健身,Fitness,expense,速干运动衣150元,150,CNY,运动衣,anchor,2026-08-31,2026-08-31
+fitness-zh-045,zh,fitness,运动健身,Fitness,expense,香港健身手套150HKD,150,HKD,健身手套,anchor,2026-08-31,2026-08-31
+fitness-zh-046,zh,fitness,运动健身,Fitness,expense,游泳镜一副128元,128,CNY,泳镜,anchor,2026-08-31,2026-08-31
+fitness-zh-047,zh,fitness,运动健身,Fitness,expense,篮球比赛报名费100块,100,CNY,报名费,anchor,2026-08-31,2026-08-31
+fitness-zh-048,zh,fitness,运动健身,Fitness,expense,运动背包299元,299,CNY,运动包,anchor,2026-08-31,2026-08-31
+fitness-zh-049,zh,fitness,运动健身,Fitness,expense,香港羽毛球馆80HKD每小时,80,HKD,羽毛球,anchor,2026-08-31,2026-08-31
+fitness-zh-050,zh,fitness,运动健身,Fitness,expense,香港健身月卡1000HKD,1000,HKD,健身月卡,anchor,2026-08-31,2026-08-31
+travel-zh-001,zh,travel,旅游度假,Travel,expense,昨天三亚旅游花了5000元,5000,CNY,三亚游,rel:-1,2026-08-30,2026-08-31
+travel-zh-002,zh,travel,旅游度假,Travel,expense,省内游跟团花了1200块,1200,CNY,跟团游,anchor,2026-08-31,2026-08-31
+travel-zh-003,zh,travel,旅游度假,Travel,expense,日本旅行花了8000HKD,8000,HKD,日本游,anchor,2026-08-31,2026-08-31
+travel-zh-004,zh,travel,旅游度假,Travel,expense,景区门票花了180元,180,CNY,景区门票,anchor,2026-08-31,2026-08-31
+travel-zh-005,zh,travel,旅游度假,Travel,expense,跟团游团费3500块,3500,CNY,跟团游,anchor,2026-08-31,2026-08-31
+travel-zh-006,zh,travel,旅游度假,Travel,expense,本周五云南自由行花了6000元,6000,CNY,自由行,weekday:5,2026-09-04,2026-08-31
+travel-zh-007,zh,travel,旅游度假,Travel,expense,泰国旅游花了12000HKD,12000,HKD,泰国游,anchor,2026-08-31,2026-08-31
+travel-zh-008,zh,travel,旅游度假,Travel,expense,导游小费花了200元,200,CNY,导游小费,anchor,2026-08-31,2026-08-31
+travel-zh-009,zh,travel,旅游度假,Travel,expense,欧洲游花费2000USD,2000,USD,欧洲游,anchor,2026-08-31,2026-08-31
+travel-zh-010,zh,travel,旅游度假,Travel,expense,周边自驾游花了800块,800,CNY,自驾游,anchor,2026-08-31,2026-08-31
+travel-zh-011,zh,travel,旅游度假,Travel,expense,8月7日成都重庆旅游4000元,4000,CNY,川渝游,ymd:2026-08-07,2026-08-07,2026-08-31
+travel-zh-012,zh,travel,旅游度假,Travel,expense,海岛游跟团3800块,3800,CNY,海岛游,anchor,2026-08-31,2026-08-31
+travel-zh-013,zh,travel,旅游度假,Travel,expense,韩国济州岛5000HKD,5000,HKD,济州岛,anchor,2026-08-31,2026-08-31
+travel-zh-014,zh,travel,旅游度假,Travel,expense,古镇一日游199元,199,CNY,古镇游,anchor,2026-08-31,2026-08-31
+travel-zh-015,zh,travel,旅游度假,Travel,expense,亲子游乐园行1500块,1500,CNY,亲子游,anchor,2026-08-31,2026-08-31
+travel-zh-016,zh,travel,旅游度假,Travel,expense,新疆自驾游10000元,10000,CNY,新疆自驾,anchor,2026-08-31,2026-08-31
+travel-zh-017,zh,travel,旅游度假,Travel,expense,新加坡旅游8000HKD,8000,HKD,新加坡游,anchor,2026-08-31,2026-08-31
+travel-zh-018,zh,travel,旅游度假,Travel,expense,漂流门票180元,180,CNY,漂流,anchor,2026-08-31,2026-08-31
+travel-zh-019,zh,travel,旅游度假,Travel,expense,登山徒步团300块,300,CNY,徒步,anchor,2026-08-31,2026-08-31
+travel-zh-020,zh,travel,旅游度假,Travel,expense,马尔代夫蜜月游20000元,20000,CNY,蜜月游,anchor,2026-08-31,2026-08-31
+travel-zh-021,zh,travel,旅游度假,Travel,expense,今天明天香港本地一日游都300HKD,300,HKD,香港一日游,"rel:0,1",2026-08-31|2026-09-01,2026-08-31
+travel-zh-022,zh,travel,旅游度假,Travel,expense,张家界旅游2500元,2500,CNY,张家界,anchor,2026-08-31,2026-08-31
+travel-zh-023,zh,travel,旅游度假,Travel,expense,游轮游三天两晚1800块,1800,CNY,游轮游,anchor,2026-08-31,2026-08-31
+travel-zh-024,zh,travel,旅游度假,Travel,expense,台湾环岛游12000HKD,12000,HKD,环岛游,anchor,2026-08-31,2026-08-31
+travel-zh-025,zh,travel,旅游度假,Travel,expense,草原五日游3000元,3000,CNY,草原游,anchor,2026-08-31,2026-08-31
+travel-zh-026,zh,travel,旅游度假,Travel,expense,温泉度假村两日游880块,880,CNY,温泉度假,anchor,2026-08-31,2026-08-31
+travel-zh-027,zh,travel,旅游度假,Travel,expense,香港离岛游200HKD,200,HKD,离岛游,anchor,2026-08-31,2026-08-31
+travel-zh-028,zh,travel,旅游度假,Travel,expense,西藏旅行8000元,8000,CNY,西藏游,anchor,2026-08-31,2026-08-31
+travel-zh-029,zh,travel,旅游度假,Travel,expense,摄影团采风1500块,1500,CNY,摄影团,anchor,2026-08-31,2026-08-31
+travel-zh-030,zh,travel,旅游度假,Travel,expense,美国东西海岸游20000HKD,20000,HKD,美国游,anchor,2026-08-31,2026-08-31
+travel-zh-031,zh,travel,旅游度假,Travel,expense,黄山旅游1200元,1200,CNY,黄山,anchor,2026-08-31,2026-08-31
+travel-zh-032,zh,travel,旅游度假,Travel,expense,农家乐两日游600块,600,CNY,农家乐,anchor,2026-08-31,2026-08-31
+travel-zh-033,zh,travel,旅游度假,Travel,expense,港澳五日游3000HKD,3000,HKD,港澳游,anchor,2026-08-31,2026-08-31
+travel-zh-034,zh,travel,旅游度假,Travel,expense,桂林山水游1800元,1800,CNY,桂林游,anchor,2026-08-31,2026-08-31
+travel-zh-035,zh,travel,旅游度假,Travel,expense,沙漠穿越团2500块,2500,CNY,沙漠穿越,anchor,2026-08-31,2026-08-31
+travel-zh-036,zh,travel,旅游度假,Travel,expense,香港长洲岛一日游150HKD,150,HKD,长洲岛,anchor,2026-08-31,2026-08-31
+travel-zh-037,zh,travel,旅游度假,Travel,expense,西安古都游2000元,2000,CNY,西安游,anchor,2026-08-31,2026-08-31
+travel-zh-038,zh,travel,旅游度假,Travel,expense,滑雪度假三日游1500块,1500,CNY,滑雪度假,anchor,2026-08-31,2026-08-31
+travel-zh-039,zh,travel,旅游度假,Travel,expense,澳大利亚游15000HKD,15000,HKD,澳洲游,anchor,2026-08-31,2026-08-31
+travel-zh-040,zh,travel,旅游度假,Travel,expense,武夷山旅游800元,800,CNY,武夷山,anchor,2026-08-31,2026-08-31
+travel-zh-041,zh,travel,旅游度假,Travel,expense,海滨度假一周5000块,5000,CNY,海滨度假,anchor,2026-08-31,2026-08-31
+travel-zh-042,zh,travel,旅游度假,Travel,expense,香港南丫岛一日游180HKD,180,HKD,南丫岛,anchor,2026-08-31,2026-08-31
+travel-zh-043,zh,travel,旅游度假,Travel,expense,九寨沟旅游2200元,2200,CNY,九寨沟,anchor,2026-08-31,2026-08-31
+travel-zh-044,zh,travel,旅游度假,Travel,expense,美食团逛吃800块,800,CNY,美食团,anchor,2026-08-31,2026-08-31
+travel-zh-045,zh,travel,旅游度假,Travel,expense,欧洲十国游25000HKD,25000,HKD,欧洲多国游,anchor,2026-08-31,2026-08-31
+travel-zh-046,zh,travel,旅游度假,Travel,expense,长白山旅游1800元,1800,CNY,长白山,anchor,2026-08-31,2026-08-31
+travel-zh-047,zh,travel,旅游度假,Travel,expense,露营装备租赁300块,300,CNY,露营,anchor,2026-08-31,2026-08-31
+travel-zh-048,zh,travel,旅游度假,Travel,expense,香港大屿山一日游250HKD,250,HKD,大屿山,anchor,2026-08-31,2026-08-31
+travel-zh-049,zh,travel,旅游度假,Travel,expense,丽江大理游3000元,3000,CNY,丽江大理,anchor,2026-08-31,2026-08-31
+travel-zh-050,zh,travel,旅游度假,Travel,expense,签证办理费500块,500,CNY,签证费,anchor,2026-08-31,2026-08-31
+lodging-zh-001,zh,lodging,酒店住宿,Lodging,expense,昨天酒店住一晚花了380元,380,CNY,酒店,rel:-1,2026-08-30,2026-08-31
+lodging-zh-002,zh,lodging,酒店住宿,Lodging,expense,民宿两晚花了600块,600,CNY,民宿,anchor,2026-08-31,2026-08-31
+lodging-zh-003,zh,lodging,酒店住宿,Lodging,expense,香港酒店一晚1200HKD,1200,HKD,香港酒店,anchor,2026-08-31,2026-08-31
+lodging-zh-004,zh,lodging,酒店住宿,Lodging,expense,出差住宿报销前花了450元,450,CNY,出差住宿,anchor,2026-08-31,2026-08-31
+lodging-zh-005,zh,lodging,酒店住宿,Lodging,expense,本周四五星级酒店一晚1800块,1800,CNY,五星级,weekday:4,2026-09-03,2026-08-31
+lodging-zh-006,zh,lodging,酒店住宿,Lodging,expense,快捷酒店住三晚花了750元,750,CNY,快捷酒店,anchor,2026-08-31,2026-08-31
+lodging-zh-007,zh,lodging,酒店住宿,Lodging,expense,海景酒店一晚2500HKD,2500,HKD,海景酒店,anchor,2026-08-31,2026-08-31
+lodging-zh-008,zh,lodging,酒店住宿,Lodging,expense,青旅床位花了80元,80,CNY,青旅,anchor,2026-08-31,2026-08-31
+lodging-zh-009,zh,lodging,酒店住宿,Lodging,expense,海外酒店一晚300USD,300,USD,海外酒店,anchor,2026-08-31,2026-08-31
+lodging-zh-010,zh,lodging,酒店住宿,Lodging,expense,钟点房花了120块,120,CNY,钟点房,anchor,2026-08-31,2026-08-31
+lodging-zh-011,zh,lodging,酒店住宿,Lodging,expense,8月6日连锁酒店标间一晚280元,280,CNY,连锁酒店,ymd:2026-08-06,2026-08-06,2026-08-31
+lodging-zh-012,zh,lodging,酒店住宿,Lodging,expense,度假别墅一晚3000块,3000,CNY,度假别墅,anchor,2026-08-31,2026-08-31
+lodging-zh-013,zh,lodging,酒店住宿,Lodging,expense,香港铜锣湾酒店一晚1800HKD,1800,HKD,铜锣湾,anchor,2026-08-31,2026-08-31
+lodging-zh-014,zh,lodging,酒店住宿,Lodging,expense,商务酒店一晚320元,320,CNY,商务酒店,anchor,2026-08-31,2026-08-31
+lodging-zh-015,zh,lodging,酒店住宿,Lodging,expense,主题酒店一晚480块,480,CNY,主题酒店,anchor,2026-08-31,2026-08-31
+lodging-zh-016,zh,lodging,酒店住宿,Lodging,expense,机场附近酒店一晚350元,350,CNY,机场酒店,anchor,2026-08-31,2026-08-31
+lodging-zh-017,zh,lodging,酒店住宿,Lodging,expense,香港尖沙咀酒店一晚2000HKD,2000,HKD,尖沙咀,anchor,2026-08-31,2026-08-31
+lodging-zh-018,zh,lodging,酒店住宿,Lodging,expense,民宿包院一天1500元,1500,CNY,包院,anchor,2026-08-31,2026-08-31
+lodging-zh-019,zh,lodging,酒店住宿,Lodging,expense,电竞酒店双人间一晚260块,260,CNY,电竞酒店,anchor,2026-08-31,2026-08-31
+lodging-zh-020,zh,lodging,酒店住宿,Lodging,expense,温泉酒店一晚680元,680,CNY,温泉酒店,anchor,2026-08-31,2026-08-31
+lodging-zh-021,zh,lodging,酒店住宿,Lodging,expense,8月27日香港迪士尼酒店一晚3000HKD,3000,HKD,迪士尼酒店,ymd:2026-08-27,2026-08-27,2026-08-31
+lodging-zh-022,zh,lodging,酒店住宿,Lodging,expense,招待所一晚80元,80,CNY,招待所,anchor,2026-08-31,2026-08-31
+lodging-zh-023,zh,lodging,酒店住宿,Lodging,expense,公寓式酒店两晚800块,800,CNY,公寓酒店,anchor,2026-08-31,2026-08-31
+lodging-zh-024,zh,lodging,酒店住宿,Lodging,expense,海景民宿一晚580元,580,CNY,海景民宿,anchor,2026-08-31,2026-08-31
+lodging-zh-025,zh,lodging,酒店住宿,Lodging,expense,香港旺角酒店一晚800HKD,800,HKD,旺角,anchor,2026-08-31,2026-08-31
+lodging-zh-026,zh,lodging,酒店住宿,Lodging,expense,全季酒店一晚350元,350,CNY,全季,anchor,2026-08-31,2026-08-31
+lodging-zh-027,zh,lodging,酒店住宿,Lodging,expense,四合院民宿一晚1200块,1200,CNY,四合院,anchor,2026-08-31,2026-08-31
+lodging-zh-028,zh,lodging,酒店住宿,Lodging,expense,香港中环酒店一晚2500HKD,2500,HKD,中环,anchor,2026-08-31,2026-08-31
+lodging-zh-029,zh,lodging,酒店住宿,Lodging,expense,如家酒店一晚220元,220,CNY,如家,anchor,2026-08-31,2026-08-31
+lodging-zh-030,zh,lodging,酒店住宿,Lodging,expense,度假酒店三晚2400块,2400,CNY,度假酒店,anchor,2026-08-31,2026-08-31
+lodging-zh-031,zh,lodging,酒店住宿,Lodging,expense,江景酒店一晚420元,420,CNY,江景酒店,anchor,2026-08-31,2026-08-31
+lodging-zh-032,zh,lodging,酒店住宿,Lodging,expense,香港油麻地酒店一晚600HKD,600,HKD,油麻地,anchor,2026-08-31,2026-08-31
+lodging-zh-033,zh,lodging,酒店住宿,Lodging,expense,汉庭酒店一晚199元,199,CNY,汉庭,anchor,2026-08-31,2026-08-31
+lodging-zh-034,zh,lodging,酒店住宿,Lodging,expense,网红民宿一晚520块,520,CNY,网红民宿,anchor,2026-08-31,2026-08-31
+lodging-zh-035,zh,lodging,酒店住宿,Lodging,expense,香港机场酒店一晚1000HKD,1000,HKD,机场酒店,anchor,2026-08-31,2026-08-31
+lodging-zh-036,zh,lodging,酒店住宿,Lodging,expense,七天酒店一晚150元,150,CNY,七天,anchor,2026-08-31,2026-08-31
+lodging-zh-037,zh,lodging,酒店住宿,Lodging,expense,精品酒店一晚380块,380,CNY,精品酒店,anchor,2026-08-31,2026-08-31
+lodging-zh-038,zh,lodging,酒店住宿,Lodging,expense,山景民宿一晚280元,280,CNY,山景民宿,anchor,2026-08-31,2026-08-31
+lodging-zh-039,zh,lodging,酒店住宿,Lodging,expense,香港北角酒店一晚700HKD,700,HKD,北角,anchor,2026-08-31,2026-08-31
+lodging-zh-040,zh,lodging,酒店住宿,Lodging,expense,维也纳酒店一晚260元,260,CNY,维也纳,anchor,2026-08-31,2026-08-31
+lodging-zh-041,zh,lodging,酒店住宿,Lodging,expense,loft酒店一晚450块,450,CNY,loft酒店,anchor,2026-08-31,2026-08-31
+lodging-zh-042,zh,lodging,酒店住宿,Lodging,expense,香港红磡酒店一晚900HKD,900,HKD,红磡,anchor,2026-08-31,2026-08-31
+lodging-zh-043,zh,lodging,酒店住宿,Lodging,expense,亚朵酒店一晚360元,360,CNY,亚朵,anchor,2026-08-31,2026-08-31
+lodging-zh-044,zh,lodging,酒店住宿,Lodging,expense,家庭套房一晚680块,680,CNY,家庭套房,anchor,2026-08-31,2026-08-31
+lodging-zh-045,zh,lodging,酒店住宿,Lodging,expense,香港铜锣湾迷你酒店一晚500HKD,500,HKD,迷你酒店,anchor,2026-08-31,2026-08-31
+lodging-zh-046,zh,lodging,酒店住宿,Lodging,expense,格林豪泰一晚200元,200,CNY,格林豪泰,anchor,2026-08-31,2026-08-31
+lodging-zh-047,zh,lodging,酒店住宿,Lodging,expense,海边木屋一晚380块,380,CNY,海边木屋,anchor,2026-08-31,2026-08-31
+lodging-zh-048,zh,lodging,酒店住宿,Lodging,expense,香港佐敦酒店一晚650HKD,650,HKD,佐敦,anchor,2026-08-31,2026-08-31
+lodging-zh-049,zh,lodging,酒店住宿,Lodging,expense,酒店押金500元,500,CNY,押金,anchor,2026-08-31,2026-08-31
+lodging-zh-050,zh,lodging,酒店住宿,Lodging,expense,加早餐每人50块,50,CNY,早餐,anchor,2026-08-31,2026-08-31
+gifts-zh-001,zh,gifts,人情送礼,Gifts,expense,昨天给朋友买生日礼物花了300元,300,CNY,生日礼物,rel:-1,2026-08-30,2026-08-31
+gifts-zh-002,zh,gifts,人情送礼,Gifts,expense,探望病人买果篮花了150块,150,CNY,探病,anchor,2026-08-31,2026-08-31
+gifts-zh-003,zh,gifts,人情送礼,Gifts,expense,给客户送伴手礼花了500HKD,500,HKD,客户伴手礼,anchor,2026-08-31,2026-08-31
+gifts-zh-004,zh,gifts,人情送礼,Gifts,expense,本周三教师节买花送老师花了200元,200,CNY,教师节,weekday:3,2026-09-02,2026-08-31
+gifts-zh-005,zh,gifts,人情送礼,Gifts,expense,给长辈买营养品花了400块,400,CNY,长辈礼品,anchor,2026-08-31,2026-08-31
+gifts-zh-006,zh,gifts,人情送礼,Gifts,expense,乔迁礼物花了888元,888,CNY,乔迁礼,anchor,2026-08-31,2026-08-31
+gifts-zh-007,zh,gifts,人情送礼,Gifts,expense,结婚礼物买首饰花了2000HKD,2000,HKD,结婚礼,anchor,2026-08-31,2026-08-31
+gifts-zh-008,zh,gifts,人情送礼,Gifts,expense,给同事买离职礼物花了150元,150,CNY,离职礼,anchor,2026-08-31,2026-08-31
+gifts-zh-009,zh,gifts,人情送礼,Gifts,expense,给外国客户送礼100USD,100,USD,客户礼品,anchor,2026-08-31,2026-08-31
+gifts-zh-010,zh,gifts,人情送礼,Gifts,expense,满月礼物花了300块,300,CNY,满月礼,anchor,2026-08-31,2026-08-31
+gifts-zh-011,zh,gifts,人情送礼,Gifts,expense,春节给长辈买礼品500元,500,CNY,春节礼,anchor,2026-08-31,2026-08-31
+gifts-zh-012,zh,gifts,人情送礼,Gifts,expense,端午节送粽子礼盒128块,128,CNY,端午礼,anchor,2026-08-31,2026-08-31
+gifts-zh-013,zh,gifts,人情送礼,Gifts,expense,香港客户送茶叶礼盒800HKD,800,HKD,茶叶礼盒,anchor,2026-08-31,2026-08-31
+gifts-zh-014,zh,gifts,人情送礼,Gifts,expense,中秋节送月饼礼盒200元,200,CNY,中秋礼,anchor,2026-08-31,2026-08-31
+gifts-zh-015,zh,gifts,人情送礼,Gifts,expense,给领导买烟酒600块,600,CNY,领导礼品,anchor,2026-08-31,2026-08-31
+gifts-zh-016,zh,gifts,人情送礼,Gifts,expense,新生儿礼物套装399元,399,CNY,新生儿礼,anchor,2026-08-31,2026-08-31
+gifts-zh-017,zh,gifts,人情送礼,Gifts,expense,香港朋友搬家送摆件1000HKD,1000,HKD,搬家礼,anchor,2026-08-31,2026-08-31
+gifts-zh-018,zh,gifts,人情送礼,Gifts,expense,感恩节送老师鲜花180元,180,CNY,感恩礼,anchor,2026-08-31,2026-08-31
+gifts-zh-019,zh,gifts,人情送礼,Gifts,expense,给客户定制礼品500块,500,CNY,定制礼品,anchor,2026-08-31,2026-08-31
+gifts-zh-020,zh,gifts,人情送礼,Gifts,expense,今天明天生日鲜花蛋糕都按288元记,288,CNY,生日礼,"rel:0,1",2026-08-31|2026-09-01,2026-08-31
+gifts-zh-021,zh,gifts,人情送礼,Gifts,expense,香港亲戚送礼金饰3000HKD,3000,HKD,金饰礼,anchor,2026-08-31,2026-08-31
+gifts-zh-022,zh,gifts,人情送礼,Gifts,expense,毕业礼物送钢笔200元,200,CNY,毕业礼,anchor,2026-08-31,2026-08-31
+gifts-zh-023,zh,gifts,人情送礼,Gifts,expense,探望长辈买牛奶水果150块,150,CNY,探长辈,anchor,2026-08-31,2026-08-31
+gifts-zh-024,zh,gifts,人情送礼,Gifts,expense,商务伴手礼每人80元,80,CNY,商务伴手礼,anchor,2026-08-31,2026-08-31
+gifts-zh-025,zh,gifts,人情送礼,Gifts,expense,香港客户送保健品500HKD,500,HKD,保健品礼,anchor,2026-08-31,2026-08-31
+gifts-zh-026,zh,gifts,人情送礼,Gifts,expense,8月14日情人节送女朋友礼物520元,520,CNY,情人节礼,ymd:2026-08-14,2026-08-14,2026-08-31
+gifts-zh-027,zh,gifts,人情送礼,Gifts,expense,六一给孩子买玩具300块,300,CNY,六一礼物,anchor,2026-08-31,2026-08-31
+gifts-zh-028,zh,gifts,人情送礼,Gifts,expense,重阳节送老人补品280元,280,CNY,重阳礼,anchor,2026-08-31,2026-08-31
+gifts-zh-029,zh,gifts,人情送礼,Gifts,expense,香港朋友结婚送餐具套装800HKD,800,HKD,结婚餐具礼,anchor,2026-08-31,2026-08-31
+gifts-zh-030,zh,gifts,人情送礼,Gifts,expense,跨年礼物送朋友199元,199,CNY,跨年礼,anchor,2026-08-31,2026-08-31
+gifts-zh-031,zh,gifts,人情送礼,Gifts,expense,给师傅买烟酒茶400块,400,CNY,师傅礼品,anchor,2026-08-31,2026-08-31
+gifts-zh-032,zh,gifts,人情送礼,Gifts,expense,开业礼物送招财摆件666元,666,CNY,开业礼,anchor,2026-08-31,2026-08-31
+gifts-zh-033,zh,gifts,人情送礼,Gifts,expense,香港客户送本地特产300HKD,300,HKD,本地特产,anchor,2026-08-31,2026-08-31
+gifts-zh-034,zh,gifts,人情送礼,Gifts,expense,母亲节送妈妈项链888元,888,CNY,母亲节礼,anchor,2026-08-31,2026-08-31
+gifts-zh-035,zh,gifts,人情送礼,Gifts,expense,父亲节送爸爸手表1200块,1200,CNY,父亲节礼,anchor,2026-08-31,2026-08-31
+gifts-zh-036,zh,gifts,人情送礼,Gifts,expense,七夕送男朋友礼物500元,500,CNY,七夕礼,anchor,2026-08-31,2026-08-31
+gifts-zh-037,zh,gifts,人情送礼,Gifts,expense,香港闺蜜生日送香水600HKD,600,HKD,生日香水礼,anchor,2026-08-31,2026-08-31
+gifts-zh-038,zh,gifts,人情送礼,Gifts,expense,元宵节送花灯礼品100元,100,CNY,元宵礼,anchor,2026-08-31,2026-08-31
+gifts-zh-039,zh,gifts,人情送礼,Gifts,expense,给客户送日历台历50块,50,CNY,日历礼,anchor,2026-08-31,2026-08-31
+gifts-zh-040,zh,gifts,人情送礼,Gifts,expense,升职礼物送钢笔礼盒280元,280,CNY,升职礼,anchor,2026-08-31,2026-08-31
+gifts-zh-041,zh,gifts,人情送礼,Gifts,expense,香港同事离职送定制水杯200HKD,200,HKD,离职礼,anchor,2026-08-31,2026-08-31
+gifts-zh-042,zh,gifts,人情送礼,Gifts,expense,冬至送长辈保暖内衣300元,300,CNY,冬至礼,anchor,2026-08-31,2026-08-31
+gifts-zh-043,zh,gifts,人情送礼,Gifts,expense,给孩子买升学礼物400块,400,CNY,升学礼,anchor,2026-08-31,2026-08-31
+gifts-zh-044,zh,gifts,人情送礼,Gifts,expense,圣诞节送苹果礼盒88元,88,CNY,圣诞礼,anchor,2026-08-31,2026-08-31
+gifts-zh-045,zh,gifts,人情送礼,Gifts,expense,香港客户送定制钢笔500HKD,500,HKD,定制钢笔礼,anchor,2026-08-31,2026-08-31
+gifts-zh-046,zh,gifts,人情送礼,Gifts,expense,闺蜜礼物送香水300元,300,CNY,闺蜜礼,anchor,2026-08-31,2026-08-31
+gifts-zh-047,zh,gifts,人情送礼,Gifts,expense,战友聚会纪念品150块,150,CNY,纪念品,anchor,2026-08-31,2026-08-31
+gifts-zh-048,zh,gifts,人情送礼,Gifts,expense,老师退休礼物200元,200,CNY,退休礼,anchor,2026-08-31,2026-08-31
+gifts-zh-049,zh,gifts,人情送礼,Gifts,expense,香港朋友乔迁送绿植盆栽300HKD,300,HKD,乔迁绿植礼,anchor,2026-08-31,2026-08-31
+gifts-zh-050,zh,gifts,人情送礼,Gifts,expense,香港同事生日送礼物300HKD,300,HKD,生日礼,anchor,2026-08-31,2026-08-31
+red_packet-zh-001,zh,red_packet,红包礼金,Red Packets,expense,昨天给侄子发压岁钱红包2000块,2000,CNY,压岁钱,rel:-1,2026-08-30,2026-08-31
+red_packet-zh-002,zh,red_packet,红包礼金,Red Packets,expense,朋友结婚随份子888元,888,CNY,结婚随礼,anchor,2026-08-31,2026-08-31
+red_packet-zh-003,zh,red_packet,红包礼金,Red Packets,expense,微信群里发红包200HKD,200,HKD,群红包,anchor,2026-08-31,2026-08-31
+red_packet-zh-004,zh,red_packet,红包礼金,Red Packets,expense,生孩子随礼666元,666,CNY,满月随礼,anchor,2026-08-31,2026-08-31
+red_packet-zh-005,zh,red_packet,红包礼金,Red Packets,expense,过年给长辈包红包5000块,5000,CNY,过年红包,anchor,2026-08-31,2026-08-31
+red_packet-zh-006,zh,red_packet,红包礼金,Red Packets,expense,本周六乔迁之喜发红包1888元,1888,CNY,乔迁红包,weekday:6,2026-09-05,2026-08-31
+red_packet-zh-007,zh,red_packet,红包礼金,Red Packets,expense,生日红包发了520HKD,520,HKD,生日红包,anchor,2026-08-31,2026-08-31
+red_packet-zh-008,zh,red_packet,红包礼金,Red Packets,expense,开工利是发了100元,100,CNY,开工利是,anchor,2026-08-31,2026-08-31
+red_packet-zh-009,zh,red_packet,红包礼金,Red Packets,expense,海外朋友结婚随礼200USD,200,USD,海外随礼,anchor,2026-08-31,2026-08-31
+red_packet-zh-010,zh,red_packet,红包礼金,Red Packets,expense,升学红包发了1000块,1000,CNY,升学红包,anchor,2026-08-31,2026-08-31
+red_packet-zh-011,zh,red_packet,红包礼金,Red Packets,expense,8月13日满月酒随礼500元,500,CNY,满月酒,ymd:2026-08-13,2026-08-13,2026-08-31
+red_packet-zh-012,zh,red_packet,红包礼金,Red Packets,expense,公司年会抽奖红包888块,888,CNY,年会红包,anchor,2026-08-31,2026-08-31
+red_packet-zh-013,zh,red_packet,红包礼金,Red Packets,expense,香港新年派利是500HKD,500,HKD,新年利是,anchor,2026-08-31,2026-08-31
+red_packet-zh-014,zh,red_packet,红包礼金,Red Packets,expense,订婚红包1001元,1001,CNY,订婚红包,anchor,2026-08-31,2026-08-31
+red_packet-zh-015,zh,red_packet,红包礼金,Red Packets,expense,搬新家随礼666块,666,CNY,搬家随礼,anchor,2026-08-31,2026-08-31
+red_packet-zh-016,zh,red_packet,红包礼金,Red Packets,expense,老人过寿红包2000元,2000,CNY,寿礼红包,anchor,2026-08-31,2026-08-31
+red_packet-zh-017,zh,red_packet,红包礼金,Red Packets,expense,香港结婚礼金10000HKD,10000,HKD,结婚礼金,anchor,2026-08-31,2026-08-31
+red_packet-zh-018,zh,red_packet,红包礼金,Red Packets,expense,六一给孩子发红包200元,200,CNY,儿童节红包,anchor,2026-08-31,2026-08-31
+red_packet-zh-019,zh,red_packet,红包礼金,Red Packets,expense,开业大吉红包888块,888,CNY,开业红包,anchor,2026-08-31,2026-08-31
+red_packet-zh-020,zh,red_packet,红包礼金,Red Packets,expense,金榜题名红包1666元,1666,CNY,升学红包,anchor,2026-08-31,2026-08-31
+red_packet-zh-021,zh,red_packet,红包礼金,Red Packets,expense,今天明天香港满月酒礼金都3000HKD,3000,HKD,满月礼金,"rel:0,1",2026-08-31|2026-09-01,2026-08-31
+red_packet-zh-022,zh,red_packet,红包礼金,Red Packets,expense,除夕压岁钱1000元,1000,CNY,除夕红包,anchor,2026-08-31,2026-08-31
+red_packet-zh-023,zh,red_packet,红包礼金,Red Packets,expense,朋友新店开张随礼1288块,1288,CNY,开张随礼,anchor,2026-08-31,2026-08-31
+red_packet-zh-024,zh,red_packet,红包礼金,Red Packets,expense,生日红包66.66元,66.66,CNY,生日红包,anchor,2026-08-31,2026-08-31
+red_packet-zh-025,zh,red_packet,红包礼金,Red Packets,expense,香港乔迁礼金5000HKD,5000,HKD,乔迁礼金,anchor,2026-08-31,2026-08-31
+red_packet-zh-026,zh,red_packet,红包礼金,Red Packets,expense,元宵节红包88元,88,CNY,元宵红包,anchor,2026-08-31,2026-08-31
+red_packet-zh-027,zh,red_packet,红包礼金,Red Packets,expense,订婚随礼3180块,3180,CNY,订婚随礼,anchor,2026-08-31,2026-08-31
+red_packet-zh-028,zh,red_packet,红包礼金,Red Packets,expense,重阳节给老人红包500元,500,CNY,重阳红包,anchor,2026-08-31,2026-08-31
+red_packet-zh-029,zh,red_packet,红包礼金,Red Packets,expense,香港百日宴礼金2000HKD,2000,HKD,百日宴礼金,anchor,2026-08-31,2026-08-31
+red_packet-zh-030,zh,red_packet,红包礼金,Red Packets,expense,情人节红包520元,520,CNY,情人节红包,anchor,2026-08-31,2026-08-31
+red_packet-zh-031,zh,red_packet,红包礼金,Red Packets,expense,结婚改口费9999块,9999,CNY,改口费,anchor,2026-08-31,2026-08-31
+red_packet-zh-032,zh,red_packet,红包礼金,Red Packets,expense,七夕红包1314元,1314,CNY,七夕红包,anchor,2026-08-31,2026-08-31
+red_packet-zh-033,zh,red_packet,红包礼金,Red Packets,expense,香港春节利是每人50HKD,50,HKD,春节利是,anchor,2026-08-31,2026-08-31
+red_packet-zh-034,zh,red_packet,红包礼金,Red Packets,expense,冬至红包188元,188,CNY,冬至红包,anchor,2026-08-31,2026-08-31
+red_packet-zh-035,zh,red_packet,红包礼金,Red Packets,expense,宝宝周岁红包1000块,1000,CNY,周岁红包,anchor,2026-08-31,2026-08-31
+red_packet-zh-036,zh,red_packet,红包礼金,Red Packets,expense,毕业红包666元,666,CNY,毕业红包,anchor,2026-08-31,2026-08-31
+red_packet-zh-037,zh,red_packet,红包礼金,Red Packets,expense,香港寿礼金8000HKD,8000,HKD,寿礼金,anchor,2026-08-31,2026-08-31
+red_packet-zh-038,zh,red_packet,红包礼金,Red Packets,expense,小年红包200元,200,CNY,小年红包,anchor,2026-08-31,2026-08-31
+red_packet-zh-039,zh,red_packet,红包礼金,Red Packets,expense,同事结婚随礼300块,300,CNY,结婚随礼,anchor,2026-08-31,2026-08-31
+red_packet-zh-040,zh,red_packet,红包礼金,Red Packets,expense,搬家红包888元,888,CNY,搬家红包,anchor,2026-08-31,2026-08-31
+red_packet-zh-041,zh,red_packet,红包礼金,Red Packets,expense,香港订婚礼金18888HKD,18888,HKD,订婚礼金,anchor,2026-08-31,2026-08-31
+red_packet-zh-042,zh,red_packet,红包礼金,Red Packets,expense,520红包520元,520,CNY,520红包,anchor,2026-08-31,2026-08-31
+red_packet-zh-043,zh,red_packet,红包礼金,Red Packets,expense,朋友生二胎随礼800块,800,CNY,二胎随礼,anchor,2026-08-31,2026-08-31
+red_packet-zh-044,zh,red_packet,红包礼金,Red Packets,expense,正月十五红包88元,88,CNY,元宵红包,anchor,2026-08-31,2026-08-31
+red_packet-zh-045,zh,red_packet,红包礼金,Red Packets,expense,香港新居入伙礼金10000HKD,10000,HKD,入伙礼金,anchor,2026-08-31,2026-08-31
+red_packet-zh-046,zh,red_packet,红包礼金,Red Packets,expense,跨年红包188元,188,CNY,跨年红包,anchor,2026-08-31,2026-08-31
+red_packet-zh-047,zh,red_packet,红包礼金,Red Packets,expense,亲戚孩子升学随礼500块,500,CNY,升学随礼,anchor,2026-08-31,2026-08-31
+red_packet-zh-048,zh,red_packet,红包礼金,Red Packets,expense,母亲节红包888元,888,CNY,母亲节红包,anchor,2026-08-31,2026-08-31
+red_packet-zh-049,zh,red_packet,红包礼金,Red Packets,expense,香港开工利是每人100HKD,100,HKD,开工利是,anchor,2026-08-31,2026-08-31
+red_packet-zh-050,zh,red_packet,红包礼金,Red Packets,expense,香港元宵派利是200HKD,200,HKD,元宵利是,anchor,2026-08-31,2026-08-31
+pets-zh-001,zh,pets,宠物养护,Pets,expense,昨天给猫买猫粮花了180元,180,CNY,猫粮,rel:-1,2026-08-30,2026-08-31
+pets-zh-002,zh,pets,宠物养护,Pets,expense,狗狗洗澡美容花了150块,150,CNY,洗澡美容,anchor,2026-08-31,2026-08-31
+pets-zh-003,zh,pets,宠物养护,Pets,expense,宠物医院看病花了800HKD,800,HKD,宠物看病,anchor,2026-08-31,2026-08-31
+pets-zh-004,zh,pets,宠物养护,Pets,expense,买猫砂猫玩具花了80元,80,CNY,猫砂玩具,anchor,2026-08-31,2026-08-31
+pets-zh-005,zh,pets,宠物养护,Pets,expense,宠物驱虫花了120块,120,CNY,驱虫,anchor,2026-08-31,2026-08-31
+pets-zh-006,zh,pets,宠物养护,Pets,expense,这一周每天狗粮按袋摊下来记320元,320,CNY,狗粮,week:0,2026-08-31|2026-09-01|2026-09-02|2026-09-03|2026-09-04|2026-09-05|2026-09-06,2026-08-31
+pets-zh-007,zh,pets,宠物养护,Pets,expense,宠物寄养三天花了600HKD,600,HKD,寄养,anchor,2026-08-31,2026-08-31
+pets-zh-008,zh,pets,宠物养护,Pets,expense,给狗打疫苗花了280元,280,CNY,疫苗,anchor,2026-08-31,2026-08-31
+pets-zh-009,zh,pets,宠物养护,Pets,expense,海外宠物用品50USD,50,USD,海外用品,anchor,2026-08-31,2026-08-31
+pets-zh-010,zh,pets,宠物养护,Pets,expense,宠物零食花了68块,68,CNY,零食,anchor,2026-08-31,2026-08-31
+pets-zh-011,zh,pets,宠物养护,Pets,expense,今天明天猫罐头都按200元记,200,CNY,猫罐头,"rel:0,1",2026-08-31|2026-09-01,2026-08-31
+pets-zh-012,zh,pets,宠物养护,Pets,expense,狗狗剃毛花了100块,100,CNY,剃毛,anchor,2026-08-31,2026-08-31
+pets-zh-013,zh,pets,宠物养护,Pets,expense,香港宠物医院诊金500HKD,500,HKD,宠物诊金,anchor,2026-08-31,2026-08-31
+pets-zh-014,zh,pets,宠物养护,Pets,expense,猫抓板猫爬架150元,150,CNY,猫爬架,anchor,2026-08-31,2026-08-31
+pets-zh-015,zh,pets,宠物养护,Pets,expense,宠物牵引绳胸背带80块,80,CNY,牵引绳,anchor,2026-08-31,2026-08-31
+pets-zh-016,zh,pets,宠物养护,Pets,expense,今天到后天宠物沐浴露都58元,58,CNY,沐浴露,span:0:2,2026-08-31|2026-09-01|2026-09-02,2026-08-31
+pets-zh-017,zh,pets,宠物养护,Pets,expense,香港宠物美容300HKD,300,HKD,宠物美容,anchor,2026-08-31,2026-08-31
+pets-zh-018,zh,pets,宠物养护,Pets,expense,狗狗体内外驱虫药150元,150,CNY,驱虫药,anchor,2026-08-31,2026-08-31
+pets-zh-019,zh,pets,宠物养护,Pets,expense,猫砂盆半封闭68块,68,CNY,猫砂盆,anchor,2026-08-31,2026-08-31
+pets-zh-020,zh,pets,宠物养护,Pets,expense,宠物航空箱200元,200,CNY,航空箱,anchor,2026-08-31,2026-08-31
+pets-zh-021,zh,pets,宠物养护,Pets,expense,本周日香港宠物寄养每天200HKD,200,HKD,寄养,weekday:7,2026-09-06,2026-08-31
+pets-zh-022,zh,pets,宠物养护,Pets,expense,狗狗钙片微量元素88元,88,CNY,营养品,anchor,2026-08-31,2026-08-31
+pets-zh-023,zh,pets,宠物养护,Pets,expense,猫化毛膏营养膏128块,128,CNY,营养膏,anchor,2026-08-31,2026-08-31
+pets-zh-024,zh,pets,宠物养护,Pets,expense,宠物衣服冬装60元,60,CNY,宠物衣,anchor,2026-08-31,2026-08-31
+pets-zh-025,zh,pets,宠物养护,Pets,expense,香港宠物粮食200HKD,200,HKD,宠物粮,anchor,2026-08-31,2026-08-31
+pets-zh-026,zh,pets,宠物养护,Pets,expense,宠物尿垫尿不湿45元,45,CNY,尿垫,anchor,2026-08-31,2026-08-31
+pets-zh-027,zh,pets,宠物养护,Pets,expense,狗狗玩具球磨牙棒30块,30,CNY,玩具,anchor,2026-08-31,2026-08-31
+pets-zh-028,zh,pets,宠物养护,Pets,expense,猫草猫薄荷20元,20,CNY,猫草,anchor,2026-08-31,2026-08-31
+pets-zh-029,zh,pets,宠物养护,Pets,expense,香港宠物用品店买零食100HKD,100,HKD,宠物零食,anchor,2026-08-31,2026-08-31
+pets-zh-030,zh,pets,宠物养护,Pets,expense,宠物绝育手术800元,800,CNY,绝育,anchor,2026-08-31,2026-08-31
+pets-zh-031,zh,pets,宠物养护,Pets,expense,8月17日猫咪体检套餐300块,300,CNY,体检,ymd:2026-08-17,2026-08-17,2026-08-31
+pets-zh-032,zh,pets,宠物养护,Pets,expense,宠物窝垫房子120元,120,CNY,宠物窝,anchor,2026-08-31,2026-08-31
+pets-zh-033,zh,pets,宠物养护,Pets,expense,狗狗指甲剪剃毛器88块,88,CNY,美容工具,anchor,2026-08-31,2026-08-31
+pets-zh-034,zh,pets,宠物养护,Pets,expense,香港宠物保险每月100HKD,100,HKD,宠物保险,anchor,2026-08-31,2026-08-31
+pets-zh-035,zh,pets,宠物养护,Pets,expense,猫包外出便携50元,50,CNY,猫包,anchor,2026-08-31,2026-08-31
+pets-zh-036,zh,pets,宠物养护,Pets,expense,宠物益生菌调理肠胃68块,68,CNY,益生菌,anchor,2026-08-31,2026-08-31
+pets-zh-037,zh,pets,宠物养护,Pets,expense,宠物厕所诱导剂25元,25,CNY,诱导剂,anchor,2026-08-31,2026-08-31
+pets-zh-038,zh,pets,宠物养护,Pets,expense,香港宠物办证费200HKD,200,HKD,办证,anchor,2026-08-31,2026-08-31
+pets-zh-039,zh,pets,宠物养护,Pets,expense,狗狗项圈铃铛30元,30,CNY,项圈,anchor,2026-08-31,2026-08-31
+pets-zh-040,zh,pets,宠物养护,Pets,expense,猫自动喂食器299块,299,CNY,喂食器,anchor,2026-08-31,2026-08-31
+pets-zh-041,zh,pets,宠物养护,Pets,expense,上周日买了宠物饮水机158元,158,CNY,饮水机,weekday:-1:7,2026-08-30,2026-08-31
+pets-zh-042,zh,pets,宠物养护,Pets,expense,香港宠物冲凉卡10次1200HKD,1200,HKD,冲凉卡,anchor,2026-08-31,2026-08-31
+pets-zh-043,zh,pets,宠物养护,Pets,expense,狗狗眼药水35元,35,CNY,眼药水,anchor,2026-08-31,2026-08-31
+pets-zh-044,zh,pets,宠物养护,Pets,expense,猫耳螨药50块,50,CNY,耳螨药,anchor,2026-08-31,2026-08-31
+pets-zh-045,zh,pets,宠物养护,Pets,expense,宠物剃毛器电推剪80元,80,CNY,剃毛器,anchor,2026-08-31,2026-08-31
+pets-zh-046,zh,pets,宠物养护,Pets,expense,香港宠物驱虫药150HKD,150,HKD,驱虫药,anchor,2026-08-31,2026-08-31
+pets-zh-047,zh,pets,宠物养护,Pets,expense,宠物吊床猫窝45元,45,CNY,猫窝,anchor,2026-08-31,2026-08-31
+pets-zh-048,zh,pets,宠物养护,Pets,expense,狗狗洁齿骨磨牙棒60块,60,CNY,洁齿骨,anchor,2026-08-31,2026-08-31
+pets-zh-049,zh,pets,宠物养护,Pets,expense,宠物消毒喷雾28元,28,CNY,消毒喷雾,anchor,2026-08-31,2026-08-31
+pets-zh-050,zh,pets,宠物养护,Pets,expense,香港宠物美容洗澡350HKD,350,HKD,宠物美容,anchor,2026-08-31,2026-08-31
+apparel-zh-001,zh,apparel,服饰鞋包,Apparel,expense,昨天买外套花了599元,599,CNY,外套,rel:-1,2026-08-30,2026-08-31
+apparel-zh-002,zh,apparel,服饰鞋包,Apparel,expense,买运动鞋花了799块,799,CNY,运动鞋,anchor,2026-08-31,2026-08-31
+apparel-zh-003,zh,apparel,服饰鞋包,Apparel,expense,买包包花了1200HKD,1200,HKD,包包,anchor,2026-08-31,2026-08-31
+apparel-zh-004,zh,apparel,服饰鞋包,Apparel,expense,买裤子花了299元,299,CNY,裤子,anchor,2026-08-31,2026-08-31
+apparel-zh-005,zh,apparel,服饰鞋包,Apparel,expense,买内衣袜子花了150块,150,CNY,内衣袜,anchor,2026-08-31,2026-08-31
+apparel-zh-006,zh,apparel,服饰鞋包,Apparel,expense,买羽绒服花了1299元,1299,CNY,羽绒服,anchor,2026-08-31,2026-08-31
+apparel-zh-007,zh,apparel,服饰鞋包,Apparel,expense,买高跟鞋花了899HKD,899,HKD,高跟鞋,anchor,2026-08-31,2026-08-31
+apparel-zh-008,zh,apparel,服饰鞋包,Apparel,expense,买帽子围巾花了180元,180,CNY,帽围巾,anchor,2026-08-31,2026-08-31
+apparel-zh-009,zh,apparel,服饰鞋包,Apparel,expense,本周六海外买奢侈品包2000USD,2000,USD,奢侈品包,weekday:6,2026-09-05,2026-08-31
+apparel-zh-010,zh,apparel,服饰鞋包,Apparel,expense,买T恤花了99块,99,CNY,T恤,anchor,2026-08-31,2026-08-31
+apparel-zh-011,zh,apparel,服饰鞋包,Apparel,expense,买连衣裙399元,399,CNY,连衣裙,anchor,2026-08-31,2026-08-31
+apparel-zh-012,zh,apparel,服饰鞋包,Apparel,expense,买皮鞋688块,688,CNY,皮鞋,anchor,2026-08-31,2026-08-31
+apparel-zh-013,zh,apparel,服饰鞋包,Apparel,expense,香港买名牌包8000HKD,8000,HKD,名牌包,anchor,2026-08-31,2026-08-31
+apparel-zh-014,zh,apparel,服饰鞋包,Apparel,expense,买牛仔裤199元,199,CNY,牛仔裤,anchor,2026-08-31,2026-08-31
+apparel-zh-015,zh,apparel,服饰鞋包,Apparel,expense,买保暖内衣套装299块,299,CNY,保暖内衣,anchor,2026-08-31,2026-08-31
+apparel-zh-016,zh,apparel,服饰鞋包,Apparel,expense,买风衣外套899元,899,CNY,风衣,anchor,2026-08-31,2026-08-31
+apparel-zh-017,zh,apparel,服饰鞋包,Apparel,expense,8月4日香港买运动鞋1000HKD,1000,HKD,运动鞋,ymd:2026-08-04,2026-08-04,2026-08-31
+apparel-zh-018,zh,apparel,服饰鞋包,Apparel,expense,买衬衫159元,159,CNY,衬衫,anchor,2026-08-31,2026-08-31
+apparel-zh-019,zh,apparel,服饰鞋包,Apparel,expense,买拖鞋凉鞋88块,88,CNY,凉鞋,anchor,2026-08-31,2026-08-31
+apparel-zh-020,zh,apparel,服饰鞋包,Apparel,expense,买真皮钱包399元,399,CNY,钱包,anchor,2026-08-31,2026-08-31
+apparel-zh-021,zh,apparel,服饰鞋包,Apparel,expense,香港买服饰2000HKD,2000,HKD,服饰,anchor,2026-08-31,2026-08-31
+apparel-zh-022,zh,apparel,服饰鞋包,Apparel,expense,买卫衣259元,259,CNY,卫衣,anchor,2026-08-31,2026-08-31
+apparel-zh-023,zh,apparel,服饰鞋包,Apparel,expense,买马丁靴599块,599,CNY,马丁靴,anchor,2026-08-31,2026-08-31
+apparel-zh-024,zh,apparel,服饰鞋包,Apparel,expense,买丝巾披肩199元,199,CNY,丝巾,anchor,2026-08-31,2026-08-31
+apparel-zh-025,zh,apparel,服饰鞋包,Apparel,expense,8月26日香港买正装西装3000HKD,3000,HKD,西装,ymd:2026-08-26,2026-08-26,2026-08-31
+apparel-zh-026,zh,apparel,服饰鞋包,Apparel,expense,买毛衣针织衫299元,299,CNY,毛衣,anchor,2026-08-31,2026-08-31
+apparel-zh-027,zh,apparel,服饰鞋包,Apparel,expense,买老爹鞋499块,499,CNY,老爹鞋,anchor,2026-08-31,2026-08-31
+apparel-zh-028,zh,apparel,服饰鞋包,Apparel,expense,买双肩背包299元,299,CNY,双肩包,anchor,2026-08-31,2026-08-31
+apparel-zh-029,zh,apparel,服饰鞋包,Apparel,expense,香港买运动服800HKD,800,HKD,运动服,anchor,2026-08-31,2026-08-31
+apparel-zh-030,zh,apparel,服饰鞋包,Apparel,expense,买西装裤199元,199,CNY,西装裤,anchor,2026-08-31,2026-08-31
+apparel-zh-031,zh,apparel,服饰鞋包,Apparel,expense,买雪地靴399块,399,CNY,雪地靴,anchor,2026-08-31,2026-08-31
+apparel-zh-032,zh,apparel,服饰鞋包,Apparel,expense,买皮带腰带199元,199,CNY,皮带,anchor,2026-08-31,2026-08-31
+apparel-zh-033,zh,apparel,服饰鞋包,Apparel,expense,香港买衬衫500HKD,500,HKD,衬衫,anchor,2026-08-31,2026-08-31
+apparel-zh-034,zh,apparel,服饰鞋包,Apparel,expense,买风衣699元,699,CNY,风衣,anchor,2026-08-31,2026-08-31
+apparel-zh-035,zh,apparel,服饰鞋包,Apparel,expense,买帆布鞋199块,199,CNY,帆布鞋,anchor,2026-08-31,2026-08-31
+apparel-zh-036,zh,apparel,服饰鞋包,Apparel,expense,买羊绒大衣2999元,2999,CNY,羊绒大衣,anchor,2026-08-31,2026-08-31
+apparel-zh-037,zh,apparel,服饰鞋包,Apparel,expense,香港买领带300HKD,300,HKD,领带,anchor,2026-08-31,2026-08-31
+apparel-zh-038,zh,apparel,服饰鞋包,Apparel,expense,买短裤89元,89,CNY,短裤,anchor,2026-08-31,2026-08-31
+apparel-zh-039,zh,apparel,服饰鞋包,Apparel,expense,买雨鞋雨靴128块,128,CNY,雨靴,anchor,2026-08-31,2026-08-31
+apparel-zh-040,zh,apparel,服饰鞋包,Apparel,expense,买单肩包299元,299,CNY,单肩包,anchor,2026-08-31,2026-08-31
+apparel-zh-041,zh,apparel,服饰鞋包,Apparel,expense,香港买牛仔裤600HKD,600,HKD,牛仔裤,anchor,2026-08-31,2026-08-31
+apparel-zh-042,zh,apparel,服饰鞋包,Apparel,expense,买马甲背心159元,159,CNY,马甲,anchor,2026-08-31,2026-08-31
+apparel-zh-043,zh,apparel,服饰鞋包,Apparel,expense,买凉鞋拖鞋129块,129,CNY,凉鞋,anchor,2026-08-31,2026-08-31
+apparel-zh-044,zh,apparel,服饰鞋包,Apparel,expense,买皮衣夹克1599元,1599,CNY,皮衣,anchor,2026-08-31,2026-08-31
+apparel-zh-045,zh,apparel,服饰鞋包,Apparel,expense,香港买T恤200HKD,200,HKD,T恤,anchor,2026-08-31,2026-08-31
+apparel-zh-046,zh,apparel,服饰鞋包,Apparel,expense,买汉服洛丽塔499元,499,CNY,汉服,anchor,2026-08-31,2026-08-31
+apparel-zh-047,zh,apparel,服饰鞋包,Apparel,expense,买劳保鞋199块,199,CNY,劳保鞋,anchor,2026-08-31,2026-08-31
+apparel-zh-048,zh,apparel,服饰鞋包,Apparel,expense,买羊毛衫399元,399,CNY,羊毛衫,anchor,2026-08-31,2026-08-31
+apparel-zh-049,zh,apparel,服饰鞋包,Apparel,expense,香港买围巾400HKD,400,HKD,围巾,anchor,2026-08-31,2026-08-31
+apparel-zh-050,zh,apparel,服饰鞋包,Apparel,expense,香港买外套800HKD,800,HKD,外套,anchor,2026-08-31,2026-08-31
+beauty-zh-001,zh,beauty,美容个护,Beauty,expense,昨天剪头发花了68元,68,CNY,剪发,rel:-1,2026-08-30,2026-08-31
+beauty-zh-002,zh,beauty,美容个护,Beauty,expense,做美甲花了128块,128,CNY,美甲,anchor,2026-08-31,2026-08-31
+beauty-zh-003,zh,beauty,美容个护,Beauty,expense,做面部护理花了380HKD,380,HKD,面部护理,anchor,2026-08-31,2026-08-31
+beauty-zh-004,zh,beauty,美容个护,Beauty,expense,买护肤品花了500元,500,CNY,护肤品,anchor,2026-08-31,2026-08-31
+beauty-zh-005,zh,beauty,美容个护,Beauty,expense,烫染头发花了680块,680,CNY,烫染,anchor,2026-08-31,2026-08-31
+beauty-zh-006,zh,beauty,美容个护,Beauty,expense,买口红花了320元,320,CNY,口红,anchor,2026-08-31,2026-08-31
+beauty-zh-007,zh,beauty,美容个护,Beauty,expense,本周五做SPA花了980HKD,980,HKD,SPA,weekday:5,2026-09-04,2026-08-31
+beauty-zh-008,zh,beauty,美容个护,Beauty,expense,买面膜花了150元,150,CNY,面膜,anchor,2026-08-31,2026-08-31
+beauty-zh-009,zh,beauty,美容个护,Beauty,expense,海外买化妆品200USD,200,USD,海外化妆品,anchor,2026-08-31,2026-08-31
+beauty-zh-010,zh,beauty,美容个护,Beauty,expense,修眉花了30块,30,CNY,修眉,anchor,2026-08-31,2026-08-31
+beauty-zh-011,zh,beauty,美容个护,Beauty,expense,接睫毛花了198元,198,CNY,接睫毛,anchor,2026-08-31,2026-08-31
+beauty-zh-012,zh,beauty,美容个护,Beauty,expense,做美睫168块,168,CNY,美睫,anchor,2026-08-31,2026-08-31
+beauty-zh-013,zh,beauty,美容个护,Beauty,expense,8月23日香港美容院补水500HKD,500,HKD,美容补水,ymd:2026-08-23,2026-08-23,2026-08-31
+beauty-zh-014,zh,beauty,美容个护,Beauty,expense,买洗面奶爽肤水280元,280,CNY,洗护,anchor,2026-08-31,2026-08-31
+beauty-zh-015,zh,beauty,美容个护,Beauty,expense,纹眉半永久888块,888,CNY,纹眉,anchor,2026-08-31,2026-08-31
+beauty-zh-016,zh,beauty,美容个护,Beauty,expense,身体乳磨砂膏120元,120,CNY,身体护理,anchor,2026-08-31,2026-08-31
+beauty-zh-017,zh,beauty,美容个护,Beauty,expense,香港做指甲200HKD,200,HKD,美甲,anchor,2026-08-31,2026-08-31
+beauty-zh-018,zh,beauty,美容个护,Beauty,expense,染发膏自己染80元,80,CNY,染发,anchor,2026-08-31,2026-08-31
+beauty-zh-019,zh,beauty,美容个护,Beauty,expense,今天明天脱毛膏脱毛仪都按199块记,199,CNY,脱毛,"rel:0,1",2026-08-31|2026-09-01,2026-08-31
+beauty-zh-020,zh,beauty,美容个护,Beauty,expense,精华液肌底液350元,350,CNY,精华液,anchor,2026-08-31,2026-08-31
+beauty-zh-021,zh,beauty,美容个护,Beauty,expense,香港美容套餐1500HKD,1500,HKD,美容套餐,anchor,2026-08-31,2026-08-31
+beauty-zh-022,zh,beauty,美容个护,Beauty,expense,洗脸清洁一次50元,50,CNY,洗脸,anchor,2026-08-31,2026-08-31
+beauty-zh-023,zh,beauty,美容个护,Beauty,expense,美甲甲片延长268块,268,CNY,美甲延长,anchor,2026-08-31,2026-08-31
+beauty-zh-024,zh,beauty,美容个护,Beauty,expense,眼霜眼膜280元,280,CNY,眼部护理,anchor,2026-08-31,2026-08-31
+beauty-zh-025,zh,beauty,美容个护,Beauty,expense,上周五香港剪头发150HKD,150,HKD,剪发,weekday:-1:5,2026-08-28,2026-08-31
+beauty-zh-026,zh,beauty,美容个护,Beauty,expense,化妆品套装礼盒680元,680,CNY,化妆品套装,anchor,2026-08-31,2026-08-31
+beauty-zh-027,zh,beauty,美容个护,Beauty,expense,烫头发离子烫500块,500,CNY,烫发,anchor,2026-08-31,2026-08-31
+beauty-zh-028,zh,beauty,美容个护,Beauty,expense,护手霜润唇膏50元,50,CNY,护手霜,anchor,2026-08-31,2026-08-31
+beauty-zh-029,zh,beauty,美容个护,Beauty,expense,香港染发800HKD,800,HKD,染发,anchor,2026-08-31,2026-08-31
+beauty-zh-030,zh,beauty,美容个护,Beauty,expense,黑头清洁护理88元,88,CNY,皮肤清洁,anchor,2026-08-31,2026-08-31
+beauty-zh-031,zh,beauty,美容个护,Beauty,expense,种睫毛150块,150,CNY,种睫毛,anchor,2026-08-31,2026-08-31
+beauty-zh-032,zh,beauty,美容个护,Beauty,expense,防晒霜隔离霜120元,120,CNY,防晒,anchor,2026-08-31,2026-08-31
+beauty-zh-033,zh,beauty,美容个护,Beauty,expense,香港做facial600HKD,600,HKD,面部护理,anchor,2026-08-31,2026-08-31
+beauty-zh-034,zh,beauty,美容个护,Beauty,expense,卸妆油卸妆水80元,80,CNY,卸妆,anchor,2026-08-31,2026-08-31
+beauty-zh-035,zh,beauty,美容个护,Beauty,expense,补水面膜十片装99块,99,CNY,面膜,anchor,2026-08-31,2026-08-31
+beauty-zh-036,zh,beauty,美容个护,Beauty,expense,香水淡香300元,300,CNY,香水,anchor,2026-08-31,2026-08-31
+beauty-zh-037,zh,beauty,美容个护,Beauty,expense,香港买香水500HKD,500,HKD,香水,anchor,2026-08-31,2026-08-31
+beauty-zh-038,zh,beauty,美容个护,Beauty,expense,理发吹造型50元,50,CNY,理发造型,anchor,2026-08-31,2026-08-31
+beauty-zh-039,zh,beauty,美容个护,Beauty,expense,美甲跳色108块,108,CNY,美甲,anchor,2026-08-31,2026-08-31
+beauty-zh-040,zh,beauty,美容个护,Beauty,expense,祛痘印精华280元,280,CNY,祛痘精华,anchor,2026-08-31,2026-08-31
+beauty-zh-041,zh,beauty,美容个护,Beauty,expense,香港烫头发1000HKD,1000,HKD,烫发,anchor,2026-08-31,2026-08-31
+beauty-zh-042,zh,beauty,美容个护,Beauty,expense,唇釉唇彩89元,89,CNY,唇彩,anchor,2026-08-31,2026-08-31
+beauty-zh-043,zh,beauty,美容个护,Beauty,expense,头发护理焗油150块,150,CNY,焗油,anchor,2026-08-31,2026-08-31
+beauty-zh-044,zh,beauty,美容个护,Beauty,expense,洁面仪洗脸仪199元,199,CNY,洁面仪,anchor,2026-08-31,2026-08-31
+beauty-zh-045,zh,beauty,美容个护,Beauty,expense,香港美容卡充值3000HKD,3000,HKD,美容卡,anchor,2026-08-31,2026-08-31
+beauty-zh-046,zh,beauty,美容个护,Beauty,expense,发际线粉修容粉60元,60,CNY,修容粉,anchor,2026-08-31,2026-08-31
+beauty-zh-047,zh,beauty,美容个护,Beauty,expense,半永久纹唇1288块,1288,CNY,纹唇,anchor,2026-08-31,2026-08-31
+beauty-zh-048,zh,beauty,美容个护,Beauty,expense,爽肤水化妆水120元,120,CNY,爽肤水,anchor,2026-08-31,2026-08-31
+beauty-zh-049,zh,beauty,美容个护,Beauty,expense,香港买护肤品1000HKD,1000,HKD,护肤品,anchor,2026-08-31,2026-08-31
+beauty-zh-050,zh,beauty,美容个护,Beauty,expense,香港做美容700HKD,700,HKD,美容,anchor,2026-08-31,2026-08-31
+electronics-zh-001,zh,electronics,数码产品,Electronics,expense,昨天买新手机花了5999元,5999,CNY,手机,rel:-1,2026-08-30,2026-08-31
+electronics-zh-002,zh,electronics,数码产品,Electronics,expense,买无线耳机花了899块,899,CNY,无线耳机,anchor,2026-08-31,2026-08-31
+electronics-zh-003,zh,electronics,数码产品,Electronics,expense,买平板花了3299HKD,3299,HKD,平板,anchor,2026-08-31,2026-08-31
+electronics-zh-004,zh,electronics,数码产品,Electronics,expense,买键盘鼠标花了299元,299,CNY,键鼠,anchor,2026-08-31,2026-08-31
+electronics-zh-005,zh,electronics,数码产品,Electronics,expense,买相机镜头花了4500块,4500,CNY,相机镜头,anchor,2026-08-31,2026-08-31
+electronics-zh-006,zh,electronics,数码产品,Electronics,expense,本周三买笔记本电脑花了7999元,7999,CNY,笔记本,weekday:3,2026-09-02,2026-08-31
+electronics-zh-007,zh,electronics,数码产品,Electronics,expense,买智能手表花了1899HKD,1899,HKD,智能手表,anchor,2026-08-31,2026-08-31
+electronics-zh-008,zh,electronics,数码产品,Electronics,expense,买充电宝花了129元,129,CNY,充电宝,anchor,2026-08-31,2026-08-31
+electronics-zh-009,zh,electronics,数码产品,Electronics,expense,海外买相机1500USD,1500,USD,海外相机,anchor,2026-08-31,2026-08-31
+electronics-zh-010,zh,electronics,数码产品,Electronics,expense,买显示器花了1999块,1999,CNY,显示器,anchor,2026-08-31,2026-08-31
+electronics-zh-011,zh,electronics,数码产品,Electronics,expense,8月2日买蓝牙耳机199元,199,CNY,蓝牙耳机,ymd:2026-08-02,2026-08-02,2026-08-31
+electronics-zh-012,zh,electronics,数码产品,Electronics,expense,买移动硬盘399块,399,CNY,移动硬盘,anchor,2026-08-31,2026-08-31
+electronics-zh-013,zh,electronics,数码产品,Electronics,expense,香港买电脑8000HKD,8000,HKD,电脑,anchor,2026-08-31,2026-08-31
+electronics-zh-014,zh,electronics,数码产品,Electronics,expense,买路由器159元,159,CNY,路由器,anchor,2026-08-31,2026-08-31
+electronics-zh-015,zh,electronics,数码产品,Electronics,expense,买投影仪2999块,2999,CNY,投影仪,anchor,2026-08-31,2026-08-31
+electronics-zh-016,zh,electronics,数码产品,Electronics,expense,买游戏机PS5花了3899元,3899,CNY,游戏机,anchor,2026-08-31,2026-08-31
+electronics-zh-017,zh,electronics,数码产品,Electronics,expense,香港买手机6000HKD,6000,HKD,手机,anchor,2026-08-31,2026-08-31
+electronics-zh-018,zh,electronics,数码产品,Electronics,expense,买摄像头99元,99,CNY,摄像头,anchor,2026-08-31,2026-08-31
+electronics-zh-019,zh,electronics,数码产品,Electronics,expense,买显卡3090块,3090,CNY,显卡,anchor,2026-08-31,2026-08-31
+electronics-zh-020,zh,electronics,数码产品,Electronics,expense,买内存条399元,399,CNY,内存条,anchor,2026-08-31,2026-08-31
+electronics-zh-021,zh,electronics,数码产品,Electronics,expense,本周五香港买耳机1200HKD,1200,HKD,耳机,weekday:5,2026-09-04,2026-08-31
+electronics-zh-022,zh,electronics,数码产品,Electronics,expense,买音箱音响299元,299,CNY,音箱,anchor,2026-08-31,2026-08-31
+electronics-zh-023,zh,electronics,数码产品,Electronics,expense,买散热器89块,89,CNY,散热器,anchor,2026-08-31,2026-08-31
+electronics-zh-024,zh,electronics,数码产品,Electronics,expense,买平板支架49元,49,CNY,平板支架,anchor,2026-08-31,2026-08-31
+electronics-zh-025,zh,electronics,数码产品,Electronics,expense,香港买相机10000HKD,10000,HKD,相机,anchor,2026-08-31,2026-08-31
+electronics-zh-026,zh,electronics,数码产品,Electronics,expense,买机械键盘399元,399,CNY,机械键盘,anchor,2026-08-31,2026-08-31
+electronics-zh-027,zh,electronics,数码产品,Electronics,expense,买鼠标垫29块,29,CNY,鼠标垫,anchor,2026-08-31,2026-08-31
+electronics-zh-028,zh,electronics,数码产品,Electronics,expense,买U盘64G59元,59,CNY,U盘,anchor,2026-08-31,2026-08-31
+electronics-zh-029,zh,electronics,数码产品,Electronics,expense,香港买平板4000HKD,4000,HKD,平板,anchor,2026-08-31,2026-08-31
+electronics-zh-030,zh,electronics,数码产品,Electronics,expense,买智能手环199元,199,CNY,智能手环,anchor,2026-08-31,2026-08-31
+electronics-zh-031,zh,electronics,数码产品,Electronics,expense,买电脑包99块,99,CNY,电脑包,anchor,2026-08-31,2026-08-31
+electronics-zh-032,zh,electronics,数码产品,Electronics,expense,买固态硬盘299元,299,CNY,固态硬盘,anchor,2026-08-31,2026-08-31
+electronics-zh-033,zh,electronics,数码产品,Electronics,expense,香港买显示器2500HKD,2500,HKD,显示器,anchor,2026-08-31,2026-08-31
+electronics-zh-034,zh,electronics,数码产品,Electronics,expense,买游戏手柄299元,299,CNY,游戏手柄,anchor,2026-08-31,2026-08-31
+electronics-zh-035,zh,electronics,数码产品,Electronics,expense,买数据线充电头50块,50,CNY,数据线,anchor,2026-08-31,2026-08-31
+electronics-zh-036,zh,electronics,数码产品,Electronics,expense,买机箱电源399元,399,CNY,机箱电源,anchor,2026-08-31,2026-08-31
+electronics-zh-037,zh,electronics,数码产品,Electronics,expense,香港买游戏机5000HKD,5000,HKD,游戏机,anchor,2026-08-31,2026-08-31
+electronics-zh-038,zh,electronics,数码产品,Electronics,expense,买声卡麦克风499元,499,CNY,声卡麦克,anchor,2026-08-31,2026-08-31
+electronics-zh-039,zh,electronics,数码产品,Electronics,expense,买电脑支架89块,89,CNY,电脑支架,anchor,2026-08-31,2026-08-31
+electronics-zh-040,zh,electronics,数码产品,Electronics,expense,买电子书阅读器998元,998,CNY,电子书,anchor,2026-08-31,2026-08-31
+electronics-zh-041,zh,electronics,数码产品,Electronics,expense,香港买智能手表2000HKD,2000,HKD,智能手表,anchor,2026-08-31,2026-08-31
+electronics-zh-042,zh,electronics,数码产品,Electronics,expense,买扩展坞199元,199,CNY,扩展坞,anchor,2026-08-31,2026-08-31
+electronics-zh-043,zh,electronics,数码产品,Electronics,expense,买电竞椅999块,999,CNY,电竞椅,anchor,2026-08-31,2026-08-31
+electronics-zh-044,zh,electronics,数码产品,Electronics,expense,买台灯护眼灯199元,199,CNY,台灯,anchor,2026-08-31,2026-08-31
+electronics-zh-045,zh,electronics,数码产品,Electronics,expense,香港买电脑配件1500HKD,1500,HKD,电脑配件,anchor,2026-08-31,2026-08-31
+electronics-zh-046,zh,electronics,数码产品,Electronics,expense,买拍立得相机899元,899,CNY,拍立得,anchor,2026-08-31,2026-08-31
+electronics-zh-047,zh,electronics,数码产品,Electronics,expense,买主机电源399块,399,CNY,主机电源,anchor,2026-08-31,2026-08-31
+electronics-zh-048,zh,electronics,数码产品,Electronics,expense,买蓝牙适配器49元,49,CNY,蓝牙适配器,anchor,2026-08-31,2026-08-31
+electronics-zh-049,zh,electronics,数码产品,Electronics,expense,香港买无线耳机1000HKD,1000,HKD,无线耳机,anchor,2026-08-31,2026-08-31
+electronics-zh-050,zh,electronics,数码产品,Electronics,expense,香港买充电宝200HKD,200,HKD,充电宝,anchor,2026-08-31,2026-08-31
+home_decor-zh-001,zh,home_decor,家居家装,Home and Decor,expense,昨天买沙发花了3500元,3500,CNY,沙发,rel:-1,2026-08-30,2026-08-31
+home_decor-zh-002,zh,home_decor,家居家装,Home and Decor,expense,买窗帘花了800块,800,CNY,窗帘,anchor,2026-08-31,2026-08-31
+home_decor-zh-003,zh,home_decor,家居家装,Home and Decor,expense,装修人工费花了20000HKD,20000,HKD,装修人工,anchor,2026-08-31,2026-08-31
+home_decor-zh-004,zh,home_decor,家居家装,Home and Decor,expense,买灯具花了600元,600,CNY,灯具,anchor,2026-08-31,2026-08-31
+home_decor-zh-005,zh,home_decor,家居家装,Home and Decor,expense,换门锁花了300块,300,CNY,门锁,anchor,2026-08-31,2026-08-31
+home_decor-zh-006,zh,home_decor,家居家装,Home and Decor,expense,本周日买衣柜花了2800元,2800,CNY,衣柜,weekday:7,2026-09-06,2026-08-31
+home_decor-zh-007,zh,home_decor,家居家装,Home and Decor,expense,贴墙纸花了1500HKD,1500,HKD,墙纸,anchor,2026-08-31,2026-08-31
+home_decor-zh-008,zh,home_decor,家居家装,Home and Decor,expense,买地毯花了450元,450,CNY,地毯,anchor,2026-08-31,2026-08-31
+home_decor-zh-009,zh,home_decor,家居家装,Home and Decor,expense,海外买家具800USD,800,USD,海外家具,anchor,2026-08-31,2026-08-31
+home_decor-zh-010,zh,home_decor,家居家装,Home and Decor,expense,疏通马桶花了120块,120,CNY,疏通,anchor,2026-08-31,2026-08-31
+home_decor-zh-011,zh,home_decor,家居家装,Home and Decor,expense,8月25日买餐桌1500元,1500,CNY,餐桌,ymd:2026-08-25,2026-08-25,2026-08-31
+home_decor-zh-012,zh,home_decor,家居家装,Home and Decor,expense,买床加床垫3000块,3000,CNY,床与床垫,anchor,2026-08-31,2026-08-31
+home_decor-zh-013,zh,home_decor,家居家装,Home and Decor,expense,香港装修设计费10000HKD,10000,HKD,设计费,anchor,2026-08-31,2026-08-31
+home_decor-zh-014,zh,home_decor,家居家装,Home and Decor,expense,买茶几电视柜2000元,2000,CNY,茶几电视柜,anchor,2026-08-31,2026-08-31
+home_decor-zh-015,zh,home_decor,家居家装,Home and Decor,expense,刷墙乳胶漆3000块,3000,CNY,刷墙,anchor,2026-08-31,2026-08-31
+home_decor-zh-016,zh,home_decor,家居家装,Home and Decor,expense,买鞋柜800元,800,CNY,鞋柜,anchor,2026-08-31,2026-08-31
+home_decor-zh-017,zh,home_decor,家居家装,Home and Decor,expense,香港买家具15000HKD,15000,HKD,家具,anchor,2026-08-31,2026-08-31
+home_decor-zh-018,zh,home_decor,家居家装,Home and Decor,expense,买晾衣架300元,300,CNY,晾衣架,anchor,2026-08-31,2026-08-31
+home_decor-zh-019,zh,home_decor,家居家装,Home and Decor,expense,水电改造5000块,5000,CNY,水电改造,anchor,2026-08-31,2026-08-31
+home_decor-zh-020,zh,home_decor,家居家装,Home and Decor,expense,买书桌书架1200元,1200,CNY,书桌书架,anchor,2026-08-31,2026-08-31
+home_decor-zh-021,zh,home_decor,家居家装,Home and Decor,expense,8月28日香港定制橱柜20000HKD,20000,HKD,定制橱柜,ymd:2026-08-28,2026-08-28,2026-08-31
+home_decor-zh-022,zh,home_decor,家居家装,Home and Decor,expense,买马桶800元,800,CNY,马桶,anchor,2026-08-31,2026-08-31
+home_decor-zh-023,zh,home_decor,家居家装,Home and Decor,expense,瓷砖地板8000块,8000,CNY,瓷砖地板,anchor,2026-08-31,2026-08-31
+home_decor-zh-024,zh,home_decor,家居家装,Home and Decor,expense,买浴霸300元,300,CNY,浴霸,anchor,2026-08-31,2026-08-31
+home_decor-zh-025,zh,home_decor,家居家装,Home and Decor,expense,香港买灯饰3000HKD,3000,HKD,灯饰,anchor,2026-08-31,2026-08-31
+home_decor-zh-026,zh,home_decor,家居家装,Home and Decor,expense,买洗衣机2000元,2000,CNY,洗衣机,anchor,2026-08-31,2026-08-31
+home_decor-zh-027,zh,home_decor,家居家装,Home and Decor,expense,冰箱双开门3500块,3500,CNY,冰箱,anchor,2026-08-31,2026-08-31
+home_decor-zh-028,zh,home_decor,家居家装,Home and Decor,expense,买油烟机燃气灶2500元,2500,CNY,厨电,anchor,2026-08-31,2026-08-31
+home_decor-zh-029,zh,home_decor,家居家装,Home and Decor,expense,香港买电器8000HKD,8000,HKD,电器,anchor,2026-08-31,2026-08-31
+home_decor-zh-030,zh,home_decor,家居家装,Home and Decor,expense,买空调2800元,2800,CNY,空调,anchor,2026-08-31,2026-08-31
+home_decor-zh-031,zh,home_decor,家居家装,Home and Decor,expense,热水器燃气款1500块,1500,CNY,热水器,anchor,2026-08-31,2026-08-31
+home_decor-zh-032,zh,home_decor,家居家装,Home and Decor,expense,买微波炉500元,500,CNY,微波炉,anchor,2026-08-31,2026-08-31
+home_decor-zh-033,zh,home_decor,家居家装,Home and Decor,expense,香港买沙发10000HKD,10000,HKD,沙发,anchor,2026-08-31,2026-08-31
+home_decor-zh-034,zh,home_decor,家居家装,Home and Decor,expense,买吸尘器899元,899,CNY,吸尘器,anchor,2026-08-31,2026-08-31
+home_decor-zh-035,zh,home_decor,家居家装,Home and Decor,expense,扫地机器人2599块,2599,CNY,扫地机器人,anchor,2026-08-31,2026-08-31
+home_decor-zh-036,zh,home_decor,家居家装,Home and Decor,expense,买空气净化器1299元,1299,CNY,空气净化器,anchor,2026-08-31,2026-08-31
+home_decor-zh-037,zh,home_decor,家居家装,Home and Decor,expense,香港买床品5000HKD,5000,HKD,床品,anchor,2026-08-31,2026-08-31
+home_decor-zh-038,zh,home_decor,家居家装,Home and Decor,expense,买电饭煲399元,399,CNY,电饭煲,anchor,2026-08-31,2026-08-31
+home_decor-zh-039,zh,home_decor,家居家装,Home and Decor,expense,电压力锅299块,299,CNY,电压力锅,anchor,2026-08-31,2026-08-31
+home_decor-zh-040,zh,home_decor,家居家装,Home and Decor,expense,买净水器1500元,1500,CNY,净水器,anchor,2026-08-31,2026-08-31
+home_decor-zh-041,zh,home_decor,家居家装,Home and Decor,expense,香港买家电10000HKD,10000,HKD,家电,anchor,2026-08-31,2026-08-31
+home_decor-zh-042,zh,home_decor,家居家装,Home and Decor,expense,买加湿器199元,199,CNY,加湿器,anchor,2026-08-31,2026-08-31
+home_decor-zh-043,zh,home_decor,家居家装,Home and Decor,expense,挂烫机299块,299,CNY,挂烫机,anchor,2026-08-31,2026-08-31
+home_decor-zh-044,zh,home_decor,家居家装,Home and Decor,expense,买指纹锁1299元,1299,CNY,指纹锁,anchor,2026-08-31,2026-08-31
+home_decor-zh-045,zh,home_decor,家居家装,Home and Decor,expense,香港定制衣柜15000HKD,15000,HKD,定制衣柜,anchor,2026-08-31,2026-08-31
+home_decor-zh-046,zh,home_decor,家居家装,Home and Decor,expense,买破壁机499元,499,CNY,破壁机,anchor,2026-08-31,2026-08-31
+home_decor-zh-047,zh,home_decor,家居家装,Home and Decor,expense,投影仪幕布300块,300,CNY,幕布,anchor,2026-08-31,2026-08-31
+home_decor-zh-048,zh,home_decor,家居家装,Home and Decor,expense,买装饰画299元,299,CNY,装饰画,anchor,2026-08-31,2026-08-31
+home_decor-zh-049,zh,home_decor,家居家装,Home and Decor,expense,香港装修材料5000HKD,5000,HKD,装修材料,anchor,2026-08-31,2026-08-31
+home_decor-zh-050,zh,home_decor,家居家装,Home and Decor,expense,香港买窗帘1200HKD,1200,HKD,窗帘,anchor,2026-08-31,2026-08-31
+insurance-zh-001,zh,insurance,保险缴费,Insurance,expense,重疾险年交6000元,6000,CNY,重疾险,anchor,2026-08-31,2026-08-31
+insurance-zh-002,zh,insurance,保险缴费,Insurance,expense,昨天车险花了3500块,3500,CNY,车险,rel:-1,2026-08-30,2026-08-31
+insurance-zh-003,zh,insurance,保险缴费,Insurance,expense,本周一医疗险每月扣300HKD,300,HKD,医疗险,weekday:1,2026-08-31,2026-08-31
+insurance-zh-004,zh,insurance,保险缴费,Insurance,expense,8月1日意外险年费199元,199,CNY,意外险,ymd:2026-08-01,2026-08-01,2026-08-31
+insurance-zh-005,zh,insurance,保险缴费,Insurance,expense,寿险年交8000块,8000,CNY,寿险,anchor,2026-08-31,2026-08-31
+insurance-zh-006,zh,insurance,保险缴费,Insurance,expense,家财险花了299元,299,CNY,家财险,anchor,2026-08-31,2026-08-31
+insurance-zh-007,zh,insurance,保险缴费,Insurance,expense,香港保险年交12000HKD,12000,HKD,香港保险,anchor,2026-08-31,2026-08-31
+insurance-zh-008,zh,insurance,保险缴费,Insurance,expense,今天明天社保个人部分都扣了500元,500,CNY,社保,"rel:0,1",2026-08-31|2026-09-01,2026-08-31
+insurance-zh-009,zh,insurance,保险缴费,Insurance,expense,海外医疗险500USD,500,USD,海外医疗险,anchor,2026-08-31,2026-08-31
+insurance-zh-010,zh,insurance,保险缴费,Insurance,expense,宠物险花了365块,365,CNY,宠物险,anchor,2026-08-31,2026-08-31
+insurance-zh-011,zh,insurance,保险缴费,Insurance,expense,养老保险每年交8000元,8000,CNY,养老险,anchor,2026-08-31,2026-08-31
+insurance-zh-012,zh,insurance,保险缴费,Insurance,expense,交强险950块,950,CNY,交强险,anchor,2026-08-31,2026-08-31
+insurance-zh-013,zh,insurance,保险缴费,Insurance,expense,香港重疾险年交15000HKD,15000,HKD,香港重疾险,anchor,2026-08-31,2026-08-31
+insurance-zh-014,zh,insurance,保险缴费,Insurance,expense,失业保险每月扣50元,50,CNY,失业保险,anchor,2026-08-31,2026-08-31
+insurance-zh-015,zh,insurance,保险缴费,Insurance,expense,学平险每年100块,100,CNY,学平险,anchor,2026-08-31,2026-08-31
+insurance-zh-016,zh,insurance,保险缴费,Insurance,expense,百万医疗险每年300元,300,CNY,百万医疗,anchor,2026-08-31,2026-08-31
+insurance-zh-017,zh,insurance,保险缴费,Insurance,expense,香港住院医疗险年交5000HKD,5000,HKD,住院医疗险,anchor,2026-08-31,2026-08-31
+insurance-zh-018,zh,insurance,保险缴费,Insurance,expense,工伤保险个人缴纳花了280元,280,CNY,工伤险,anchor,2026-08-31,2026-08-31
+insurance-zh-019,zh,insurance,保险缴费,Insurance,expense,车险三者险200万1200块,1200,CNY,三者险,anchor,2026-08-31,2026-08-31
+insurance-zh-020,zh,insurance,保险缴费,Insurance,expense,年金险年交20000元,20000,CNY,年金险,anchor,2026-08-31,2026-08-31
+insurance-zh-021,zh,insurance,保险缴费,Insurance,expense,香港储蓄险年交30000HKD,30000,HKD,储蓄险,anchor,2026-08-31,2026-08-31
+insurance-zh-022,zh,insurance,保险缴费,Insurance,expense,生育保险每月扣10元,10,CNY,生育险,anchor,2026-08-31,2026-08-31
+insurance-zh-023,zh,insurance,保险缴费,Insurance,expense,车险车损险1800块,1800,CNY,车损险,anchor,2026-08-31,2026-08-31
+insurance-zh-024,zh,insurance,保险缴费,Insurance,expense,防癌险每年500元,500,CNY,防癌险,anchor,2026-08-31,2026-08-31
+insurance-zh-025,zh,insurance,保险缴费,Insurance,expense,香港意外险年交500HKD,500,HKD,香港意外险,anchor,2026-08-31,2026-08-31
+insurance-zh-026,zh,insurance,保险缴费,Insurance,expense,城乡居民医保年交380元,380,CNY,居民医保,anchor,2026-08-31,2026-08-31
+insurance-zh-027,zh,insurance,保险缴费,Insurance,expense,终身寿险年交10000块,10000,CNY,终身寿险,anchor,2026-08-31,2026-08-31
+insurance-zh-028,zh,insurance,保险缴费,Insurance,expense,财产险每年800元,800,CNY,财产险,anchor,2026-08-31,2026-08-31
+insurance-zh-029,zh,insurance,保险缴费,Insurance,expense,香港人寿险年交20000HKD,20000,HKD,香港人寿险,anchor,2026-08-31,2026-08-31
+insurance-zh-030,zh,insurance,保险缴费,Insurance,expense,大病医疗互助金每年60元,60,CNY,大病互助,anchor,2026-08-31,2026-08-31
+insurance-zh-031,zh,insurance,保险缴费,Insurance,expense,座位险每座100块,100,CNY,座位险,anchor,2026-08-31,2026-08-31
+insurance-zh-032,zh,insurance,保险缴费,Insurance,expense,少儿重疾险每年800元,800,CNY,少儿重疾险,anchor,2026-08-31,2026-08-31
+insurance-zh-033,zh,insurance,保险缴费,Insurance,expense,香港医疗保险每月500HKD,500,HKD,香港医疗险,anchor,2026-08-31,2026-08-31
+insurance-zh-034,zh,insurance,保险缴费,Insurance,expense,补充医疗险每年200元,200,CNY,补充医疗,anchor,2026-08-31,2026-08-31
+insurance-zh-035,zh,insurance,保险缴费,Insurance,expense,盗抢险每年300块,300,CNY,盗抢险,anchor,2026-08-31,2026-08-31
+insurance-zh-036,zh,insurance,保险缴费,Insurance,expense,老人意外险每年200元,200,CNY,老人意外险,anchor,2026-08-31,2026-08-31
+insurance-zh-037,zh,insurance,保险缴费,Insurance,expense,香港旅游险单次100HKD,100,HKD,旅游险,anchor,2026-08-31,2026-08-31
+insurance-zh-038,zh,insurance,保险缴费,Insurance,expense,惠民保每年69元,69,CNY,惠民保,anchor,2026-08-31,2026-08-31
+insurance-zh-039,zh,insurance,保险缴费,Insurance,expense,涉水险每年150块,150,CNY,涉水险,anchor,2026-08-31,2026-08-31
+insurance-zh-040,zh,insurance,保险缴费,Insurance,expense,女性专属险每年300元,300,CNY,女性险,anchor,2026-08-31,2026-08-31
+insurance-zh-041,zh,insurance,保险缴费,Insurance,expense,香港劳工险每月300HKD,300,HKD,劳工险,anchor,2026-08-31,2026-08-31
+insurance-zh-042,zh,insurance,保险缴费,Insurance,expense,商业医保每年1500元,1500,CNY,商业医保,anchor,2026-08-31,2026-08-31
+insurance-zh-043,zh,insurance,保险缴费,Insurance,expense,自燃险每年100块,100,CNY,自燃险,anchor,2026-08-31,2026-08-31
+insurance-zh-044,zh,insurance,保险缴费,Insurance,expense,教育金保险年交5000元,5000,CNY,教育金险,anchor,2026-08-31,2026-08-31
+insurance-zh-045,zh,insurance,保险缴费,Insurance,expense,香港家居险每年800HKD,800,HKD,家居险,anchor,2026-08-31,2026-08-31
+insurance-zh-046,zh,insurance,保险缴费,Insurance,expense,社保补缴1200元,1200,CNY,社保补缴,anchor,2026-08-31,2026-08-31
+insurance-zh-047,zh,insurance,保险缴费,Insurance,expense,不计免赔险每年200块,200,CNY,不计免赔,anchor,2026-08-31,2026-08-31
+insurance-zh-048,zh,insurance,保险缴费,Insurance,expense,牙齿保险每年500元,500,CNY,牙齿险,anchor,2026-08-31,2026-08-31
+insurance-zh-049,zh,insurance,保险缴费,Insurance,expense,香港保费自动扣款8000HKD,8000,HKD,自动扣款,anchor,2026-08-31,2026-08-31
+insurance-zh-050,zh,insurance,保险缴费,Insurance,expense,香港车险年交6000HKD,6000,HKD,车险,anchor,2026-08-31,2026-08-31
+loan_repay-zh-001,zh,loan_repay,还贷支出,Loan Repayment,expense,昨天房贷月供5000元,5000,CNY,房贷,rel:-1,2026-08-30,2026-08-31
+loan_repay-zh-002,zh,loan_repay,还贷支出,Loan Repayment,expense,车贷每月还2000块,2000,CNY,车贷,anchor,2026-08-31,2026-08-31
+loan_repay-zh-003,zh,loan_repay,还贷支出,Loan Repayment,expense,信用卡还款花了8000HKD,8000,HKD,信用卡,anchor,2026-08-31,2026-08-31
+loan_repay-zh-004,zh,loan_repay,还贷支出,Loan Repayment,expense,花呗还款花了1500元,1500,CNY,花呗,anchor,2026-08-31,2026-08-31
+loan_repay-zh-005,zh,loan_repay,还贷支出,Loan Repayment,expense,借呗还款花了3000块,3000,CNY,借呗,anchor,2026-08-31,2026-08-31
+loan_repay-zh-006,zh,loan_repay,还贷支出,Loan Repayment,expense,本周三经营贷月供12000元,12000,CNY,经营贷,weekday:3,2026-09-02,2026-08-31
+loan_repay-zh-007,zh,loan_repay,还贷支出,Loan Repayment,expense,香港房贷月供15000HKD,15000,HKD,香港房贷,anchor,2026-08-31,2026-08-31
+loan_repay-zh-008,zh,loan_repay,还贷支出,Loan Repayment,expense,京东白条还款花了800元,800,CNY,白条,anchor,2026-08-31,2026-08-31
+loan_repay-zh-009,zh,loan_repay,还贷支出,Loan Repayment,expense,海外贷款月供2000USD,2000,USD,海外贷款,anchor,2026-08-31,2026-08-31
+loan_repay-zh-010,zh,loan_repay,还贷支出,Loan Repayment,expense,助学贷款还款花了1200块,1200,CNY,助学贷款,anchor,2026-08-31,2026-08-31
+loan_repay-zh-011,zh,loan_repay,还贷支出,Loan Repayment,expense,8月9日商贷月供8000元,8000,CNY,商业贷款,ymd:2026-08-09,2026-08-09,2026-08-31
+loan_repay-zh-012,zh,loan_repay,还贷支出,Loan Repayment,expense,公积金贷款每月3000块,3000,CNY,公积金贷款,anchor,2026-08-31,2026-08-31
+loan_repay-zh-013,zh,loan_repay,还贷支出,Loan Repayment,expense,香港私楼月供20000HKD,20000,HKD,香港私楼,anchor,2026-08-31,2026-08-31
+loan_repay-zh-014,zh,loan_repay,还贷支出,Loan Repayment,expense,消费贷月供1500元,1500,CNY,消费贷,anchor,2026-08-31,2026-08-31
+loan_repay-zh-015,zh,loan_repay,还贷支出,Loan Repayment,expense,装修贷每月还2000块,2000,CNY,装修贷,anchor,2026-08-31,2026-08-31
+loan_repay-zh-016,zh,loan_repay,还贷支出,Loan Repayment,expense,抵押贷月供10000元,10000,CNY,抵押贷,anchor,2026-08-31,2026-08-31
+loan_repay-zh-017,zh,loan_repay,还贷支出,Loan Repayment,expense,香港车贷月供5000HKD,5000,HKD,香港车贷,anchor,2026-08-31,2026-08-31
+loan_repay-zh-018,zh,loan_repay,还贷支出,Loan Repayment,expense,微粒贷还款800元,800,CNY,微粒贷,anchor,2026-08-31,2026-08-31
+loan_repay-zh-019,zh,loan_repay,还贷支出,Loan Repayment,expense,360借条还款1000块,1000,CNY,借条,anchor,2026-08-31,2026-08-31
+loan_repay-zh-020,zh,loan_repay,还贷支出,Loan Repayment,expense,房贷提前还款100000元,100000,CNY,提前还贷,anchor,2026-08-31,2026-08-31
+loan_repay-zh-021,zh,loan_repay,还贷支出,Loan Repayment,expense,今天明天香港信用卡还款都10000HKD,10000,HKD,信用卡,"rel:0,1",2026-08-31|2026-09-01,2026-08-31
+loan_repay-zh-022,zh,loan_repay,还贷支出,Loan Repayment,expense,车贷提前还款20000元,20000,CNY,提前还车贷,anchor,2026-08-31,2026-08-31
+loan_repay-zh-023,zh,loan_repay,还贷支出,Loan Repayment,expense,美团生活费还款500块,500,CNY,生活费贷款,anchor,2026-08-31,2026-08-31
+loan_repay-zh-024,zh,loan_repay,还贷支出,Loan Repayment,expense,房贷利息每月2000元,2000,CNY,房贷利息,anchor,2026-08-31,2026-08-31
+loan_repay-zh-025,zh,loan_repay,还贷支出,Loan Repayment,expense,香港税务贷款月供8000HKD,8000,HKD,税务贷款,anchor,2026-08-31,2026-08-31
+loan_repay-zh-026,zh,loan_repay,还贷支出,Loan Repayment,expense,信用卡分期每月还500元,500,CNY,信用卡分期,anchor,2026-08-31,2026-08-31
+loan_repay-zh-027,zh,loan_repay,还贷支出,Loan Repayment,expense,网贷还款1500块,1500,CNY,网贷,anchor,2026-08-31,2026-08-31
+loan_repay-zh-028,zh,loan_repay,还贷支出,Loan Repayment,expense,组合贷月供6000元,6000,CNY,组合贷,anchor,2026-08-31,2026-08-31
+loan_repay-zh-029,zh,loan_repay,还贷支出,Loan Repayment,expense,香港分期贷款每月3000HKD,3000,HKD,分期贷款,anchor,2026-08-31,2026-08-31
+loan_repay-zh-030,zh,loan_repay,还贷支出,Loan Repayment,expense,房贷本金加利息每月5500元,5500,CNY,房贷本息,anchor,2026-08-31,2026-08-31
+loan_repay-zh-031,zh,loan_repay,还贷支出,Loan Repayment,expense,车贷三年期每月3000块,3000,CNY,车贷分期,anchor,2026-08-31,2026-08-31
+loan_repay-zh-032,zh,loan_repay,还贷支出,Loan Repayment,expense,信用贷月供2500元,2500,CNY,信用贷,anchor,2026-08-31,2026-08-31
+loan_repay-zh-033,zh,loan_repay,还贷支出,Loan Repayment,expense,香港二按月供10000HKD,10000,HKD,二按贷款,anchor,2026-08-31,2026-08-31
+loan_repay-zh-034,zh,loan_repay,还贷支出,Loan Repayment,expense,花呗分期每月还300元,300,CNY,花呗分期,anchor,2026-08-31,2026-08-31
+loan_repay-zh-035,zh,loan_repay,还贷支出,Loan Repayment,expense,借呗提前还款手续费50块,50,CNY,手续费,anchor,2026-08-31,2026-08-31
+loan_repay-zh-036,zh,loan_repay,还贷支出,Loan Repayment,expense,经营性贷款月供15000元,15000,CNY,经营贷,anchor,2026-08-31,2026-08-31
+loan_repay-zh-037,zh,loan_repay,还贷支出,Loan Repayment,expense,香港现金套现每月还款5000HKD,5000,HKD,套现还款,anchor,2026-08-31,2026-08-31
+loan_repay-zh-038,zh,loan_repay,还贷支出,Loan Repayment,expense,助学贷款利息每年500元,500,CNY,助学利息,anchor,2026-08-31,2026-08-31
+loan_repay-zh-039,zh,loan_repay,还贷支出,Loan Repayment,expense,房贷LPR调整后多还200块,200,CNY,LPR调整,anchor,2026-08-31,2026-08-31
+loan_repay-zh-040,zh,loan_repay,还贷支出,Loan Repayment,expense,信用卡最低还款800元,800,CNY,最低还款,anchor,2026-08-31,2026-08-31
+loan_repay-zh-041,zh,loan_repay,还贷支出,Loan Repayment,expense,香港卡数还款8000HKD,8000,HKD,卡数还款,anchor,2026-08-31,2026-08-31
+loan_repay-zh-042,zh,loan_repay,还贷支出,Loan Repayment,expense,装修贷提前还50000元,50000,CNY,提前还贷,anchor,2026-08-31,2026-08-31
+loan_repay-zh-043,zh,loan_repay,还贷支出,Loan Repayment,expense,京东金条还款1000块,1000,CNY,金条,anchor,2026-08-31,2026-08-31
+loan_repay-zh-044,zh,loan_repay,还贷支出,Loan Repayment,expense,房贷还款银行卡扣款5000元,5000,CNY,自动扣款,anchor,2026-08-31,2026-08-31
+loan_repay-zh-045,zh,loan_repay,还贷支出,Loan Repayment,expense,香港易借宝还款3000HKD,3000,HKD,易借宝,anchor,2026-08-31,2026-08-31
+loan_repay-zh-046,zh,loan_repay,还贷支出,Loan Repayment,expense,车贷解压费200元,200,CNY,解压费,anchor,2026-08-31,2026-08-31
+loan_repay-zh-047,zh,loan_repay,还贷支出,Loan Repayment,expense,网贷结清证明手续费50块,50,CNY,结清手续费,anchor,2026-08-31,2026-08-31
+loan_repay-zh-048,zh,loan_repay,还贷支出,Loan Repayment,expense,房贷退税到账12000元,12000,CNY,退税到账,anchor,2026-08-31,2026-08-31
+loan_repay-zh-049,zh,loan_repay,还贷支出,Loan Repayment,expense,香港贷款罚息500HKD,500,HKD,罚息,anchor,2026-08-31,2026-08-31
+loan_repay-zh-050,zh,loan_repay,还贷支出,Loan Repayment,expense,香港花呗还款2000HKD,2000,HKD,花呗,anchor,2026-08-31,2026-08-31
+tax-zh-001,zh,tax,税费支出,Taxes,expense,昨天个人所得税扣了800元,800,CNY,个税,rel:-1,2026-08-30,2026-08-31
+tax-zh-002,zh,tax,税费支出,Taxes,expense,房产税交了5000块,5000,CNY,房产税,anchor,2026-08-31,2026-08-31
+tax-zh-003,zh,tax,税费支出,Taxes,expense,香港薪俸税扣了3000HKD,3000,HKD,薪俸税,anchor,2026-08-31,2026-08-31
+tax-zh-004,zh,tax,税费支出,Taxes,expense,增值税交了2000元,2000,CNY,增值税,anchor,2026-08-31,2026-08-31
+tax-zh-005,zh,tax,税费支出,Taxes,expense,车辆购置税花了12000块,12000,CNY,购置税,anchor,2026-08-31,2026-08-31
+tax-zh-006,zh,tax,税费支出,Taxes,expense,本周五印花税交了500元,500,CNY,印花税,weekday:5,2026-09-04,2026-08-31
+tax-zh-007,zh,tax,税费支出,Taxes,expense,物业税交了1800HKD,1800,HKD,物业税,anchor,2026-08-31,2026-08-31
+tax-zh-008,zh,tax,税费支出,Taxes,expense,个税专项补缴1200元,1200,CNY,个税补缴,anchor,2026-08-31,2026-08-31
+tax-zh-009,zh,tax,税费支出,Taxes,expense,海外消费税300USD,300,USD,海外消费税,anchor,2026-08-31,2026-08-31
+tax-zh-010,zh,tax,税费支出,Taxes,expense,契税花了9000块,9000,CNY,契税,anchor,2026-08-31,2026-08-31
+tax-zh-011,zh,tax,税费支出,Taxes,expense,8月15日企业所得税交了20000元,20000,CNY,企业所得税,ymd:2026-08-15,2026-08-15,2026-08-31
+tax-zh-012,zh,tax,税费支出,Taxes,expense,车船税每年360块,360,CNY,车船税,anchor,2026-08-31,2026-08-31
+tax-zh-013,zh,tax,税费支出,Taxes,expense,香港利得税15000HKD,15000,HKD,利得税,anchor,2026-08-31,2026-08-31
+tax-zh-014,zh,tax,税费支出,Taxes,expense,城市维护建设税200元,200,CNY,城建税,anchor,2026-08-31,2026-08-31
+tax-zh-015,zh,tax,税费支出,Taxes,expense,教育费附加100块,100,CNY,教育附加,anchor,2026-08-31,2026-08-31
+tax-zh-016,zh,tax,税费支出,Taxes,expense,土地增值税50000元,50000,CNY,土地增值税,anchor,2026-08-31,2026-08-31
+tax-zh-017,zh,tax,税费支出,Taxes,expense,香港差饷每年5000HKD,5000,HKD,差饷,anchor,2026-08-31,2026-08-31
+tax-zh-018,zh,tax,税费支出,Taxes,expense,个人经营所得税3000元,3000,CNY,经营所得税,anchor,2026-08-31,2026-08-31
+tax-zh-019,zh,tax,税费支出,Taxes,expense,消费税1500块,1500,CNY,消费税,anchor,2026-08-31,2026-08-31
+tax-zh-020,zh,tax,税费支出,Taxes,expense,耕地占用税8000元,8000,CNY,耕地占用税,anchor,2026-08-31,2026-08-31
+tax-zh-021,zh,tax,税费支出,Taxes,expense,今天明天香港印花税都2000HKD,2000,HKD,香港印花税,"rel:0,1",2026-08-31|2026-09-01,2026-08-31
+tax-zh-022,zh,tax,税费支出,Taxes,expense,资源税500元,500,CNY,资源税,anchor,2026-08-31,2026-08-31
+tax-zh-023,zh,tax,税费支出,Taxes,expense,房产税补缴2000块,2000,CNY,房产税补缴,anchor,2026-08-31,2026-08-31
+tax-zh-024,zh,tax,税费支出,Taxes,expense,城镇土地使用税1000元,1000,CNY,土地使用税,anchor,2026-08-31,2026-08-31
+tax-zh-025,zh,tax,税费支出,Taxes,expense,香港博彩税1000HKD,1000,HKD,博彩税,anchor,2026-08-31,2026-08-31
+tax-zh-026,zh,tax,税费支出,Taxes,expense,关税3000元,3000,CNY,关税,anchor,2026-08-31,2026-08-31
+tax-zh-027,zh,tax,税费支出,Taxes,expense,车辆购置税减半后6000块,6000,CNY,购置税减半,anchor,2026-08-31,2026-08-31
+tax-zh-028,zh,tax,税费支出,Taxes,expense,契税首套1.5%共9000元,9000,CNY,首套契税,anchor,2026-08-31,2026-08-31
+tax-zh-029,zh,tax,税费支出,Taxes,expense,香港个人入息课税4000HKD,4000,HKD,入息税,anchor,2026-08-31,2026-08-31
+tax-zh-030,zh,tax,税费支出,Taxes,expense,个税退税到账1200元,1200,CNY,个税退税,anchor,2026-08-31,2026-08-31
+tax-zh-031,zh,tax,税费支出,Taxes,expense,增值税附加税300块,300,CNY,增值税附加,anchor,2026-08-31,2026-08-31
+tax-zh-032,zh,tax,税费支出,Taxes,expense,企业所得税汇算清缴补缴5000元,5000,CNY,汇算清缴,anchor,2026-08-31,2026-08-31
+tax-zh-033,zh,tax,税费支出,Taxes,expense,香港物业税每月500HKD,500,HKD,物业税,anchor,2026-08-31,2026-08-31
+tax-zh-034,zh,tax,税费支出,Taxes,expense,印花税按件贴花5元,5,CNY,贴花,anchor,2026-08-31,2026-08-31
+tax-zh-035,zh,tax,税费支出,Taxes,expense,车船税代缴360块,360,CNY,车船税,anchor,2026-08-31,2026-08-31
+tax-zh-036,zh,tax,税费支出,Taxes,expense,土地出让金100000元,100000,CNY,土地出让金,anchor,2026-08-31,2026-08-31
+tax-zh-037,zh,tax,税费支出,Taxes,expense,香港进出口关税8000HKD,8000,HKD,进出口关税,anchor,2026-08-31,2026-08-31
+tax-zh-038,zh,tax,税费支出,Taxes,expense,个税起征点5000元,5000,CNY,起征点,anchor,2026-08-31,2026-08-31
+tax-zh-039,zh,tax,税费支出,Taxes,expense,城建税税率7%合计140元,140,CNY,城建税,anchor,2026-08-31,2026-08-31
+tax-zh-040,zh,tax,税费支出,Taxes,expense,教育附加费税率3%合计60块,60,CNY,教育附加,anchor,2026-08-31,2026-08-31
+tax-zh-041,zh,tax,税费支出,Taxes,expense,香港薪俸税免税额132000HKD,132000,HKD,免税额,anchor,2026-08-31,2026-08-31
+tax-zh-042,zh,tax,税费支出,Taxes,expense,小规模纳税人补交增值税800元,800,CNY,增值税,anchor,2026-08-31,2026-08-31
+tax-zh-043,zh,tax,税费支出,Taxes,expense,车辆购置税税率10%,10,CNY,购置税税率,anchor,2026-08-31,2026-08-31
+tax-zh-044,zh,tax,税费支出,Taxes,expense,契税二套3%共18000元,18000,CNY,二套契税,anchor,2026-08-31,2026-08-31
+tax-zh-045,zh,tax,税费支出,Taxes,expense,香港利得税税率16.5%,16.5,HKD,利得税率,anchor,2026-08-31,2026-08-31
+tax-zh-046,zh,tax,税费支出,Taxes,expense,个人劳务报酬个税20%,20,CNY,劳务税,anchor,2026-08-31,2026-08-31
+tax-zh-047,zh,tax,税费支出,Taxes,expense,房产税从租计征12%,12,CNY,从租计征,anchor,2026-08-31,2026-08-31
+tax-zh-048,zh,tax,税费支出,Taxes,expense,香港差饷征收率5%,5,HKD,差饷率,anchor,2026-08-31,2026-08-31
+tax-zh-049,zh,tax,税费支出,Taxes,expense,增值税专用发票抵扣1000元,1000,CNY,发票抵扣,anchor,2026-08-31,2026-08-31
+tax-zh-050,zh,tax,税费支出,Taxes,expense,香港差饷补交3000HKD,3000,HKD,差饷,anchor,2026-08-31,2026-08-31
+salary-zh-001,zh,salary,工资收入,Salary,income,昨天这个月发工资15000HKD,15000,HKD,月薪,rel:-1,2026-08-30,2026-08-31
+salary-zh-002,zh,salary,工资收入,Salary,income,公司发薪到账8000块,8000,CNY,月薪,anchor,2026-08-31,2026-08-31
+salary-zh-003,zh,salary,工资收入,Salary,income,上月工资税后到账12000元,12000,CNY,税后工资,anchor,2026-08-31,2026-08-31
+salary-zh-004,zh,salary,工资收入,Salary,income,底薪加提成一共25000块,25000,CNY,底薪提成,anchor,2026-08-31,2026-08-31
+salary-zh-005,zh,salary,工资收入,Salary,income,试用期工资发了6000元,6000,CNY,试用期,anchor,2026-08-31,2026-08-31
+salary-zh-006,zh,salary,工资收入,Salary,income,本周四香港月薪到账20000HKD,20000,HKD,香港月薪,weekday:4,2026-09-03,2026-08-31
+salary-zh-007,zh,salary,工资收入,Salary,income,年终奖发了30000元,30000,CNY,年终奖,anchor,2026-08-31,2026-08-31
+salary-zh-008,zh,salary,工资收入,Salary,income,加班费发了800块,800,CNY,加班费,anchor,2026-08-31,2026-08-31
+salary-zh-009,zh,salary,工资收入,Salary,income,海外月薪到账4000USD,4000,USD,海外月薪,anchor,2026-08-31,2026-08-31
+salary-zh-010,zh,salary,工资收入,Salary,income,绩效奖金发了5000块,5000,CNY,绩效奖,anchor,2026-08-31,2026-08-31
+salary-zh-011,zh,salary,工资收入,Salary,income,8月10日基本工资5000元,5000,CNY,基本工资,ymd:2026-08-10,2026-08-10,2026-08-31
+salary-zh-012,zh,salary,工资收入,Salary,income,岗位津贴2000块,2000,CNY,岗位津贴,anchor,2026-08-31,2026-08-31
+salary-zh-013,zh,salary,工资收入,Salary,income,香港底薪18000HKD,18000,HKD,香港底薪,anchor,2026-08-31,2026-08-31
+salary-zh-014,zh,salary,工资收入,Salary,income,全勤奖500元,500,CNY,全勤奖,anchor,2026-08-31,2026-08-31
+salary-zh-015,zh,salary,工资收入,Salary,income,交通补贴300块,300,CNY,交通补贴,anchor,2026-08-31,2026-08-31
+salary-zh-016,zh,salary,工资收入,Salary,income,餐补每月400元,400,CNY,餐补,anchor,2026-08-31,2026-08-31
+salary-zh-017,zh,salary,工资收入,Salary,income,8月29日香港房屋津贴5000HKD,5000,HKD,房屋津贴,ymd:2026-08-29,2026-08-29,2026-08-31
+salary-zh-018,zh,salary,工资收入,Salary,income,工龄工资200元,200,CNY,工龄工资,anchor,2026-08-31,2026-08-31
+salary-zh-019,zh,salary,工资收入,Salary,income,季度奖金10000块,10000,CNY,季度奖,anchor,2026-08-31,2026-08-31
+salary-zh-020,zh,salary,工资收入,Salary,income,项目奖金8000元,8000,CNY,项目奖,anchor,2026-08-31,2026-08-31
+salary-zh-021,zh,salary,工资收入,Salary,income,今天明天香港双粮出粮都18000HKD,18000,HKD,双粮,"rel:0,1",2026-08-31|2026-09-01,2026-08-31
+salary-zh-022,zh,salary,工资收入,Salary,income,夜班补贴500元,500,CNY,夜班补贴,anchor,2026-08-31,2026-08-31
+salary-zh-023,zh,salary,工资收入,Salary,income,高温补贴300块,300,CNY,高温补贴,anchor,2026-08-31,2026-08-31
+salary-zh-024,zh,salary,工资收入,Salary,income,提成奖金15000元,15000,CNY,提成,anchor,2026-08-31,2026-08-31
+salary-zh-025,zh,salary,工资收入,Salary,income,香港佣金收入10000HKD,10000,HKD,佣金,anchor,2026-08-31,2026-08-31
+salary-zh-026,zh,salary,工资收入,Salary,income,十三薪发了8000元,8000,CNY,十三薪,anchor,2026-08-31,2026-08-31
+salary-zh-027,zh,salary,工资收入,Salary,income,年终分红50000块,50000,CNY,年终分红,anchor,2026-08-31,2026-08-31
+salary-zh-028,zh,salary,工资收入,Salary,income,基本工资加绩效共12000元,12000,CNY,工资绩效,anchor,2026-08-31,2026-08-31
+salary-zh-029,zh,salary,工资收入,Salary,income,香港超时补水2000HKD,2000,HKD,超时补贴,anchor,2026-08-31,2026-08-31
+salary-zh-030,zh,salary,工资收入,Salary,income,住房补贴1000元,1000,CNY,住房补贴,anchor,2026-08-31,2026-08-31
+salary-zh-031,zh,salary,工资收入,Salary,income,上周每天话费补贴100块,100,CNY,话费补贴,week:-1,2026-08-24|2026-08-25|2026-08-26|2026-08-27|2026-08-28|2026-08-29|2026-08-30,2026-08-31
+salary-zh-032,zh,salary,工资收入,Salary,income,这一周每天出差补贴200元,200,CNY,出差补贴,week:0,2026-08-31|2026-09-01|2026-09-02|2026-09-03|2026-09-04|2026-09-05|2026-09-06,2026-08-31
+salary-zh-033,zh,salary,工资收入,Salary,income,香港膳食津贴1500HKD,1500,HKD,膳食津贴,anchor,2026-08-31,2026-08-31
+salary-zh-034,zh,salary,工资收入,Salary,income,技能津贴500元,500,CNY,技能津贴,anchor,2026-08-31,2026-08-31
+salary-zh-035,zh,salary,工资收入,Salary,income,管理津贴2000块,2000,CNY,管理津贴,anchor,2026-08-31,2026-08-31
+salary-zh-036,zh,salary,工资收入,Salary,income,销售提成20000元,20000,CNY,销售提成,anchor,2026-08-31,2026-08-31
+salary-zh-037,zh,salary,工资收入,Salary,income,香港花红奖金10000HKD,10000,HKD,花红,anchor,2026-08-31,2026-08-31
+salary-zh-038,zh,salary,工资收入,Salary,income,月度优秀员工奖500元,500,CNY,优秀员工,anchor,2026-08-31,2026-08-31
+salary-zh-039,zh,salary,工资收入,Salary,income,半年奖15000块,15000,CNY,半年奖,anchor,2026-08-31,2026-08-31
+salary-zh-040,zh,salary,工资收入,Salary,income,竞业限制补偿金3000元,3000,CNY,竞业补偿,anchor,2026-08-31,2026-08-31
+salary-zh-041,zh,salary,工资收入,Salary,income,香港长期服务金20000HKD,20000,HKD,长期服务金,anchor,2026-08-31,2026-08-31
+salary-zh-042,zh,salary,工资收入,Salary,income,产假工资8000元,8000,CNY,产假工资,anchor,2026-08-31,2026-08-31
+salary-zh-043,zh,salary,工资收入,Salary,income,病假工资4000块,4000,CNY,病假工资,anchor,2026-08-31,2026-08-31
+salary-zh-044,zh,salary,工资收入,Salary,income,年假工资2000元,2000,CNY,年假工资,anchor,2026-08-31,2026-08-31
+salary-zh-045,zh,salary,工资收入,Salary,income,香港遣散费50000HKD,50000,HKD,遣散费,anchor,2026-08-31,2026-08-31
+salary-zh-046,zh,salary,工资收入,Salary,income,转正工资8000元,8000,CNY,转正工资,anchor,2026-08-31,2026-08-31
+salary-zh-047,zh,salary,工资收入,Salary,income,调薪后每月10000块,10000,CNY,调薪后,anchor,2026-08-31,2026-08-31
+salary-zh-048,zh,salary,工资收入,Salary,income,公司发薪日到账12000元,12000,CNY,发薪日,anchor,2026-08-31,2026-08-31
+salary-zh-049,zh,salary,工资收入,Salary,income,香港月薪税后18000HKD,18000,HKD,税后月薪,anchor,2026-08-31,2026-08-31
+salary-zh-050,zh,salary,工资收入,Salary,income,香港绩效奖到账15000HKD,15000,HKD,绩效奖,anchor,2026-08-31,2026-08-31
+side_income-zh-001,zh,side_income,副业收入,Side Income,income,昨天做兼职赚了2000块钱,2000,CNY,兼职,rel:-1,2026-08-30,2026-08-31
+side_income-zh-002,zh,side_income,副业收入,Side Income,income,接私活收到报酬3000HKD,3000,HKD,接私活,anchor,2026-08-31,2026-08-31
+side_income-zh-003,zh,side_income,副业收入,Side Income,income,自媒体收益到账500USD,500,USD,自媒体,anchor,2026-08-31,2026-08-31
+side_income-zh-004,zh,side_income,副业收入,Side Income,income,闲鱼卖闲置赚了800元,800,CNY,闲鱼,anchor,2026-08-31,2026-08-31
+side_income-zh-005,zh,side_income,副业收入,Side Income,income,代驾收入1500块,1500,CNY,代驾,anchor,2026-08-31,2026-08-31
+side_income-zh-006,zh,side_income,副业收入,Side Income,income,本周六设计接单赚了4500元,4500,CNY,设计接单,weekday:6,2026-09-05,2026-08-31
+side_income-zh-007,zh,side_income,副业收入,Side Income,income,代购利润2500HKD,2500,HKD,代购,anchor,2026-08-31,2026-08-31
+side_income-zh-008,zh,side_income,副业收入,Side Income,income,理财利息到账300元,300,CNY,理财利息,anchor,2026-08-31,2026-08-31
+side_income-zh-009,zh,side_income,副业收入,Side Income,income,海外做外包赚1200USD,1200,USD,海外外包,anchor,2026-08-31,2026-08-31
+side_income-zh-010,zh,side_income,副业收入,Side Income,income,跑腿赚了600块,600,CNY,跑腿,anchor,2026-08-31,2026-08-31
+side_income-zh-011,zh,side_income,副业收入,Side Income,income,8月24日摆摊卖货赚了1000元,1000,CNY,摆摊,ymd:2026-08-24,2026-08-24,2026-08-31
+side_income-zh-012,zh,side_income,副业收入,Side Income,income,写稿子稿费800块,800,CNY,稿费,anchor,2026-08-31,2026-08-31
+side_income-zh-013,zh,side_income,副业收入,Side Income,income,香港做家教月入5000HKD,5000,HKD,家教,anchor,2026-08-31,2026-08-31
+side_income-zh-014,zh,side_income,副业收入,Side Income,income,网约车司机收入3000元,3000,CNY,网约车,anchor,2026-08-31,2026-08-31
+side_income-zh-015,zh,side_income,副业收入,Side Income,income,翻译兼职赚了2000块,2000,CNY,翻译,anchor,2026-08-31,2026-08-31
+side_income-zh-016,zh,side_income,副业收入,Side Income,income,短视频带货佣金1500元,1500,CNY,带货佣金,anchor,2026-08-31,2026-08-31
+side_income-zh-017,zh,side_income,副业收入,Side Income,income,香港炒股票赚了10000HKD,10000,HKD,炒股,anchor,2026-08-31,2026-08-31
+side_income-zh-018,zh,side_income,副业收入,Side Income,income,今天明天问卷调查都赚了50元,50,CNY,问卷,"rel:0,1",2026-08-31|2026-09-01,2026-08-31
+side_income-zh-019,zh,side_income,副业收入,Side Income,income,配音兼职800块,800,CNY,配音,anchor,2026-08-31,2026-08-31
+side_income-zh-020,zh,side_income,副业收入,Side Income,income,摄影约拍赚了1200元,1200,CNY,约拍,anchor,2026-08-31,2026-08-31
+side_income-zh-021,zh,side_income,副业收入,Side Income,income,香港做freelance赚8000HKD,8000,HKD,自由职业,anchor,2026-08-31,2026-08-31
+side_income-zh-022,zh,side_income,副业收入,Side Income,income,外卖骑手收入2500元,2500,CNY,外卖骑手,anchor,2026-08-31,2026-08-31
+side_income-zh-023,zh,side_income,副业收入,Side Income,income,游戏代练赚了600块,600,CNY,游戏代练,anchor,2026-08-31,2026-08-31
+side_income-zh-024,zh,side_income,副业收入,Side Income,income,公众号广告收入2000元,2000,CNY,公众号,anchor,2026-08-31,2026-08-31
+side_income-zh-025,zh,side_income,副业收入,Side Income,income,香港做补习月入6000HKD,6000,HKD,补习,anchor,2026-08-31,2026-08-31
+side_income-zh-026,zh,side_income,副业收入,Side Income,income,二手转卖赚了300元,300,CNY,二手转卖,anchor,2026-08-31,2026-08-31
+side_income-zh-027,zh,side_income,副业收入,Side Income,income,PPT制作接单500块,500,CNY,PPT接单,anchor,2026-08-31,2026-08-31
+side_income-zh-028,zh,side_income,副业收入,Side Income,income,直播打赏收入1000元,1000,CNY,直播打赏,anchor,2026-08-31,2026-08-31
+side_income-zh-029,zh,side_income,副业收入,Side Income,income,这一周每天香港散工日结800HKD,800,HKD,散工,week:0,2026-08-31|2026-09-01|2026-09-02|2026-09-03|2026-09-04|2026-09-05|2026-09-06,2026-08-31
+side_income-zh-030,zh,side_income,副业收入,Side Income,income,薅羊毛赚了100元,100,CNY,薅羊毛,anchor,2026-08-31,2026-08-31
+side_income-zh-031,zh,side_income,副业收入,Side Income,income,小程序开发接单10000块,10000,CNY,小程序开发,anchor,2026-08-31,2026-08-31
+side_income-zh-032,zh,side_income,副业收入,Side Income,income,插画约稿赚了2000元,2000,CNY,插画约稿,anchor,2026-08-31,2026-08-31
+side_income-zh-033,zh,side_income,副业收入,Side Income,income,香港做钟点工月入4000HKD,4000,HKD,钟点工,anchor,2026-08-31,2026-08-31
+side_income-zh-034,zh,side_income,副业收入,Side Income,income,收租收入3000元,3000,CNY,收租,anchor,2026-08-31,2026-08-31
+side_income-zh-035,zh,side_income,副业收入,Side Income,income,打新债赚了200块,200,CNY,打新债,anchor,2026-08-31,2026-08-31
+side_income-zh-036,zh,side_income,副业收入,Side Income,income,基金分红500元,500,CNY,基金分红,anchor,2026-08-31,2026-08-31
+side_income-zh-037,zh,side_income,副业收入,Side Income,income,香港收租10000HKD,10000,HKD,收租,anchor,2026-08-31,2026-08-31
+side_income-zh-038,zh,side_income,副业收入,Side Income,income,上周每天做任务赚了80元,80,CNY,做任务,week:-1,2026-08-24|2026-08-25|2026-08-26|2026-08-27|2026-08-28|2026-08-29|2026-08-30,2026-08-31
+side_income-zh-039,zh,side_income,副业收入,Side Income,income,会计代账每月1000块,1000,CNY,代账,anchor,2026-08-31,2026-08-31
+side_income-zh-040,zh,side_income,副业收入,Side Income,income,视频剪辑接单3000元,3000,CNY,视频剪辑,anchor,2026-08-31,2026-08-31
+side_income-zh-041,zh,side_income,副业收入,Side Income,income,香港做美容兼职月入5000HKD,5000,HKD,美容兼职,anchor,2026-08-31,2026-08-31
+side_income-zh-042,zh,side_income,副业收入,Side Income,income,点赞关注赚了30元,30,CNY,点赞任务,anchor,2026-08-31,2026-08-31
+side_income-zh-043,zh,side_income,副业收入,Side Income,income,塔罗牌占卜赚了500块,500,CNY,占卜,anchor,2026-08-31,2026-08-31
+side_income-zh-044,zh,side_income,副业收入,Side Income,income,民宿运营收入8000元,8000,CNY,民宿,anchor,2026-08-31,2026-08-31
+side_income-zh-045,zh,side_income,副业收入,Side Income,income,香港车位出租月入2000HKD,2000,HKD,车位出租,anchor,2026-08-31,2026-08-31
+side_income-zh-046,zh,side_income,副业收入,Side Income,income,试吃试用赚了100元,100,CNY,试吃试用,anchor,2026-08-31,2026-08-31
+side_income-zh-047,zh,side_income,副业收入,Side Income,income,编程私活赚了5000块,5000,CNY,编程私活,anchor,2026-08-31,2026-08-31
+side_income-zh-048,zh,side_income,副业收入,Side Income,income,自媒体广告分成1500元,1500,CNY,广告分成,anchor,2026-08-31,2026-08-31
+side_income-zh-049,zh,side_income,副业收入,Side Income,income,香港网约车月入15000HKD,15000,HKD,网约车,anchor,2026-08-31,2026-08-31
+side_income-zh-050,zh,side_income,副业收入,Side Income,income,香港翻译兼职月入3000HKD,3000,HKD,翻译兼职,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-001,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,淘宝退货退款到账128元,-128,CNY,淘宝退货,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-002,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,京东自营退款退了89块,-89,CNY,京东退款,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-003,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,拼多多砍价订单退款36.5元,-36.5,CNY,拼多多退,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-004,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,美团外卖取消订单退款22元,-22,CNY,外卖退款,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-005,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,饿了么超时赔付退款15块,-15,CNY,外卖赔付,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-006,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,盒马鲜生缺货退款45元,-45,CNY,盒马退款,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-007,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,天猫超市凑单退款12.8元,-12.8,CNY,天猫退款,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-008,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,抖音商城退货退款199元,-199,CNY,抖音退货,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-009,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,闲鱼买家取消交易退回50块,-50,CNY,闲鱼退回,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-010,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,山姆网购差价退回68元,-68,CNY,山姆退差,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-011,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,优衣库门店退货退款299HKD,-299,HKD,优衣库退,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-012,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,Zara官网退货到账180港币,-180,HKD,Zara退货,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-013,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,屈臣氏买错色号退款88块,-88,HKD,屈臣氏退,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-014,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,百佳超市退货退款56元,-56,CNY,百佳退货,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-015,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,华润万家小票退货退了33块,-33,CNY,华润退货,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-016,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,Costco会员卡购物退款420元,-420,CNY,Costco退,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-017,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,IKEA宜家大件退货退款750元,-750,CNY,宜家退货,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-018,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,得物鉴别不过退款899块,-899,CNY,得物退款,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-019,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,小红书种草买贵了退差25元,-25,CNY,小红书退,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-020,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,考拉海购清关失败退款310元,-310,CNY,考拉退款,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-021,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,昨天淘宝衣服尺码不对退款158元,-158,CNY,尺码退款,rel:-1,2026-08-30,2026-08-31
+refund_shopping-zh-022,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,前天京东家电安装取消退款1200块,-1200,CNY,家电退款,rel:-1,2026-08-30,2026-08-31
+refund_shopping-zh-023,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,今天叮咚买菜缺斤少两退3.5元,-3.5,CNY,缺斤退差,rel:0,2026-08-31,2026-08-31
+refund_shopping-zh-024,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,今早朴朴超市坏果退款18块,-18,CNY,坏果退款,rel:0,2026-08-31,2026-08-31
+refund_shopping-zh-025,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,大前天拼多多仅退款到账27元,-27,CNY,仅退款,rel:-2,2026-08-29,2026-08-31
+refund_shopping-zh-026,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,上周盒马会员日多扣退回66块,-66,CNY,多扣退回,rel:-2,2026-08-29,2026-08-31
+refund_shopping-zh-027,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,明天预计天猫预售定金退回100元,-100,CNY,定金退回,rel:-3,2026-08-28,2026-08-31
+refund_shopping-zh-028,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,今天和明天两笔外卖取消共退45元,-45,CNY,外卖连退,rel:-3,2026-08-28,2026-08-31
+refund_shopping-zh-029,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,这三天网购退货陆续到账共退520块,-520,CNY,连退到账,rel:1,2026-09-01,2026-08-31
+refund_shopping-zh-030,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,上周天天买咖啡杯都退了各退35元,-35,CNY,连买连退,rel:1,2026-09-01,2026-08-31
+refund_shopping-zh-031,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,这周三商场买鞋不合适退280元,-280,CNY,买鞋退货,"rel:0,1",2026-08-31|2026-09-01,2026-08-31
+refund_shopping-zh-032,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,上周五网购羽绒服退货到账650块,-650,CNY,羽绒服退,span:0:2,2026-08-31|2026-09-01|2026-09-02,2026-08-31
+refund_shopping-zh-033,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,8月20日淘宝双十一预售退差88元,-88,CNY,预售退差,week:-1,2026-08-24|2026-08-25|2026-08-26|2026-08-27|2026-08-28|2026-08-29|2026-08-30,2026-08-31
+refund_shopping-zh-034,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,8月15日京东全球购关税退回45块,-45,CNY,关税退回,weekday:3,2026-09-02,2026-08-31
+refund_shopping-zh-035,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,顺丰到付拒收退回货款230元,-230,CNY,拒收退回,weekday:-1:5,2026-08-28,2026-08-31
+refund_shopping-zh-036,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,菜鸟驿站错发包裹退回79块,-79,CNY,错发退回,ymd:2026-08-20,2026-08-20,2026-08-31
+refund_shopping-zh-037,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,唯品会特卖抢贵了退差42元,-42,CNY,唯品退差,ymd:2026-08-15,2026-08-15,2026-08-31
+refund_shopping-zh-038,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,网易严选质量问题退款156元,-156,CNY,严选退款,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-039,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,小米有品众筹失败原路退回99块,-99,CNY,众筹退回,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-040,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,7-11便利店买水买重了退11元,-11,CNY,便利店退,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-041,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,全家FamilyMart关东煮退单8.5块,-8.5,CNY,关东煮退,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-042,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,华润堂买保健品退货退款268HKD,-268,HKD,保健品退,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-043,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,惠康超市买水果坏了退22港币,-22,HKD,水果退款,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-044,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,亚马逊海外购退货运费退回35USD,-35,USD,运费退回,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-045,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,Target网购多收税费退回18美元,-18,USD,税费退回,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-046,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,澳门新八佰伴退货退款120葡币,-120,MOP,新八佰伴,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-047,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,日本代购取消订单退回2800日元,-2800,JPY,代购取消,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-048,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,抖音直播拍多了退款66元,-66,CNY,直播退款,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-049,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,快手小店假货鉴定退款188块,-188,CNY,假货退款,anchor,2026-08-31,2026-08-31
+refund_shopping-zh-050,zh,refund_shopping,购物退款,Shopping Refunds,negative_expense,苏宁以旧换新补贴退回300元,-300,CNY,以旧换新,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-001,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,国航航班取消退款到账1280元,-1280,CNY,航班取消,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-002,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,东航改签差价退回350块,-350,CNY,改签退差,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-003,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,南航误机险赔付退款200元,-200,CNY,误机险赔,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-004,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,12306高铁票退票到账86.5元,-86.5,CNY,高铁退票,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-005,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,广深港高铁改签退回120港币,-120,HKD,广深高铁,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-006,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,港铁八达通多扣退回15块,-15,HKD,港铁退差,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-007,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,淘票票电影票退票退款45元,-45,CNY,电影退票,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-008,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,猫眼演出取消退款280块,-280,CNY,演出取消,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-009,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,大麦网演唱会延期退款680元,-680,CNY,演唱会退,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-010,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,携程酒店免费取消退回520元,-520,CNY,酒店取消,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-011,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,飞猪机票航变全额退899块,-899,CNY,航变退款,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-012,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,同程旅行火车票抢票失败退25元,-25,CNY,抢票失败,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-013,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,Booking.com订房取消退180USD,-180,USD,Booking退,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-014,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,Agoda酒店no-show退差45美元,-45,USD,Agoda退,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-015,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,迪士尼门票未使用退款399港币,-399,HKD,迪士尼退,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-016,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,海洋公园年卡退卡到账650块,-650,HKD,年卡退卡,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-017,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,深圳北到广州南高铁退一张55元,-55,CNY,高铁单程,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-018,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,北京南到上海虹桥二等座退票553块,-553,CNY,京沪高铁,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-019,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,春秋航空超售补偿退款300元,-300,CNY,超售补偿,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-020,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,吉祥航空延误险理赔到账150元,-150,CNY,延误理赔,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-021,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,昨天电影票开场前退票退了38块,-38,CNY,昨电影退,rel:-1,2026-08-30,2026-08-31
+refund_tickets-zh-022,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,前天演唱会因台风取消退480元,-480,CNY,台风取消,rel:-1,2026-08-30,2026-08-31
+refund_tickets-zh-023,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,今天抢的火车票退票到账72元,-72,CNY,今日退票,rel:0,2026-08-31,2026-08-31
+refund_tickets-zh-024,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,今早航班升舱失败原路退220块,-220,CNY,升舱失败,rel:0,2026-08-31,2026-08-31
+refund_tickets-zh-025,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,大前天民宿房东同意取消退260元,-260,CNY,民宿取消,rel:-2,2026-08-29,2026-08-31
+refund_tickets-zh-026,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,上周高铁候补没兑现退全款95块,-95,CNY,候补退全,rel:-2,2026-08-29,2026-08-31
+refund_tickets-zh-027,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,明天音乐会门票转让平台退120元,-120,CNY,票转让退,rel:-3,2026-08-28,2026-08-31
+refund_tickets-zh-028,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,今天和明天两晚酒店连退共退880元,-880,CNY,连住取消,rel:-3,2026-08-28,2026-08-31
+refund_tickets-zh-029,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,这三天展会门票陆续退回共150块,-150,CNY,展会退票,rel:1,2026-09-01,2026-08-31
+refund_tickets-zh-030,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,上周天天买的地铁日票都退了各10元,-10,CNY,日票连退,rel:1,2026-09-01,2026-08-31
+refund_tickets-zh-031,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,这周三话剧票临时有事退180元,-180,CNY,话剧退票,"rel:0,1",2026-08-31|2026-09-01,2026-08-31
+refund_tickets-zh-032,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,上周五羽毛球馆订场取消退60块,-60,CNY,订场取消,span:0:2,2026-08-31|2026-09-01|2026-09-02,2026-08-31
+refund_tickets-zh-033,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,8月20日机票降价退差退回66元,-66,CNY,机票退差,week:-1,2026-08-24|2026-08-25|2026-08-26|2026-08-27|2026-08-28|2026-08-29|2026-08-30,2026-08-31
+refund_tickets-zh-034,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,8月15日温泉酒店套餐退款388块,-388,CNY,温泉套餐,weekday:3,2026-09-02,2026-08-31
+refund_tickets-zh-035,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,Klook景点门票未成行退95港币,-95,HKD,Klook退,weekday:-1:5,2026-08-28,2026-08-31
+refund_tickets-zh-036,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,澳门威尼斯人表演票退220葡币,-220,MOP,威尼斯人,ymd:2026-08-20,2026-08-20,2026-08-31
+refund_tickets-zh-037,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,日本新干线指定席取消退8500日元,-8500,JPY,新干线退,ymd:2026-08-15,2026-08-15,2026-08-31
+refund_tickets-zh-038,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,深圳航空自愿退票扣手续费后退410元,-410,CNY,自愿退票,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-039,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,海航积分兑票失败退回1200里程等值80块,-80,CNY,积分兑退,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-040,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,广深城际列车停运全额退35元,-35,CNY,城际停运,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-041,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,国家大剧院演出改期退差价28块,-28,CNY,改期退差,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-042,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,Livehouse演出爆满取消退98元,-98,CNY,Livehouse,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-043,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,滑雪季卡未开板退卡到账1200元,-1200,CNY,季卡退卡,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-044,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,邮轮舱位降级补偿退款560块,-560,CNY,邮轮补偿,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-045,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,签证被拒酒店免费取消退210USD,-210,USD,签证拒签,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-046,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,机场贵宾厅预约失败退88港币,-88,HKD,贵宾厅退,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-047,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,往返机票去程取消返程退差退450元,-450,CNY,往返退差,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-048,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,音乐节暴雨取消主办方退款199块,-199,CNY,音乐节退,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-049,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,博物馆预约票过期自动退20元,-20,CNY,预约过期,anchor,2026-08-31,2026-08-31
+refund_tickets-zh-050,zh,refund_tickets,票务退款,Ticket Refunds,negative_expense,游船班次取消码头退款75元,-75,CNY,游船取消,anchor,2026-08-31,2026-08-31
+reimbursement-zh-001,zh,reimbursement,报销到账,Reimbursement,negative_expense,公司打车报销到账45元,-45,CNY,打车报销,anchor,2026-08-31,2026-08-31
+reimbursement-zh-002,zh,reimbursement,报销到账,Reimbursement,negative_expense,出差高铁票报销退回268块,-268,CNY,高铁报销,anchor,2026-08-31,2026-08-31
+reimbursement-zh-003,zh,reimbursement,报销到账,Reimbursement,negative_expense,客户宴请餐费报销到账380元,-380,CNY,宴请报销,anchor,2026-08-31,2026-08-31
+reimbursement-zh-004,zh,reimbursement,报销到账,Reimbursement,negative_expense,机票差旅报销退回1560元,-1560,CNY,机票报销,anchor,2026-08-31,2026-08-31
+reimbursement-zh-005,zh,reimbursement,报销到账,Reimbursement,negative_expense,加班打车费报销到账62.5元,-62.5,CNY,加班打车,anchor,2026-08-31,2026-08-31
+reimbursement-zh-006,zh,reimbursement,报销到账,Reimbursement,negative_expense,门诊看病公司医保补充报销120块,-120,CNY,门诊报销,anchor,2026-08-31,2026-08-31
+reimbursement-zh-007,zh,reimbursement,报销到账,Reimbursement,negative_expense,住院押金公司垫付退回8000元,-8000,CNY,住院垫付,anchor,2026-08-31,2026-08-31
+reimbursement-zh-008,zh,reimbursement,报销到账,Reimbursement,negative_expense,体检费用报销到账560元,-560,CNY,体检报销,anchor,2026-08-31,2026-08-31
+reimbursement-zh-009,zh,reimbursement,报销到账,Reimbursement,negative_expense,买办公用品发票报销退回89块,-89,CNY,办公用品,anchor,2026-08-31,2026-08-31
+reimbursement-zh-010,zh,reimbursement,报销到账,Reimbursement,negative_expense,团建活动费用报销到账1500元,-1500,CNY,团建报销,anchor,2026-08-31,2026-08-31
+reimbursement-zh-011,zh,reimbursement,报销到账,Reimbursement,negative_expense,展会展位费报销退回3200块,-3200,CNY,展位报销,anchor,2026-08-31,2026-08-31
+reimbursement-zh-012,zh,reimbursement,报销到账,Reimbursement,negative_expense,跨境出差港币打车报销180HKD,-180,HKD,港币打车,anchor,2026-08-31,2026-08-31
+reimbursement-zh-013,zh,reimbursement,报销到账,Reimbursement,negative_expense,香港酒店住宿差旅报销650港币,-650,HKD,港酒店报,anchor,2026-08-31,2026-08-31
+reimbursement-zh-014,zh,reimbursement,报销到账,Reimbursement,negative_expense,海外会议注册费报销退回95USD,-95,USD,会议注册,anchor,2026-08-31,2026-08-31
+reimbursement-zh-015,zh,reimbursement,报销到账,Reimbursement,negative_expense,美国出差小费报销到账25美元,-25,USD,小费报销,anchor,2026-08-31,2026-08-31
+reimbursement-zh-016,zh,reimbursement,报销到账,Reimbursement,negative_expense,澳门出差餐饮发票报销88葡币,-88,MOP,澳门餐报,anchor,2026-08-31,2026-08-31
+reimbursement-zh-017,zh,reimbursement,报销到账,Reimbursement,negative_expense,日本出差交通卡充值报销2000日元,-2000,JPY,交通卡报,anchor,2026-08-31,2026-08-31
+reimbursement-zh-018,zh,reimbursement,报销到账,Reimbursement,negative_expense,滴滴企业版月结报销到账230元,-230,CNY,滴滴月结,anchor,2026-08-31,2026-08-31
+reimbursement-zh-019,zh,reimbursement,报销到账,Reimbursement,negative_expense,顺丰同城急送样品报销退回35块,-35,CNY,样品快递,anchor,2026-08-31,2026-08-31
+reimbursement-zh-020,zh,reimbursement,报销到账,Reimbursement,negative_expense,客户礼品采购报销到账168元,-168,CNY,礼品采购,anchor,2026-08-31,2026-08-31
+reimbursement-zh-021,zh,reimbursement,报销到账,Reimbursement,negative_expense,昨天加班餐补报销到账30元,-30,CNY,餐补报销,rel:-1,2026-08-30,2026-08-31
+reimbursement-zh-022,zh,reimbursement,报销到账,Reimbursement,negative_expense,前天拜访客户路费报销退回55块,-55,CNY,拜访路费,rel:-1,2026-08-30,2026-08-31
+reimbursement-zh-023,zh,reimbursement,报销到账,Reimbursement,negative_expense,今天上午打的去公司报销18元,-18,CNY,今早打车,rel:0,2026-08-31,2026-08-31
+reimbursement-zh-024,zh,reimbursement,报销到账,Reimbursement,negative_expense,今早买咖啡见客户报销22块,-22,CNY,咖啡报销,rel:0,2026-08-31,2026-08-31
+reimbursement-zh-025,zh,reimbursement,报销到账,Reimbursement,negative_expense,大前天核酸检测差旅报销退回16元,-16,CNY,核酸报销,rel:-2,2026-08-29,2026-08-31
+reimbursement-zh-026,zh,reimbursement,报销到账,Reimbursement,negative_expense,上周出差住宿发票报销到账420块,-420,CNY,住宿发票,rel:-2,2026-08-29,2026-08-31
+reimbursement-zh-027,zh,reimbursement,报销到账,Reimbursement,negative_expense,明天预计差旅补贴到账200元,-200,CNY,差旅补贴,rel:-3,2026-08-28,2026-08-31
+reimbursement-zh-028,zh,reimbursement,报销到账,Reimbursement,negative_expense,今天和明天两天出差补贴共报300元,-300,CNY,连日报销,rel:-3,2026-08-28,2026-08-31
+reimbursement-zh-029,zh,reimbursement,报销到账,Reimbursement,negative_expense,这三天打车发票陆续报销共退125块,-125,CNY,连打报销,rel:1,2026-09-01,2026-08-31
+reimbursement-zh-030,zh,reimbursement,报销到账,Reimbursement,negative_expense,上周每天通勤地铁票都报销各退6元,-6,CNY,通勤报销,rel:1,2026-09-01,2026-08-31
+reimbursement-zh-031,zh,reimbursement,报销到账,Reimbursement,negative_expense,这周三项目聚餐报销到账人均85元,-85,CNY,项目聚餐,"rel:0,1",2026-08-31|2026-09-01,2026-08-31
+reimbursement-zh-032,zh,reimbursement,报销到账,Reimbursement,negative_expense,上周五培训费发票报销退回1200块,-1200,CNY,培训报销,span:0:2,2026-08-31|2026-09-01|2026-09-02,2026-08-31
+reimbursement-zh-033,zh,reimbursement,报销到账,Reimbursement,negative_expense,8月20日专利年费公司报销退350元,-350,CNY,专利年费,week:-1,2026-08-24|2026-08-25|2026-08-26|2026-08-27|2026-08-28|2026-08-29|2026-08-30,2026-08-31
+reimbursement-zh-034,zh,reimbursement,报销到账,Reimbursement,negative_expense,8月15日软件订阅费报销到账99块,-99,CNY,软件订阅,weekday:3,2026-09-02,2026-08-31
+reimbursement-zh-035,zh,reimbursement,报销到账,Reimbursement,negative_expense,VPN年费技术部报销退回180元,-180,CNY,VPN报销,weekday:-1:5,2026-08-28,2026-08-31
+reimbursement-zh-036,zh,reimbursement,报销到账,Reimbursement,negative_expense,云服务器费用报销到账2400元,-2400,CNY,云服报销,ymd:2026-08-20,2026-08-20,2026-08-31
+reimbursement-zh-037,zh,reimbursement,报销到账,Reimbursement,negative_expense,打印机墨盒采购报销退回156块,-156,CNY,墨盒采购,ymd:2026-08-15,2026-08-15,2026-08-31
+reimbursement-zh-038,zh,reimbursement,报销到账,Reimbursement,negative_expense,律师函快递费报销到账28元,-28,CNY,快递报销,anchor,2026-08-31,2026-08-31
+reimbursement-zh-039,zh,reimbursement,报销到账,Reimbursement,negative_expense,商标注册官费报销退回300元,-300,CNY,商标官费,anchor,2026-08-31,2026-08-31
+reimbursement-zh-040,zh,reimbursement,报销到账,Reimbursement,negative_expense,年会场地定金公司报销退5000块,-5000,CNY,年会场地,anchor,2026-08-31,2026-08-31
+reimbursement-zh-041,zh,reimbursement,报销到账,Reimbursement,negative_expense,猎头服务费HR报销到账8000元,-8000,CNY,猎头费用,anchor,2026-08-31,2026-08-31
+reimbursement-zh-042,zh,reimbursement,报销到账,Reimbursement,negative_expense,员工福利体检加项报销退回220元,-220,CNY,体检加项,anchor,2026-08-31,2026-08-31
+reimbursement-zh-043,zh,reimbursement,报销到账,Reimbursement,negative_expense,工伤医药费公司全额报销680块,-680,CNY,工伤医药,anchor,2026-08-31,2026-08-31
+reimbursement-zh-044,zh,reimbursement,报销到账,Reimbursement,negative_expense,外派住房补贴报销到账3500元,-3500,CNY,住房补贴,anchor,2026-08-31,2026-08-31
+reimbursement-zh-045,zh,reimbursement,报销到账,Reimbursement,negative_expense,国际漫游话费报销退回45港币,-45,HKD,漫游报销,anchor,2026-08-31,2026-08-31
+reimbursement-zh-046,zh,reimbursement,报销到账,Reimbursement,negative_expense,商务签证费报销到账120美元,-120,USD,签证报销,anchor,2026-08-31,2026-08-31
+reimbursement-zh-047,zh,reimbursement,报销到账,Reimbursement,negative_expense,展会翻译服务费报销退回1500元,-1500,CNY,翻译报销,anchor,2026-08-31,2026-08-31
+reimbursement-zh-048,zh,reimbursement,报销到账,Reimbursement,negative_expense,样品检测费研发报销到账890块,-890,CNY,检测报销,anchor,2026-08-31,2026-08-31
+reimbursement-zh-049,zh,reimbursement,报销到账,Reimbursement,negative_expense,行业协会会费报销退回600元,-600,CNY,会费报销,anchor,2026-08-31,2026-08-31
+reimbursement-zh-050,zh,reimbursement,报销到账,Reimbursement,negative_expense,残保金代缴财务报销到账280块,-280,CNY,残保金报,anchor,2026-08-31,2026-08-31
+cashback-zh-001,zh,cashback,优惠返现,Cashback,negative_expense,信用卡消费返现到账18元,-18,CNY,信用卡返,anchor,2026-08-31,2026-08-31
+cashback-zh-002,zh,cashback,优惠返现,Cashback,negative_expense,招行信用卡满减返现退回25块,-25,CNY,招行返现,anchor,2026-08-31,2026-08-31
+cashback-zh-003,zh,cashback,优惠返现,Cashback,negative_expense,花呗分期手续费返现8.5元,-8.5,CNY,花呗返现,anchor,2026-08-31,2026-08-31
+cashback-zh-004,zh,cashback,优惠返现,Cashback,negative_expense,支付宝双11红包返现到账66元,-66,CNY,支付宝返,anchor,2026-08-31,2026-08-31
+cashback-zh-005,zh,cashback,优惠返现,Cashback,negative_expense,微信支付周末优惠返3块,-3,CNY,微信优惠,anchor,2026-08-31,2026-08-31
+cashback-zh-006,zh,cashback,优惠返现,Cashback,negative_expense,京东白条还款返现到账12元,-12,CNY,白条返现,anchor,2026-08-31,2026-08-31
+cashback-zh-007,zh,cashback,优惠返现,Cashback,negative_expense,云闪付银联活动返15块,-15,CNY,云闪付返,anchor,2026-08-31,2026-08-31
+cashback-zh-008,zh,cashback,优惠返现,Cashback,negative_expense,88VIP购物返利到账40元,-40,CNY,88VIP返,anchor,2026-08-31,2026-08-31
+cashback-zh-009,zh,cashback,优惠返现,Cashback,negative_expense,淘宝省钱卡返现退回5元,-5,CNY,省钱卡返,anchor,2026-08-31,2026-08-31
+cashback-zh-010,zh,cashback,优惠返现,Cashback,negative_expense,拼多多百亿补贴返差到账9.9块,-9.9,CNY,百亿补贴,anchor,2026-08-31,2026-08-31
+cashback-zh-011,zh,cashback,优惠返现,Cashback,negative_expense,美团支付满30减5实际返5元,-5,CNY,美团满减,anchor,2026-08-31,2026-08-31
+cashback-zh-012,zh,cashback,优惠返现,Cashback,negative_expense,饿了么超级会员返现10块,-10,CNY,会员返现,anchor,2026-08-31,2026-08-31
+cashback-zh-013,zh,cashback,优惠返现,Cashback,negative_expense,滴滴出行券抵扣后返现7元,-7,CNY,滴滴返券,anchor,2026-08-31,2026-08-31
+cashback-zh-014,zh,cashback,优惠返现,Cashback,negative_expense,中国移动积分兑换现金20元,-20,CNY,积分兑现,anchor,2026-08-31,2026-08-31
+cashback-zh-015,zh,cashback,优惠返现,Cashback,negative_expense,联通话费积分返现到账15块,-15,CNY,联通积分,anchor,2026-08-31,2026-08-31
+cashback-zh-016,zh,cashback,优惠返现,Cashback,negative_expense,汇丰信用卡签账返现88港币,-88,HKD,汇丰返现,anchor,2026-08-31,2026-08-31
+cashback-zh-017,zh,cashback,优惠返现,Cashback,negative_expense,中银信用卡餐饮回赠22块,-22,HKD,中银回赠,anchor,2026-08-31,2026-08-31
+cashback-zh-018,zh,cashback,优惠返现,Cashback,negative_expense,八达通消费奖赏退回6港币,-6,HKD,八达通赏,anchor,2026-08-31,2026-08-31
+cashback-zh-019,zh,cashback,优惠返现,Cashback,negative_expense,Apple Card Daily Cash返4美元,-4,USD,Apple返现,anchor,2026-08-31,2026-08-31
+cashback-zh-020,zh,cashback,优惠返现,Cashback,negative_expense,Chase信用卡季度返现12美金,-12,USD,Chase返现,anchor,2026-08-31,2026-08-31
+cashback-zh-021,zh,cashback,优惠返现,Cashback,negative_expense,昨天刷卡返现到账33元,-33,CNY,昨日刷卡,rel:-1,2026-08-30,2026-08-31
+cashback-zh-022,zh,cashback,优惠返现,Cashback,negative_expense,前天支付宝碰一碰优惠返2块,-2,CNY,碰一碰,rel:-1,2026-08-30,2026-08-31
+cashback-zh-023,zh,cashback,优惠返现,Cashback,negative_expense,今天早高峰地铁优惠返1.5元,-1.5,CNY,地铁优惠,rel:0,2026-08-31,2026-08-31
+cashback-zh-024,zh,cashback,优惠返现,Cashback,negative_expense,今早买咖啡用券返3块,-3,CNY,咖啡返券,rel:0,2026-08-31,2026-08-31
+cashback-zh-025,zh,cashback,优惠返现,Cashback,negative_expense,大前天京东PLUS返现到账28元,-28,CNY,PLUS返,rel:-2,2026-08-29,2026-08-31
+cashback-zh-026,zh,cashback,优惠返现,Cashback,negative_expense,上周信用卡账单返现合计55块,-55,CNY,账单返现,rel:-2,2026-08-29,2026-08-31
+cashback-zh-027,zh,cashback,优惠返现,Cashback,negative_expense,明天预计还款返现到账8元,-8,CNY,还款返现,rel:-3,2026-08-28,2026-08-31
+cashback-zh-028,zh,cashback,优惠返现,Cashback,negative_expense,今天和明天消费返现共到账16元,-16,CNY,连消返现,rel:-3,2026-08-28,2026-08-31
+cashback-zh-029,zh,cashback,优惠返现,Cashback,negative_expense,这一周每天刷卡返现各到账2块,-2,CNY,每日返现,rel:1,2026-09-01,2026-08-31
+cashback-zh-030,zh,cashback,优惠返现,Cashback,negative_expense,上周天天用支付宝坐地铁各返1元,-1,CNY,地铁连返,rel:1,2026-09-01,2026-08-31
+cashback-zh-031,zh,cashback,优惠返现,Cashback,negative_expense,这周三超市满减返现到账14块,-14,CNY,超市满减,"rel:0,1",2026-08-31|2026-09-01,2026-08-31
+cashback-zh-032,zh,cashback,优惠返现,Cashback,negative_expense,上周五加油信用卡返6元,-6,CNY,加油返现,week:0,2026-08-31|2026-09-01|2026-09-02|2026-09-03|2026-09-04|2026-09-05|2026-09-06,2026-08-31
+cashback-zh-033,zh,cashback,优惠返现,Cashback,negative_expense,8月20日618尾款返利退回19块,-19,CNY,618返利,week:-1,2026-08-24|2026-08-25|2026-08-26|2026-08-27|2026-08-28|2026-08-29|2026-08-30,2026-08-31
+cashback-zh-034,zh,cashback,优惠返现,Cashback,negative_expense,8月15日银行新户礼返现50元,-50,CNY,新户礼,weekday:3,2026-09-02,2026-08-31
+cashback-zh-035,zh,cashback,优惠返现,Cashback,negative_expense,澳门赌场积分换现金120葡币,-120,MOP,积分换现,weekday:-1:5,2026-08-28,2026-08-31
+cashback-zh-036,zh,cashback,优惠返现,Cashback,negative_expense,日本便利店T积分返现200日元,-200,JPY,T积分返,ymd:2026-08-20,2026-08-20,2026-08-31
+cashback-zh-037,zh,cashback,优惠返现,Cashback,negative_expense,平安银行万里通积分兑30元,-30,CNY,万里通兑,ymd:2026-08-15,2026-08-15,2026-08-31
+cashback-zh-038,zh,cashback,优惠返现,Cashback,negative_expense,交行最红星期五返11块,-11,CNY,最红星期五,anchor,2026-08-31,2026-08-31
+cashback-zh-039,zh,cashback,优惠返现,Cashback,negative_expense,浦发信用卡1%返现到账77元,-77,CNY,浦发1%返,anchor,2026-08-31,2026-08-31
+cashback-zh-040,zh,cashback,优惠返现,Cashback,negative_expense,兴业信用卡加油返8%到账24块,-24,CNY,加油8%返,anchor,2026-08-31,2026-08-31
+cashback-zh-041,zh,cashback,优惠返现,Cashback,negative_expense,光大信用卡网购返10元,-10,CNY,光大网购,anchor,2026-08-31,2026-08-31
+cashback-zh-042,zh,cashback,优惠返现,Cashback,negative_expense,农行掌银缴费随机立减返4块,-4,CNY,缴费立减,anchor,2026-08-31,2026-08-31
+cashback-zh-043,zh,cashback,优惠返现,Cashback,negative_expense,建行龙支付周末返6元,-6,CNY,龙支付返,anchor,2026-08-31,2026-08-31
+cashback-zh-044,zh,cashback,优惠返现,Cashback,negative_expense,微众银行活期Plus收益返现13块,-13,CNY,活期收益,anchor,2026-08-31,2026-08-31
+cashback-zh-045,zh,cashback,优惠返现,Cashback,negative_expense,余额宝体验金收益到账0.8元,-0.8,CNY,体验金,anchor,2026-08-31,2026-08-31
+cashback-zh-046,zh,cashback,优惠返现,Cashback,negative_expense,抖音支付新人立减返5块,-5,CNY,抖音新人,anchor,2026-08-31,2026-08-31
+cashback-zh-047,zh,cashback,优惠返现,Cashback,negative_expense,快手小店下单返现金9元,-9,CNY,快手下单,anchor,2026-08-31,2026-08-31
+cashback-zh-048,zh,cashback,优惠返现,Cashback,negative_expense,拼多多果园提现到账3块,-3,CNY,果园提现,anchor,2026-08-31,2026-08-31
+cashback-zh-049,zh,cashback,优惠返现,Cashback,negative_expense,淘宝淘金币抵扣返现7元,-7,CNY,淘金币返,anchor,2026-08-31,2026-08-31
+cashback-zh-050,zh,cashback,优惠返现,Cashback,negative_expense,京东京豆抵现退回18块,-18,CNY,京豆抵现,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-001,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,朋友还我上次垫付的50元,-50,CNY,朋友还款,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-002,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,室友分摊房租转回1200块,-1200,CNY,室友分摊,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-003,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,同事AA聚餐转我45元,-45,CNY,同事AA,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-004,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,同学还我借的200块,-200,CNY,同学还钱,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-005,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,闺蜜婚礼份子钱回礼到账88元,-88,CNY,份子回礼,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-006,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,球友场地费AA转回35块,-35,CNY,球友AA,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-007,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,家人还我代购款168元,-168,CNY,代购款还,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-008,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,前男友还欠我的300块到了,-300,CNY,前任还钱,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-009,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,邻居还我借的梯子押金20元,-20,CNY,押金退回,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-010,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,表弟还我压岁钱垫付500元,-500,CNY,压岁钱还,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-011,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,团建有人A了我到账60块,-60,CNY,有人A我,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-012,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,火锅局AA每人转我72元,-72,CNY,火锅AA,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-013,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,露营装备分摊转回180块,-180,CNY,露营分摊,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-014,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,香港朋友还我港币150HKD,-150,HKD,港友还款,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-015,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,同事出差垫付住宿费退650港币,-650,HKD,垫付住宿,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-016,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,留学室友还我代付房租95USD,-95,USD,代付房租,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-017,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,美国同学Venmo还我30美元,-30,USD,Venmo还,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-018,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,澳门牌友还我筹码80葡币,-80,MOP,筹码归还,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-019,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,日本同事还我代买便当2000日元,-2000,JPY,代买便当,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-020,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,微信群收款有人转了28元给我,-28,CNY,群收款到,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-021,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,昨天朋友还我打车费22块,-22,CNY,打车还清,rel:-1,2026-08-30,2026-08-31
+repay_from_others-zh-022,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,前天聚餐AA有人转我38元,-38,CNY,聚餐AA,rel:-1,2026-08-30,2026-08-31
+repay_from_others-zh-023,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,今天同事还我咖啡钱15块,-15,CNY,咖啡还清,rel:0,2026-08-31,2026-08-31
+repay_from_others-zh-024,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,今早室友转我水电分摊66元,-66,CNY,水电分摊,rel:0,2026-08-31,2026-08-31
+repay_from_others-zh-025,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,大前天球局AA到账每人25块,-25,CNY,球局AA,rel:-2,2026-08-29,2026-08-31
+repay_from_others-zh-026,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,上周朋友还我借款全款300元,-300,CNY,借款还清,rel:-2,2026-08-29,2026-08-31
+repay_from_others-zh-027,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,明天预计室友转我网费分摊40块,-40,CNY,网费分摊,rel:-3,2026-08-28,2026-08-31
+repay_from_others-zh-028,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,今天和明天两笔AA共收回55元,-55,CNY,连AA收回,rel:-3,2026-08-28,2026-08-31
+repay_from_others-zh-029,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,这三天陆续有人还我垫付共120块,-120,CNY,垫付收回,rel:1,2026-09-01,2026-08-31
+repay_from_others-zh-030,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,上周天天拼车同事各转我8元,-8,CNY,拼车AA,rel:1,2026-09-01,2026-08-31
+repay_from_others-zh-031,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,这周三羽毛球AA转我20块,-20,CNY,羽毛球AA,"rel:0,1",2026-08-31|2026-09-01,2026-08-31
+repay_from_others-zh-032,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,上周五KTV AA有人转了90元给我,-90,CNY,KTV AA,span:0:2,2026-08-31|2026-09-01|2026-09-02,2026-08-31
+repay_from_others-zh-033,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,8月20日亲戚还我份子钱200块,-200,CNY,份子还清,week:-1,2026-08-24|2026-08-25|2026-08-26|2026-08-27|2026-08-28|2026-08-29|2026-08-30,2026-08-31
+repay_from_others-zh-034,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,8月15日合伙人分红预支退回5000元,-5000,CNY,分红预支,weekday:3,2026-09-02,2026-08-31
+repay_from_others-zh-035,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,支付宝好友转账还我12.8元,-12.8,CNY,好友转账,weekday:-1:5,2026-08-28,2026-08-31
+repay_from_others-zh-036,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,微信转账室友还清洁费35块,-35,CNY,清洁费还,ymd:2026-08-20,2026-08-20,2026-08-31
+repay_from_others-zh-037,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,闲鱼买家确认收货尾款到账420元,-420,CNY,尾款到账,ymd:2026-08-15,2026-08-15,2026-08-31
+repay_from_others-zh-038,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,二手群面交买家付我80块,-80,CNY,面交收款,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-039,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,拼车群群主代收转我18元,-18,CNY,群主代收,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-040,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,剧本杀局AA转回人均68块,-68,CNY,剧本杀AA,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-041,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,滑雪教练费三人分摊转我150元,-150,CNY,教练分摊,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-042,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,演唱会门票代付同学还我280块,-280,CNY,代付票款,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-043,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,旅游团费朋友转我垫付的1200元,-1200,CNY,团费垫付,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-044,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,香港同事FPS还我餐费55港币,-55,HKD,FPS还款,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-045,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,美股群友Zelle还我20美元,-20,USD,Zelle还,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-046,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,牌局赢的钱朋友微信转我100块,-100,CNY,牌局转账,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-047,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,合租买家电分摊转回每人230元,-230,CNY,家电分摊,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-048,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,毕业旅行垫付费队友还我360块,-360,CNY,旅行垫还,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-049,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,前同事还我离职聚餐代付48元,-48,CNY,聚餐代付,anchor,2026-08-31,2026-08-31
+repay_from_others-zh-050,zh,repay_from_others,他人还款,Repayment from Others,negative_expense,小区业主群团购差价退我6块,-6,CNY,团购退差,anchor,2026-08-31,2026-08-31
