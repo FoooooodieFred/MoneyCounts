@@ -3784,6 +3784,7 @@ function App() {
         <ScrollNav settings={appSettings} travelAccent={navTravelAccent} />
       </div>
       <MobileScrollNav settings={appSettings} travelAccent={navTravelAccent} />
+      <SiteFooter />
       <Routes>
         <Route
           path="/"
@@ -3793,7 +3794,6 @@ function App() {
                 {renderHomeSection("heroCards")}
                 {renderHomeSection("quickEntry")}
               </main>
-              {renderHomeSection("footer")}
             </div>
           }
         />

@@ -25,6 +25,8 @@
   --radius-2xl: var(--radius);
   --radius-secondary: var(--radius);
   --radius-pill: 9999px;
+  --text-button: 0.875rem;
+  --app-footer-height: 3.25rem;
   --sidebar-width: 240px;
   --sidebar-width-collapsed: 76px;
   --container-main: 880px;
@@ -181,7 +183,9 @@ button {
   background: var(--color-brand);
   color: #e2ebf0;
   cursor: pointer;
+  font-size: var(--text-button);
   font-weight: 560;
+  line-height: 1.25;
   min-height: 32px;
   padding: 0.45rem 0.95rem;
   box-shadow: none;
@@ -251,7 +255,7 @@ select.invalid {
   width: min(var(--app-shell-max-width), 100%);
   margin: 0 auto;
   padding: var(--app-nav-offset) var(--app-content-padding-inline)
-    calc(var(--app-content-padding-inline) + 4.5rem);
+    calc(var(--app-footer-height) + var(--app-content-padding-inline) + 4.5rem);
   padding-left: calc(var(--sidebar-width) + var(--app-content-padding-inline));
 }
 
@@ -7098,6 +7102,10 @@ html[data-sidebar="collapsed"] {
   display: none !important;
 }
 
+.nl-compact-entry-host {
+  bottom: max(16px, calc(var(--app-footer-height) + env(safe-area-inset-bottom)));
+}
+
 /* Visual system lock: one large rectangle radius; pills/circles unchanged */
 .surface-secondary,
 .card,
@@ -7119,5 +7127,115 @@ html[data-sidebar="collapsed"] {
 .status,
 .hero-stat-card {
   border-radius: var(--radius);
+}
+
+button,
+button.ghost-button,
+button.secondary-button,
+button.danger-button,
+button.nl-chip,
+button.nl-composer__submit,
+button.nl-confirm-primary,
+button.nl-bubble__edit {
+  font-size: var(--text-button) !important;
+}
+
+.totals-grid > div,
+.totals-grid--hero .total-pill,
+.total-pill {
+  background: var(--color-surface) !important;
+  background-image: none !important;
+  border: 1px solid var(--color-line);
+  box-shadow: var(--shadow-soft-token);
+}
+
+.content-rail > *,
+.settings-stack > *,
+.search-stack > *,
+.data-stack > *,
+.section-main .content-rail > *,
+.home-main.content-rail > * {
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+}
+
+.settings-page-shell .settings-panel,
+.search-page-shell .card,
+.search-page-shell .search-filter-card,
+.travel-page .travel-card,
+.data-page-shell .data-management-card,
+.search-hero,
+.settings-hero,
+.travel-hero,
+.data-hero {
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+}
+
+.home-section-slot,
+.hero-section,
+.feature-block,
+.stats-grid,
+.rate-section-bottom,
+.card-soft {
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+}
+
+.section-page-shell .feature-block,
+.section-page-shell .stats-grid,
+.section-page-shell .home-section-slot,
+.section-page-shell .nl-section {
+  width: 100%;
+  margin-inline: 0;
+}
+
+.site-footer.site-footer--fixed {
+  position: fixed;
+  left: var(--sidebar-width);
+  right: 0;
+  bottom: 0;
+  z-index: 34;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  max-width: none;
+  height: var(--app-footer-height);
+  margin: 0;
+  padding: 0 var(--app-content-padding-inline);
+  border: 0;
+  background: var(--color-page);
+  pointer-events: auto;
+}
+
+.site-footer.site-footer--fixed a {
+  width: min(var(--content-rail-max), 100%);
+  margin: 0;
+  color: var(--color-muted);
+  font-size: var(--text-button);
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+}
+
+.site-footer.site-footer--fixed a:hover {
+  color: var(--color-brand);
+  text-decoration: none;
+}
+
+@media (max-width: 900px) {
+  .site-footer.site-footer--fixed {
+    left: 0;
+    padding-bottom: env(safe-area-inset-bottom);
+    height: calc(var(--app-footer-height) + env(safe-area-inset-bottom));
+  }
+
+  .mobile-scroll-nav {
+    bottom: calc(var(--app-footer-height) + 0.5rem + env(safe-area-inset-bottom));
+  }
 }
 

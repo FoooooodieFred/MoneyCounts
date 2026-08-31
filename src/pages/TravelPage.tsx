@@ -148,7 +148,8 @@ export function TravelPage(props: TravelPageProps) {
       ref={pageRef}
       data-section="travel-page"
     >
-      <section className="travel-hero" data-section="travel-hero">
+      <div className="content-rail">
+      <section className="travel-hero page-intro" data-section="travel-hero">
         <p className="eyebrow">Travel Mode</p>
         <h1>{travelState.active && travelState.billName ? travelState.billName : "旅游模式"}</h1>
         <p className="muted">{props.travelRangeLabel}</p>
@@ -593,6 +594,7 @@ export function TravelPage(props: TravelPageProps) {
           onDeleteRecord={props.deleteTravelHistoryRecord}
           formatMoney={props.formatMoney}
         />
+      </div>
       </div>
 
       {props.pendingTravelDeletes.length > 0 && (

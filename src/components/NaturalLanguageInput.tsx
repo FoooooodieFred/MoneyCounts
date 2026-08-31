@@ -313,7 +313,7 @@ export function NaturalLanguageInput({
                     data-action="preview-add-record"
                     onClick={onPreviewAdd}
                   >
-                    补一笔
+                    手动记一笔
                   </button>
                 </header>
 
