@@ -19,7 +19,9 @@ export type LlmChatProxyBody = {
 const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "[::1]", "::1"]);
 const MAX_MESSAGES = 24;
 const MAX_MESSAGE_CHARS = 20_000;
-const REQUEST_TIMEOUT_MS = 45_000;
+/** 表格导入等长输出；供应商若更低会自行截断或报错。 */
+export const MAX_COMPLETION_TOKENS = 16_384;
+const REQUEST_TIMEOUT_MS = 120_000;
 
 export const normalizeChatCompletionsUrl = (baseUrl: string) => {
   const trimmed = baseUrl.trim().replace(/\/+$/, "");
@@ -109,7 +111,7 @@ export const handleLlmChatRequest = async (request: Request): Promise<Response> 
     payload.response_format = { type: "json_object" };
   }
   if (typeof body.maxTokens === "number" && body.maxTokens > 0) {
-    payload.max_tokens = Math.min(Math.floor(body.maxTokens), 4096);
+    payload.max_tokens = Math.min(Math.floor(body.maxTokens), MAX_COMPLETION_TOKENS);
   }
 
   const controller = new AbortController();

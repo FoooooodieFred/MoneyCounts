@@ -142,6 +142,15 @@ describe("ledger prompts", () => {
 describe("parseLlmLedgerPayload", () => {
   it("extracts json from fenced model output", () => {
     expect(extractJsonObject('```json\n{"entries":[]}\n```')).toEqual({ entries: [] });
+    expect(extractJsonObject('prefix [{"date":"2026-01-01"}] suffix')).toEqual([
+      { date: "2026-01-01" },
+    ]);
+    expect(extractJsonObject('[]{"rows":[{"date":"2026-01-01","amount":"1"}]}')).toEqual({
+      rows: [{ date: "2026-01-01", amount: "1" }],
+    });
+    expect(extractJsonObject('{}{"rows":[{"date":"2026-01-02"}]}')).toEqual({
+      rows: [{ date: "2026-01-02" }],
+    });
   });
 
   it("maps category ids and signs negative expenses", () => {

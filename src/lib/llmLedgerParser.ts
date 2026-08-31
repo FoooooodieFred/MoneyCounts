@@ -24,20 +24,54 @@ const MAX_RECORDS = 62;
 
 export const LLM_NOT_CONFIGURED_MESSAGE = "请先到「API 看台」填写接口地址、模型与 API Key。";
 
+const JSON_POSITION_PATTERN = /position\s+(\d+)/i;
+
+const scoreJsonCandidate = (value: unknown) => {
+  if (Array.isArray(value)) return value.length ? 1_000 + value.length : 0;
+  if (!value || typeof value !== "object") return 0;
+  const record = value as Record<string, unknown>;
+  const rows = record.rows ?? record.entries ?? record.records ?? record.data ?? record.items;
+  if (Array.isArray(rows)) return (rows.length ? 10_000 : 100) + rows.length;
+  return 1;
+};
+
+const parseJsonFrom = (text: string, start: number) => {
+  const slice = text.slice(start);
+  try {
+    return { value: JSON.parse(slice) as unknown, consumed: slice.length };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    const match = message.match(JSON_POSITION_PATTERN);
+    if (!match) return null;
+    const end = Number(match[1]);
+    if (!Number.isFinite(end) || end <= 0) return null;
+    try {
+      return { value: JSON.parse(slice.slice(0, end)) as unknown, consumed: end };
+    } catch {
+      return null;
+    }
+  }
+};
+
 export const extractJsonObject = (text: string): unknown => {
   const trimmed = text.trim();
   const fenced = trimmed.match(/```(?:json)?\s*([\s\S]*?)```/i);
-  const candidate = (fenced ? fenced[1] : trimmed).trim();
-  try {
-    return JSON.parse(candidate);
-  } catch {
-    const start = candidate.indexOf("{");
-    const end = candidate.lastIndexOf("}");
-    if (start >= 0 && end > start) {
-      return JSON.parse(candidate.slice(start, end + 1));
-    }
-    throw new Error("模型没有返回 JSON。");
+  let rest = (fenced ? fenced[1] : trimmed).trim();
+  const values: unknown[] = [];
+
+  while (rest) {
+    const start = rest.search(/[{[]/);
+    if (start < 0) break;
+    const parsed = parseJsonFrom(rest, start);
+    if (!parsed) break;
+    values.push(parsed.value);
+    rest = rest.slice(start + parsed.consumed).replace(/^[\s,;]+/, "");
   }
+
+  if (!values.length) throw new Error("模型没有返回 JSON。");
+  return values.reduce((best, current) =>
+    scoreJsonCandidate(current) >= scoreJsonCandidate(best) ? current : best,
+  );
 };
 
 export const formatSignedAmount = (value: number) => {
@@ -163,7 +197,7 @@ export const parseLlmLedgerPayload = (
   return { records: clipped, warnings, source: "llm" };
 };
 
-const isJsonModeUnsupported = (error: unknown) => {
+export const isJsonModeUnsupported = (error: unknown) => {
   const message = error instanceof Error ? error.message : String(error);
   return /response_format|json_object|json mode|json_schema/i.test(message);
 };
