@@ -1,8 +1,8 @@
 /**
  * 自然语言账本解析入口（中英多句 → 可预览记录）。
  * 首页快速记账与旅游自然语言录入共用 `parseNaturalLedger`；
- * 日期用 `date_spec` 展开（每天复制同一金额），分词与金额委托 `expenseParseShared`。
- * 改动行为前请跑 `npm test`（quickExpenseParser / nlLedgerDateSpec / refactorPreservation）。
+ * 日期用 `date_spec` 展开（每天复制同一金额）；金额 / 币种 / 切句在 `expenseParseShared`；
+ * 分类是关键词 + `nlLedgerClassifier`。改动行为前请跑 `npm test`。
  */
 import {
   CATEGORY_KEYWORDS,

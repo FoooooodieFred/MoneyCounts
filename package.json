@@ -10,6 +10,7 @@
     "preview": "vite preview",
     "typecheck": "tsc -b",
     "test": "vitest run",
+    "train:nl-classifier": "python3 scripts/train_nl_ledger_classifier.py",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint ."

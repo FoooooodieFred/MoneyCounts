@@ -1,6 +1,6 @@
 # 自然语言记账语料
 
-本目录是 **35 类 × 中英各 50 条** 的槽位标注集。App 解析器按同一 35 类与 `date_spec` 规则切句、展日期。换设备仍用 JSON 备份。
+本目录是 **35 类 × 中英各 50 条** 的槽位标注集。App 解析器按同一 35 类与 `date_spec` 规则切句、展日期；分类模型用 `samples.jsonl` 训练（`npm run train:nl-classifier`）。换设备仍用 JSON 备份。
 
 默认锚点日（对应解析时的 `selectedDate`）是 **2026-08-31（周一）**，见 [`src/lib/nlLedgerDateSpec.ts`](../../src/lib/nlLedgerDateSpec.ts)。
 
@@ -21,6 +21,13 @@
 
 ```bash
 python3 data/nl-ledger/export_dataset.py
+```
+
+分类模型（浏览器内 n-gram 逻辑回归，无新 npm 依赖）：
+
+```bash
+pip install scikit-learn numpy   # 仅训练机
+npm run train:nl-classifier      # 写出 src/lib/nlLedgerClassifier.model.json
 ```
 
 ## 分类

@@ -1,3 +1,4 @@
+import { classifyNlLedgerCategory } from "./nlLedgerClassifier";
 import {
   CATEGORY_KEYWORDS,
   FALLBACK_CATEGORY_ZH,
@@ -159,6 +160,42 @@ export const detectCategoryWithKeyword = (text: string, categories: readonly str
   return { category: best.category, matchedKeyword: best.keyword };
 };
 
+const CLASSIFIER_MIN_CONFIDENCE = 0.22;
+
+const isStrongKeyword = (keyword: string | null) => {
+  if (!keyword) return false;
+  return keyword.length >= 2;
+};
+
+export const findLongestCategoryKeyword = (text: string, category: string) => {
+  const phrases = CATEGORY_KEYWORDS.find(([name]) => name === category)?.[1] ?? [];
+  const lowerText = text.toLowerCase();
+  return (
+    [...phrases]
+      .filter((phrase) => lowerText.includes(phrase.toLowerCase()))
+      .sort((a, b) => b.length - a.length)[0] ?? null
+  );
+};
+
+/** Strong keywords (length ≥ 2) win; otherwise the n-gram classifier; else 日用百货. */
+export const detectCategory = (text: string, categories: readonly string[]) => {
+  const keywordHit = detectCategoryWithKeyword(text, categories);
+  const prediction = classifyNlLedgerCategory(text);
+  if (isStrongKeyword(keywordHit.matchedKeyword)) return keywordHit;
+  if (
+    prediction &&
+    categories.includes(prediction.category) &&
+    prediction.confidence >= CLASSIFIER_MIN_CONFIDENCE
+  ) {
+    return {
+      category: prediction.category,
+      matchedKeyword:
+        findLongestCategoryKeyword(text, prediction.category) ?? keywordHit.matchedKeyword,
+    };
+  }
+  return keywordHit;
+};
+
 export const detectCurrency = (
   text: string,
   currencies: readonly string[],
@@ -311,10 +348,7 @@ export const parseExpenseSegment = (
   const rawAmount = detectAmount(segment);
   if (!rawAmount) return null;
 
-  const { category: detectedCategory, matchedKeyword } = detectCategoryWithKeyword(
-    segment,
-    categories,
-  );
+  const { category: detectedCategory, matchedKeyword } = detectCategory(segment, categories);
   let category = detectedCategory;
   if (
     REPAY_FROM_OTHERS_PATTERN.test(segment) &&

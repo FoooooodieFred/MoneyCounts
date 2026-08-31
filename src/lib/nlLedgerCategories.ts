@@ -120,8 +120,9 @@ export const remapLegacyCategoryLimits = (limits: Record<string, unknown>) => {
 
 /**
  * Keyword tables for the rule parser. Longer / more specific phrases win via
- * nested-keyword filtering in `detectCategoryWithKeyword`.
- * Negative-expense and income classes are listed first so equal scores prefer them.
+ * nested-keyword filtering in `detectCategoryWithKeyword`. They also seed the
+ * in-browser classifier. Negative-expense and income classes are listed first
+ * so equal keyword scores prefer them.
  */
 export const CATEGORY_KEYWORDS: Array<[string, string[]]> = [
   [

@@ -10,7 +10,7 @@
 
 ## 能做什么
 
-- **自然语言记账**：中英句子切成多笔，预览里改日期 / 分类 / 金额 / 币种 / 备注，确认后才写入。
+- **自然语言记账**：中英句子切成多笔，预览里改日期 / 分类 / 金额 / 币种 / 备注，确认后才写入。金额、币种、日期仍走规则；分类用关键词 + 浏览器内 n-gram 分类器（语料在 `data/nl-ledger/`）。
 - **35 类**：28 个支出 + 工资收入 / 副业收入 + 5 个负支出（购物退款、票务退款、报销到账、优惠返现、他人还款）。对不上的归入「日用百货」。
 - **金额符号**：工资、副业为正；退款 / 报销 / 返现 / 别人还你为负；AA 自己那份仍是餐饮美食、正数。
 - **多日展开**：「今天明天」「这一周每天」等按 `date_spec` 拆成若干账本日，**每天复制同一金额**（不是把一周总额摊开）。
@@ -29,15 +29,15 @@
 
 ## 页面
 
-| 路径 | 内容 |
-| --- | --- |
-| `/` | 记账：自然语言入口、今日明细、日汇总 |
-| `/today` `/day` `/week` `/month` `/year` | 各周期统计 |
-| `/search` | 筛选 |
-| `/travel` | 旅游模式 |
-| `/data` | CSV 与账本清理 |
-| `/settings` | 区块显隐、预算、汇率、JSON 备份 |
-| `/entry` | 重定向到 `/` |
+| 路径                                     | 内容                                 |
+| ---------------------------------------- | ------------------------------------ |
+| `/`                                      | 记账：自然语言入口、今日明细、日汇总 |
+| `/today` `/day` `/week` `/month` `/year` | 各周期统计                           |
+| `/search`                                | 筛选                                 |
+| `/travel`                                | 旅游模式                             |
+| `/data`                                  | CSV 与账本清理                       |
+| `/settings`                              | 区块显隐、预算、汇率、JSON 备份      |
+| `/entry`                                 | 重定向到 `/`                         |
 
 ---
 
@@ -63,15 +63,15 @@ Node.js 18+。没有环境变量。账本不经过服务器；清站点数据或
 
 Vite 8 · React 19 · TypeScript · react-router-dom 7 · GSAP 3 · Vitest · PWA（`public/sw.js`）
 
-| 路径 | 用途 |
-| --- | --- |
-| `src/App.tsx` | 应用壳：状态、路由、写入账本 |
-| `src/pages/` | 搜索 / 旅游 / 设置 / 数据管理 |
-| `src/components/` | 可复用 UI |
-| `src/lib/` | 解析、分类、日期展开、统计、备份、旅游状态 |
-| `src/styles.css` | 全局样式 |
-| `public/` | PWA |
-| `wrangler.toml` | Cloudflare：`moneycounts`，SPA 回退 `dist/` |
+| 路径              | 用途                                        |
+| ----------------- | ------------------------------------------- |
+| `src/App.tsx`     | 应用壳：状态、路由、写入账本                |
+| `src/pages/`      | 搜索 / 旅游 / 设置 / 数据管理               |
+| `src/components/` | 可复用 UI                                   |
+| `src/lib/`        | 解析、分类、日期展开、统计、备份、旅游状态  |
+| `src/styles.css`  | 全局样式                                    |
+| `public/`         | PWA                                         |
+| `wrangler.toml`   | Cloudflare：`moneycounts`，SPA 回退 `dist/` |
 
 ---
 
@@ -103,7 +103,7 @@ Cloudflare Workers builds **`main`**. Worker name `moneycounts`; static assets f
 
 ## What it does
 
-- Parse Chinese or English into preview rows (date, category, amount, currency, note), then write after confirm.
+- Parse Chinese or English into preview rows (date, category, amount, currency, note), then write after confirm. Amount / currency / date stay rules; category uses keywords plus an in-browser n-gram classifier.
 - **35 classes**: 28 expenses, salary / side income (positive), five negative expenses (shopping refund, ticket refund, reimbursement, cashback, repayment from others). Unknown → 日用百货.
 - Multi-day phrases copy the **same amount onto each day**.
 - Manual grid, day/week/month/year stats, HKD/CNY-first FX cache, budgets, travel AA, search, CSV on `/data`, JSON backup in Settings, PWA.

@@ -10,6 +10,8 @@ export default defineConfig({
                         id.includes("TravelCharts") ||
                         id.includes("travelCharts"))
                         return "charts";
+                    if (id.includes("nlLedgerClassifier"))
+                        return "nl-classifier";
                 },
             },
         },
