@@ -77,6 +77,13 @@ const Icons = {
       <path d="M10 21v-6.5L3.5 12 10 9.5V3l11 9-11 9Z" />
     </svg>
   ),
+  data: (
+    <svg {...iconProps}>
+      <path d="M12 3v12" />
+      <path d="m8 11 4 4 4-4" />
+      <path d="M4 19h16" />
+    </svg>
+  ),
   settings: (
     <svg {...iconProps}>
       <circle cx="12" cy="12" r="3" />
@@ -107,6 +114,7 @@ const getLinks = (_settings: AppSettings): NavItem[] => {
     { href: "/month", label: "本月", icon: Icons.month, group: "sections" },
     { href: "/year", label: "全年", icon: Icons.year, group: "sections" },
     { href: "/travel", label: "旅游模式", icon: Icons.travel, group: "tools" },
+    { href: "/data", label: "数据管理", icon: Icons.data, group: "tools" },
     { href: "/settings", label: "设置", icon: Icons.settings, group: "tools" },
   ];
 };

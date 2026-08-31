@@ -25,6 +25,7 @@ import { StatsCurrencyPicker, SummaryModeToggle } from "./components/StatsContro
 import { BudgetOverview } from "./components/BudgetOverview";
 import { TravelPage } from "./pages/TravelPage";
 import { SettingsPage, BackupImportPreview } from "./pages/SettingsPage";
+import { DataManagementPage } from "./pages/DataManagementPage";
 import { SearchPage, SearchableLedgerRecord } from "./pages/SearchPage";
 import { SectionPage } from "./pages/SectionPage";
 import type { LedgerBadge, SpendingInsight, WeeklyAchievement } from "./lib/ledgerInsights";
@@ -3712,7 +3713,7 @@ function App() {
             id="tools"
             eyebrow="Year Trend"
             title="全年趋势图表"
-            subtitle="保留趋势、导入导出，并把预算/汇率作为本屏可选卡片"
+            subtitle="近月花费趋势，预算卡片可在此页查看"
             variant="neutral"
           >
             <section className="card trend-card" data-section="year-trend">
@@ -3759,55 +3760,6 @@ function App() {
                     {row.month}: {formatMoney(row.value, trendCurrency)}
                   </span>
                 ))}
-              </div>
-            </section>
-
-            <section className="card data-card">
-              <div>
-                <p className="eyebrow">数据管理</p>
-                <h2>导入、导出与清理</h2>
-                <p className="muted">
-                  CSV 导入会按日期、类目和序号覆盖对应格子，其他数据保持不变。
-                </p>
-                {importMessage && <p className="status">{importMessage}</p>}
-              </div>
-              <div className="action-row">
-                <button type="button" data-action="csv-export" onClick={exportCsv}>
-                  导出 CSV
-                </button>
-                <button
-                  type="button"
-                  className="secondary-button"
-                  data-action="csv-import-pick"
-                  onClick={() => fileInputRef.current?.click()}
-                >
-                  导入 CSV
-                </button>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept=".csv,text/csv"
-                  hidden
-                  onChange={importCsv}
-                />
-              </div>
-              <div className="danger-zone" aria-label="危险数据操作">
-                <button
-                  type="button"
-                  className="danger-button"
-                  data-action="clear-current-day"
-                  onClick={clearCurrentDay}
-                >
-                  清空当日数据
-                </button>
-                <button
-                  type="button"
-                  className="danger-button"
-                  data-action="clear-current-month"
-                  onClick={clearCurrentMonth}
-                >
-                  清空当月数据
-                </button>
               </div>
             </section>
             <div className="year-support-grid" data-section="year-support-cards">
@@ -3977,6 +3929,22 @@ function App() {
               confirmTravelHistoryMerge={confirmTravelHistoryMerge}
               closeTravelHistoryModal={closeTravelHistoryModal}
               PENDING_DELETE_TTL_MS={PENDING_DELETE_TTL_MS}
+            />
+          }
+        />
+        <Route
+          path="/data"
+          element={
+            <DataManagementPage
+              selectedDate={selectedDate}
+              monthKey={monthKey}
+              importMessage={importMessage}
+              fileInputRef={fileInputRef}
+              onExportCsv={exportCsv}
+              onPickCsv={() => fileInputRef.current?.click()}
+              onCsvFileChange={importCsv}
+              onClearCurrentDay={clearCurrentDay}
+              onClearCurrentMonth={clearCurrentMonth}
             />
           }
         />

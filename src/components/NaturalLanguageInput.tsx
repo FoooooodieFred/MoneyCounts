@@ -397,77 +397,103 @@ export function NaturalLanguageInput({
               </button>
             </header>
 
-            <div className="nl-answer__table">
-              {previewRecords.map((preview, index) => (
-                <div
-                  key={`${preview.date}-${preview.amount}-${preview.note}-${index}`}
-                  className="nl-preview-row nl-preview-row--editable"
-                >
-                  <label>
-                    日期
-                    <input
-                      type="date"
-                      value={preview.date}
-                      onChange={(event) => onPreviewChange(index, "date", event.target.value)}
-                    />
-                  </label>
-                  <label>
-                    分类
-                    <select
-                      value={preview.category}
-                      onChange={(event) => onPreviewChange(index, "category", event.target.value)}
-                    >
-                      {categories.map((category) => (
-                        <option key={category} value={category}>
-                          {category}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <label>
-                    金额
-                    <input
-                      inputMode="decimal"
-                      value={preview.amount}
-                      onChange={(event) => onPreviewChange(index, "amount", event.target.value)}
-                    />
-                  </label>
-                  <label>
-                    货币
-                    <select
-                      value={preview.currency}
-                      onChange={(event) => onPreviewChange(index, "currency", event.target.value)}
-                    >
-                      {currencies.map((currency) => (
-                        <option key={currency} value={currency}>
-                          {currency}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <label className="nl-preview-row__note">
-                    备注
-                    <input
-                      value={preview.note}
-                      onChange={(event) => onPreviewChange(index, "note", event.target.value)}
-                    />
-                  </label>
-                  <button
-                    type="button"
-                    className="delete-record-button"
-                    data-action="preview-delete-record"
-                    onClick={() => onPreviewDelete(index)}
-                    aria-label="删除预览记录"
-                  >
-                    ×
-                  </button>
-                  {previewIssues[index]?.length ? (
-                    <small className="nl-preview-row__issues">
-                      {previewIssues[index].join(" / ")}
-                    </small>
-                  ) : null}
+            <div className="nl-answer__table-wrap">
+              <table className="nl-preview-table">
+                <thead>
+                  <tr>
+                    <th scope="col">日期</th>
+                    <th scope="col">分类</th>
+                    <th scope="col">金额</th>
+                    <th scope="col">货币</th>
+                    <th scope="col">备注</th>
+                    <th scope="col">
+                      <span className="sr-only">操作</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {previewRecords.map((preview, index) => (
+                    <tr key={`${preview.date}-${preview.amount}-${preview.note}-${index}`}>
+                      <td>
+                        <input
+                          type="date"
+                          aria-label={`第 ${index + 1} 笔日期`}
+                          value={preview.date}
+                          onChange={(event) => onPreviewChange(index, "date", event.target.value)}
+                        />
+                      </td>
+                      <td>
+                        <select
+                          aria-label={`第 ${index + 1} 笔分类`}
+                          value={preview.category}
+                          onChange={(event) =>
+                            onPreviewChange(index, "category", event.target.value)
+                          }
+                        >
+                          {categories.map((category) => (
+                            <option key={category} value={category}>
+                              {category}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td>
+                        <input
+                          inputMode="decimal"
+                          aria-label={`第 ${index + 1} 笔金额`}
+                          value={preview.amount}
+                          onChange={(event) => onPreviewChange(index, "amount", event.target.value)}
+                        />
+                      </td>
+                      <td>
+                        <select
+                          aria-label={`第 ${index + 1} 笔货币`}
+                          value={preview.currency}
+                          onChange={(event) =>
+                            onPreviewChange(index, "currency", event.target.value)
+                          }
+                        >
+                          {currencies.map((currency) => (
+                            <option key={currency} value={currency}>
+                              {currency}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td className="nl-preview-table__note">
+                        <input
+                          aria-label={`第 ${index + 1} 笔备注`}
+                          value={preview.note}
+                          onChange={(event) => onPreviewChange(index, "note", event.target.value)}
+                        />
+                      </td>
+                      <td className="nl-preview-table__actions">
+                        <button
+                          type="button"
+                          className="delete-record-button"
+                          data-action="preview-delete-record"
+                          onClick={() => onPreviewDelete(index)}
+                          aria-label="删除预览记录"
+                        >
+                          ×
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {previewRecords.some((_, index) => previewIssues[index]?.length) ? (
+                <div className="nl-preview-table__issues">
+                  {previewRecords.map((preview, index) =>
+                    previewIssues[index]?.length ? (
+                      <p key={`issue-${index}`}>
+                        第 {index + 1} 笔（{preview.category || "未分类"}）：
+                        {previewIssues[index].join(" / ")}
+                      </p>
+                    ) : null,
+                  )}
                 </div>
-              ))}
+              ) : null}
             </div>
 
             {warnings.length ? (

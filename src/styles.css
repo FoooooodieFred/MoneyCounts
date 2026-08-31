@@ -4229,7 +4229,7 @@ body.travel-vacation-theme .scroll-nav .nav-item--active {
   padding: 0.85rem 1rem;
   border: 1px solid var(--color-line);
   border-radius: 18px;
-  background: var(--color-surface);
+  background: transparent;
   box-shadow: none;
   backdrop-filter: none;
   color: var(--ink);
@@ -5033,7 +5033,8 @@ body.travel-vacation-theme .scroll-nav .nav-item--active {
 
 .settings-page-shell,
 .search-page-shell,
-.travel-page {
+.travel-page,
+.data-page-shell {
   max-width: none;
   width: min(var(--app-shell-max-width), 100%);
   margin-inline: auto;
@@ -5963,7 +5964,8 @@ body.travel-vacation-theme {
 
 .settings-page-shell .settings-panel,
 .search-page-shell .card,
-.travel-page .travel-card {
+.travel-page .travel-card,
+.data-page-shell .data-management-card {
   width: min(var(--app-content-max), 100% - 2 * var(--app-content-gutter));
   margin-inline: auto;
 }
@@ -6345,7 +6347,8 @@ html[data-sidebar="collapsed"] {
   padding: 0.85rem 0.95rem 0.75rem;
   border: 1px solid var(--color-line);
   border-radius: 16px;
-  background: transparent;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-soft-token);
 }
 
 .nl-composer__field textarea {
@@ -6474,11 +6477,108 @@ html[data-sidebar="collapsed"] {
   display: grid;
   gap: 1rem;
   width: 100%;
+  padding: 1rem 1.1rem 1.05rem;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-soft-token);
+  border-radius: 16px;
+}
+
+.nl-answer__table-wrap {
+  overflow-x: auto;
+}
+
+.nl-preview-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.nl-preview-table th,
+.nl-preview-table td {
+  padding: 0.55rem 0.45rem;
+  border-bottom: 1px solid var(--color-line);
+  vertical-align: middle;
+  text-align: left;
+}
+
+.nl-preview-table th {
+  color: var(--color-faint);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.nl-preview-table th:nth-child(1),
+.nl-preview-table td:nth-child(1) {
+  width: 9.5rem;
+}
+
+.nl-preview-table th:nth-child(2),
+.nl-preview-table td:nth-child(2) {
+  width: 6.5rem;
+}
+
+.nl-preview-table th:nth-child(3),
+.nl-preview-table td:nth-child(3) {
+  width: 5.5rem;
+}
+
+.nl-preview-table th:nth-child(4),
+.nl-preview-table td:nth-child(4) {
+  width: 5rem;
+}
+
+.nl-preview-table th:nth-child(5),
+.nl-preview-table td:nth-child(5) {
+  width: auto;
+}
+
+.nl-preview-table th:nth-child(6),
+.nl-preview-table td:nth-child(6) {
+  width: 2.75rem;
+}
+
+.nl-preview-table input,
+.nl-preview-table select {
+  width: 100%;
+  min-height: 38px;
+  padding: 0.45rem 0.55rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  box-sizing: border-box;
+}
+
+.nl-preview-table__note input {
+  min-width: 0;
+}
+
+.nl-preview-table__actions {
+  text-align: center;
+}
+
+.nl-preview-table__actions .delete-record-button {
+  min-width: 34px;
+  min-height: 34px;
   padding: 0;
-  border: 0;
-  background: transparent;
-  box-shadow: none;
-  border-radius: 0;
+}
+
+.nl-preview-table__issues {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 0.65rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 12px;
+  background: rgba(180, 35, 24, 0.08);
+  color: var(--color-danger);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.nl-preview-table__issues p {
+  margin: 0;
 }
 
 .nl-answer__header {
@@ -6605,8 +6705,8 @@ html[data-sidebar="collapsed"] {
 }
 
 .hero-date-banner {
-  background: var(--color-surface);
-  box-shadow: var(--shadow-soft-token);
+  background: transparent;
+  box-shadow: none;
 }
 
 .feature-block,
@@ -6660,7 +6760,30 @@ html[data-sidebar="collapsed"] {
   color: rgba(226, 235, 240, 0.55);
 }
 
+.data-management-card {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.data-management-card .action-row,
+.data-management-card .danger-zone {
+  justify-content: flex-start;
+}
+
+.data-management-card--danger .danger-zone {
+  border-top: 1px solid var(--color-line);
+  padding-top: var(--space-4);
+}
+
+.data-hero h1 {
+  margin: 0.2rem 0 0.45rem;
+}
+
 @media (max-width: 900px) {
+  .nl-preview-table {
+    min-width: 560px;
+  }
+
   .site-footer {
     margin-bottom: max(6.5rem, calc(env(safe-area-inset-bottom) + 5.5rem));
     padding-bottom: var(--space-6);
