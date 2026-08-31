@@ -9,7 +9,7 @@
 ## 功能
 
 - **自然语言记账** — 中文多句输入，预览确认后批量写入；支持多日期、AA/退款负金额
-- **手动明细** — 10 类目表格弹窗，键盘导航
+- **手动明细** — 35 类目表格弹窗，键盘导航
 - **统计图表** — 日/周/月汇总、全年趋势，懒加载饼图与折线图
 - **多货币** — HKD/CNY 为主，USD 等扩展货币；汇率自动拉取并缓存
 - **预算管理** — 月度与分类预算，超支预警
@@ -82,7 +82,7 @@ Client-side ledger. Data lives in browser LocalStorage — no backend required.
 ## Features
 
 - **Natural language entry** — Chinese multi-sentence input with editable preview; multi-date, AA/refunds as negative amounts
-- **Manual ledger** — 10-category table modal with keyboard navigation
+- **Manual ledger** — 35-category table modal with keyboard navigation
 - **Charts** — Day/week/month totals, year trend; lazy-loaded pie and line charts
 - **Multi-currency** — HKD/CNY primary, USD and more; auto-fetched exchange rates
 - **Budgets** — Monthly and per-category limits with overspend alerts

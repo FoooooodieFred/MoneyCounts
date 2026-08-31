@@ -1,0 +1,8 @@
+# Cloudflare Workers static hosting for the Vite SPA.
+# Dashboard worker name must stay `moneycounts`.
+name = "moneycounts"
+compatibility_date = "2026-08-31"
+
+[assets]
+directory = "./dist"
+not_found_handling = "single-page-application"
