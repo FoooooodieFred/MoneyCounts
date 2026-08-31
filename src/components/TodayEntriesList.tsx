@@ -69,7 +69,11 @@ export function TodayEntriesList({
   );
 
   if (!entries.length) {
-    return <p className="muted empty-state">今天还没有记录，用上方对话框记第一笔吧。</p>;
+    return (
+      <p className="muted empty-state">
+        今天还没有记录，请打开侧栏「记一笔」或首页对话框添加第一笔。
+      </p>
+    );
   }
 
   return (
