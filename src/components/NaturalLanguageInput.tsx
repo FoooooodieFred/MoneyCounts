@@ -1,8 +1,18 @@
-import { FormEvent, KeyboardEvent, useEffect, useMemo, useRef, useState } from "react";
+import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { parseQuickExpenseLines, type QuickExpenseResult } from "../lib/quickExpenseParser";
 import type { LocalLedgerRecord } from "../lib/localLedgerParser";
 import { prefersReducedMotion } from "../hooks/useGsapContext";
 import { applyTemplateSlot, pickRandomTemplates } from "../lib/quickTemplates";
+import { fetchLlmQuickTemplates } from "../lib/llmQuickTemplates";
+import { isLlmApiVerified, readLlmApiSettings } from "../lib/llmApiSettings";
+import {
+  LEDGER_PARSE_MODE_OPTIONS,
+  ledgerParseModeLabel,
+  readLedgerParseMode,
+  saveLedgerParseMode,
+  type LedgerParseMode,
+} from "../lib/ledgerParseMode";
 
 function resolveEntryScrollTarget(section: HTMLElement | null) {
   return (
@@ -32,7 +42,8 @@ type NaturalLanguageInputProps = {
   categories: readonly string[];
   currencies: readonly string[];
   onDefaultCurrencyChange: (currency: "CNY" | "HKD") => void;
-  onSubmit: (results: QuickExpenseResult[], rawInput: string) => void;
+  onSubmit: (results: QuickExpenseResult[], rawInput: string, parseMode: LedgerParseMode) => void;
+  apiConfigured?: boolean;
   onConfirm: () => void;
   onCancel: () => void;
   onClearStatus: () => void;
@@ -59,6 +70,7 @@ export function NaturalLanguageInput({
   currencies,
   onDefaultCurrencyChange,
   onSubmit,
+  apiConfigured = false,
   onConfirm,
   onCancel,
   onClearStatus,
@@ -84,10 +96,17 @@ export function NaturalLanguageInput({
   const [compactVisible, setCompactVisible] = useState(false);
   const [isComposing, setIsComposing] = useState(false);
   const [templateSeed] = useState(() => Math.floor(Math.random() * 1_000_000));
-  const visibleTemplates = useMemo(() => pickRandomTemplates(3, templateSeed), [templateSeed]);
+  const [visibleTemplates, setVisibleTemplates] = useState(() =>
+    pickRandomTemplates(3, templateSeed),
+  );
+  const [parseMode, setParseMode] = useState<LedgerParseMode>(() => readLedgerParseMode());
+  const [parseMenuOpen, setParseMenuOpen] = useState(false);
+  const parseModeRef = useRef<HTMLDivElement | null>(null);
 
   const previewMode = previewRecords.length > 0;
   const bubbleText = submittedInput.trim() || input.trim();
+  const canSubmit =
+    !isParsing && (parseMode === "llm" ? Boolean(input.trim()) : Boolean(previews.length));
 
   useEffect(() => {
     if (!input.trim()) {
@@ -98,8 +117,37 @@ export function NaturalLanguageInput({
     }
     const parsed = parseQuickExpenseLines(input, defaultCurrency);
     setPreviews(parsed);
-    setError(parsed.length ? "" : "需包含金额，例如「午餐 45 港币」");
-  }, [input, defaultCurrency, onClearStatus]);
+    setError(parseMode === "llm" || parsed.length ? "" : "需包含金额，例如「午餐 45 港币」");
+  }, [input, defaultCurrency, onClearStatus, parseMode]);
+
+  useEffect(() => {
+    if (!apiConfigured) return;
+    const settings = readLlmApiSettings();
+    if (!isLlmApiVerified(settings)) return;
+    let cancelled = false;
+    void fetchLlmQuickTemplates(settings).then((templates) => {
+      if (!cancelled && templates.length) setVisibleTemplates(templates);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [apiConfigured]);
+
+  useEffect(() => {
+    if (!parseMenuOpen) return;
+    const onPointerDown = (event: PointerEvent) => {
+      if (!parseModeRef.current?.contains(event.target as Node)) setParseMenuOpen(false);
+    };
+    const onKeyDown = (event: globalThis.KeyboardEvent) => {
+      if (event.key === "Escape") setParseMenuOpen(false);
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [parseMenuOpen]);
 
   useEffect(() => {
     const updateCompactVisibility = () => {
@@ -142,16 +190,31 @@ export function NaturalLanguageInput({
     event.preventDefault();
     const fromCompact = event.currentTarget.classList.contains("nl-compact-entry");
     const rawInput = input;
-    const parsed = parseQuickExpenseLines(rawInput, defaultCurrency);
-    if (!parsed.length) {
-      setError("无法解析，请检查是否包含金额");
-      return;
+    if (parseMode === "llm") {
+      if (!rawInput.trim()) {
+        setError("请先输入要记账的内容");
+        return;
+      }
+      onSubmit(previews, rawInput, parseMode);
+      setError("");
+    } else {
+      const parsed = parseQuickExpenseLines(rawInput, defaultCurrency);
+      if (!parsed.length) {
+        setError("无法解析，请检查是否包含金额");
+        return;
+      }
+      onSubmit(parsed, rawInput, parseMode);
+      setError("");
     }
-    onSubmit(parsed, rawInput);
-    setError("");
     if (fromCompact) {
       pendingCompactScrollRef.current = true;
     }
+  };
+
+  const selectParseMode = (mode: LedgerParseMode) => {
+    setParseMode(mode);
+    saveLedgerParseMode(mode);
+    setParseMenuOpen(false);
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -253,18 +316,57 @@ export function NaturalLanguageInput({
                 />
               </label>
               <div className="nl-composer__actions">
-                <button
-                  type="submit"
-                  className="nl-composer__submit"
-                  disabled={!previews.length || isParsing}
-                >
+                <div className="nl-parse-mode" ref={parseModeRef}>
+                  <button
+                    type="button"
+                    className="nl-parse-mode__trigger"
+                    aria-haspopup="menu"
+                    aria-expanded={parseMenuOpen}
+                    aria-label={`记账方式：${ledgerParseModeLabel(parseMode)}`}
+                    onClick={() => setParseMenuOpen((open) => !open)}
+                  >
+                    <span>{ledgerParseModeLabel(parseMode)}</span>
+                    <svg
+                      className={`nl-parse-mode__chevron${parseMenuOpen ? " is-open" : ""}`}
+                      width="12"
+                      height="12"
+                      viewBox="0 0 12 12"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M3 4.5 6 7.5 9 4.5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+                  {parseMenuOpen ? (
+                    <div className="nl-parse-mode__menu" role="menu">
+                      {LEDGER_PARSE_MODE_OPTIONS.map((option) => (
+                        <button
+                          key={option.id}
+                          type="button"
+                          role="menuitemradio"
+                          className="nl-parse-mode__option"
+                          aria-checked={parseMode === option.id}
+                          onClick={() => selectParseMode(option.id)}
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+                <button type="submit" className="nl-composer__submit" disabled={!canSubmit}>
                   {isParsing ? "解析中…" : "生成记账预览"}
                 </button>
               </div>
             </form>
 
             <div className="nl-suggest" aria-label="快捷模板">
-              <span className="nl-suggest__label">快捷模板</span>
               <div className="nl-suggest__chips">
                 {visibleTemplates.map((template) => (
                   <button
@@ -279,13 +381,20 @@ export function NaturalLanguageInput({
               </div>
             </div>
 
-            {previews.length > 0 ? (
-              <p className="nl-hint" role="status">
-                已识别 {previews.length} 笔 · Enter 生成预览
-              </p>
-            ) : error ? (
-              <p className="nl-error">{error}</p>
-            ) : null}
+            <p className="nl-hint" role="status">
+              {parseMode === "llm" && apiConfigured ? (
+                "将用 API 看台中已验证的模型解析。"
+              ) : (
+                <>
+                  若要记账改为调用大模型。请先到{" "}
+                  <Link className="nl-hint__link" to="/console">
+                    API 看台
+                  </Link>{" "}
+                  填写接口与密钥。
+                </>
+              )}
+            </p>
+            {error ? <p className="nl-error">{error}</p> : null}
           </div>
         ) : (
           <div className="nl-thread" role="log" aria-live="polite">
@@ -473,11 +582,7 @@ export function NaturalLanguageInput({
               placeholder="输入一笔，Enter 确认"
               aria-label="底部快速记账输入"
             />
-            <button
-              type="submit"
-              disabled={!previews.length || isParsing}
-              aria-label="生成记账预览"
-            >
+            <button type="submit" disabled={!canSubmit} aria-label="生成记账预览">
               →
             </button>
           </form>

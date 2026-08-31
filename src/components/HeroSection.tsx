@@ -1,4 +1,4 @@
-import { CSSProperties, PointerEvent, useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import { CSSProperties, useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { gsap } from "gsap";
 import { useGsapContext, prefersReducedMotion } from "../hooks/useGsapContext";
 import { buildHeroSlogan, listHeroSloganVariants } from "../lib/heroSlogans";
@@ -169,23 +169,6 @@ export function HeroSection({
     });
   };
 
-  const handleCardEnter = (event: PointerEvent<HTMLElement>) => {
-    if (prefersReducedMotion()) return;
-    const card = event.currentTarget;
-    gsap.to(card, { y: -10, scale: 1.03, rotation: 0.6, duration: 0.32, ease: "back.out(2)" });
-  };
-
-  const handleCardLeave = (event: PointerEvent<HTMLElement>) => {
-    if (prefersReducedMotion()) return;
-    gsap.to(event.currentTarget, {
-      y: 0,
-      scale: 1,
-      rotation: 0,
-      duration: 0.42,
-      ease: "elastic.out(1, 0.6)",
-    });
-  };
-
   return (
     <section ref={heroRef} className="hero-section" id="hero" data-section="hero">
       <article className="hero-date-banner" data-motion="hero-date">
@@ -258,8 +241,6 @@ export function HeroSection({
                   data-motion="hero-card"
                   data-effect={card.effect}
                   style={{ "--fun-accent": card.accent } as CSSProperties}
-                  onPointerEnter={handleCardEnter}
-                  onPointerLeave={handleCardLeave}
                   onClick={
                     card.clickable && onStatCardClick ? () => onStatCardClick(card.id) : undefined
                   }

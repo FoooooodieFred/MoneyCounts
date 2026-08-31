@@ -1,5 +1,5 @@
 /**
- * 自然语言账本解析入口（中英多句 → 可预览记录）。
+ * 本地规则解析入口（中英多句 → 可预览记录）。
  * 首页快速记账与旅游自然语言录入共用 `parseNaturalLedger`；
  * 日期用 `date_spec` 展开（每天复制同一金额），分词与金额委托 `expenseParseShared`。
  * 改动行为前请跑 `npm test`（quickExpenseParser / nlLedgerDateSpec / refactorPreservation）。
@@ -32,7 +32,7 @@ export type LocalLedgerParseContext = {
 export type LocalLedgerParseResult = {
   records: LocalLedgerRecord[];
   warnings: string[];
-  source: "local";
+  source: "local" | "llm";
 };
 
 const resolveSingleDayFallbackSpec = (text: string, selectedDate: string) => {

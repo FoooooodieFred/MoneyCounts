@@ -1,22 +1,14 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { gsap } from "gsap";
 import { useGsapContext, prefersReducedMotion } from "../hooks/useGsapContext";
 
 type FloatingActionsProps = {
-  themeMode: "light" | "dark";
-  onToggleTheme: () => void;
   onPrevDay: () => void;
   onToday: () => void;
   onNextDay: () => void;
 };
 
-export function FloatingActions({
-  themeMode,
-  onToggleTheme,
-  onPrevDay,
-  onToday,
-  onNextDay,
-}: FloatingActionsProps) {
+export function FloatingActions({ onPrevDay, onToday, onNextDay }: FloatingActionsProps) {
   const rootRef = useRef<HTMLDivElement | null>(null);
 
   useGsapContext(
@@ -44,21 +36,6 @@ export function FloatingActions({
     [],
   );
 
-  const pulseTheme = () => {
-    if (prefersReducedMotion()) return;
-    const btn = rootRef.current?.querySelector(".floating-theme-toggle");
-    if (!btn) return;
-    gsap.fromTo(
-      btn,
-      { rotation: -20, scale: 0.9 },
-      { rotation: 0, scale: 1, duration: 0.5, ease: "back.out(2)" },
-    );
-  };
-
-  useEffect(() => {
-    pulseTheme();
-  }, [themeMode]);
-
   const fabClick = (action: () => void, selector: string) => {
     if (!prefersReducedMotion()) {
       const btn = rootRef.current?.querySelector(selector);
@@ -75,17 +52,6 @@ export function FloatingActions({
 
   return (
     <div ref={rootRef} className="floating-actions-root" aria-label="快捷操作">
-      <button
-        type="button"
-        className="floating-theme-toggle fab-btn"
-        data-action="toggle-theme"
-        onClick={() => fabClick(onToggleTheme, ".floating-theme-toggle")}
-        aria-label={themeMode === "dark" ? "切换浅色模式" : "切换深色模式"}
-        title={themeMode === "dark" ? "浅色模式" : "深色模式"}
-      >
-        <span aria-hidden="true">{themeMode === "dark" ? "☀" : "☾"}</span>
-      </button>
-
       <div className="floating-date-fabs" aria-label="日期快捷切换">
         <button
           type="button"

@@ -1,8 +1,11 @@
-# Cloudflare Workers static hosting for the Vite SPA.
+# Cloudflare Workers static hosting + LLM 同源代理。
 # Dashboard worker name must stay `moneycounts`.
 name = "moneycounts"
+main = "workers/index.ts"
 compatibility_date = "2026-08-31"
 
 [assets]
 directory = "./dist"
 not_found_handling = "single-page-application"
+binding = "ASSETS"
+run_worker_first = ["/api/*"]

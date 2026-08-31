@@ -31,6 +31,8 @@ export type MoneyCountsBackupPayload = {
     travelState?: unknown;
     travelHistory?: unknown;
     pendingTravelDeletes?: unknown;
+    /** 仅当用户选择把 API 写入备份时出现；旧备份没有此字段。 */
+    llmApi?: unknown;
   };
 };
 

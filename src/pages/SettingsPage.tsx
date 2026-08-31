@@ -1,5 +1,7 @@
-import { ChangeEvent, RefObject } from "react";
+import { ChangeEvent, RefObject, useState } from "react";
+import { Link } from "react-router-dom";
 import { ExchangeRatesPanel } from "../components/ExchangeRatesPanel";
+import { SiteFooter } from "../components/SiteFooter";
 import type { ExchangeRateRow } from "../components/ExchangeRatesPanel";
 import {
   AppSettings,
@@ -8,6 +10,7 @@ import {
   TOGGLEABLE_HOME_SECTIONS,
   isToggleableHomeSection,
 } from "../lib/appSettings";
+import { readLlmApiSettings, saveLlmApiSettings } from "../lib/llmApiSettings";
 
 export type BackupImportPreview = {
   fileName: string;
@@ -17,6 +20,7 @@ export type BackupImportPreview = {
   settingsWillOverwrite: boolean;
   travelHistoryCount: number;
   currentTravelHistoryCount: number;
+  llmApiWillOverwrite: boolean;
 };
 
 type SettingsPageProps = {
@@ -66,6 +70,15 @@ export function SettingsPage({
   onCancelJsonImport,
   onSnoozeBackupReminder,
 }: SettingsPageProps) {
+  const [includeLlmApiInBackup, setIncludeLlmApiInBackup] = useState(
+    () => readLlmApiSettings().includeInBackup,
+  );
+
+  const updateIncludeLlmApiInBackup = (checked: boolean) => {
+    setIncludeLlmApiInBackup(checked);
+    saveLlmApiSettings({ ...readLlmApiSettings(), includeInBackup: checked });
+  };
+
   const updateSection = (key: HomeSectionKey, checked: boolean) => {
     if (!isToggleableHomeSection(key)) return;
     onSettingsChange({
@@ -121,7 +134,8 @@ export function SettingsPage({
           <p className="eyebrow">Settings</p>
           <h1>设置</h1>
           <p className="muted">
-            管理可选区块、预算、汇率与完整 JSON 备份。CSV 导入导出请前往「数据管理」。
+            管理可选区块、预算、汇率与完整 JSON 备份。自然语言记账的 API 密钥请到{" "}
+            <Link to="/console">API 看台</Link> 填写。CSV 导入导出请前往「数据管理」。
           </p>
         </header>
 
@@ -233,10 +247,22 @@ export function SettingsPage({
         <section className="settings-stack__section surface-secondary">
           <header className="settings-stack__heading">
             <h2>完整 JSON 备份</h2>
-            <p className="muted">
-              包含账本、汇率、主题、提醒、设置与旅游历史。导入前会展示预览。
-            </p>
+            <p className="muted">包含账本、汇率、主题、提醒、设置与旅游历史。导入前会展示预览。</p>
           </header>
+          <label className="settings-option">
+            <span className="settings-option__copy">
+              <strong>把 API 接口写入备份</strong>
+              <small>
+                开启后导出的 JSON 会含 Base
+                URL、模型名和密钥，换设备导入即可直接用。请自行保管备份文件。
+              </small>
+            </span>
+            <input
+              type="checkbox"
+              checked={includeLlmApiInBackup}
+              onChange={(event) => updateIncludeLlmApiInBackup(event.target.checked)}
+            />
+          </label>
           <div className="backup-action-stack">
             <button type="button" data-action="json-backup-export" onClick={onExportJson}>
               立即导出 JSON
@@ -292,7 +318,10 @@ export function SettingsPage({
         </section>
 
         {importPreview ? (
-          <section className="settings-stack__section surface-secondary import-preview" aria-live="polite">
+          <section
+            className="settings-stack__section surface-secondary import-preview"
+            aria-live="polite"
+          >
             <header className="settings-stack__heading">
               <h2>导入前预览</h2>
               <p className="muted">
@@ -326,9 +355,14 @@ export function SettingsPage({
                   {importPreview.currentTravelHistoryCount} 条）
                 </strong>
               </div>
+              <div>
+                <span>API 接口</span>
+                <strong>{importPreview.llmApiWillOverwrite ? "会覆盖密钥与接口" : "不改动"}</strong>
+              </div>
             </div>
             <p className="warning-text">
-              确认后会用备份文件替换当前账本、设置、旅游状态与相关本地缓存。
+              确认后会用备份文件替换当前账本、设置、旅游状态与相关本地缓存
+              {importPreview.llmApiWillOverwrite ? "，并覆盖本机 API 接口与密钥" : ""}。
             </p>
             <div className="action-row">
               <button
@@ -345,6 +379,8 @@ export function SettingsPage({
             </div>
           </section>
         ) : null}
+
+        <SiteFooter />
       </div>
     </main>
   );

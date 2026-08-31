@@ -78,6 +78,12 @@ const Icons = {
       <path d="M4 19h16" />
     </svg>
   ),
+  console: (
+    <svg {...iconProps}>
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <path d="M7 9h.01M10 9h7M7 13h.01M10 13h5" />
+    </svg>
+  ),
   settings: (
     <svg {...iconProps}>
       <circle cx="12" cy="12" r="3" />
@@ -94,6 +100,17 @@ const Icons = {
       <path d="M9 6h11M9 12h11M9 18h11M4 6v12" />
     </svg>
   ),
+  sun: (
+    <svg {...iconProps}>
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+    </svg>
+  ),
+  moon: (
+    <svg {...iconProps}>
+      <path d="M21 14.3A8.4 8.4 0 1 1 9.7 3 7 7 0 0 0 21 14.3Z" />
+    </svg>
+  ),
 };
 
 const getLinks = (_settings: AppSettings): NavItem[] => {
@@ -108,6 +125,7 @@ const getLinks = (_settings: AppSettings): NavItem[] => {
     { href: "/year", label: "全年", icon: Icons.year, group: "sections" },
     { href: "/travel", label: "旅游模式", icon: Icons.travel, group: "tools" },
     { href: "/data", label: "数据管理", icon: Icons.data, group: "tools" },
+    { href: "/console", label: "API 看台", icon: Icons.console, group: "tools" },
     { href: "/settings", label: "设置", icon: Icons.settings, group: "tools" },
   ];
 };
@@ -120,7 +138,31 @@ function isActive(href: string, pathname: string) {
 type ScrollNavProps = {
   settings: AppSettings;
   travelAccent?: boolean;
+  themeMode: "light" | "dark";
+  onToggleTheme: () => void;
 };
+
+function ThemeToggle({
+  themeMode,
+  onToggleTheme,
+}: {
+  themeMode: "light" | "dark";
+  onToggleTheme: () => void;
+}) {
+  const goingLight = themeMode === "dark";
+  return (
+    <button
+      type="button"
+      className="scroll-nav__theme"
+      data-action="toggle-theme"
+      aria-label={goingLight ? "切换浅色模式" : "切换深色模式"}
+      title={goingLight ? "浅色模式" : "深色模式"}
+      onClick={onToggleTheme}
+    >
+      {goingLight ? Icons.sun : Icons.moon}
+    </button>
+  );
+}
 
 function NavLink({
   href,
@@ -189,7 +231,12 @@ function applyCollapsedDataset(collapsed: boolean) {
   document.documentElement.dataset.sidebar = collapsed ? "collapsed" : "expanded";
 }
 
-export function ScrollNav({ settings, travelAccent = false }: ScrollNavProps) {
+export function ScrollNav({
+  settings,
+  travelAccent = false,
+  themeMode,
+  onToggleTheme,
+}: ScrollNavProps) {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
   const links = getLinks(settings);
@@ -232,7 +279,7 @@ export function ScrollNav({ settings, travelAccent = false }: ScrollNavProps) {
         </Link>
         <button
           type="button"
-          className="scroll-nav__collapse ghost-button"
+          className="scroll-nav__collapse"
           aria-label={collapsed ? "展开侧边栏" : "收缩侧边栏"}
           aria-expanded={!collapsed}
           title={collapsed ? "展开" : "收缩"}
@@ -253,11 +300,17 @@ export function ScrollNav({ settings, travelAccent = false }: ScrollNavProps) {
         <NavGroup items={sections} pathname={location.pathname} collapsed={collapsed} />
         <NavGroup items={tools} pathname={location.pathname} collapsed={collapsed} />
       </div>
+      <ThemeToggle themeMode={themeMode} onToggleTheme={onToggleTheme} />
     </nav>
   );
 }
 
-export function MobileScrollNav({ settings, travelAccent = false }: ScrollNavProps) {
+export function MobileScrollNav({
+  settings,
+  travelAccent = false,
+  themeMode,
+  onToggleTheme,
+}: ScrollNavProps) {
   const location = useLocation();
   const links = getLinks(settings).filter((link) =>
     ["/", "/today", "/search", "/travel", "/data", "/settings"].includes(link.href),
@@ -277,6 +330,7 @@ export function MobileScrollNav({ settings, travelAccent = false }: ScrollNavPro
           active={isActive(link.href, location.pathname)}
         />
       ))}
+      <ThemeToggle themeMode={themeMode} onToggleTheme={onToggleTheme} />
     </nav>
   );
 }

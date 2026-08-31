@@ -13,11 +13,12 @@ import {
 import { Route, Routes, useLocation, useNavigate, Navigate } from "react-router-dom";
 import { gsap } from "gsap";
 import { LocalLedgerRecord, parseNaturalLedger } from "./lib/localLedgerParser";
+import { parseNaturalLedgerViaLlm } from "./lib/llmLedgerParser";
+import type { LedgerParseMode } from "./lib/ledgerParseMode";
 import { HeroSection } from "./components/HeroSection";
 import { NaturalLanguageInput } from "./components/NaturalLanguageInput";
 import { SettingsModal } from "./components/SettingsModal";
 import { FeatureBlock } from "./components/FeatureBlock";
-import { SiteFooter } from "./components/SiteFooter";
 import { ScrollNav, MobileScrollNav } from "./components/ScrollNav";
 import { TodayEntriesList } from "./components/TodayEntriesList";
 import { FloatingActions } from "./components/FloatingActions";
@@ -25,6 +26,7 @@ import { StatsCurrencyPicker, SummaryModeToggle } from "./components/StatsContro
 import { BudgetOverview } from "./components/BudgetOverview";
 import { TravelPage } from "./pages/TravelPage";
 import { SettingsPage, BackupImportPreview } from "./pages/SettingsPage";
+import { ApiConsolePage } from "./pages/ApiConsolePage";
 import { DataManagementPage } from "./pages/DataManagementPage";
 import { SearchPage, SearchableLedgerRecord } from "./pages/SearchPage";
 import { SectionPage } from "./pages/SectionPage";
@@ -77,6 +79,14 @@ import {
   LEDGER_CATEGORIES,
   remapLegacyCategoryName,
 } from "./lib/nlLedgerCategories";
+import {
+  isLlmApiVerified,
+  llmApiForBackup,
+  normalizeLlmApiSettings,
+  readLlmApiSettings,
+  saveLlmApiSettings,
+} from "./lib/llmApiSettings";
+import { RouteEnter } from "./components/RouteEnter";
 import {
   DEFAULT_TRAVEL_STATE,
   TravelHistoryRecord,
@@ -163,6 +173,7 @@ type PreparedBackupImport = {
   travelState: TravelState;
   travelHistory: TravelHistoryRecord[];
   pendingTravelDeletes: PendingTravelHistoryDelete[];
+  llmApi?: ReturnType<typeof readLlmApiSettings>;
   preview: BackupImportPreview;
 };
 
@@ -2017,6 +2028,7 @@ function App() {
   };
 
   const exportJson = () => {
+    const llmSettings = readLlmApiSettings();
     const payload = buildBackupPayload({
       ledger: JSON.parse(serializeLedger(ledger)),
       exchange,
@@ -2029,6 +2041,7 @@ function App() {
       travelState,
       travelHistory,
       pendingTravelDeletes,
+      llmApi: llmApiForBackup(llmSettings),
     });
     const blob = new Blob([JSON.stringify(payload, null, 2)], {
       type: "application/json;charset=utf-8",
@@ -2066,6 +2079,7 @@ function App() {
       payload.data.pendingTravelDeletes,
       currencyNormalizer,
     );
+    const llmApi = payload.data.llmApi ? normalizeLlmApiSettings(payload.data.llmApi) : undefined;
 
     return {
       payload,
@@ -2080,6 +2094,7 @@ function App() {
       travelState: normalizeStoredTravelState(payload.data.travelState, currencyNormalizer),
       travelHistory: nextTravelHistory,
       pendingTravelDeletes: nextPendingTravelDeletes,
+      llmApi,
       preview: {
         fileName,
         exportedAt: payload.exportedAt,
@@ -2088,6 +2103,7 @@ function App() {
         settingsWillOverwrite: Boolean(payload.data.settings),
         travelHistoryCount: nextTravelHistory.length,
         currentTravelHistoryCount: travelHistory.length,
+        llmApiWillOverwrite: Boolean(llmApi),
       },
     };
   };
@@ -2131,6 +2147,10 @@ function App() {
     setSelectedTravelHistoryId(null);
     setTravelHistorySelectedIds([]);
     setTravelHistoryMergeMode(false);
+
+    if (preparedJsonImport.llmApi) {
+      saveLlmApiSettings(preparedJsonImport.llmApi);
+    }
 
     if (preparedJsonImport.backupReminder) {
       localStorage.setItem(BACKUP_REMINDER_KEY, JSON.stringify(preparedJsonImport.backupReminder));
@@ -2644,28 +2664,78 @@ function App() {
     }));
   };
 
-  const handleQuickExpenses = async (results: QuickExpenseResult[], rawInput: string) => {
+  const handleQuickExpenses = async (
+    results: QuickExpenseResult[],
+    rawInput: string,
+    parseMode: LedgerParseMode = "rules",
+  ) => {
     setQuickEntryStatus("正在整理快速输入预览...");
     setNaturalLedgerInput(rawInput);
     setIsParsingNaturalLedger(true);
     setNaturalLedgerWarnings([]);
-    try {
-      const result = await parseNaturalLedger(rawInput, {
-        selectedDate,
-        defaultCurrency: dailyDefaultCurrency,
-        categories: CATEGORIES,
-        currencies: allCurrencies,
-      });
-      const parsedRecords = result.records
+    const context = {
+      selectedDate,
+      defaultCurrency: dailyDefaultCurrency,
+      categories: CATEGORIES,
+      currencies: allCurrencies,
+    };
+    const fallbackRecords = results.map((quickResult) => ({
+      date: selectedDate,
+      category: quickResult.category,
+      amount: quickResult.amount,
+      currency: quickResult.currency,
+      note: quickResult.note,
+    }));
+    const toPreviewRecords = (records: LocalLedgerRecord[]) =>
+      records
         .map((record) => normalizeParsedNaturalRecord(record))
         .filter((record): record is LocalLedgerRecord => Boolean(record));
-      const fallbackRecords = results.map((quickResult) => ({
-        date: selectedDate,
-        category: quickResult.category,
-        amount: quickResult.amount,
-        currency: quickResult.currency,
-        note: quickResult.note,
-      }));
+
+    try {
+      if (parseMode === "llm") {
+        try {
+          const llmResult = await parseNaturalLedgerViaLlm(rawInput, context);
+          const llmRecords = toPreviewRecords(llmResult.records);
+          if (llmRecords.length) {
+            setNaturalLedgerPreview(llmRecords);
+            setNaturalLedgerWarnings(llmResult.warnings);
+            setQuickEntryStatus(`已生成 ${llmRecords.length} 笔预览，请确认后写入。`);
+            return;
+          }
+          const localResult = await parseNaturalLedger(rawInput, context);
+          const localRecords = toPreviewRecords(localResult.records);
+          const records = localRecords.length ? localRecords : fallbackRecords;
+          setNaturalLedgerPreview(records);
+          setNaturalLedgerWarnings([
+            ...llmResult.warnings,
+            ...(localRecords.length ? [] : localResult.warnings),
+          ]);
+          setQuickEntryStatus(
+            records.length
+              ? `模型未解析出记录，已改用规则识别生成 ${records.length} 笔预览。`
+              : (llmResult.warnings[0] ?? "未生成可导入预览。"),
+          );
+          return;
+        } catch (error) {
+          const localResult = await parseNaturalLedger(rawInput, context);
+          const localRecords = toPreviewRecords(localResult.records);
+          const records = localRecords.length ? localRecords : fallbackRecords;
+          setNaturalLedgerPreview(records);
+          setNaturalLedgerWarnings([
+            error instanceof Error ? error.message : "模型解析失败。",
+            ...localResult.warnings,
+          ]);
+          setQuickEntryStatus(
+            records.length
+              ? `模型解析失败，已改用规则识别生成 ${records.length} 笔预览。`
+              : "模型解析失败，请稍后重试。",
+          );
+          return;
+        }
+      }
+
+      const result = await parseNaturalLedger(rawInput, context);
+      const parsedRecords = toPreviewRecords(result.records);
       const records = parsedRecords.length ? parsedRecords : fallbackRecords;
       setNaturalLedgerPreview(records);
       setNaturalLedgerWarnings(result.warnings);
@@ -2673,13 +2743,6 @@ function App() {
         records.length ? `已生成 ${records.length} 笔预览，请确认后写入。` : "未生成可导入预览。",
       );
     } catch (error) {
-      const fallbackRecords = results.map((quickResult) => ({
-        date: selectedDate,
-        category: quickResult.category,
-        amount: quickResult.amount,
-        currency: quickResult.currency,
-        note: quickResult.note,
-      }));
       setNaturalLedgerPreview(fallbackRecords);
       setNaturalLedgerWarnings([
         error instanceof Error ? error.message : "本地规则解析失败，已保留草稿识别结果。",
@@ -3533,6 +3596,7 @@ function App() {
               currencies={allCurrencies}
               onDefaultCurrencyChange={(currency) => switchDailyDefaultCurrency(currency)}
               onSubmit={handleQuickExpenses}
+              apiConfigured={isLlmApiVerified(readLlmApiSettings())}
               onConfirm={confirmNaturalLedgerImport}
               onCancel={cancelNaturalLedgerPreview}
               onClearStatus={clearQuickEntryStatus}
@@ -3747,7 +3811,7 @@ function App() {
           </FeatureBlock>
         );
       case "footer":
-        return <SiteFooter key={key} />;
+        return null;
       case "travelEntry":
         return null;
       default:
@@ -3760,191 +3824,201 @@ function App() {
   return (
     <>
       <div className="global-nav-host">
-        <ScrollNav settings={appSettings} travelAccent={navTravelAccent} />
+        <ScrollNav
+          settings={appSettings}
+          travelAccent={navTravelAccent}
+          themeMode={themeMode}
+          onToggleTheme={() => setThemeMode((mode) => (mode === "dark" ? "light" : "dark"))}
+        />
       </div>
-      <MobileScrollNav settings={appSettings} travelAccent={navTravelAccent} />
-      <SiteFooter />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <div className="app-shell home-shell journal-scroll" ref={appRootRef}>
-              <main className="home-main content-rail">
-                {renderHomeSection("heroCards")}
-                {renderHomeSection("quickEntry")}
-              </main>
-            </div>
-          }
-        />
-        <Route path="/entry" element={<Navigate to="/" replace />} />
-        <Route
-          path="/today"
-          element={
-            <SectionPage data-section="screen-today">
-              {renderHomeSection("todayDetails")}
-            </SectionPage>
-          }
-        />
-        <Route
-          path="/day"
-          element={
-            <SectionPage data-section="screen-day">{renderHomeSection("dayTotals")}</SectionPage>
-          }
-        />
-        <Route
-          path="/week"
-          element={
-            <SectionPage data-section="screen-week">
-              {appSettings.homeSections.weekStats ? renderHomeSection("weekStats") : null}
-            </SectionPage>
-          }
-        />
-        <Route
-          path="/month"
-          element={
-            <SectionPage data-section="screen-month">
-              {appSettings.homeSections.monthStats ? renderHomeSection("monthStats") : null}
-            </SectionPage>
-          }
-        />
-        <Route
-          path="/year"
-          element={
-            <SectionPage className="section-page-shell--year" data-section="screen-year">
-              {appSettings.homeSections.tools ? renderHomeSection("tools") : null}
-            </SectionPage>
-          }
-        />
-        <Route
-          path="/search"
-          element={
-            <SearchPage
-              records={searchRecords}
-              categories={CATEGORIES}
-              currency={budgetCurrency}
-              formatMoney={formatMoney}
-              onSelectDate={(date) => {
-                commitDateChange(date);
-                navigate("/today");
-              }}
-            />
-          }
-        />
-        <Route
-          path="/travel"
-          element={
-            <TravelPage
-              travelState={travelState}
-              travelHistory={travelHistory}
-              travelHistoryRailOpen={travelHistoryRailOpen}
-              travelHistoryMergeMode={travelHistoryMergeMode}
-              travelHistorySelectedIds={travelHistorySelectedIds}
-              travelHistoryEditingId={travelHistoryEditingId}
-              travelHistoryEditingName={travelHistoryEditingName}
-              travelDraftBillName={travelDraftBillName}
-              travelDraftStartDate={travelDraftStartDate}
-              travelDraftUseEndDate={travelDraftUseEndDate}
-              travelDraftEndDate={travelDraftEndDate}
-              travelStatus={travelStatus}
-              travelRangeLabel={travelRangeLabel}
-              travelDetails={travelDetails}
-              travelTotals={travelTotals}
-              travelCategorySummary={travelCategorySummary}
-              travelSplitSummary={travelSplitSummary}
-              travelLocationOptions={travelLocationOptions}
-              travelBudgetProgress={travelBudgetProgress}
-              pendingTravelDeletes={pendingTravelDeletes}
-              deleteToastTick={deleteToastTick}
-              selectedTravelHistoryId={selectedTravelHistoryId}
-              travelMergeModalOpen={travelMergeModalOpen}
-              allCurrencies={allCurrencies}
-              exchange={exchange}
-              modalRootRef={modalRootRef}
-              formatMoney={formatMoney}
-              parseAmount={parseAmount}
-              convert={convert}
-              getCurrencyMeta={getCurrencyMeta}
-              buildFallbackBillName={buildFallbackBillName}
-              PieChart={LazyPieChart}
-              onEnableTravel={enableTravelMode}
-              onEndTravel={() => setTravelExitModalOpen(true)}
-              onExportBill={exportTravelBill}
-              onTravelNaturalSubmit={handleTravelNaturalSubmit}
-              setTravelDraftBillName={setTravelDraftBillName}
-              setTravelDraftStartDate={setTravelDraftStartDate}
-              setTravelDraftUseEndDate={setTravelDraftUseEndDate}
-              setTravelDraftEndDate={setTravelDraftEndDate}
-              setTravelState={setTravelState}
-              updateTravelParticipants={updateTravelParticipants}
-              updateTravelEntryMeta={updateTravelEntryMeta}
-              updateTravelBudget={updateTravelBudget}
-              switchDailyDefaultCurrency={switchDailyDefaultCurrency}
-              setTravelHistoryRailOpen={setTravelHistoryRailOpen}
-              setSelectedTravelHistoryId={setSelectedTravelHistoryId}
-              setTravelHistoryMergeMode={setTravelHistoryMergeMode}
-              setTravelHistorySelectedIds={setTravelHistorySelectedIds}
-              setTravelMergeModalOpen={setTravelMergeModalOpen}
-              setTravelHistoryEditingId={setTravelHistoryEditingId}
-              setTravelHistoryEditingName={setTravelHistoryEditingName}
-              saveTravelHistoryRename={saveTravelHistoryRename}
-              deleteTravelHistoryRecord={deleteTravelHistoryRecord}
-              syncTravelHistoryRecord={syncTravelHistoryRecord}
-              undoTravelHistoryDelete={undoTravelHistoryDelete}
-              confirmTravelHistoryMerge={confirmTravelHistoryMerge}
-              closeTravelHistoryModal={closeTravelHistoryModal}
-              PENDING_DELETE_TTL_MS={PENDING_DELETE_TTL_MS}
-            />
-          }
-        />
-        <Route
-          path="/data"
-          element={
-            <DataManagementPage
-              selectedDate={selectedDate}
-              monthKey={monthKey}
-              importMessage={importMessage}
-              fileInputRef={fileInputRef}
-              onExportCsv={exportCsv}
-              onPickCsv={() => fileInputRef.current?.click()}
-              onCsvFileChange={importCsv}
-              onClearCurrentDay={clearCurrentDay}
-              onClearCurrentMonth={clearCurrentMonth}
-            />
-          }
-        />
-        <Route
-          path="/settings"
-          element={
-            <SettingsPage
-              settings={appSettings}
-              categories={CATEGORIES}
-              currencies={allCurrencies}
-              baseCurrency={dailyDefaultCurrency}
-              exchangeSource={exchange.source}
-              exchangeUpdatedAt={exchange.updatedAt}
-              exchangeRows={exchangeRows}
-              rateStatus={rateStatus}
-              onRefreshExchange={() => void refreshExchange()}
-              backupReminderLabel={backupReminderVisible ? "当前会显示提醒" : "已暂缓提醒"}
-              importMessage={jsonImportMessage}
-              importPreview={preparedJsonImport?.preview ?? null}
-              jsonInputRef={jsonInputRef}
-              onSettingsChange={setAppSettings}
-              getCurrencyLabel={(currency) => getCurrencyMeta(currency).shortName}
-              onExportJson={exportJson}
-              onPickJson={() => jsonInputRef.current?.click()}
-              onJsonFileChange={importJson}
-              onConfirmJsonImport={confirmJsonImport}
-              onCancelJsonImport={cancelJsonImport}
-              onSnoozeBackupReminder={dismissBackupReminder}
-            />
-          }
-        />
-      </Routes>
-
-      <FloatingActions
+      <MobileScrollNav
+        settings={appSettings}
+        travelAccent={navTravelAccent}
         themeMode={themeMode}
         onToggleTheme={() => setThemeMode((mode) => (mode === "dark" ? "light" : "dark"))}
+      />
+      <RouteEnter key={location.pathname}>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <div className="app-shell home-shell journal-scroll" ref={appRootRef}>
+                <main className="home-main content-rail">
+                  {renderHomeSection("heroCards")}
+                  {renderHomeSection("quickEntry")}
+                </main>
+              </div>
+            }
+          />
+          <Route path="/entry" element={<Navigate to="/" replace />} />
+          <Route
+            path="/today"
+            element={
+              <SectionPage data-section="screen-today">
+                {renderHomeSection("todayDetails")}
+              </SectionPage>
+            }
+          />
+          <Route
+            path="/day"
+            element={
+              <SectionPage data-section="screen-day">{renderHomeSection("dayTotals")}</SectionPage>
+            }
+          />
+          <Route
+            path="/week"
+            element={
+              <SectionPage data-section="screen-week">
+                {appSettings.homeSections.weekStats ? renderHomeSection("weekStats") : null}
+              </SectionPage>
+            }
+          />
+          <Route
+            path="/month"
+            element={
+              <SectionPage data-section="screen-month">
+                {appSettings.homeSections.monthStats ? renderHomeSection("monthStats") : null}
+              </SectionPage>
+            }
+          />
+          <Route
+            path="/year"
+            element={
+              <SectionPage className="section-page-shell--year" data-section="screen-year">
+                {appSettings.homeSections.tools ? renderHomeSection("tools") : null}
+              </SectionPage>
+            }
+          />
+          <Route
+            path="/search"
+            element={
+              <SearchPage
+                records={searchRecords}
+                categories={CATEGORIES}
+                currency={budgetCurrency}
+                formatMoney={formatMoney}
+                onSelectDate={(date) => {
+                  commitDateChange(date);
+                  navigate("/today");
+                }}
+              />
+            }
+          />
+          <Route
+            path="/travel"
+            element={
+              <TravelPage
+                travelState={travelState}
+                travelHistory={travelHistory}
+                travelHistoryRailOpen={travelHistoryRailOpen}
+                travelHistoryMergeMode={travelHistoryMergeMode}
+                travelHistorySelectedIds={travelHistorySelectedIds}
+                travelHistoryEditingId={travelHistoryEditingId}
+                travelHistoryEditingName={travelHistoryEditingName}
+                travelDraftBillName={travelDraftBillName}
+                travelDraftStartDate={travelDraftStartDate}
+                travelDraftUseEndDate={travelDraftUseEndDate}
+                travelDraftEndDate={travelDraftEndDate}
+                travelStatus={travelStatus}
+                travelRangeLabel={travelRangeLabel}
+                travelDetails={travelDetails}
+                travelTotals={travelTotals}
+                travelCategorySummary={travelCategorySummary}
+                travelSplitSummary={travelSplitSummary}
+                travelLocationOptions={travelLocationOptions}
+                travelBudgetProgress={travelBudgetProgress}
+                pendingTravelDeletes={pendingTravelDeletes}
+                deleteToastTick={deleteToastTick}
+                selectedTravelHistoryId={selectedTravelHistoryId}
+                travelMergeModalOpen={travelMergeModalOpen}
+                allCurrencies={allCurrencies}
+                exchange={exchange}
+                modalRootRef={modalRootRef}
+                formatMoney={formatMoney}
+                parseAmount={parseAmount}
+                convert={convert}
+                getCurrencyMeta={getCurrencyMeta}
+                buildFallbackBillName={buildFallbackBillName}
+                PieChart={LazyPieChart}
+                onEnableTravel={enableTravelMode}
+                onEndTravel={() => setTravelExitModalOpen(true)}
+                onExportBill={exportTravelBill}
+                onTravelNaturalSubmit={handleTravelNaturalSubmit}
+                setTravelDraftBillName={setTravelDraftBillName}
+                setTravelDraftStartDate={setTravelDraftStartDate}
+                setTravelDraftUseEndDate={setTravelDraftUseEndDate}
+                setTravelDraftEndDate={setTravelDraftEndDate}
+                setTravelState={setTravelState}
+                updateTravelParticipants={updateTravelParticipants}
+                updateTravelEntryMeta={updateTravelEntryMeta}
+                updateTravelBudget={updateTravelBudget}
+                switchDailyDefaultCurrency={switchDailyDefaultCurrency}
+                setTravelHistoryRailOpen={setTravelHistoryRailOpen}
+                setSelectedTravelHistoryId={setSelectedTravelHistoryId}
+                setTravelHistoryMergeMode={setTravelHistoryMergeMode}
+                setTravelHistorySelectedIds={setTravelHistorySelectedIds}
+                setTravelMergeModalOpen={setTravelMergeModalOpen}
+                setTravelHistoryEditingId={setTravelHistoryEditingId}
+                setTravelHistoryEditingName={setTravelHistoryEditingName}
+                saveTravelHistoryRename={saveTravelHistoryRename}
+                deleteTravelHistoryRecord={deleteTravelHistoryRecord}
+                syncTravelHistoryRecord={syncTravelHistoryRecord}
+                undoTravelHistoryDelete={undoTravelHistoryDelete}
+                confirmTravelHistoryMerge={confirmTravelHistoryMerge}
+                closeTravelHistoryModal={closeTravelHistoryModal}
+                PENDING_DELETE_TTL_MS={PENDING_DELETE_TTL_MS}
+              />
+            }
+          />
+          <Route
+            path="/data"
+            element={
+              <DataManagementPage
+                selectedDate={selectedDate}
+                monthKey={monthKey}
+                importMessage={importMessage}
+                fileInputRef={fileInputRef}
+                onExportCsv={exportCsv}
+                onPickCsv={() => fileInputRef.current?.click()}
+                onCsvFileChange={importCsv}
+                onClearCurrentDay={clearCurrentDay}
+                onClearCurrentMonth={clearCurrentMonth}
+              />
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <SettingsPage
+                settings={appSettings}
+                categories={CATEGORIES}
+                currencies={allCurrencies}
+                baseCurrency={dailyDefaultCurrency}
+                exchangeSource={exchange.source}
+                exchangeUpdatedAt={exchange.updatedAt}
+                exchangeRows={exchangeRows}
+                rateStatus={rateStatus}
+                onRefreshExchange={() => void refreshExchange()}
+                backupReminderLabel={backupReminderVisible ? "当前会显示提醒" : "已暂缓提醒"}
+                importMessage={jsonImportMessage}
+                importPreview={preparedJsonImport?.preview ?? null}
+                jsonInputRef={jsonInputRef}
+                onSettingsChange={setAppSettings}
+                getCurrencyLabel={(currency) => getCurrencyMeta(currency).shortName}
+                onExportJson={exportJson}
+                onPickJson={() => jsonInputRef.current?.click()}
+                onJsonFileChange={importJson}
+                onConfirmJsonImport={confirmJsonImport}
+                onCancelJsonImport={cancelJsonImport}
+                onSnoozeBackupReminder={dismissBackupReminder}
+              />
+            }
+          />
+          <Route path="/console" element={<ApiConsolePage />} />
+        </Routes>
+      </RouteEnter>
+
+      <FloatingActions
         onPrevDay={() => moveSelectedDate(-1)}
         onToday={jumpToToday}
         onNextDay={() => moveSelectedDate(1)}
