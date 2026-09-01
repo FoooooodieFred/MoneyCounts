@@ -248,12 +248,12 @@ export function SettingsPage({
           </div>
         </section>
 
-        <section className="settings-stack__section surface-secondary">
+        <section className="settings-stack__section surface-secondary backup-panel">
           <header className="settings-stack__heading">
             <h2>完整 JSON 备份</h2>
             <p className="muted">包含账本、汇率、主题、提醒、设置与旅游历史。导入前会展示预览。</p>
           </header>
-          <label className="settings-option">
+          <div className="settings-option">
             <span className="settings-option__copy">
               <strong>把 API 接口写入备份</strong>
               <small>
@@ -261,24 +261,30 @@ export function SettingsPage({
                 URL、模型名和密钥，换设备导入即可直接用。请自行保管备份文件。
               </small>
             </span>
-            <input
-              type="checkbox"
-              checked={includeLlmApiInBackup}
-              onChange={(event) => updateIncludeLlmApiInBackup(event.target.checked)}
-            />
-          </label>
+            <label className="settings-toggle-switch">
+              <input
+                type="checkbox"
+                checked={includeLlmApiInBackup}
+                aria-label="把 API 接口写入备份"
+                onChange={(event) => updateIncludeLlmApiInBackup(event.target.checked)}
+              />
+              <span className="settings-toggle-switch__track" aria-hidden="true" />
+            </label>
+          </div>
           <div className="backup-action-stack">
-            <button type="button" data-action="json-backup-export" onClick={onExportJson}>
-              立即导出 JSON
-            </button>
-            <button
-              type="button"
-              className="secondary-button"
-              data-action="json-backup-pick-import"
-              onClick={onPickJson}
-            >
-              选择 JSON 导入
-            </button>
+            <div className="backup-action-stack__buttons">
+              <button type="button" data-action="json-backup-export" onClick={onExportJson}>
+                立即导出 JSON
+              </button>
+              <button
+                type="button"
+                className="secondary-button"
+                data-action="json-backup-pick-import"
+                onClick={onPickJson}
+              >
+                选择 JSON 导入
+              </button>
+            </div>
             <input
               ref={jsonInputRef}
               type="file"
@@ -286,22 +292,24 @@ export function SettingsPage({
               hidden
               onChange={onJsonFileChange}
             />
-            <p className="muted">当前提醒状态：{backupReminderLabel}</p>
-            <div className="action-row">
-              <button
-                type="button"
-                className="ghost-button"
-                onClick={() => onSnoozeBackupReminder(1)}
-              >
-                明天提醒
-              </button>
-              <button
-                type="button"
-                className="secondary-button"
-                onClick={() => onSnoozeBackupReminder(3)}
-              >
-                3 天内不提醒
-              </button>
+            <div className="backup-action-stack__nudge">
+              <p className="muted">当前提醒状态：{backupReminderLabel}</p>
+              <div className="action-row">
+                <button
+                  type="button"
+                  className="ghost-button"
+                  onClick={() => onSnoozeBackupReminder(1)}
+                >
+                  明天提醒
+                </button>
+                <button
+                  type="button"
+                  className="secondary-button"
+                  onClick={() => onSnoozeBackupReminder(3)}
+                >
+                  3 天内不提醒
+                </button>
+              </div>
             </div>
           </div>
           {importMessage ? <p className="status">{importMessage}</p> : null}
