@@ -2,6 +2,8 @@
  * LLM 接口配置。单独 LocalStorage key；默认不进 JSON 备份，可在看台或设置里选择写入。
  * 模型名只作输入示意（placeholder），连通成功后才锁死 URL / 模型 / Key。
  */
+import { trySetLocalStorageItem } from "./localStorageQuota";
+
 export const LLM_API_SETTINGS_KEY = "monthly-smart-ledger:llm-api:v1";
 
 export const LLM_PROVIDER_IDS = [
@@ -138,7 +140,7 @@ export const readLlmApiSettings = (): LlmApiSettings => {
 };
 
 export const saveLlmApiSettings = (settings: LlmApiSettings) => {
-  localStorage.setItem(LLM_API_SETTINGS_KEY, JSON.stringify(normalizeLlmApiSettings(settings)));
+  trySetLocalStorageItem(LLM_API_SETTINGS_KEY, JSON.stringify(normalizeLlmApiSettings(settings)));
 };
 
 /** 仅在用户勾选「写入备份」时返回可序列化的接口配置。 */

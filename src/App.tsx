@@ -31,6 +31,7 @@ import { ApiConsolePage } from "./pages/ApiConsolePage";
 import { DataManagementPage } from "./pages/DataManagementPage";
 import { SearchPage, SearchableLedgerRecord } from "./pages/SearchPage";
 import { SectionPage } from "./pages/SectionPage";
+import { StorageQuotaGuard, type StorageQuotaGuardModel } from "./components/StorageQuotaGuard";
 import type { LedgerBadge, SpendingInsight, WeeklyAchievement } from "./lib/ledgerInsights";
 import type { QuickExpenseResult } from "./lib/quickExpenseParser";
 import {
@@ -75,6 +76,17 @@ import {
   parseAmount,
 } from "./lib/ledgerStats";
 import { MAX_RECORDS_PER_CATEGORY, migrateLegacyDayEntries } from "./lib/ledgerLayout";
+import {
+  LOCAL_STORAGE_QUOTA_BYTES,
+  classifyImportFileSize,
+  classifyStoragePressure,
+  estimateUtf16BytesFromUtf8FileSize,
+  measureLocalStorageBytes,
+  projectLocalStorageReplace,
+  trySetLocalStorageItem,
+  type StoragePressure,
+} from "./lib/localStorageQuota";
+import { openDesktopClientDownload } from "./lib/desktopClient";
 import {
   FALLBACK_CATEGORY_ZH,
   LEDGER_CATEGORIES,
@@ -1075,6 +1087,8 @@ function App() {
   const llmFileInputRef = useRef<HTMLInputElement | null>(null);
   const jsonInputRef = useRef<HTMLInputElement | null>(null);
   const [isImportingSpreadsheet, setIsImportingSpreadsheet] = useState(false);
+  const [quotaGuard, setQuotaGuard] = useState<StorageQuotaGuardModel | null>(null);
+  const storageWarnShownRef = useRef(false);
 
   const selectedEntries = ledger[selectedDate] ?? makeDayEntries(dailyDefaultCurrency);
   const monthKey = getMonthKey(selectedDate);
@@ -1089,27 +1103,50 @@ function App() {
   const statVariant = Math.abs(parseDateKey(selectedDate).getDate()) % 3;
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, serializeLedger(ledger));
+    const serialized = serializeLedger(ledger);
+    const used = measureLocalStorageBytes();
+    const projected = projectLocalStorageReplace(STORAGE_KEY, serialized);
+    const pressure = classifyStoragePressure(projected);
+    if (pressure === "warn" && !storageWarnShownRef.current) {
+      storageWarnShownRef.current = true;
+      setQuotaGuard({
+        level: "warn",
+        source: "persist",
+        usedBytes: used,
+        quotaBytes: LOCAL_STORAGE_QUOTA_BYTES,
+        projectedBytes: projected,
+      });
+    }
+    const result = trySetLocalStorageItem(STORAGE_KEY, serialized);
+    if (!result.ok) {
+      setQuotaGuard({
+        level: "block",
+        source: "persist",
+        usedBytes: used,
+        quotaBytes: LOCAL_STORAGE_QUOTA_BYTES,
+        projectedBytes: projected,
+      });
+    }
   }, [ledger]);
 
   useEffect(() => {
-    localStorage.setItem(RATE_KEY, JSON.stringify(exchange));
+    trySetLocalStorageItem(RATE_KEY, JSON.stringify(exchange));
   }, [exchange]);
 
   useEffect(() => {
-    localStorage.setItem(CUSTOM_CURRENCIES_KEY, JSON.stringify(customCurrencies));
+    trySetLocalStorageItem(CUSTOM_CURRENCIES_KEY, JSON.stringify(customCurrencies));
   }, [customCurrencies]);
 
   useEffect(() => {
-    localStorage.setItem(LAST_CURRENCY_KEY, lastCurrency);
+    trySetLocalStorageItem(LAST_CURRENCY_KEY, lastCurrency);
   }, [lastCurrency]);
 
   useEffect(() => {
-    localStorage.setItem(STATS_CURRENCIES_KEY, JSON.stringify(selectedStatsCurrencies));
+    trySetLocalStorageItem(STATS_CURRENCIES_KEY, JSON.stringify(selectedStatsCurrencies));
   }, [selectedStatsCurrencies]);
 
   useEffect(() => {
-    localStorage.setItem(THEME_KEY, themeMode);
+    trySetLocalStorageItem(THEME_KEY, themeMode);
     document.documentElement.dataset.theme = themeMode;
   }, [themeMode]);
 
@@ -1118,7 +1155,7 @@ function App() {
   }, [appSettings]);
 
   useEffect(() => {
-    localStorage.setItem(TRAVEL_KEY, JSON.stringify(travelState));
+    trySetLocalStorageItem(TRAVEL_KEY, JSON.stringify(travelState));
   }, [travelState]);
 
   useEffect(() => {
@@ -1145,11 +1182,11 @@ function App() {
   }, [selectedDate, travelDraftUseEndDate]);
 
   useEffect(() => {
-    localStorage.setItem(TRAVEL_HISTORY_KEY, JSON.stringify(travelHistory));
+    trySetLocalStorageItem(TRAVEL_HISTORY_KEY, JSON.stringify(travelHistory));
   }, [travelHistory]);
 
   useEffect(() => {
-    localStorage.setItem(TRAVEL_HISTORY_PENDING_DELETE_KEY, JSON.stringify(pendingTravelDeletes));
+    trySetLocalStorageItem(TRAVEL_HISTORY_PENDING_DELETE_KEY, JSON.stringify(pendingTravelDeletes));
   }, [pendingTravelDeletes]);
 
   useEffect(() => {
@@ -1754,7 +1791,7 @@ function App() {
     const code = result.code;
     const apiCode = getApiCode(code);
     setCustomCurrencies((current) => (current.includes(code) ? current : [...current, code]));
-    localStorage.setItem(
+    trySetLocalStorageItem(
       CUSTOM_CURRENCIES_KEY,
       JSON.stringify(Array.from(new Set([...customCurrencies, code]))),
     );
@@ -2061,6 +2098,51 @@ function App() {
 
   const exportJson = () => downloadJsonBackup(ledger);
 
+  const showQuotaGuard = (
+    level: StorageQuotaGuardModel["level"],
+    source: StorageQuotaGuardModel["source"],
+    projectedBytes: number,
+    usedBytes = measureLocalStorageBytes(),
+  ) => {
+    setQuotaGuard({
+      level,
+      source,
+      usedBytes,
+      quotaBytes: LOCAL_STORAGE_QUOTA_BYTES,
+      projectedBytes,
+    });
+  };
+
+  const evaluateLedgerWrite = (
+    nextLedger: LedgerData,
+    source: StorageQuotaGuardModel["source"],
+    options?: { showWarn?: boolean },
+  ): StoragePressure => {
+    const serialized = serializeLedger(nextLedger);
+    const used = measureLocalStorageBytes();
+    const projected = projectLocalStorageReplace(STORAGE_KEY, serialized);
+    const pressure = classifyStoragePressure(projected);
+    if (pressure === "block") {
+      showQuotaGuard("block", source, projected, used);
+      return pressure;
+    }
+    if (pressure === "warn" && options?.showWarn !== false) {
+      storageWarnShownRef.current = true;
+      showQuotaGuard("warn", source, projected, used);
+    }
+    return pressure;
+  };
+
+  const rejectOversizedImportFile = (file: File, kind: "json" | "table"): boolean => {
+    if (classifyImportFileSize(file.size, kind) !== "block") return false;
+    showQuotaGuard(
+      "block",
+      "import-file",
+      kind === "json" ? estimateUtf16BytesFromUtf8FileSize(file.size) : file.size,
+    );
+    return true;
+  };
+
   const prepareBackupImport = (
     payload: MoneyCountsBackupPayload,
     fileName: string,
@@ -2119,6 +2201,11 @@ function App() {
     const file = event.target.files?.[0];
     if (!file) return;
     try {
+      if (rejectOversizedImportFile(file, "json")) {
+        setPreparedJsonImport(null);
+        setJsonImportMessage("备份文件过大，超出浏览器存储上限，未导入。");
+        return;
+      }
       const parsed = JSON.parse(await file.text()) as unknown;
       const payload = parseBackupPayload(parsed);
       const prepared = prepareBackupImport(payload, file.name);
@@ -2140,6 +2227,10 @@ function App() {
 
   const confirmJsonImport = () => {
     if (!preparedJsonImport) return;
+    if (evaluateLedgerWrite(preparedJsonImport.ledger, "import-json") === "block") {
+      setJsonImportMessage("导入后将超出浏览器存储上限，已取消覆盖。请先导出当前备份。");
+      return;
+    }
     setLedger(preparedJsonImport.ledger);
     setExchange(preparedJsonImport.exchange);
     setCustomCurrencies(preparedJsonImport.customCurrencies);
@@ -2160,7 +2251,10 @@ function App() {
     }
 
     if (preparedJsonImport.backupReminder) {
-      localStorage.setItem(BACKUP_REMINDER_KEY, JSON.stringify(preparedJsonImport.backupReminder));
+      trySetLocalStorageItem(
+        BACKUP_REMINDER_KEY,
+        JSON.stringify(preparedJsonImport.backupReminder),
+      );
     } else {
       localStorage.removeItem(BACKUP_REMINDER_KEY);
     }
@@ -2201,6 +2295,11 @@ function App() {
   const importCsv = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
+    if (rejectOversizedImportFile(file, "table")) {
+      setImportMessage("表格文件过大，未导入。");
+      event.target.value = "";
+      return;
+    }
     const text = await file.text();
     const lines = text
       .replace(/^\uFEFF/, "")
@@ -2242,11 +2341,16 @@ function App() {
       nextLedger[date] = entries;
       imported += 1;
     }
+    if (imported && evaluateLedgerWrite(nextLedger, "import-csv") === "block") {
+      setImportMessage("导入后将超出浏览器存储上限，已取消写入。请先导出 JSON 备份。");
+      event.target.value = "";
+      return;
+    }
     if (importedCustomCurrencies.size) {
       setCustomCurrencies((current) =>
         Array.from(new Set([...current, ...importedCustomCurrencies])),
       );
-      localStorage.setItem(
+      trySetLocalStorageItem(
         CUSTOM_CURRENCIES_KEY,
         JSON.stringify(Array.from(new Set([...customCurrencies, ...importedCustomCurrencies]))),
       );
@@ -2329,7 +2433,10 @@ function App() {
     setNaturalLedgerStatus("已新增一条空白待导入记录，请补全金额和备注。");
   };
 
-  const importNaturalLedgerRecords = (records: LocalLedgerRecord[]) => {
+  const importNaturalLedgerRecords = (
+    records: LocalLedgerRecord[],
+    options?: { apply?: boolean },
+  ) => {
     const nextLedger = { ...ledger };
     const nextVisibleRowCounts = { ...visibleRowCountsByDate };
     const importedCustomCurrencies = new Set<Currency>();
@@ -2399,11 +2506,11 @@ function App() {
       importedEntries.push({ date, index: getEntryIndex(categoryIndex, rowIndex), record });
     }
 
-    if (importedCustomCurrencies.size) {
+    if (importedCustomCurrencies.size && options?.apply !== false) {
       setCustomCurrencies((current) =>
         Array.from(new Set([...current, ...importedCustomCurrencies])),
       );
-      localStorage.setItem(
+      trySetLocalStorageItem(
         CUSTOM_CURRENCIES_KEY,
         JSON.stringify(Array.from(new Set([...customCurrencies, ...importedCustomCurrencies]))),
       );
@@ -2412,7 +2519,7 @@ function App() {
         rates: normalizeRates(current.rates, [...allCurrencies, ...importedCustomCurrencies]),
       }));
     }
-    if (imported) {
+    if (imported && options?.apply !== false) {
       setLedger(nextLedger);
       setVisibleRowCountsByDate(nextVisibleRowCounts);
     }
@@ -2464,6 +2571,10 @@ function App() {
     setIsImportingSpreadsheet(true);
     setImportMessage("正在读取表格…");
     try {
+      if (rejectOversizedImportFile(file, "table")) {
+        setImportMessage("表格文件过大，未导入。");
+        return;
+      }
       const text = await file.text();
       if (!text.trim()) {
         setImportMessage("表格是空的。");
@@ -2486,20 +2597,30 @@ function App() {
         );
         return;
       }
-      const { imported, messages, nextLedger } = importNaturalLedgerRecords(result.rows);
+      const draft = importNaturalLedgerRecords(result.rows, { apply: false });
       const parts = [
-        `已导入 ${imported} 条。`,
+        `已导入 ${draft.imported} 条。`,
         ...result.warnings.slice(0, 6),
-        ...messages.slice(0, 6),
+        ...draft.messages.slice(0, 6),
       ].filter(Boolean);
-      setImportMessage(parts.join(" "));
-      if (imported > 0) {
-        const ledgerForBackup = nextLedger;
-        window.setTimeout(() => {
-          if (window.confirm(`已写入 ${imported} 条。要现在导出 JSON 备份吗？`)) {
-            downloadJsonBackup(ledgerForBackup);
-          }
-        }, 100);
+      if (draft.imported) {
+        const pressure = evaluateLedgerWrite(draft.nextLedger, "import-spreadsheet");
+        if (pressure === "block") {
+          setImportMessage("导入后将超出浏览器存储上限，已取消写入。请先导出 JSON 备份。");
+          return;
+        }
+        importNaturalLedgerRecords(result.rows);
+        setImportMessage(parts.join(" "));
+        if (pressure === "ok") {
+          const ledgerForBackup = draft.nextLedger;
+          window.setTimeout(() => {
+            if (window.confirm(`已写入 ${draft.imported} 条。要现在导出 JSON 备份吗？`)) {
+              downloadJsonBackup(ledgerForBackup);
+            }
+          }, 100);
+        }
+      } else {
+        setImportMessage(parts.join(" "));
       }
     } catch (error) {
       setImportMessage(error instanceof Error ? error.message : "表格识别失败。");
@@ -3068,7 +3189,7 @@ function App() {
       snoozeUntil: permanent ? undefined : now + cooldownDays * DAY_MS,
       permanent,
     };
-    localStorage.setItem(BACKUP_REMINDER_KEY, JSON.stringify(nextState));
+    trySetLocalStorageItem(BACKUP_REMINDER_KEY, JSON.stringify(nextState));
     setBackupReminderVisible(false);
   };
 
@@ -4333,6 +4454,20 @@ function App() {
           )}
         </div>
       </SettingsModal>
+
+      {quotaGuard ? (
+        <StorageQuotaGuard
+          model={quotaGuard}
+          onExportBackup={() => {
+            exportJson();
+            setQuotaGuard(null);
+          }}
+          onDownloadClient={() => {
+            openDesktopClientDownload();
+          }}
+          onDismiss={() => setQuotaGuard(null)}
+        />
+      ) : null}
 
       {backupReminderVisible && (
         <aside className="backup-reminder" role="status" aria-live="polite">

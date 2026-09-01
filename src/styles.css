@@ -1010,6 +1010,49 @@ select.invalid {
   background: rgba(15, 23, 42, 0.62);
 }
 
+.storage-quota-guard-backdrop {
+  z-index: calc(var(--z-modal) + 8);
+}
+
+.storage-quota-guard {
+  width: min(440px, 100%);
+}
+
+.storage-quota-guard--block {
+  box-shadow:
+    0 34px 90px rgba(15, 23, 42, 0.26),
+    0 0 0 1px rgba(180, 35, 24, 0.18);
+}
+
+.storage-quota-guard__body {
+  margin: 0 0 10px;
+  color: var(--ink);
+  font-size: 0.95rem;
+  font-weight: 650;
+  line-height: 1.55;
+}
+
+.storage-quota-guard__hint {
+  margin: 0 0 16px;
+}
+
+.storage-quota-guard__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.storage-quota-guard__actions button {
+  padding: 0.55rem 0.85rem;
+}
+
+:root[data-theme="dark"] .storage-quota-guard--block {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 34px 90px rgba(0, 0, 0, 0.48),
+    0 0 0 1px rgba(242, 161, 145, 0.22);
+}
+
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 392px;
