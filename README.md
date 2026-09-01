@@ -1,18 +1,20 @@
 # MoneyCounts
 
-本地优先记账本：一句话入账、35 类、多货币、旅游 AA。没有账号，没有云同步。
+本地优先的多币种智能记账本：自然语言入账、35 分类、多货币、旅游分账。
 
 **网页** · [moneycounts.freddyhu2007.workers.dev](https://moneycounts.freddyhu2007.workers.dev/)  
 **macOS（Apple 芯片）** · [下载 .app zip](https://github.com/FoooooodieFred/MoneyCounts/releases/latest/download/MoneyCounts-macos-arm64.zip)  
 **Windows（64 位）** · [下载 .exe zip](https://github.com/FoooooodieFred/MoneyCounts/releases/latest/download/MoneyCounts-windows-amd64.zip)
 
-网页由 Cloudflare Workers 发布 `main` 上的 `dist/`。桌面安装包在 [GitHub Releases](https://github.com/FoooooodieFred/MoneyCounts/releases/latest)。界面为简体中文。
+网页由 Cloudflare Workers 发布 `main` 上的 `dist/`。
+
+注意：界面目前**仅有简体中文。**英文及其他版本将在未来考虑陆续支持。
 
 ---
 
 ## 网页还是桌面
 
-|        | 网页 / PWA                           | 桌面（Wails）                 |
+|        | 网页 / PWA                           | 桌面             |
 | ------ | ------------------------------------ | ----------------------------- |
 | 数据   | 浏览器 LocalStorage（大约 5MB 上限） | 本机文件，不受该上限限制      |
 | 换设备 | 设置里导出 JSON，再导入              | 同样靠 JSON；两套存储互不相通 |
@@ -23,7 +25,10 @@
 - macOS：`~/Library/Application Support/MoneyCounts/store.json`
 - Windows：`%AppData%\MoneyCounts\store.json`
 
-macOS 未公证：下载后对 `MoneyCounts.app` **右键 → 打开**。Windows 未签名：SmartScreen 里选「更多信息 → 仍要运行」。需要 [WebView2](https://developer.microsoft.com/microsoft-edge/webview2/)（Win11 一般已有）。从网页迁到桌面：设置 → 导出 JSON → 桌面设置里导入。
+macOS 未公证：下载后对 `MoneyCounts.app` **如果门禁阻止该操作，请前往Mac设置 → 隐私与安全性 → 安全性 → 仍要打开**。
+Windows 未签名：SmartScreen 里选「更多信息 → 仍要运行」。需要 [WebView2](https://developer.microsoft.com/microsoft-edge/webview2/)（Win11 一般已有）。
+
+从网页迁到桌面：设置 → 导出 JSON → 桌面设置里导入。
 
 ---
 
@@ -32,13 +37,11 @@ macOS 未公证：下载后对 `MoneyCounts.app` **右键 → 打开**。Windows
 - **自然语言记账**：中英句子生成预览，改日期 / 分类 / 金额 / 币种 / 备注，确认后才写入。识别方式可切换：
   - **规则识别**（默认）：本地规则 + 关键词 + 浏览器内 n-gram 分类器，不走网络
   - **LLM 识别**：调用「API 看台」里配置的 OpenAI 兼容接口；没配或失败则回退规则
-- **35 类**：28 个支出、工资 / 副业（正数）、5 个负支出（退款、报销、返现、他人还款）。对不上的进「日用百货」
-- **多日句子**：「今天明天」「这一周每天」等按天**复制同一金额**（不是把总额摊开）
+- **35 分类**：28 个支出、工资 / 副业、5 个负支出。对不上的进「日用百货」
+- **多日句子**：「今天明天」「这一周每天」等按天**复制同一金额**
 - 手动表格、日 / 周 / 月 / 年统计与图表
 - 多货币（HKD、CNY 为主），汇率公开 API 拉取并缓存
-- 月度与分类预算、旅游行程与 AA、搜索、CSV、完整 JSON 备份、PWA
-
-旧版 10 类账本会自动迁到 35 类（LocalStorage key 仍是 `monthly-smart-ledger:v1`）。
+- 月度与分类预算、旅游行程与分账、搜索、CSV、完整 JSON 备份、PWA
 
 ---
 
@@ -130,7 +133,7 @@ Vite 8 · React 19 · TypeScript · react-router-dom 7 · GSAP 3 · Vitest · PW
 
 ---
 
-## Author
+## 作者
 
 **@FoodieFred** · [github.com/FoooooodieFred/MoneyCounts](https://github.com/FoooooodieFred/MoneyCounts)
 
@@ -140,17 +143,19 @@ License: ISC
 
 # MoneyCounts (English)
 
-A local-first ledger: one-line entry, 35 categories, multiple currencies, travel split-bills. No accounts, no cloud sync.
+Local‑first multi‑currency smart ledger: natural‑language entry, 35 categories, multi‑currency support, travel expense splitting.
 
 **Web** · [moneycounts.freddyhu2007.workers.dev](https://moneycounts.freddyhu2007.workers.dev/)  
 **macOS (Apple Silicon)** · [download .app zip](https://github.com/FoooooodieFred/MoneyCounts/releases/latest/download/MoneyCounts-macos-arm64.zip)  
 **Windows (64-bit)** · [download .exe zip](https://github.com/FoooooodieFred/MoneyCounts/releases/latest/download/MoneyCounts-windows-amd64.zip)
 
-Cloudflare Workers publishes `dist/` from **`main`**. Desktop binaries are on [GitHub Releases](https://github.com/FoooooodieFred/MoneyCounts/releases/latest). UI is Simplified Chinese.
+Cloudflare Workers publishes `dist/` from **`main`**.
+
+Note: The interface currently supports **Simplified Chinese only**. English and other language versions will be considered for rollout in the future.
 
 ## Web vs desktop
 
-|            | Web / PWA                       | Desktop (Wails)                             |
+|            | Web / PWA                       | Desktop                                     |
 | ---------- | ------------------------------- | ------------------------------------------- |
 | Data       | Browser LocalStorage (~5MB cap) | A file on disk                              |
 | New device | Settings → export JSON → import | Same JSON flow; stores are not shared       |
@@ -158,7 +163,7 @@ Cloudflare Workers publishes `dist/` from **`main`**. Desktop binaries are on [G
 
 Store files: macOS `~/Library/Application Support/MoneyCounts/store.json` · Windows `%AppData%\MoneyCounts\store.json`.
 
-Unsigned macOS: **right-click → Open**. Unsigned Windows: SmartScreen → More info → Run anyway. Needs [WebView2](https://developer.microsoft.com/microsoft-edge/webview2/).
+Unsigned macOS: **If Gatekeeper blocks it, go to Mac Settings → Privacy & Security → Security → Open Anyway**. Unsigned Windows: SmartScreen → More info → Run anyway. Needs [WebView2](https://developer.microsoft.com/microsoft-edge/webview2/).
 
 ## Features
 
