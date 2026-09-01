@@ -1,10 +1,10 @@
 /**
- * 桌面客户端下载入口。发布安装包后把 URL 填在这里即可点亮「下载桌面客户端」按钮。
+ * 桌面客户端下载入口。打开 GitHub Release 页，按系统取 macOS zip 或 Windows zip。
  */
 import { isDesktopRuntime } from "./desktopRuntime";
 
 export const DESKTOP_CLIENT_DOWNLOAD_URL: string | null =
-  "https://github.com/FoooooodieFred/MoneyCounts/releases/latest/download/MoneyCounts-macos-arm64.zip";
+  "https://github.com/FoooooodieFred/MoneyCounts/releases/latest";
 
 export const isRunningDesktopClient = (): boolean => isDesktopRuntime();
 

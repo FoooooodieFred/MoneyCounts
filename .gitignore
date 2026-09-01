@@ -15,10 +15,15 @@
 /.next/
 /out/
 
-# Wails desktop build output (keep templates in /build)
-/build/bin
-/build/windows/*.exe
+# Wails desktop (keep templates in desktop/build)
+/desktop/dist/*
+!/desktop/dist/.gitkeep
+/desktop/build/bin
+/desktop/build/windows/*.exe
+/desktop/wailsjs
+/desktop/package.json.md5
 /wailsjs
+/build/bin
 
 # misc
 .DS_Store

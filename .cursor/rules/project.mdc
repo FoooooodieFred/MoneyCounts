@@ -5,13 +5,14 @@ alwaysApply: true
 
 # MoneyCounts（Accounting Book）
 
-纯前端记账 Web 应用。数据只存浏览器 LocalStorage，无后端。
+纯前端记账 Web 应用 + 可选 Wails 桌面壳。网页数据在浏览器 LocalStorage；桌面账本在本机文件。无后端。
 
 ## 技术栈（以 package.json 为准）
 
 - Vite 8 · React 19 · TypeScript · react-router-dom 7 · GSAP 3
 - Vitest · Prettier · ESLint（flat）· PWA（`public/sw.js` + manifest）
-- 无服务端 / 无 Python API
+- 桌面：Wails v2（Go），源码在 `desktop/`
+- 无 Python API；Cloudflare Worker 只做静态资源与 LLM 同源代理
 
 ## 目录约定
 
@@ -25,8 +26,9 @@ alwaysApply: true
 | `src/styles.css` | 全局样式（暂不拆分） |
 | `public/` | PWA / 静态资源 |
 | `docs/` | 文档与 cleanup 盘点；非业务代码 |
+| `desktop/` | Wails 桌面壳（Go、`wails.json`、打包模板）。前端仍编译仓库根的 `src/`，产物进 `desktop/dist/` |
 
-新增文件按上表归位；不要把页面逻辑丢回 `src/` 根目录。
+新增文件按上表归位；不要把页面逻辑丢回 `src/` 根目录。不要把 Go / Wails 文件放回仓库根目录。
 
 ## 代码风格
 
@@ -58,4 +60,4 @@ npm run typecheck
 npm test
 ```
 
-涉及样式或构建产物时再视情况 `npm run build`。改逻辑必跑 test；仅文档/规则可跳过。
+涉及样式或构建产物时再视情况 `npm run build`。改逻辑必跑 test；仅文档/规则可跳过。改 `desktop/` 下 Go 代码时再跑 `cd desktop && go test ./...`。

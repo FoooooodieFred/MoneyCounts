@@ -13,7 +13,10 @@
     "train:nl-classifier": "python3 scripts/train_nl_ledger_classifier.py",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "desktop:dev": "node desktop/scripts/wails-run.mjs dev",
+    "desktop:build": "node desktop/scripts/wails-run.mjs build -clean",
+    "desktop:build:windows": "node desktop/scripts/wails-run.mjs build -clean -platform windows/amd64 -nsis -webview2 download -installscope user"
   },
   "keywords": [],
   "author": "",

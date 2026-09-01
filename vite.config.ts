@@ -92,6 +92,8 @@ export default defineConfig({
     strictPort: true,
   },
   build: {
+    outDir: process.env.VITE_DESKTOP === "1" ? "desktop/dist" : "dist",
+    emptyOutDir: true,
     rollupOptions: {
       output: {
         manualChunks(id) {

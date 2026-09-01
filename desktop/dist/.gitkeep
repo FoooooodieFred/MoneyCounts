@@ -1,0 +1,1 @@
+# Replaced by `npm run desktop:build`. Kept so `go:embed all:dist` works on a fresh clone.
