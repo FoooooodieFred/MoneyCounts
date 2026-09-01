@@ -3,8 +3,9 @@
  * 模型名只作输入示意（placeholder），连通成功后才锁死 URL / 模型 / Key。
  */
 import { kvGet, kvSet } from "./kv";
+import { LLM_API_SETTINGS_KEY } from "./storageKeys";
 
-export const LLM_API_SETTINGS_KEY = "monthly-smart-ledger:llm-api:v1";
+export { LLM_API_SETTINGS_KEY };
 
 export const LLM_PROVIDER_IDS = [
   "openai",

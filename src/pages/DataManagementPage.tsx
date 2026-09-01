@@ -16,6 +16,7 @@ type DataManagementPageProps = {
   onLlmSpreadsheetChange: (event: ChangeEvent<HTMLInputElement>) => void;
   onClearCurrentDay: () => void;
   onClearCurrentMonth: () => void;
+  onClearAllData: () => void;
 };
 
 export function DataManagementPage({
@@ -33,6 +34,7 @@ export function DataManagementPage({
   onLlmSpreadsheetChange,
   onClearCurrentDay,
   onClearCurrentMonth,
+  onClearAllData,
 }: DataManagementPageProps) {
   return (
     <main
@@ -119,7 +121,8 @@ export function DataManagementPage({
           <header className="settings-stack__heading">
             <h2>清理账本数据</h2>
             <p className="muted">
-              当前选中日期 {selectedDate}，当月为 {monthKey}。清空后不可撤销，请先导出备份。
+              当前选中日期 {selectedDate}，当月为 {monthKey}
+              。清空后不可撤销，请先导出备份。清空所有数据会删除账本、旅游、设置和接口配置。
             </p>
           </header>
           <div className="danger-zone">
@@ -138,6 +141,14 @@ export function DataManagementPage({
               onClick={onClearCurrentMonth}
             >
               清空当月数据
+            </button>
+            <button
+              type="button"
+              className="danger-button"
+              data-action="clear-all-data"
+              onClick={onClearAllData}
+            >
+              清空所有数据
             </button>
           </div>
         </section>

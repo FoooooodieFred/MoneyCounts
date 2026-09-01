@@ -43,6 +43,17 @@ func Read(path string) ([]byte, error) {
 	return data, nil
 }
 
+func FileSize(path string) (int64, error) {
+	info, err := os.Stat(path)
+	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			return 0, nil
+		}
+		return 0, err
+	}
+	return info.Size(), nil
+}
+
 func Write(path string, data []byte) error {
 	if !json.Valid(data) {
 		return fmt.Errorf("store contents are not valid JSON")

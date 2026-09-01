@@ -5,8 +5,9 @@
  */
 import { remapLegacyCategoryLimits } from "./nlLedgerCategories";
 import { kvGet, kvSet } from "./kv";
+import { APP_SETTINGS_KEY } from "./storageKeys";
 
-export const APP_SETTINGS_KEY = "monthly-smart-ledger:settings";
+export { APP_SETTINGS_KEY };
 
 export const HOME_SECTION_LABELS = {
   heroCards: "趣味小卡片",

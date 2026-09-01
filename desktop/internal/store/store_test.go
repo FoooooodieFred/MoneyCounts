@@ -33,6 +33,16 @@ func TestReadMissingReturnsEmptyStore(t *testing.T) {
 	}
 }
 
+func TestFileSizeMissingIsZero(t *testing.T) {
+	got, err := FileSize(filepath.Join(t.TempDir(), "missing.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got != 0 {
+		t.Fatalf("got %d", got)
+	}
+}
+
 func TestWriteRejectsInvalidJSON(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "store.json")
 	if err := Write(path, []byte("not-json")); err == nil {

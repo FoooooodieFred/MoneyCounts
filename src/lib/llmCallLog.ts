@@ -2,7 +2,9 @@
  * 最近一次 LLM 调用日志。存在 sessionStorage，关浏览器即丢。
  * 不写密钥、不写完整账单原文。
  */
-export const LLM_CALL_LOG_KEY = "monthly-smart-ledger:llm-call-log:v1";
+import { LLM_CALL_LOG_KEY } from "./storageKeys";
+
+export { LLM_CALL_LOG_KEY };
 export const LLM_CALL_LOG_LIMIT = 20;
 
 export type LlmCallLogEntry = {

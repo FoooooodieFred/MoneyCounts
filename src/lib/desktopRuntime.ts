@@ -11,10 +11,13 @@ export type DesktopAppBindings = {
   SaveTextFile: (defaultFilename: string, contents: string) => Promise<string>;
   OpenTextFile: (filterPattern: string) => Promise<DesktopOpenedFile>;
   NotifyFlushed: () => Promise<void>;
+  StoreInfo?: () => Promise<{ path: string; size: number }>;
+  OpenURL?: (url: string) => Promise<void>;
 };
 
 type WailsRuntime = {
   EventsOn?: (eventName: string, callback: () => void) => void;
+  BrowserOpenURL?: (url: string) => void;
 };
 
 declare global {
@@ -50,4 +53,18 @@ export const onDesktopBeforeClose = (handler: () => void | Promise<void>) => {
   window.runtime?.EventsOn?.("moneycounts:before-close", () => {
     void Promise.resolve(handler());
   });
+};
+
+export const openDesktopUrl = (url: string) => {
+  if (typeof window === "undefined") return;
+  if (window.runtime?.BrowserOpenURL) {
+    window.runtime.BrowserOpenURL(url);
+    return;
+  }
+  const openUrl = getDesktopApp()?.OpenURL;
+  if (openUrl) {
+    void openUrl(url);
+    return;
+  }
+  window.open(url, "_blank", "noopener,noreferrer");
 };

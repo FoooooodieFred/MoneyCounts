@@ -76,6 +76,26 @@ func (a *App) SaveStore(contents string) error {
 	return store.Write(a.storePath, []byte(contents))
 }
 
+type StoreInfo struct {
+	Path string `json:"path"`
+	Size int64  `json:"size"`
+}
+
+func (a *App) StoreInfo() StoreInfo {
+	size, err := store.FileSize(a.storePath)
+	if err != nil {
+		return StoreInfo{Path: a.storePath, Size: 0}
+	}
+	return StoreInfo{Path: a.storePath, Size: size}
+}
+
+func (a *App) OpenURL(url string) {
+	if a.ctx == nil || strings.TrimSpace(url) == "" {
+		return
+	}
+	runtime.BrowserOpenURL(a.ctx, url)
+}
+
 func (a *App) SaveTextFile(defaultFilename string, contents string) (string, error) {
 	path, err := runtime.SaveFileDialog(a.ctx, runtime.SaveDialogOptions{
 		DefaultFilename: defaultFilename,

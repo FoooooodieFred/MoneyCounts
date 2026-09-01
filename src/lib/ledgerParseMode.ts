@@ -2,8 +2,9 @@
  * 首页自然语言记账的识别方式。独立 LocalStorage key，不进 JSON 备份。
  */
 import { kvGet, kvSet } from "./kv";
+import { LEDGER_PARSE_MODE_KEY } from "./storageKeys";
 
-export const LEDGER_PARSE_MODE_KEY = "monthly-smart-ledger:ledger-parse-mode";
+export { LEDGER_PARSE_MODE_KEY };
 
 export const LEDGER_PARSE_MODES = ["rules", "llm"] as const;
 

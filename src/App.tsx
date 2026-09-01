@@ -32,6 +32,8 @@ import { DataManagementPage } from "./pages/DataManagementPage";
 import { SearchPage, SearchableLedgerRecord } from "./pages/SearchPage";
 import { SectionPage } from "./pages/SectionPage";
 import { StorageQuotaGuard, type StorageQuotaGuardModel } from "./components/StorageQuotaGuard";
+import { StorageUsagePanel, type StorageUsageModel } from "./components/StorageUsagePanel";
+import { DesktopUpdatePrompt } from "./components/DesktopUpdatePrompt";
 import type { LedgerBadge, SpendingInsight, WeeklyAchievement } from "./lib/ledgerInsights";
 import type { QuickExpenseResult } from "./lib/quickExpenseParser";
 import {
@@ -83,11 +85,40 @@ import {
   estimateUtf16BytesFromUtf8FileSize,
   measureLocalStorageBytes,
   projectLocalStorageReplace,
+  utf16ByteLength,
   type StoragePressure,
 } from "./lib/localStorageQuota";
-import { isDesktopKv, kvGet, kvRemove, kvSet } from "./lib/kv";
+import {
+  flushDesktopStore,
+  isDesktopKv,
+  kvGet,
+  kvRemove,
+  kvSet,
+  measureDesktopStoreUtf8Bytes,
+} from "./lib/kv";
 import { canUseNativeFileDialog, openTextFile, saveTextFile } from "./lib/desktopFiles";
+import { getDesktopApp, isDesktopRuntime, openDesktopUrl } from "./lib/desktopRuntime";
 import { openDesktopClientDownload } from "./lib/desktopClient";
+import {
+  detectDesktopPlatform,
+  fetchLatestDesktopUpdate,
+  type DesktopUpdateOffer,
+} from "./lib/desktopUpdate";
+import { clearAllPersistedData } from "./lib/clearPersistedData";
+import {
+  BACKUP_REMINDER_KEY,
+  CUSTOM_CURRENCIES_KEY,
+  LAST_CURRENCY_KEY,
+  RATE_KEY,
+  STATS_CURRENCIES_KEY,
+  STORAGE_KEY,
+  THEME_KEY,
+} from "./lib/storageKeys";
+import {
+  aggregateMonthlyConvertedSpend,
+  buildHistoryMonthRows,
+  type TrendWindow,
+} from "./lib/yearTrend";
 import {
   FALLBACK_CATEGORY_ZH,
   LEDGER_CATEGORIES,
@@ -197,13 +228,6 @@ type CurrencyModalState =
   | null;
 
 const CATEGORIES = [...LEDGER_CATEGORIES];
-const STORAGE_KEY = "monthly-smart-ledger:v1";
-const RATE_KEY = "monthly-smart-ledger:exchange";
-const LAST_CURRENCY_KEY = "monthly-smart-ledger:last-currency";
-const STATS_CURRENCIES_KEY = "monthly-smart-ledger:stats-currencies";
-const CUSTOM_CURRENCIES_KEY = "monthly-smart-ledger:custom-currencies";
-const THEME_KEY = "monthly-smart-ledger:theme";
-const BACKUP_REMINDER_KEY = "monthly-smart-ledger:backup-reminder";
 const DAY_MS = 24 * 60 * 60 * 1000;
 const BACKUP_REMINDER_COOLDOWN_MS = 3 * DAY_MS;
 const PIE_COLORS = [
@@ -1047,7 +1071,7 @@ function App() {
   const [backupReminderVisible, setBackupReminderVisible] = useState(() =>
     shouldShowBackupReminder(readBackupReminderState()),
   );
-  const [trendMonths, setTrendMonths] = useState(6);
+  const [trendWindow, setTrendWindow] = useState<TrendWindow>("all");
   const [trendCurrency, setTrendCurrency] = useState<Currency>("CNY");
   const [visibleRowCountsByDate, setVisibleRowCountsByDate] = useState<Record<string, number[]>>(
     {},
@@ -1075,6 +1099,10 @@ function App() {
   const [isImportingSpreadsheet, setIsImportingSpreadsheet] = useState(false);
   const [quotaGuard, setQuotaGuard] = useState<StorageQuotaGuardModel | null>(null);
   const storageWarnShownRef = useRef(false);
+  const [desktopStoreInfo, setDesktopStoreInfo] = useState<{ path: string; size: number } | null>(
+    null,
+  );
+  const [desktopUpdateOffer, setDesktopUpdateOffer] = useState<DesktopUpdateOffer | null>(null);
 
   const selectedEntries = ledger[selectedDate] ?? makeDayEntries(dailyDefaultCurrency);
   const monthKey = getMonthKey(selectedDate);
@@ -1118,6 +1146,32 @@ function App() {
       });
     }
   }, [ledger]);
+
+  useEffect(() => {
+    if (!isDesktopKv()) return;
+    const app = getDesktopApp();
+    if (!app?.StoreInfo) return;
+    void app
+      .StoreInfo()
+      .then((info) => setDesktopStoreInfo({ path: info.path, size: info.size }))
+      .catch(() => setDesktopStoreInfo(null));
+  }, [ledger, appSettings, travelState, travelHistory]);
+
+  useEffect(() => {
+    if (!isDesktopRuntime()) return;
+    let cancelled = false;
+    const platform = detectDesktopPlatform(navigator.userAgent);
+    void fetchLatestDesktopUpdate(platform)
+      .then((offer) => {
+        if (!cancelled && offer) setDesktopUpdateOffer(offer);
+      })
+      .catch(() => {
+        /* offline or GitHub rate limit */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     kvSet(RATE_KEY, JSON.stringify(exchange));
@@ -2707,6 +2761,38 @@ function App() {
     setImportMessage(`${selectedDate} 当日数据已清空。`);
   };
 
+  const clearAllData = () => {
+    const first = window.confirm(
+      "确认清空全部数据？账本、旅游记录、设置、汇率缓存和 API 接口都会删除，且不可撤销。请先导出 JSON 备份。",
+    );
+    if (!first) return;
+    const second = window.confirm("再确认一次：将删除本机全部 MoneyCounts 数据。");
+    if (!second) return;
+    clearAllPersistedData();
+    void flushDesktopStore().finally(() => {
+      window.location.reload();
+    });
+  };
+
+  const storageUsage = useMemo((): StorageUsageModel => {
+    if (isDesktopKv()) {
+      return {
+        mode: "desktop",
+        usedBytes: measureDesktopStoreUtf8Bytes(),
+        fileBytes: desktopStoreInfo?.size ?? null,
+        filePath: desktopStoreInfo?.path ?? null,
+      };
+    }
+    const usedBytes = measureLocalStorageBytes();
+    return {
+      mode: "web",
+      usedBytes,
+      quotaBytes: LOCAL_STORAGE_QUOTA_BYTES,
+      remainingBytes: Math.max(0, LOCAL_STORAGE_QUOTA_BYTES - usedBytes),
+      ledgerBytes: utf16ByteLength(kvGet(STORAGE_KEY) ?? ""),
+    };
+  }, [customCurrencies, desktopStoreInfo, exchange, ledger, travelHistory, travelState]);
+
   const renderStatsCard = (
     title: string,
     range: string,
@@ -3514,16 +3600,15 @@ function App() {
   };
 
   const trendRows = useMemo(() => {
-    const selected = parseDateKey(`${monthKey}-01`);
-    return Array.from({ length: trendMonths }, (_, index) => {
-      const date = new Date(selected);
-      date.setMonth(selected.getMonth() - (trendMonths - 1 - index));
-      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
-      const entries = collectEntries(ledger, (entryDate) => getMonthKey(entryDate) === key);
-      const totals = getEntryTotals(entries, exchange, allCurrencies);
-      return { month: key, value: totals.converted[trendCurrency] ?? 0 };
+    const totals = aggregateMonthlyConvertedSpend(ledger, (amount, currency) =>
+      convert(amount, currency, trendCurrency, exchange),
+    );
+    return buildHistoryMonthRows(totals, {
+      endMonth: monthKey,
+      todayMonth: getMonthKey(getToday()),
+      window: trendWindow,
     });
-  }, [allCurrencies, exchange, ledger, monthKey, trendCurrency, trendMonths]);
+  }, [exchange, ledger, monthKey, trendCurrency, trendWindow]);
 
   const trendValues = trendRows.map((row) => row.value);
   const trendMin = Math.min(0, ...trendValues);
@@ -3983,25 +4068,31 @@ function App() {
             id="tools"
             eyebrow="Year Trend"
             title="全年趋势图表"
-            subtitle="近月花费趋势，预算卡片可在此页查看"
+            subtitle="从账本最早一条记录画到现在，预算卡片仍可在此页查看"
             variant="neutral"
           >
             <section className="card trend-card" data-section="year-trend">
               <div className="card-heading">
                 <div>
-                  <p className="eyebrow">Monthly Trend</p>
-                  <h2>近 N 个月花费对比</h2>
+                  <p className="eyebrow">Spending Strata</p>
+                  <h2>从第一笔记账起的花费年层</h2>
                 </div>
                 <div className="trend-controls">
                   <label>
-                    月数
+                    区间
                     <select
-                      value={trendMonths}
-                      onChange={(event) => setTrendMonths(Number(event.target.value))}
+                      value={trendWindow}
+                      onChange={(event) =>
+                        setTrendWindow(
+                          event.target.value === "all"
+                            ? "all"
+                            : (Number(event.target.value) as 12 | 36),
+                        )
+                      }
                     >
-                      <option value={3}>3 个月</option>
-                      <option value={6}>6 个月</option>
-                      <option value={12}>12 个月</option>
+                      <option value="all">全部历史</option>
+                      <option value={12}>近 12 个月</option>
+                      <option value={36}>近 36 个月</option>
                     </select>
                   </label>
                   <label>
@@ -4022,15 +4113,14 @@ function App() {
               <Suspense
                 fallback={<div className="chart-fallback chart-fallback--wide">趋势图载入中…</div>}
               >
-                <LazyTrendChart rows={trendRows} min={trendMin} max={trendMax} />
+                <LazyTrendChart
+                  rows={trendRows}
+                  min={trendMin}
+                  max={trendMax}
+                  currency={trendCurrency}
+                  formatValue={(value) => formatMoney(value, trendCurrency)}
+                />
               </Suspense>
-              <div className="trend-list">
-                {trendRows.map((row) => (
-                  <span key={row.month}>
-                    {row.month}: {formatMoney(row.value, trendCurrency)}
-                  </span>
-                ))}
-              </div>
             </section>
             <div className="year-support-grid" data-section="year-support-cards">
               {appSettings.budget.enabled ? renderHomeSection("budgetOverview") : null}
@@ -4215,6 +4305,7 @@ function App() {
                 onLlmSpreadsheetChange={(event) => void importLegacySpreadsheet(event)}
                 onClearCurrentDay={clearCurrentDay}
                 onClearCurrentMonth={clearCurrentMonth}
+                onClearAllData={clearAllData}
               />
             }
           />
@@ -4243,6 +4334,7 @@ function App() {
                 onConfirmJsonImport={confirmJsonImport}
                 onCancelJsonImport={cancelJsonImport}
                 onSnoozeBackupReminder={dismissBackupReminder}
+                storageUsage={storageUsage}
               />
             }
           />
@@ -4498,6 +4590,17 @@ function App() {
           )}
         </div>
       </SettingsModal>
+
+      {desktopUpdateOffer ? (
+        <DesktopUpdatePrompt
+          offer={desktopUpdateOffer}
+          onDownload={() => {
+            if (desktopUpdateOffer.downloadUrl) openDesktopUrl(desktopUpdateOffer.downloadUrl);
+          }}
+          onOpenRelease={() => openDesktopUrl(desktopUpdateOffer.htmlUrl)}
+          onDismiss={() => setDesktopUpdateOffer(null)}
+        />
+      ) : null}
 
       {quotaGuard ? (
         <StorageQuotaGuard

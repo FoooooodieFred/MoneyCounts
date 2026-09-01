@@ -2,6 +2,7 @@ import { ChangeEvent, RefObject, useState } from "react";
 import { Link } from "react-router-dom";
 import { ExchangeRatesPanel } from "../components/ExchangeRatesPanel";
 import { SiteFooter } from "../components/SiteFooter";
+import { StorageUsagePanel, type StorageUsageModel } from "../components/StorageUsagePanel";
 import type { ExchangeRateRow } from "../components/ExchangeRatesPanel";
 import {
   AppSettings,
@@ -45,6 +46,7 @@ type SettingsPageProps = {
   onConfirmJsonImport: () => void;
   onCancelJsonImport: () => void;
   onSnoozeBackupReminder: (days: number) => void;
+  storageUsage: StorageUsageModel;
 };
 
 export function SettingsPage({
@@ -69,6 +71,7 @@ export function SettingsPage({
   onConfirmJsonImport,
   onCancelJsonImport,
   onSnoozeBackupReminder,
+  storageUsage,
 }: SettingsPageProps) {
   const [includeLlmApiInBackup, setIncludeLlmApiInBackup] = useState(
     () => readLlmApiSettings().includeInBackup,
@@ -314,6 +317,8 @@ export function SettingsPage({
           </div>
           {importMessage ? <p className="status">{importMessage}</p> : null}
         </section>
+
+        <StorageUsagePanel usage={storageUsage} />
 
         <section className="settings-stack__section surface-secondary">
           <ExchangeRatesPanel

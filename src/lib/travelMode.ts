@@ -9,6 +9,9 @@ import {
   remapLegacyCategoryName,
 } from "./nlLedgerCategories";
 import { kvGet } from "./kv";
+import { TRAVEL_HISTORY_KEY, TRAVEL_HISTORY_PENDING_DELETE_KEY, TRAVEL_KEY } from "./storageKeys";
+
+export { TRAVEL_HISTORY_KEY, TRAVEL_HISTORY_PENDING_DELETE_KEY, TRAVEL_KEY };
 
 export type TravelState = {
   active: boolean;
@@ -103,10 +106,6 @@ export type TravelGeoResult = {
   countryName?: string;
 };
 
-export const TRAVEL_KEY = "monthly-smart-ledger:travel";
-export const TRAVEL_HISTORY_KEY = "monthly-smart-ledger:travel-history";
-export const TRAVEL_HISTORY_PENDING_DELETE_KEY =
-  "monthly-smart-ledger:travel-history-pending-delete";
 export const PENDING_DELETE_TTL_MS = 10_000;
 
 export type PendingTravelHistoryDelete = {

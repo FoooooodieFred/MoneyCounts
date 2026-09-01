@@ -136,3 +136,11 @@ export const resetKvForTests = () => {
     flushTimer = null;
   }
 };
+
+export const measureDesktopStoreUtf8Bytes = (): number => {
+  try {
+    return new TextEncoder().encode(serializeDesktopStore(Object.fromEntries(memory))).length;
+  } catch {
+    return 0;
+  }
+};

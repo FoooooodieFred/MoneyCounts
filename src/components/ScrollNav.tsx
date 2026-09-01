@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import type { AppSettings } from "../lib/appSettings";
 import { kvGet, kvSet } from "../lib/kv";
+import { SIDEBAR_COLLAPSED_KEY } from "../lib/storageKeys";
 import { type ReactNode, useEffect, useState } from "react";
 
 type NavItem = {
@@ -9,8 +10,6 @@ type NavItem = {
   icon: ReactNode;
   group?: "entry" | "primary" | "sections" | "tools";
 };
-
-const SIDEBAR_COLLAPSED_KEY = "moneycounts:sidebar-collapsed";
 
 const iconProps = {
   width: 18,
