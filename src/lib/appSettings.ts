@@ -4,7 +4,7 @@
  * 备份 JSON 的 settings 字段与此类型对齐，改 schema 需同步 backup。
  */
 import { remapLegacyCategoryLimits } from "./nlLedgerCategories";
-import { trySetLocalStorageItem } from "./localStorageQuota";
+import { kvGet, kvSet } from "./kv";
 
 export const APP_SETTINGS_KEY = "monthly-smart-ledger:settings";
 
@@ -184,12 +184,12 @@ export const normalizeAppSettings = (value: unknown): AppSettings => {
 
 export const readAppSettings = (): AppSettings => {
   try {
-    return normalizeAppSettings(JSON.parse(localStorage.getItem(APP_SETTINGS_KEY) ?? "null"));
+    return normalizeAppSettings(JSON.parse(kvGet(APP_SETTINGS_KEY) ?? "null"));
   } catch {
     return DEFAULT_APP_SETTINGS;
   }
 };
 
 export const saveAppSettings = (settings: AppSettings) => {
-  trySetLocalStorageItem(APP_SETTINGS_KEY, JSON.stringify(normalizeAppSettings(settings)));
+  kvSet(APP_SETTINGS_KEY, JSON.stringify(normalizeAppSettings(settings)));
 };

@@ -8,6 +8,7 @@ import {
   remapLegacyCategoryLimits,
   remapLegacyCategoryName,
 } from "./nlLedgerCategories";
+import { kvGet } from "./kv";
 
 export type TravelState = {
   active: boolean;
@@ -601,7 +602,7 @@ export const readStoredTravelState = (
 ): TravelState => {
   try {
     return normalizeStoredTravelState(
-      JSON.parse(localStorage.getItem(TRAVEL_KEY) ?? "{}"),
+      JSON.parse(kvGet(TRAVEL_KEY) ?? "{}"),
       normalizeCurrencyInput,
     );
   } catch {
@@ -778,7 +779,7 @@ export const readStoredPendingTravelDeletes = (
 ): PendingTravelHistoryDelete[] => {
   try {
     return normalizeStoredPendingTravelDeletes(
-      JSON.parse(localStorage.getItem(TRAVEL_HISTORY_PENDING_DELETE_KEY) ?? "[]"),
+      JSON.parse(kvGet(TRAVEL_HISTORY_PENDING_DELETE_KEY) ?? "[]"),
       normalizeCurrencyInput,
     );
   } catch {
@@ -812,7 +813,7 @@ export const readStoredTravelHistory = (
 ): TravelHistoryRecord[] => {
   try {
     return normalizeStoredTravelHistory(
-      JSON.parse(localStorage.getItem(TRAVEL_HISTORY_KEY) ?? "[]"),
+      JSON.parse(kvGet(TRAVEL_HISTORY_KEY) ?? "[]"),
       normalizeCurrencyInput,
     );
   } catch {

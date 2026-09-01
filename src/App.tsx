@@ -83,9 +83,10 @@ import {
   estimateUtf16BytesFromUtf8FileSize,
   measureLocalStorageBytes,
   projectLocalStorageReplace,
-  trySetLocalStorageItem,
   type StoragePressure,
 } from "./lib/localStorageQuota";
+import { isDesktopKv, kvGet, kvRemove, kvSet } from "./lib/kv";
+import { canUseNativeFileDialog, openTextFile, saveTextFile } from "./lib/desktopFiles";
 import { openDesktopClientDownload } from "./lib/desktopClient";
 import {
   FALLBACK_CATEGORY_ZH,
@@ -517,9 +518,7 @@ const normalizeStoredCustomCurrencies = (items: unknown): Currency[] => {
 
 const readStoredCustomCurrencies = () => {
   try {
-    return normalizeStoredCustomCurrencies(
-      JSON.parse(localStorage.getItem(CUSTOM_CURRENCIES_KEY) ?? "[]"),
-    );
+    return normalizeStoredCustomCurrencies(JSON.parse(kvGet(CUSTOM_CURRENCIES_KEY) ?? "[]"));
   } catch {
     return [];
   }
@@ -599,21 +598,9 @@ const serializeLedger = (ledger: LedgerData) =>
     ),
   );
 
-const downloadBlob = (blob: Blob, filename: string) => {
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement("a");
-  anchor.href = url;
-  anchor.download = filename;
-  anchor.rel = "noopener";
-  document.body.appendChild(anchor);
-  anchor.click();
-  anchor.remove();
-  window.setTimeout(() => URL.revokeObjectURL(url), 2000);
-};
-
 const readStoredLedger = (): LedgerData => {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = kvGet(STORAGE_KEY);
     if (!raw) return {};
     const parsed = JSON.parse(raw) as Record<string, Partial<LedgerEntry>[]>;
     return Object.fromEntries(
@@ -626,7 +613,7 @@ const readStoredLedger = (): LedgerData => {
 
 const readStoredRate = (): ExchangeCache => {
   try {
-    const raw = localStorage.getItem(RATE_KEY);
+    const raw = kvGet(RATE_KEY);
     if (!raw) throw new Error("empty");
     const parsed = JSON.parse(raw) as Partial<ExchangeCache> & { hkdToCny?: number };
     if (Number.isFinite(parsed.hkdToCny) && parsed.hkdToCny && parsed.hkdToCny > 0) {
@@ -658,13 +645,13 @@ const readStoredRate = (): ExchangeCache => {
 };
 
 const readLastCurrency = (): Currency => {
-  const value = localStorage.getItem(LAST_CURRENCY_KEY);
+  const value = kvGet(LAST_CURRENCY_KEY);
   return normalizeCurrencyInput(value) ?? "HKD";
 };
 
 const readStoredStatsCurrencies = (fallbackCurrency: Currency): Currency[] => {
   try {
-    const parsed = JSON.parse(localStorage.getItem(STATS_CURRENCIES_KEY) ?? "[]") as unknown[];
+    const parsed = JSON.parse(kvGet(STATS_CURRENCIES_KEY) ?? "[]") as unknown[];
     const currencies = parsed
       .map(normalizeCurrencyInput)
       .filter((currency): currency is Currency => Boolean(currency));
@@ -674,13 +661,12 @@ const readStoredStatsCurrencies = (fallbackCurrency: Currency): Currency[] => {
   }
 };
 
-const readStoredTheme = (): ThemeMode =>
-  localStorage.getItem(THEME_KEY) === "dark" ? "dark" : "light";
+const readStoredTheme = (): ThemeMode => (kvGet(THEME_KEY) === "dark" ? "dark" : "light");
 
 const readBackupReminderState = (): BackupReminderState | null => {
   try {
     const parsed = JSON.parse(
-      localStorage.getItem(BACKUP_REMINDER_KEY) ?? "null",
+      kvGet(BACKUP_REMINDER_KEY) ?? "null",
     ) as Partial<BackupReminderState> | null;
     if (!parsed || typeof parsed.dismissedAt !== "number") return null;
     return {
@@ -1104,6 +1090,10 @@ function App() {
 
   useEffect(() => {
     const serialized = serializeLedger(ledger);
+    if (isDesktopKv()) {
+      kvSet(STORAGE_KEY, serialized);
+      return;
+    }
     const used = measureLocalStorageBytes();
     const projected = projectLocalStorageReplace(STORAGE_KEY, serialized);
     const pressure = classifyStoragePressure(projected);
@@ -1117,7 +1107,7 @@ function App() {
         projectedBytes: projected,
       });
     }
-    const result = trySetLocalStorageItem(STORAGE_KEY, serialized);
+    const result = kvSet(STORAGE_KEY, serialized);
     if (!result.ok) {
       setQuotaGuard({
         level: "block",
@@ -1130,23 +1120,23 @@ function App() {
   }, [ledger]);
 
   useEffect(() => {
-    trySetLocalStorageItem(RATE_KEY, JSON.stringify(exchange));
+    kvSet(RATE_KEY, JSON.stringify(exchange));
   }, [exchange]);
 
   useEffect(() => {
-    trySetLocalStorageItem(CUSTOM_CURRENCIES_KEY, JSON.stringify(customCurrencies));
+    kvSet(CUSTOM_CURRENCIES_KEY, JSON.stringify(customCurrencies));
   }, [customCurrencies]);
 
   useEffect(() => {
-    trySetLocalStorageItem(LAST_CURRENCY_KEY, lastCurrency);
+    kvSet(LAST_CURRENCY_KEY, lastCurrency);
   }, [lastCurrency]);
 
   useEffect(() => {
-    trySetLocalStorageItem(STATS_CURRENCIES_KEY, JSON.stringify(selectedStatsCurrencies));
+    kvSet(STATS_CURRENCIES_KEY, JSON.stringify(selectedStatsCurrencies));
   }, [selectedStatsCurrencies]);
 
   useEffect(() => {
-    trySetLocalStorageItem(THEME_KEY, themeMode);
+    kvSet(THEME_KEY, themeMode);
     document.documentElement.dataset.theme = themeMode;
   }, [themeMode]);
 
@@ -1155,7 +1145,7 @@ function App() {
   }, [appSettings]);
 
   useEffect(() => {
-    trySetLocalStorageItem(TRAVEL_KEY, JSON.stringify(travelState));
+    kvSet(TRAVEL_KEY, JSON.stringify(travelState));
   }, [travelState]);
 
   useEffect(() => {
@@ -1182,11 +1172,11 @@ function App() {
   }, [selectedDate, travelDraftUseEndDate]);
 
   useEffect(() => {
-    trySetLocalStorageItem(TRAVEL_HISTORY_KEY, JSON.stringify(travelHistory));
+    kvSet(TRAVEL_HISTORY_KEY, JSON.stringify(travelHistory));
   }, [travelHistory]);
 
   useEffect(() => {
-    trySetLocalStorageItem(TRAVEL_HISTORY_PENDING_DELETE_KEY, JSON.stringify(pendingTravelDeletes));
+    kvSet(TRAVEL_HISTORY_PENDING_DELETE_KEY, JSON.stringify(pendingTravelDeletes));
   }, [pendingTravelDeletes]);
 
   useEffect(() => {
@@ -1791,10 +1781,7 @@ function App() {
     const code = result.code;
     const apiCode = getApiCode(code);
     setCustomCurrencies((current) => (current.includes(code) ? current : [...current, code]));
-    trySetLocalStorageItem(
-      CUSTOM_CURRENCIES_KEY,
-      JSON.stringify(Array.from(new Set([...customCurrencies, code]))),
-    );
+    kvSet(CUSTOM_CURRENCIES_KEY, JSON.stringify(Array.from(new Set([...customCurrencies, code]))));
     setSelectedStatsCurrencies((current) =>
       current.includes(code) ? current : [...current, code],
     );
@@ -2070,8 +2057,7 @@ function App() {
     const csv = rows
       .map((row) => row.map((cell) => `"${String(cell).replaceAll('"', '""')}"`).join(","))
       .join("\n");
-    const blob = new Blob([`\uFEFF${csv}`], { type: "text/csv;charset=utf-8" });
-    downloadBlob(blob, `智能记账本-${monthKey}.csv`);
+    void saveTextFile(`智能记账本-${monthKey}.csv`, `\uFEFF${csv}`);
   };
 
   const downloadJsonBackup = (ledgerToExport: LedgerData) => {
@@ -2090,10 +2076,10 @@ function App() {
       pendingTravelDeletes,
       llmApi: llmApiForBackup(llmSettings),
     });
-    const blob = new Blob([JSON.stringify(payload, null, 2)], {
-      type: "application/json;charset=utf-8",
-    });
-    downloadBlob(blob, makeBackupFilename(new Date(payload.exportedAt)));
+    void saveTextFile(
+      makeBackupFilename(new Date(payload.exportedAt)),
+      JSON.stringify(payload, null, 2),
+    );
   };
 
   const exportJson = () => downloadJsonBackup(ledger);
@@ -2118,6 +2104,7 @@ function App() {
     source: StorageQuotaGuardModel["source"],
     options?: { showWarn?: boolean },
   ): StoragePressure => {
+    if (isDesktopKv()) return "ok";
     const serialized = serializeLedger(nextLedger);
     const used = measureLocalStorageBytes();
     const projected = projectLocalStorageReplace(STORAGE_KEY, serialized);
@@ -2133,12 +2120,13 @@ function App() {
     return pressure;
   };
 
-  const rejectOversizedImportFile = (file: File, kind: "json" | "table"): boolean => {
-    if (classifyImportFileSize(file.size, kind) !== "block") return false;
+  const rejectOversizedImportFile = (fileSize: number, kind: "json" | "table"): boolean => {
+    if (isDesktopKv()) return false;
+    if (classifyImportFileSize(fileSize, kind) !== "block") return false;
     showQuotaGuard(
       "block",
       "import-file",
-      kind === "json" ? estimateUtf16BytesFromUtf8FileSize(file.size) : file.size,
+      kind === "json" ? estimateUtf16BytesFromUtf8FileSize(fileSize) : fileSize,
     );
     return true;
   };
@@ -2197,11 +2185,13 @@ function App() {
     };
   };
 
-  const importJson = async (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
+  const importJsonFromFile = async (file: {
+    name: string;
+    size: number;
+    text: () => Promise<string>;
+  }) => {
     try {
-      if (rejectOversizedImportFile(file, "json")) {
+      if (rejectOversizedImportFile(file.size, "json")) {
         setPreparedJsonImport(null);
         setJsonImportMessage("备份文件过大，超出浏览器存储上限，未导入。");
         return;
@@ -2220,9 +2210,31 @@ function App() {
             ? error.message
             : "导入文件无效。",
       );
+    }
+  };
+
+  const importJson = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    try {
+      await importJsonFromFile(file);
     } finally {
       event.target.value = "";
     }
+  };
+
+  const pickJsonImport = async () => {
+    if (canUseNativeFileDialog()) {
+      const opened = await openTextFile("*.json");
+      if (!opened) return;
+      await importJsonFromFile({
+        name: opened.name,
+        size: opened.size,
+        text: async () => opened.contents,
+      });
+      return;
+    }
+    jsonInputRef.current?.click();
   };
 
   const confirmJsonImport = () => {
@@ -2251,12 +2263,9 @@ function App() {
     }
 
     if (preparedJsonImport.backupReminder) {
-      trySetLocalStorageItem(
-        BACKUP_REMINDER_KEY,
-        JSON.stringify(preparedJsonImport.backupReminder),
-      );
+      kvSet(BACKUP_REMINDER_KEY, JSON.stringify(preparedJsonImport.backupReminder));
     } else {
-      localStorage.removeItem(BACKUP_REMINDER_KEY);
+      kvRemove(BACKUP_REMINDER_KEY);
     }
     setBackupReminderVisible(shouldShowBackupReminder(preparedJsonImport.backupReminder));
     setJsonImportMessage(
@@ -2292,12 +2301,9 @@ function App() {
     return cells;
   };
 
-  const importCsv = async (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    if (rejectOversizedImportFile(file, "table")) {
+  const importCsvFromFile = async (file: { size: number; text: () => Promise<string> }) => {
+    if (rejectOversizedImportFile(file.size, "table")) {
       setImportMessage("表格文件过大，未导入。");
-      event.target.value = "";
       return;
     }
     const text = await file.text();
@@ -2343,14 +2349,13 @@ function App() {
     }
     if (imported && evaluateLedgerWrite(nextLedger, "import-csv") === "block") {
       setImportMessage("导入后将超出浏览器存储上限，已取消写入。请先导出 JSON 备份。");
-      event.target.value = "";
       return;
     }
     if (importedCustomCurrencies.size) {
       setCustomCurrencies((current) =>
         Array.from(new Set([...current, ...importedCustomCurrencies])),
       );
-      trySetLocalStorageItem(
+      kvSet(
         CUSTOM_CURRENCIES_KEY,
         JSON.stringify(Array.from(new Set([...customCurrencies, ...importedCustomCurrencies]))),
       );
@@ -2361,7 +2366,29 @@ function App() {
     }
     setLedger(nextLedger);
     setImportMessage(`已导入 ${imported} 条记录。`);
-    event.target.value = "";
+  };
+
+  const importCsv = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    try {
+      await importCsvFromFile(file);
+    } finally {
+      event.target.value = "";
+    }
+  };
+
+  const pickCsvImport = async () => {
+    if (canUseNativeFileDialog()) {
+      const opened = await openTextFile("*.csv;*.txt");
+      if (!opened) return;
+      await importCsvFromFile({
+        size: opened.size,
+        text: async () => opened.contents,
+      });
+      return;
+    }
+    fileInputRef.current?.click();
   };
 
   const getPreviewRecordIssues = useCallback(
@@ -2510,7 +2537,7 @@ function App() {
       setCustomCurrencies((current) =>
         Array.from(new Set([...current, ...importedCustomCurrencies])),
       );
-      trySetLocalStorageItem(
+      kvSet(
         CUSTOM_CURRENCIES_KEY,
         JSON.stringify(Array.from(new Set([...customCurrencies, ...importedCustomCurrencies]))),
       );
@@ -2571,7 +2598,7 @@ function App() {
     setIsImportingSpreadsheet(true);
     setImportMessage("正在读取表格…");
     try {
-      if (rejectOversizedImportFile(file, "table")) {
+      if (rejectOversizedImportFile(file.size, "table")) {
         setImportMessage("表格文件过大，未导入。");
         return;
       }
@@ -2628,6 +2655,24 @@ function App() {
       setIsImportingSpreadsheet(false);
       event.target.value = "";
     }
+  };
+
+  const pickLlmSpreadsheet = async () => {
+    if (canUseNativeFileDialog()) {
+      const opened = await openTextFile("*.csv;*.tsv;*.txt");
+      if (!opened) return;
+      const file = new File([opened.contents], opened.name, { type: "text/plain" });
+      const input = llmFileInputRef.current;
+      if (!input) return;
+      const transfer = new DataTransfer();
+      transfer.items.add(file);
+      input.files = transfer.files;
+      await importLegacySpreadsheet({
+        target: input,
+      } as ChangeEvent<HTMLInputElement>);
+      return;
+    }
+    llmFileInputRef.current?.click();
   };
 
   const clearCurrentMonth = () => {
@@ -3189,7 +3234,7 @@ function App() {
       snoozeUntil: permanent ? undefined : now + cooldownDays * DAY_MS,
       permanent,
     };
-    trySetLocalStorageItem(BACKUP_REMINDER_KEY, JSON.stringify(nextState));
+    kvSet(BACKUP_REMINDER_KEY, JSON.stringify(nextState));
     setBackupReminderVisible(false);
   };
 
@@ -3462,10 +3507,9 @@ function App() {
       ]),
     ];
     const csv = rows.map((row) => row.map(quote).join(",")).join("\n");
-    const blob = new Blob([`\uFEFF${csv}`], { type: "text/csv;charset=utf-8" });
-    downloadBlob(
-      blob,
+    void saveTextFile(
       `${travelState.billName ?? "旅游账单"}-${travelState.startDate ?? selectedDate}-${travelEndDate}.csv`,
+      `\uFEFF${csv}`,
     );
   };
 
@@ -4165,9 +4209,9 @@ function App() {
                 llmConfigured={isLlmApiVerified(readLlmApiSettings())}
                 llmImporting={isImportingSpreadsheet}
                 onExportCsv={exportCsv}
-                onPickCsv={() => fileInputRef.current?.click()}
+                onPickCsv={() => void pickCsvImport()}
                 onCsvFileChange={importCsv}
-                onPickLlmSpreadsheet={() => llmFileInputRef.current?.click()}
+                onPickLlmSpreadsheet={() => void pickLlmSpreadsheet()}
                 onLlmSpreadsheetChange={(event) => void importLegacySpreadsheet(event)}
                 onClearCurrentDay={clearCurrentDay}
                 onClearCurrentMonth={clearCurrentMonth}
@@ -4194,7 +4238,7 @@ function App() {
                 onSettingsChange={setAppSettings}
                 getCurrencyLabel={(currency) => getCurrencyMeta(currency).shortName}
                 onExportJson={exportJson}
-                onPickJson={() => jsonInputRef.current?.click()}
+                onPickJson={() => void pickJsonImport()}
                 onJsonFileChange={importJson}
                 onConfirmJsonImport={confirmJsonImport}
                 onCancelJsonImport={cancelJsonImport}
@@ -4472,8 +4516,9 @@ function App() {
       {backupReminderVisible && (
         <aside className="backup-reminder" role="status" aria-live="polite">
           <p>
-            建议定期导出完整 JSON 备份。数据保存在浏览器 LocalStorage
-            中，清理缓存或换设备后可能丢失。
+            {isDesktopKv()
+              ? "建议定期导出完整 JSON 备份。账本存在本机 MoneyCounts 目录的文件里，换设备时请带着备份走。"
+              : "建议定期导出完整 JSON 备份。数据保存在浏览器 LocalStorage 中，清理缓存或换设备后可能丢失。"}
           </p>
           <div className="backup-reminder-actions">
             <button type="button" data-action="backup-reminder-export-json" onClick={exportJson}>

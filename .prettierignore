@@ -11,3 +11,5 @@ data/nl-ledger/pairs
 data/nl-ledger/*.csv
 data/nl-ledger/*.jsonl
 data/nl-ledger/source-zh-30.csv
+build/bin
+wailsjs

@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import type { AppSettings } from "../lib/appSettings";
+import { kvGet, kvSet } from "../lib/kv";
 import { type ReactNode, useEffect, useState } from "react";
 
 type NavItem = {
@@ -221,7 +222,7 @@ function NavGroup({
 
 function readCollapsed(): boolean {
   try {
-    return window.localStorage.getItem(SIDEBAR_COLLAPSED_KEY) === "1";
+    return kvGet(SIDEBAR_COLLAPSED_KEY) === "1";
   } catch {
     return false;
   }
@@ -255,11 +256,7 @@ export function ScrollNav({
     setCollapsed((current) => {
       const next = !current;
       applyCollapsedDataset(next);
-      try {
-        window.localStorage.setItem(SIDEBAR_COLLAPSED_KEY, next ? "1" : "0");
-      } catch {
-        /* ignore */
-      }
+      kvSet(SIDEBAR_COLLAPSED_KEY, next ? "1" : "0");
       return next;
     });
   };

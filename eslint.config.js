@@ -12,6 +12,8 @@ export default tseslint.config(
       "coverage/**",
       "public/**",
       "vite.config.js",
+      "build/**",
+      "wailsjs/**",
     ],
   },
   eslint.configs.recommended,

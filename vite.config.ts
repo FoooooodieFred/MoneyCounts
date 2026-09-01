@@ -85,7 +85,12 @@ function llmChatProxyPlugin(): Plugin {
 }
 
 export default defineConfig({
+  base: process.env.VITE_DESKTOP === "1" ? "./" : "/",
   plugins: [react(), llmChatProxyPlugin()],
+  server: {
+    port: 5173,
+    strictPort: true,
+  },
   build: {
     rollupOptions: {
       output: {

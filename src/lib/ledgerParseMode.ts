@@ -1,6 +1,8 @@
 /**
  * 首页自然语言记账的识别方式。独立 LocalStorage key，不进 JSON 备份。
  */
+import { kvGet, kvSet } from "./kv";
+
 export const LEDGER_PARSE_MODE_KEY = "monthly-smart-ledger:ledger-parse-mode";
 
 export const LEDGER_PARSE_MODES = ["rules", "llm"] as const;
@@ -29,16 +31,12 @@ export const normalizeLedgerParseMode = (value: unknown): LedgerParseMode =>
 
 export const readLedgerParseMode = (): LedgerParseMode => {
   try {
-    return normalizeLedgerParseMode(localStorage.getItem(LEDGER_PARSE_MODE_KEY));
+    return normalizeLedgerParseMode(kvGet(LEDGER_PARSE_MODE_KEY));
   } catch {
     return DEFAULT_LEDGER_PARSE_MODE;
   }
 };
 
 export const saveLedgerParseMode = (mode: LedgerParseMode) => {
-  try {
-    localStorage.setItem(LEDGER_PARSE_MODE_KEY, normalizeLedgerParseMode(mode));
-  } catch {
-    /* ignore quota / private mode */
-  }
+  kvSet(LEDGER_PARSE_MODE_KEY, normalizeLedgerParseMode(mode));
 };

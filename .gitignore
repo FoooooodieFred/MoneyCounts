@@ -15,8 +15,10 @@
 /.next/
 /out/
 
-# production
-/build
+# Wails desktop build output (keep templates in /build)
+/build/bin
+/build/windows/*.exe
+/wailsjs
 
 # misc
 .DS_Store
@@ -38,3 +40,6 @@ __pycache__/
 # generated dataset staging
 /data/nl-ledger/staging-by-cat
 /data/nl-ledger/staging-zh.json
+
+# Wails CLI sidecar
+package.json.md5

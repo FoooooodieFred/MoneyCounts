@@ -1,5 +1,5 @@
 import { formatStorageBytes } from "../lib/localStorageQuota";
-import { isDesktopClientDownloadReady } from "../lib/desktopClient";
+import { isDesktopClientDownloadReady, isRunningDesktopClient } from "../lib/desktopClient";
 
 export type StorageQuotaGuardLevel = "warn" | "block";
 export type StorageQuotaGuardSource =
@@ -48,6 +48,7 @@ export function StorageQuotaGuard({
   onDismiss,
 }: StorageQuotaGuardProps) {
   const clientReady = isDesktopClientDownloadReady();
+  const showDesktopDownload = !isRunningDesktopClient();
 
   return (
     <div
@@ -78,16 +79,18 @@ export function StorageQuotaGuard({
           <button type="button" data-action="storage-quota-export-json" onClick={onExportBackup}>
             立即导出 JSON
           </button>
-          <button
-            type="button"
-            className="secondary-button"
-            data-action="download-desktop-client"
-            disabled={!clientReady}
-            title={clientReady ? "下载桌面客户端" : "桌面客户端即将推出"}
-            onClick={onDownloadClient}
-          >
-            {clientReady ? "下载桌面客户端" : "下载桌面客户端（即将推出）"}
-          </button>
+          {showDesktopDownload ? (
+            <button
+              type="button"
+              className="secondary-button"
+              data-action="download-desktop-client"
+              disabled={!clientReady}
+              title={clientReady ? "下载桌面客户端" : "桌面客户端即将推出"}
+              onClick={onDownloadClient}
+            >
+              {clientReady ? "下载桌面客户端" : "下载桌面客户端（即将推出）"}
+            </button>
+          ) : null}
           <button
             type="button"
             className="ghost-button"
