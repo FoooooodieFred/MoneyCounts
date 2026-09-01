@@ -70,15 +70,17 @@ function llmChatProxyPlugin() {
         },
     };
 }
+const isDesktopVite = process.env.VITE_DESKTOP === "1";
 export default defineConfig({
-    base: process.env.VITE_DESKTOP === "1" ? "./" : "/",
+    base: isDesktopVite ? "./" : "/",
+    define: isDesktopVite ? { "import.meta.env.VITE_DESKTOP": JSON.stringify("1") } : undefined,
     plugins: [react(), llmChatProxyPlugin()],
     server: {
         port: 5173,
         strictPort: true,
     },
     build: {
-        outDir: process.env.VITE_DESKTOP === "1" ? "desktop/dist" : "dist",
+        outDir: isDesktopVite ? "desktop/dist" : "dist",
         emptyOutDir: true,
         rollupOptions: {
             output: {

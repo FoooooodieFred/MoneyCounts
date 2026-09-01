@@ -1,5 +1,5 @@
 import { trySetLocalStorageItem } from "./localStorageQuota";
-import { getDesktopApp, isDesktopBuild } from "./desktopRuntime";
+import { getDesktopApp, hasWailsShell, isDesktopBuild } from "./desktopRuntime";
 
 export const DESKTOP_STORE_KIND = "desktop-store";
 export const DESKTOP_STORE_VERSION = 1;
@@ -18,7 +18,9 @@ let desktop = false;
 const memory = new Map<string, string>();
 let flushTimer: ReturnType<typeof setTimeout> | null = null;
 
-export const isDesktopKv = (): boolean => desktop;
+const useDesktopKv = (): boolean => desktop || isDesktopBuild() || hasWailsShell();
+
+export const isDesktopKv = (): boolean => useDesktopKv();
 
 export const emptyDesktopStore = (): DesktopStoreFile => ({
   app: "MoneyCounts",
@@ -59,7 +61,7 @@ export const serializeDesktopStore = (keys: Record<string, string>): string =>
   });
 
 export const kvGet = (key: string): string | null => {
-  if (desktop) return memory.get(key) ?? null;
+  if (useDesktopKv()) return memory.get(key) ?? null;
   try {
     return localStorage.getItem(key);
   } catch {
@@ -68,7 +70,7 @@ export const kvGet = (key: string): string | null => {
 };
 
 export const kvSet = (key: string, value: string): KvWriteResult => {
-  if (desktop) {
+  if (useDesktopKv()) {
     memory.set(key, value);
     scheduleFlush();
     return { ok: true };
@@ -77,7 +79,7 @@ export const kvSet = (key: string, value: string): KvWriteResult => {
 };
 
 export const kvRemove = (key: string) => {
-  if (desktop) {
+  if (useDesktopKv()) {
     memory.delete(key);
     scheduleFlush();
     return;
@@ -90,7 +92,7 @@ export const kvRemove = (key: string) => {
 };
 
 export const hydrateDesktopStore = async () => {
-  if (!isDesktopBuild() && !getDesktopApp()) return;
+  if (!isDesktopBuild() && !hasWailsShell()) return;
   desktop = true;
   let app = getDesktopApp();
   for (let attempt = 0; attempt < 20 && !app; attempt += 1) {
@@ -107,7 +109,7 @@ export const hydrateDesktopStore = async () => {
 };
 
 export const flushDesktopStore = async () => {
-  if (!desktop) return;
+  if (!useDesktopKv()) return;
   if (flushTimer != null) {
     clearTimeout(flushTimer);
     flushTimer = null;
@@ -118,7 +120,7 @@ export const flushDesktopStore = async () => {
 };
 
 const scheduleFlush = () => {
-  if (!desktop || typeof window === "undefined") return;
+  if (!useDesktopKv() || typeof window === "undefined") return;
   if (flushTimer != null) clearTimeout(flushTimer);
   flushTimer = setTimeout(() => {
     flushTimer = null;

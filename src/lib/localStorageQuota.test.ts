@@ -77,6 +77,7 @@ describe("localStorageQuota", () => {
     expect(classifyImportFileSize(1000, "table")).toBe("ok");
     expect(classifyImportFileSize(IMPORT_FILE_PARSE_LIMIT_BYTES, "table")).toBe("block");
     expect(classifyImportFileSize(2.5 * 1024 * 1024, "json")).toBe("block");
+    expect(classifyImportFileSize(5 * 1024 * 1024, "json")).toBe("block");
     expect(estimateUtf16BytesFromUtf8FileSize(1024)).toBe(2048);
   });
 

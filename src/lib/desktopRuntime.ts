@@ -28,14 +28,23 @@ declare global {
   }
 }
 
-export const isDesktopBuild = (): boolean => import.meta.env.VITE_DESKTOP === "1";
+export const isDesktopBuild = (): boolean => {
+  const flag = import.meta.env.VITE_DESKTOP;
+  return flag === "1" || flag === "true";
+};
 
 export const getDesktopApp = (): DesktopAppBindings | null => {
   if (typeof window === "undefined") return null;
   return window.go?.main?.App ?? null;
 };
 
-export const isDesktopRuntime = (): boolean => Boolean(isDesktopBuild() || getDesktopApp());
+/** Wails 会注入 window.go / window.runtime；构建时漏了 VITE_DESKTOP 也能识别客户端。 */
+export const hasWailsShell = (): boolean => {
+  if (typeof window === "undefined") return false;
+  return Boolean(window.go?.main?.App || window.runtime);
+};
+
+export const isDesktopRuntime = (): boolean => Boolean(isDesktopBuild() || hasWailsShell());
 
 export const onDesktopBeforeClose = (handler: () => void | Promise<void>) => {
   window.runtime?.EventsOn?.("moneycounts:before-close", () => {
