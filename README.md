@@ -12,10 +12,13 @@
 
 ## v1.3.0
 
-- **MoneyMore**：首页切到 AI 后，对话记账、查账、出统计卡片；设置里可允许改账 / 删账（仍要确认）
-- **统计看板** `/stats`：日流、分类、净资产；右侧常驻日历账单
-- **当日** `/day`：同一套日历账单，点日期或翻月即可换天；左侧是合计与分类
-- 本地 / AI 开关与 CNY / HKD 并排
+相对 [v1.2.1](https://github.com/FoooooodieFred/MoneyCounts/releases/tag/v1.2.1)：
+
+- **MoneyMore**：配好 API 后可对话查账、出统计卡片、对话记账；设置里可允许改账 / 删账（仍要确认）。首页本地 / AI 与 CNY / HKD 并排，AI 时入口叫 MoneyMore
+- **统计** `/stats`：原周 / 月 / 年并成一块看板（KPI、每日柱状、分类环形、净资产折线、右侧日历）。当日页可点日历换天
+- 旅游模式默认隐藏，标明不推荐
+- JSON 导入改为弹窗确认；备份提醒改到每次记完账后才出现
+- 可自选账本位置：网页绑定本机 JSON，桌面可改 `store.json` 路径
 
 ---
 
@@ -48,7 +51,8 @@ Windows 未签名：SmartScreen 里选「更多信息 → 仍要运行」。需�
 - **多日句子**：「今天明天」「这一周每天」等按天**复制同一金额**
 - 手动表格、统计看板、当日日历账单
 - 多货币（HKD、CNY 为主），汇率公开 API 拉取并缓存
-- 月度与分类预算、旅游行程与分账、搜索、CSV、完整 JSON 备份、PWA
+- 月度与分类预算、搜索、CSV、完整 JSON 备份、PWA
+- 旅游模式仍可用，默认隐藏且不推荐新账使用
 
 ---
 
@@ -164,10 +168,13 @@ Note: The interface currently supports **Simplified Chinese only**. English and 
 
 ## v1.3.0
 
-- **MoneyMore**: AI chat for ledger queries, stat cards, and optional edit/delete (confirm first)
-- **Stats** `/stats`: daily flow, categories, net worth, plus a persistent calendar ledger
-- **Day** `/day`: the same calendar; click a date to switch. Totals and categories on the left
-- Local / AI toggle sits next to CNY / HKD
+Since [v1.2.1](https://github.com/FoooooodieFred/MoneyCounts/releases/tag/v1.2.1):
+
+- **MoneyMore**: after API setup, chat to query the book, show stat cards, and draft entries; settings can allow edit/delete (still confirm). Home Local / AI sits next to CNY / HKD; AI mode is labeled MoneyMore
+- **Stats** `/stats`: week / month / year folded into one dashboard (KPIs, daily bars, category donut, net-worth line, calendar). The day page uses the same calendar to change dates
+- Travel mode is hidden by default and marked not recommended
+- JSON import confirms in a dialog; backup reminders appear after you save an entry
+- Custom ledger location: bind a JSON file on the web, or move `store.json` on desktop
 
 ## Web vs desktop
 
@@ -183,7 +190,7 @@ Unsigned macOS: **If Gatekeeper blocks it, go to Mac Settings → Privacy & Secu
 
 ## Features
 
-Natural-language entry (**Local** rules, or **AI / MoneyMore** via `/console`), 35 categories, multi-day `date_spec` phrases that **copy the same amount onto each day**, manual grid, stats dashboard, day calendar, FX cache, budgets, travel AA, search, CSV, JSON backup, PWA. Old 10-class books migrate in place (`monthly-smart-ledger:v1`).
+Natural-language entry (**Local** rules, or **AI / MoneyMore** via `/console`), 35 categories, multi-day `date_spec` phrases that **copy the same amount onto each day**, manual grid, stats dashboard, day calendar, FX cache, budgets, search, CSV, JSON backup, PWA. Travel mode still exists but is hidden by default. Old 10-class books migrate in place (`monthly-smart-ledger:v1`).
 
 Routes: `/` entry · `/today` list · `/day` day + calendar · `/stats` dashboard (`/week` `/month` `/year` redirect here).
 
