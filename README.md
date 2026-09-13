@@ -14,9 +14,9 @@
 
 相对 [v1.2.1](https://github.com/FoooooodieFred/MoneyCounts/releases/tag/v1.2.1)：
 
-- **MoneyMore**：配好 API 后可对话查账、出统计卡片、对话记账；设置里可允许改账 / 删账（仍要确认）。首页本地 / AI 与 CNY / HKD 并排，AI 时入口叫 MoneyMore
+- **MoneyMore**：你自己的AI记账Agent
 - **统计** `/stats`：原周 / 月 / 年并成一块看板（KPI、每日柱状、分类环形、净资产折线、右侧日历）。当日页可点日历换天
-- 旅游模式默认隐藏，标明不推荐
+- 旅游模式不再推荐使用，默认隐藏
 - JSON 导入改为弹窗确认；备份提醒改到每次记完账后才出现
 - 可自选账本位置：网页绑定本机 JSON，桌面可改 `store.json` 路径
 
@@ -170,7 +170,7 @@ Note: The interface currently supports **Simplified Chinese only**. English and 
 
 Since [v1.2.1](https://github.com/FoooooodieFred/MoneyCounts/releases/tag/v1.2.1):
 
-- **MoneyMore**: after API setup, chat to query the book, show stat cards, and draft entries; settings can allow edit/delete (still confirm). Home Local / AI sits next to CNY / HKD; AI mode is labeled MoneyMore
+- **MoneyMore**: Your own AI accounting Agent
 - **Stats** `/stats`: week / month / year folded into one dashboard (KPIs, daily bars, category donut, net-worth line, calendar). The day page uses the same calendar to change dates
 - Travel mode is hidden by default and marked not recommended
 - JSON import confirms in a dialog; backup reminders appear after you save an entry
