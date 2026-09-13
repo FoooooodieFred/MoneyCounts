@@ -11,6 +11,7 @@ type FeatureBlockProps = {
   title: string;
   subtitle?: string;
   variant?: "mint" | "sunset" | "sky" | "violet" | "neutral";
+  actions?: ReactNode;
   children: ReactNode;
 };
 
@@ -20,6 +21,7 @@ export function FeatureBlock({
   title,
   subtitle,
   variant = "neutral",
+  actions,
   children,
 }: FeatureBlockProps) {
   const blockRef = useRef<HTMLElement | null>(null);
@@ -54,9 +56,12 @@ export function FeatureBlock({
   return (
     <section ref={blockRef} id={id} className={`feature-block feature-block--flat feature-block--${variant}`}>
       <header className="feature-block__header page-intro">
-        <p className="eyebrow">{eyebrow}</p>
-        <h2>{title}</h2>
-        {subtitle ? <p className="muted">{subtitle}</p> : null}
+        <div className="feature-block__heading">
+          <p className="eyebrow">{eyebrow}</p>
+          <h2>{title}</h2>
+          {subtitle ? <p className="muted">{subtitle}</p> : null}
+        </div>
+        {actions ? <div className="feature-block__actions">{actions}</div> : null}
       </header>
       <div className="feature-block__body">{children}</div>
     </section>

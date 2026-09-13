@@ -89,6 +89,65 @@ func (a *App) StoreInfo() StoreInfo {
 	return StoreInfo{Path: a.storePath, Size: size}
 }
 
+type StoreRelocateResult struct {
+	Cancelled bool   `json:"cancelled"`
+	Path      string `json:"path"`
+	Size      int64  `json:"size"`
+}
+
+func (a *App) switchStorePath(next string) (StoreRelocateResult, error) {
+	data, err := store.Read(a.storePath)
+	if err != nil {
+		data = []byte(store.EmptyStoreJSON)
+	}
+	if err := store.Write(next, data); err != nil {
+		return StoreRelocateResult{}, err
+	}
+	if err := store.SaveLocation(next); err != nil {
+		return StoreRelocateResult{}, err
+	}
+	a.storePath = next
+	info := a.StoreInfo()
+	return StoreRelocateResult{Path: info.Path, Size: info.Size}, nil
+}
+
+func (a *App) ChooseStorePath() (StoreRelocateResult, error) {
+	path, err := runtime.SaveFileDialog(a.ctx, runtime.SaveDialogOptions{
+		DefaultFilename: "store.json",
+		Title:           "选择记账文件保存位置",
+		Filters: []runtime.FileFilter{
+			{DisplayName: "JSON", Pattern: "*.json"},
+		},
+	})
+	if err != nil {
+		return StoreRelocateResult{}, err
+	}
+	if strings.TrimSpace(path) == "" {
+		return StoreRelocateResult{Cancelled: true}, nil
+	}
+	return a.switchStorePath(path)
+}
+
+func (a *App) ResetStorePath() (StoreRelocateResult, error) {
+	def, err := store.DefaultPath()
+	if err != nil {
+		return StoreRelocateResult{}, err
+	}
+	if err := store.ClearLocation(); err != nil {
+		return StoreRelocateResult{}, err
+	}
+	data, err := store.Read(a.storePath)
+	if err != nil {
+		data = []byte(store.EmptyStoreJSON)
+	}
+	if err := store.Write(def, data); err != nil {
+		return StoreRelocateResult{}, err
+	}
+	a.storePath = def
+	info := a.StoreInfo()
+	return StoreRelocateResult{Path: info.Path, Size: info.Size}, nil
+}
+
 func (a *App) OpenURL(url string) {
 	if a.ctx == nil || strings.TrimSpace(url) == "" {
 		return

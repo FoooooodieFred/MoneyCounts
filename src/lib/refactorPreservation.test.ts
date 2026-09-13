@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getRemainingDaysForBudget, getWeekDates, getWeekRange, shiftDateKey } from "./dateRange";
+import { getRemainingDaysForBudget, getWeekDates, getWeekRange, shiftDateKey, shiftMonthKey } from "./dateRange";
 import {
   calculateBudgetAvailability,
   calculateMonthlyRecordProgress,
@@ -26,6 +26,8 @@ describe("dateRange recurring helpers", () => {
   it("handles relative day shifts across month boundaries", () => {
     expect(shiftDateKey("2026-03-01", -1)).toBe("2026-02-28");
     expect(getRemainingDaysForBudget("2026-06", "2026-06-25")).toBe(6);
+    expect(shiftMonthKey("2026-01", -1)).toBe("2025-12");
+    expect(shiftMonthKey("2026-09", 1)).toBe("2026-10");
   });
 });
 

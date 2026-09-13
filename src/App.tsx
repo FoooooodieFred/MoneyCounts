@@ -18,10 +18,11 @@ import { importSpreadsheetViaLlm, looksLikeBinarySpreadsheet } from "./lib/llmSp
 import type { LedgerParseMode } from "./lib/ledgerParseMode";
 import { HeroSection } from "./components/HeroSection";
 import { NaturalLanguageInput } from "./components/NaturalLanguageInput";
-import { SettingsModal } from "./components/SettingsModal";
 import { FeatureBlock } from "./components/FeatureBlock";
 import { ScrollNav, MobileScrollNav } from "./components/ScrollNav";
 import { TodayEntriesList } from "./components/TodayEntriesList";
+import { HeightReveal } from "./components/HeightReveal";
+import { IconLedger } from "./components/MoneyMoreIcons";
 import { FloatingActions } from "./components/FloatingActions";
 import { StatsCurrencyPicker, SummaryModeToggle } from "./components/StatsControls";
 import { BudgetOverview } from "./components/BudgetOverview";
@@ -31,8 +32,12 @@ import { ApiConsolePage } from "./pages/ApiConsolePage";
 import { DataManagementPage } from "./pages/DataManagementPage";
 import { SearchPage, SearchableLedgerRecord } from "./pages/SearchPage";
 import { SectionPage } from "./pages/SectionPage";
+import { StatsDashboardPage } from "./pages/StatsDashboardPage";
+import { DaySummaryPage } from "./pages/DaySummaryPage";
+import { JsonImportModal } from "./components/JsonImportModal";
+import { MoneyMoreAgent } from "./components/MoneyMoreAgent";
 import { StorageQuotaGuard, type StorageQuotaGuardModel } from "./components/StorageQuotaGuard";
-import { StorageUsagePanel, type StorageUsageModel } from "./components/StorageUsagePanel";
+import type { StorageUsageModel } from "./components/StorageUsagePanel";
 import { DesktopUpdatePrompt } from "./components/DesktopUpdatePrompt";
 import type { LedgerBadge, SpendingInsight, WeeklyAchievement } from "./lib/ledgerInsights";
 import type { QuickExpenseResult } from "./lib/quickExpenseParser";
@@ -97,6 +102,18 @@ import {
   measureDesktopStoreUtf8Bytes,
 } from "./lib/kv";
 import { canUseNativeFileDialog, openTextFile, saveTextFile } from "./lib/desktopFiles";
+import {
+  bindLedgerFile,
+  canBindLedgerFile,
+  getBoundLedgerFileName,
+  writeBoundLedgerFile,
+} from "./lib/ledgerFileBinding";
+import type { MoneyMoreLedgerDraft, MoneyMoreLedgerRecord } from "./lib/moneyMoreTools";
+import {
+  applyMoneyMoreDeletes,
+  applyMoneyMoreUpdates,
+  moneyMoreRecordId,
+} from "./lib/moneyMoreLedgerMutate";
 import { getDesktopApp, isDesktopRuntime, openDesktopUrl } from "./lib/desktopRuntime";
 import { openDesktopClientDownload } from "./lib/desktopClient";
 import {
@@ -122,6 +139,7 @@ import {
 import {
   FALLBACK_CATEGORY_ZH,
   LEDGER_CATEGORIES,
+  getCategoryKind,
   remapLegacyCategoryName,
 } from "./lib/nlLedgerCategories";
 import {
@@ -567,7 +585,7 @@ const formatMoney = (value: number, currency: Currency) => {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(value);
-  return `${getCurrencyMeta(currency).symbol}${formatted} ${currency}`;
+  return `${formatted} ${currency}`;
 };
 
 const normalizeRates = (
@@ -1068,9 +1086,7 @@ function App() {
   const [travelDraftEndDate, setTravelDraftEndDate] = useState(getToday);
   const [travelDraftBillName, setTravelDraftBillName] = useState("");
   const [travelStatus, setTravelStatus] = useState("");
-  const [backupReminderVisible, setBackupReminderVisible] = useState(() =>
-    shouldShowBackupReminder(readBackupReminderState()),
-  );
+  const [backupReminderVisible, setBackupReminderVisible] = useState(false);
   const [trendWindow, setTrendWindow] = useState<TrendWindow>("all");
   const [trendCurrency, setTrendCurrency] = useState<Currency>("CNY");
   const [visibleRowCountsByDate, setVisibleRowCountsByDate] = useState<Record<string, number[]>>(
@@ -1089,7 +1105,7 @@ function App() {
   const [funCardShuffleSalt, setFunCardShuffleSalt] = useState(() =>
     Math.floor(Math.random() * 100000),
   );
-  const [settingsModalOpen, setSettingsModalOpen] = useState(false);
+  const [manualLedgerOpen, setManualLedgerOpen] = useState(false);
   const [quickEntryStatus, setQuickEntryStatus] = useState("");
   const [jsonImportMessage, setJsonImportMessage] = useState("");
   const [preparedJsonImport, setPreparedJsonImport] = useState<PreparedBackupImport | null>(null);
@@ -1103,6 +1119,10 @@ function App() {
     null,
   );
   const [desktopUpdateOffer, setDesktopUpdateOffer] = useState<DesktopUpdateOffer | null>(null);
+  const [llmSettings, setLlmSettings] = useState(() => readLlmApiSettings());
+  const [moneyMoreDraft, setMoneyMoreDraft] = useState<MoneyMoreLedgerDraft | null>(null);
+  const [storageLocationMessage, setStorageLocationMessage] = useState("");
+  const [webLedgerFileName, setWebLedgerFileName] = useState<string | null>(null);
 
   const selectedEntries = ledger[selectedDate] ?? makeDayEntries(dailyDefaultCurrency);
   const monthKey = getMonthKey(selectedDate);
@@ -1145,6 +1165,7 @@ function App() {
         projectedBytes: projected,
       });
     }
+    void writeBoundLedgerFile();
   }, [ledger]);
 
   useEffect(() => {
@@ -1156,6 +1177,14 @@ function App() {
       .then((info) => setDesktopStoreInfo({ path: info.path, size: info.size }))
       .catch(() => setDesktopStoreInfo(null));
   }, [ledger, appSettings, travelState, travelHistory]);
+
+  useEffect(() => {
+    setLlmSettings(readLlmApiSettings());
+  }, [location.pathname]);
+
+  useEffect(() => {
+    void getBoundLedgerFileName().then(setWebLedgerFileName);
+  }, []);
 
   useEffect(() => {
     if (!isDesktopRuntime()) return;
@@ -1296,11 +1325,12 @@ function App() {
   useEffect(() => {
     const handleEscape = (event: globalThis.KeyboardEvent) => {
       if (event.key !== "Escape") return;
-      if (selectedTravelHistoryId) closeTravelHistoryModal();
+      if (preparedJsonImport) cancelJsonImport();
+      else if (selectedTravelHistoryId) closeTravelHistoryModal();
       else if (currencyModal) closeCurrencyModal();
       else if (datePickerOpen) closeDatePicker();
       else if (travelMergeModalOpen) setTravelMergeModalOpen(false);
-      else if (settingsModalOpen) setSettingsModalOpen(false);
+      else if (manualLedgerOpen) setManualLedgerOpen(false);
       else if (travelHistoryRailOpen) setTravelHistoryRailOpen(false);
     };
     window.addEventListener("keydown", handleEscape);
@@ -1311,8 +1341,9 @@ function App() {
     closeTravelHistoryModal,
     currencyModal,
     datePickerOpen,
+    preparedJsonImport,
     selectedTravelHistoryId,
-    settingsModalOpen,
+    manualLedgerOpen,
     travelHistoryRailOpen,
     travelMergeModalOpen,
   ]);
@@ -1529,6 +1560,11 @@ function App() {
     setDailyDefaultCurrency("HKD");
   };
 
+  const commitMonthChange = (nextMonth: string) => {
+    const day = Math.min(parseDateKey(selectedDate).getDate(), getDaysInMonth(nextMonth));
+    commitDateChange(`${nextMonth}-${String(day).padStart(2, "0")}`);
+  };
+
   const moveSelectedDate = (offset: number) => {
     commitDateChange(shiftDateKey(selectedDate, offset));
   };
@@ -1601,12 +1637,40 @@ function App() {
     [monthEntries, exchange, dailyDefaultCurrency],
   );
 
+  const dashboardCurrency = safeDisplayStatsCurrencies[0] ?? dailyDefaultCurrency;
+  const dashboardEntries = useMemo(
+    () =>
+      monthEntries
+        .filter((entry) => !entry.hidden)
+        .map((entry) => ({
+          date: entry.date,
+          category: entry.category,
+          amount: convert(parseAmount(entry.amount), entry.currency, dashboardCurrency, exchange),
+          note: entry.note,
+        })),
+    [dashboardCurrency, exchange, monthEntries],
+  );
+
   const allLedgerEntries = useMemo(
     () =>
       collectEntries(ledger, () => true).filter(
         (entry) => !entry.hidden && parseAmount(entry.amount) !== 0,
       ),
     [ledger],
+  );
+
+  const moneyMoreRecords = useMemo<MoneyMoreLedgerRecord[]>(
+    () =>
+      allLedgerEntries.map((entry) => ({
+        id: moneyMoreRecordId(entry.date, entry.entryIndex),
+        date: entry.date,
+        category: entry.category,
+        amount: parseAmount(entry.amount),
+        currency: entry.currency,
+        note: entry.note,
+        hidden: entry.hidden,
+      })),
+    [allLedgerEntries],
   );
 
   const budgetCurrency =
@@ -2637,6 +2701,7 @@ function App() {
       setNaturalLedgerPreview([]);
       setNaturalLedgerInput("");
       setCelebrationTick((tick) => tick + 1);
+      maybeAskJsonBackup();
     }
   };
 
@@ -3324,6 +3389,111 @@ function App() {
     setBackupReminderVisible(false);
   };
 
+  const maybeAskJsonBackup = () => {
+    if (shouldShowBackupReminder(readBackupReminderState())) {
+      setBackupReminderVisible(true);
+    }
+  };
+
+  const confirmMoneyMoreDraft = () => {
+    if (!moneyMoreDraft) return;
+    if (moneyMoreDraft.action === "create") {
+      const { imported, messages, importedEntries } = importNaturalLedgerRecords(
+        moneyMoreDraft.records,
+      );
+      if (imported) {
+        applyTravelMetaForImportedEntries(importedEntries, "MoneyMore");
+        setMoneyMoreDraft(null);
+        setQuickEntryStatus(`MoneyMore 已记录 ${imported} 笔`);
+        setCelebrationTick((tick) => tick + 1);
+        maybeAskJsonBackup();
+      } else {
+        setQuickEntryStatus(messages[0] ?? "MoneyMore 没有写入记录。");
+      }
+      return;
+    }
+
+    const blank = () => makeBlankEntry(dailyDefaultCurrency);
+    const result =
+      moneyMoreDraft.action === "delete"
+        ? applyMoneyMoreDeletes(ledger, moneyMoreDraft.items, blank)
+        : applyMoneyMoreUpdates(
+            ledger,
+            moneyMoreDraft.items.map((item) => ({
+              id: item.id,
+              from: item.from,
+              to: {
+                date: item.to.date,
+                category: item.to.category,
+                amount: item.to.amountText,
+                currency: item.to.currency,
+                note: item.to.note,
+              },
+            })),
+            blank,
+          );
+    if (result.applied) {
+      setLedger(result.ledger as LedgerData);
+      setVisibleRowCountsByDate((current) => {
+        const next = { ...current };
+        for (const date of result.affectedDates) {
+          const entries = result.ledger[date];
+          if (entries) next[date] = getDefaultRowCounts(entries);
+        }
+        return next;
+      });
+      setMoneyMoreDraft(null);
+      setQuickEntryStatus(
+        moneyMoreDraft.action === "delete"
+          ? `MoneyMore 已删除 ${result.applied} 笔`
+          : `MoneyMore 已修改 ${result.applied} 笔`,
+      );
+      maybeAskJsonBackup();
+      return;
+    }
+    setQuickEntryStatus(result.messages[0] ?? "MoneyMore 没有改动记录。");
+  };
+
+  const chooseDesktopStorePath = async () => {
+    const app = getDesktopApp();
+    if (!app?.ChooseStorePath) {
+      setStorageLocationMessage("当前客户端还不支持更改存储位置，请更新桌面应用。");
+      return;
+    }
+    await flushDesktopStore();
+    const result = await app.ChooseStorePath();
+    if (result.cancelled) return;
+    setDesktopStoreInfo({ path: result.path, size: result.size });
+    setStorageLocationMessage(`记账文件已改为 ${result.path}`);
+  };
+
+  const resetDesktopStorePath = async () => {
+    const app = getDesktopApp();
+    if (!app?.ResetStorePath) {
+      setStorageLocationMessage("当前客户端还不支持恢复默认位置。");
+      return;
+    }
+    await flushDesktopStore();
+    const result = await app.ResetStorePath();
+    if (result.cancelled) return;
+    setDesktopStoreInfo({ path: result.path, size: result.size });
+    setStorageLocationMessage(`已恢复默认位置：${result.path}`);
+  };
+
+  const chooseWebLedgerFile = async () => {
+    try {
+      const name = await bindLedgerFile();
+      if (!name) {
+        setStorageLocationMessage("当前浏览器不支持绑定本机文件。");
+        return;
+      }
+      setWebLedgerFileName(name);
+      setStorageLocationMessage(`之后会把账本同步到 ${name}`);
+    } catch {
+      setStorageLocationMessage("没有完成文件选择。");
+    }
+  };
+
   const enableTravelMode = () => {
     const startDate = isValidDateKey(travelDraftStartDate) ? travelDraftStartDate : selectedDate;
     const plannedEndDate =
@@ -3880,13 +4050,19 @@ function App() {
   const displayedFunCards = useMemo(
     () =>
       pickStableItems(
-        appSettings.homeSections.travelEntry
+        appSettings.homeSections.travelEntry || appSettings.travelModeEnabled
           ? funDataCards
           : funDataCards.filter((card) => card.id !== "travel"),
         `${selectedDate}:${funCardShuffleSalt}`,
         3,
       ),
-    [appSettings.homeSections.travelEntry, funCardShuffleSalt, funDataCards, selectedDate],
+    [
+      appSettings.homeSections.travelEntry,
+      appSettings.travelModeEnabled,
+      funCardShuffleSalt,
+      funDataCards,
+      selectedDate,
+    ],
   );
 
   const renderHomeSection = (key: HomeSectionKey) => {
@@ -3971,27 +4147,299 @@ function App() {
             id="today"
             eyebrow="Today"
             title={`${selectedDate} 今日明细`}
-            subtitle="直接在表格中编辑金额、货币与备注"
+            subtitle="在下方直接改金额、货币和备注；完整分类账默认收起"
             variant="mint"
+            actions={
+              <button
+                type="button"
+                className="feature-block__icon-btn"
+                data-action="open-manual-ledger"
+                aria-label={manualLedgerOpen ? "收起完整记账表格" : "打开完整记账表格"}
+                aria-expanded={manualLedgerOpen}
+                title={manualLedgerOpen ? "收起完整表格" : "打开完整表格"}
+                onClick={() => setManualLedgerOpen((open) => !open)}
+              >
+                <IconLedger />
+              </button>
+            }
           >
-            <TodayEntriesList
-              entries={todayActiveEntries}
-              currencies={allCurrencies}
-              formatMoney={formatMoney}
-              parseAmount={parseAmount}
-              onAmountChange={handleAmountChange}
-              onNoteChange={(index, value) => updateEntry(index, { note: value })}
-              onCurrencyChange={(index, currency) => updateEntry(index, { currency })}
-              onDelete={deleteCategoryRecord}
-            />
-            <button
-              type="button"
-              className="secondary-button today-open-manual"
-              data-action="open-manual-ledger"
-              onClick={() => setSettingsModalOpen(true)}
-            >
-              打开完整记账表格
-            </button>
+            <div className="today-stack">
+              <TodayEntriesList
+                entries={todayActiveEntries}
+                currencies={allCurrencies}
+                formatMoney={formatMoney}
+                parseAmount={parseAmount}
+                onAmountChange={handleAmountChange}
+                onNoteChange={(index, value) => updateEntry(index, { note: value })}
+                onCurrencyChange={(index, currency) => updateEntry(index, { currency })}
+                onDelete={deleteCategoryRecord}
+              />
+              <HeightReveal open={manualLedgerOpen} className="today-ledger-drawer">
+                <div className="today-ledger-card">
+                  <div className="today-ledger-card__mast">
+                    <div className="today-ledger-card__head">
+                      <p className="eyebrow">Ledger</p>
+                      <h3>完整记账表格</h3>
+                      <p className="muted">按分类补记、隐藏或删除</p>
+                    </div>
+                    <div className="today-ledger-card__toolbar">
+                      <div className="daily-default-controls">
+                        <span className="control-label">今日默认货币</span>
+                        <div
+                          className="currency-switch"
+                          data-selected={
+                            isPrimaryCurrency(dailyDefaultCurrency)
+                              ? dailyDefaultCurrency
+                              : "OTHERS"
+                          }
+                          role="group"
+                          aria-label="今日默认货币"
+                        >
+                          {PRIMARY_CURRENCIES.map((currency) => (
+                            <button
+                              key={currency}
+                              type="button"
+                              className={
+                                dailyDefaultCurrency === currency
+                                  ? "currency-switch-option active"
+                                  : "currency-switch-option"
+                              }
+                              onClick={() => switchDailyDefaultCurrency(currency)}
+                            >
+                              {currency}
+                            </button>
+                          ))}
+                          <button
+                            type="button"
+                            className="currency-switch-option"
+                            onClick={() => setCurrencyModal({ type: "daily-default" })}
+                          >
+                            Others
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="ledger-table-shell ledger-table-shell--embedded">
+                    <div className="ledger-table-wrap">
+                      <table className="ledger-table">
+                        <colgroup>
+                          <col className="ledger-col ledger-col--category" />
+                          <col className="ledger-col ledger-col--slot" />
+                          <col className="ledger-col ledger-col--amount" />
+                          <col className="ledger-col ledger-col--currency" />
+                          <col className="ledger-col ledger-col--note" />
+                          <col className="ledger-col ledger-col--actions" />
+                          <col className="ledger-col ledger-col--subtotal" />
+                        </colgroup>
+                        <thead>
+                          <tr>
+                            <th scope="col">类目</th>
+                            <th scope="col">#</th>
+                            <th scope="col">金额</th>
+                            <th scope="col">货币</th>
+                            <th scope="col">备注</th>
+                            <th scope="col" className="ledger-th--actions">
+                              <span className="sr-only">操作</span>
+                            </th>
+                            <th scope="col">小计</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {CATEGORIES.map((category, categoryIndex) =>
+                            Array.from(
+                              { length: visibleRowCounts[categoryIndex] },
+                              (_, rowIndex) => {
+                                const index = getEntryIndex(categoryIndex, rowIndex);
+                                const entry =
+                                  selectedEntries[index] ?? makeBlankEntry(dailyDefaultCurrency);
+                                const categoryTotal = categoryTotals[categoryIndex];
+                                const currentRowCount = visibleRowCounts[categoryIndex];
+                                const recordActionLabel =
+                                  currentRowCount <= 1 ? "清空记录" : "删除记录";
+                                const hiddenActionLabel = entry.hidden ? "取消隐藏" : "隐藏记录";
+                                const canAdd =
+                                  visibleRowCounts[categoryIndex] < MAX_RECORDS_PER_CATEGORY;
+                                const kind = getCategoryKind(category);
+                                return (
+                                  <tr
+                                    key={`${category}-${rowIndex}`}
+                                    className={[
+                                      "ledger-row",
+                                      rowIndex === 0 ? "ledger-row--group-start" : undefined,
+                                      categoryIndex % 2 ? "ledger-row--alt" : undefined,
+                                      entry.hidden ? "hidden-entry-row" : undefined,
+                                    ]
+                                      .filter(Boolean)
+                                      .join(" ")}
+                                  >
+                                    {rowIndex === 0 && (
+                                      <th
+                                        rowSpan={currentRowCount}
+                                        scope="row"
+                                        className={`category-cell category-cell--${kind}`}
+                                      >
+                                        <div className="category-cell-inner">
+                                          <span>{category}</span>
+                                          <button
+                                            type="button"
+                                            className="add-record-button add-record-button--inline"
+                                            data-action="manual-ledger-add-record"
+                                            onClick={() => addCategoryRecord(categoryIndex)}
+                                            disabled={!canAdd}
+                                            aria-label={
+                                              canAdd ? `添加${category}记录` : `${category}已达上限`
+                                            }
+                                          >
+                                            +
+                                          </button>
+                                        </div>
+                                      </th>
+                                    )}
+                                    <td className="slot-cell">
+                                      <span>{String(rowIndex + 1).padStart(2, "0")}</span>
+                                    </td>
+                                    <td className="ledger-cell--amount">
+                                      <input
+                                        data-date={selectedDate}
+                                        data-index={index}
+                                        data-field="amount"
+                                        inputMode="decimal"
+                                        placeholder=""
+                                        value={entry.amount}
+                                        onChange={(event) =>
+                                          handleAmountChange(index, event.target.value)
+                                        }
+                                        onKeyDown={(event) =>
+                                          handleInputKeyDown(
+                                            event,
+                                            categoryIndex,
+                                            rowIndex,
+                                            "amount",
+                                          )
+                                        }
+                                        aria-label={`${category} 金额`}
+                                      />
+                                    </td>
+                                    <td className="ledger-cell--currency">
+                                      <button
+                                        type="button"
+                                        className="currency-select-button"
+                                        data-action="manual-ledger-currency"
+                                        data-date={selectedDate}
+                                        data-index={index}
+                                        onClick={() =>
+                                          setCurrencyModal({
+                                            type: "entry",
+                                            index,
+                                            category,
+                                            rowIndex,
+                                          })
+                                        }
+                                        aria-label={`${category} 货币 ${entry.currency}`}
+                                      >
+                                        <span>{entry.currency}</span>
+                                      </button>
+                                    </td>
+                                    <td className="ledger-cell--note">
+                                      <input
+                                        data-date={selectedDate}
+                                        data-index={index}
+                                        data-field="note"
+                                        placeholder="备注"
+                                        value={entry.note}
+                                        onChange={(event) =>
+                                          updateEntry(index, { note: event.target.value })
+                                        }
+                                        onKeyDown={(event) =>
+                                          handleInputKeyDown(event, categoryIndex, rowIndex, "note")
+                                        }
+                                        aria-label={`${category} 备注`}
+                                      />
+                                    </td>
+                                    <td className="record-actions">
+                                      <div className="record-actions-inner">
+                                        <button
+                                          type="button"
+                                          className={
+                                            entry.hidden
+                                              ? "hide-record-button active"
+                                              : "hide-record-button"
+                                          }
+                                          data-action="manual-ledger-toggle-hidden"
+                                          onClick={() => toggleEntryHidden(index)}
+                                          aria-label={hiddenActionLabel}
+                                        >
+                                          {entry.hidden ? "◌" : "○"}
+                                        </button>
+                                        <button
+                                          type="button"
+                                          className="delete-record-button"
+                                          title={recordActionLabel}
+                                          data-action="manual-ledger-delete-record"
+                                          onClick={() =>
+                                            deleteCategoryRecord(categoryIndex, rowIndex)
+                                          }
+                                        >
+                                          ×
+                                        </button>
+                                      </div>
+                                    </td>
+                                    {rowIndex === 0 && (
+                                      <td rowSpan={currentRowCount} className="subtotal-cell">
+                                        {safeDisplayStatsCurrencies.map(
+                                          (currency, currencyIndex) =>
+                                            currencyIndex === 0 ? (
+                                              <strong key={currency}>
+                                                {formatMoney(
+                                                  categoryTotal.converted[currency],
+                                                  currency,
+                                                )}
+                                              </strong>
+                                            ) : (
+                                              <span key={currency}>
+                                                {formatMoney(
+                                                  categoryTotal.converted[currency],
+                                                  currency,
+                                                )}
+                                              </span>
+                                            ),
+                                        )}
+                                      </td>
+                                    )}
+                                  </tr>
+                                );
+                              },
+                            ),
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div className="keyboard-hints today-ledger-card__keys">
+                    <span>
+                      <kbd>Enter</kbd> 添加记录
+                    </span>
+                    <span>
+                      <kbd>Tab</kbd> 下一类目
+                    </span>
+                    <span>
+                      <kbd>↑</kbd>
+                      <kbd>↓</kbd> 上下行
+                    </span>
+                    <span>
+                      <kbd>←</kbd>
+                      <kbd>→</kbd> 左右字段
+                    </span>
+                  </div>
+                  {shortcutFeedback && (
+                    <p className="shortcut-feedback" role="status">
+                      {shortcutFeedback}
+                    </p>
+                  )}
+                </div>
+              </HeightReveal>
+            </div>
           </FeatureBlock>
         );
       case "dayTotals":
@@ -4137,6 +4585,7 @@ function App() {
   };
 
   const navTravelAccent = location.pathname === "/travel" || travelState.active;
+  const showTravelNav = appSettings.travelModeEnabled || travelState.active;
 
   return (
     <>
@@ -4144,6 +4593,7 @@ function App() {
         <ScrollNav
           settings={appSettings}
           travelAccent={navTravelAccent}
+          showTravel={showTravelNav}
           themeMode={themeMode}
           onToggleTheme={() => setThemeMode((mode) => (mode === "dark" ? "light" : "dark"))}
         />
@@ -4151,6 +4601,7 @@ function App() {
       <MobileScrollNav
         settings={appSettings}
         travelAccent={navTravelAccent}
+        showTravel={showTravelNav}
         themeMode={themeMode}
         onToggleTheme={() => setThemeMode((mode) => (mode === "dark" ? "light" : "dark"))}
       />
@@ -4163,6 +4614,17 @@ function App() {
                 <main className="home-main content-rail">
                   {renderHomeSection("heroCards")}
                   {renderHomeSection("quickEntry")}
+                  {!isLlmApiVerified(llmSettings) ? (
+                    <aside className="api-nudge" data-section="api-nudge">
+                      <p>
+                        接入自己的模型接口后，右下角会出现
+                        MoneyMore：能查本地账本、做统计计算，也可以直接对话记账。
+                      </p>
+                      <button type="button" onClick={() => navigate("/console")}>
+                        去接入 API
+                      </button>
+                    </aside>
+                  ) : null}
                 </main>
               </div>
             }
@@ -4179,33 +4641,61 @@ function App() {
           <Route
             path="/day"
             element={
-              <SectionPage data-section="screen-day">{renderHomeSection("dayTotals")}</SectionPage>
+              <DaySummaryPage
+                selectedDate={selectedDate}
+                weekdayLabel={formatWeekday(selectedDate)}
+                monthKey={monthKey}
+                summaryMode={dailySummaryMode}
+                splitCurrencies={daySplitCurrencies}
+                dayTotals={dayTotals}
+                dailyDefaultCurrency={dailyDefaultCurrency}
+                formatMoney={formatMoney}
+                getCurrencyLabel={(code) => getCurrencyMeta(code).shortName}
+                entries={dashboardEntries}
+                dayEntries={todayActiveEntries.map((entry) => ({
+                  category: entry.category,
+                  amount: entry.amount,
+                  currency: entry.currency,
+                  note: entry.note,
+                }))}
+                onSummaryModeChange={setDailySummaryMode}
+                onSelectDate={commitDateChange}
+                onMonthChange={commitMonthChange}
+                onPrevDay={() => moveSelectedDate(-1)}
+                onToday={jumpToToday}
+                onNextDay={() => moveSelectedDate(1)}
+              />
             }
           />
           <Route
-            path="/week"
+            path="/stats"
             element={
-              <SectionPage data-section="screen-week">
-                {appSettings.homeSections.weekStats ? renderHomeSection("weekStats") : null}
-              </SectionPage>
+              <StatsDashboardPage
+                monthKey={monthKey}
+                selectedDate={selectedDate}
+                currency={dashboardCurrency}
+                currencies={allCurrencies}
+                selectedCurrencies={safeDisplayStatsCurrencies}
+                budgetEnabled={appSettings.budget.enabled}
+                monthlyLimit={appSettings.budget.monthlyLimit}
+                entries={dashboardEntries}
+                dayEntries={todayActiveEntries.map((entry) => ({
+                  category: entry.category,
+                  amount: entry.amount,
+                  currency: entry.currency,
+                  note: entry.note,
+                }))}
+                formatMoney={formatMoney}
+                getCurrencyLabel={(code) => getCurrencyMeta(code).shortName}
+                onMonthChange={commitMonthChange}
+                onSelectDate={commitDateChange}
+                onToggleCurrency={toggleStatsCurrency}
+              />
             }
           />
-          <Route
-            path="/month"
-            element={
-              <SectionPage data-section="screen-month">
-                {appSettings.homeSections.monthStats ? renderHomeSection("monthStats") : null}
-              </SectionPage>
-            }
-          />
-          <Route
-            path="/year"
-            element={
-              <SectionPage className="section-page-shell--year" data-section="screen-year">
-                {appSettings.homeSections.tools ? renderHomeSection("tools") : null}
-              </SectionPage>
-            }
-          />
+          <Route path="/week" element={<Navigate to="/stats" replace />} />
+          <Route path="/month" element={<Navigate to="/stats" replace />} />
+          <Route path="/year" element={<Navigate to="/stats" replace />} />
           <Route
             path="/search"
             element={
@@ -4322,19 +4812,24 @@ function App() {
                 exchangeRows={exchangeRows}
                 rateStatus={rateStatus}
                 onRefreshExchange={() => void refreshExchange()}
-                backupReminderLabel={backupReminderVisible ? "当前会显示提醒" : "已暂缓提醒"}
+                backupReminderLabel={
+                  backupReminderVisible ? "每次记完账后会提醒备份" : "已暂缓提醒"
+                }
                 importMessage={jsonImportMessage}
-                importPreview={preparedJsonImport?.preview ?? null}
                 jsonInputRef={jsonInputRef}
                 onSettingsChange={setAppSettings}
                 getCurrencyLabel={(currency) => getCurrencyMeta(currency).shortName}
                 onExportJson={exportJson}
                 onPickJson={() => void pickJsonImport()}
                 onJsonFileChange={importJson}
-                onConfirmJsonImport={confirmJsonImport}
-                onCancelJsonImport={cancelJsonImport}
                 onSnoozeBackupReminder={dismissBackupReminder}
                 storageUsage={storageUsage}
+                storageLocationMessage={storageLocationMessage}
+                webFileName={webLedgerFileName}
+                webFileSupported={canBindLedgerFile()}
+                onChooseDesktopPath={() => void chooseDesktopStorePath()}
+                onResetDesktopPath={() => void resetDesktopStorePath()}
+                onChooseWebFile={() => void chooseWebLedgerFile()}
               />
             }
           />
@@ -4347,6 +4842,38 @@ function App() {
         onToday={jumpToToday}
         onNextDay={() => moveSelectedDate(1)}
       />
+
+      {isLlmApiVerified(llmSettings) ? (
+        <div className="moneymore-host">
+          <MoneyMoreAgent
+            settings={llmSettings}
+            context={{
+              selectedDate,
+              defaultCurrency: dailyDefaultCurrency,
+              currencies: allCurrencies,
+              records: moneyMoreRecords,
+              budget: appSettings.budget,
+              travelActive: travelState.active,
+              travelName: travelState.billName,
+              canMutateLedger: appSettings.moneyMoreCanMutateLedger,
+              convert: (amount, from, to) => convert(amount, from, to, exchange),
+            }}
+            draft={moneyMoreDraft}
+            onStageDraft={setMoneyMoreDraft}
+            onConfirmDraft={confirmMoneyMoreDraft}
+            onCancelDraft={() => setMoneyMoreDraft(null)}
+            formatMoney={formatMoney}
+          />
+        </div>
+      ) : null}
+
+      {preparedJsonImport ? (
+        <JsonImportModal
+          preview={preparedJsonImport.preview}
+          onConfirm={confirmJsonImport}
+          onCancel={cancelJsonImport}
+        />
+      ) : null}
 
       {celebrationTick > 0 && (
         <div ref={confettiLayerRef} className="confetti-layer" aria-hidden="true">
@@ -4384,212 +4911,6 @@ function App() {
         onClose={() => setStatsCurrencyPopup(null)}
         getLabel={(currency) => getCurrencyMeta(currency).shortName}
       />
-
-      <SettingsModal
-        open={settingsModalOpen}
-        title={`${selectedDate} 记账明细`}
-        subtitle="手动选择分类、金额、货币与备注"
-        onClose={() => setSettingsModalOpen(false)}
-      >
-        <div className="settings-modal-stack">
-          <div className="settings-modal-toolbar">
-            <div className="daily-default-controls">
-              <span className="control-label">今日默认货币</span>
-              <div
-                className="currency-switch"
-                data-selected={
-                  isPrimaryCurrency(dailyDefaultCurrency) ? dailyDefaultCurrency : "OTHERS"
-                }
-                role="group"
-              >
-                {PRIMARY_CURRENCIES.map((currency) => (
-                  <button
-                    key={currency}
-                    type="button"
-                    className={
-                      dailyDefaultCurrency === currency
-                        ? "currency-switch-option active"
-                        : "currency-switch-option"
-                    }
-                    onClick={() => switchDailyDefaultCurrency(currency)}
-                  >
-                    {currency}
-                  </button>
-                ))}
-                <button
-                  type="button"
-                  className="currency-switch-option"
-                  onClick={() => setCurrencyModal({ type: "daily-default" })}
-                >
-                  Others
-                </button>
-              </div>
-            </div>
-          </div>
-          <div
-            className={`ledger-table-shell ledger-table-shell--modal stat-variant-${statVariant}`}
-          >
-            <div className="ledger-table-wrap">
-              <table className="ledger-table">
-                <thead>
-                  <tr>
-                    <th>类目</th>
-                    <th>记录</th>
-                    <th>金额</th>
-                    <th>货币</th>
-                    <th>备注</th>
-                    <th>操作</th>
-                    <th>类目当日小计</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {CATEGORIES.map((category, categoryIndex) =>
-                    Array.from({ length: visibleRowCounts[categoryIndex] }, (_, rowIndex) => {
-                      const index = getEntryIndex(categoryIndex, rowIndex);
-                      const entry = selectedEntries[index] ?? makeBlankEntry(dailyDefaultCurrency);
-                      const categoryTotal = categoryTotals[categoryIndex];
-                      const currentRowCount = visibleRowCounts[categoryIndex];
-                      const recordActionLabel = currentRowCount <= 1 ? "清空记录" : "删除记录";
-                      const hiddenActionLabel = entry.hidden ? "取消隐藏" : "隐藏记录";
-                      const canAdd = visibleRowCounts[categoryIndex] < MAX_RECORDS_PER_CATEGORY;
-                      return (
-                        <tr
-                          key={`${category}-${rowIndex}`}
-                          className={entry.hidden ? "hidden-entry-row" : undefined}
-                        >
-                          {rowIndex === 0 && (
-                            <th rowSpan={currentRowCount} className="category-cell">
-                              <div className="category-cell-inner">
-                                <span>{category}</span>
-                                <button
-                                  type="button"
-                                  className="add-record-button add-record-button--inline"
-                                  data-action="manual-ledger-add-record"
-                                  onClick={() => addCategoryRecord(categoryIndex)}
-                                  disabled={!canAdd}
-                                  aria-label={
-                                    canAdd ? `添加${category}记录` : `${category}已达上限`
-                                  }
-                                >
-                                  +
-                                </button>
-                              </div>
-                            </th>
-                          )}
-                          <td className="slot-cell">
-                            <span>#{rowIndex + 1}</span>
-                          </td>
-                          <td>
-                            <input
-                              data-date={selectedDate}
-                              data-index={index}
-                              data-field="amount"
-                              inputMode="decimal"
-                              placeholder="0.00"
-                              value={entry.amount}
-                              onChange={(event) => handleAmountChange(index, event.target.value)}
-                              onKeyDown={(event) =>
-                                handleInputKeyDown(event, categoryIndex, rowIndex, "amount")
-                              }
-                            />
-                          </td>
-                          <td>
-                            <button
-                              type="button"
-                              className="currency-select-button"
-                              data-action="manual-ledger-currency"
-                              data-date={selectedDate}
-                              data-index={index}
-                              onClick={() =>
-                                setCurrencyModal({ type: "entry", index, category, rowIndex })
-                              }
-                            >
-                              <span>{entry.currency}</span>
-                            </button>
-                          </td>
-                          <td>
-                            <input
-                              data-date={selectedDate}
-                              data-index={index}
-                              data-field="note"
-                              placeholder="备注"
-                              value={entry.note}
-                              onChange={(event) => updateEntry(index, { note: event.target.value })}
-                              onKeyDown={(event) =>
-                                handleInputKeyDown(event, categoryIndex, rowIndex, "note")
-                              }
-                            />
-                          </td>
-                          <td className="record-actions">
-                            <div className="record-actions-inner">
-                              <button
-                                type="button"
-                                className={
-                                  entry.hidden ? "hide-record-button active" : "hide-record-button"
-                                }
-                                data-action="manual-ledger-toggle-hidden"
-                                onClick={() => toggleEntryHidden(index)}
-                                aria-label={hiddenActionLabel}
-                              >
-                                {entry.hidden ? "◌" : "○"}
-                              </button>
-                              <button
-                                type="button"
-                                className="delete-record-button"
-                                title={recordActionLabel}
-                                data-action="manual-ledger-delete-record"
-                                onClick={() => deleteCategoryRecord(categoryIndex, rowIndex)}
-                              >
-                                ×
-                              </button>
-                            </div>
-                          </td>
-                          {rowIndex === 0 && (
-                            <td rowSpan={currentRowCount} className="subtotal-cell">
-                              {safeDisplayStatsCurrencies.map((currency, currencyIndex) =>
-                                currencyIndex === 0 ? (
-                                  <strong key={currency}>
-                                    {formatMoney(categoryTotal.converted[currency], currency)}
-                                  </strong>
-                                ) : (
-                                  <span key={currency}>
-                                    {formatMoney(categoryTotal.converted[currency], currency)}
-                                  </span>
-                                ),
-                              )}
-                            </td>
-                          )}
-                        </tr>
-                      );
-                    }),
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div className="keyboard-hints">
-            <span>
-              <kbd>Enter</kbd> 添加记录
-            </span>
-            <span>
-              <kbd>Tab</kbd> 下一类目
-            </span>
-            <span>
-              <kbd>↑</kbd>
-              <kbd>↓</kbd> 上下行
-            </span>
-            <span>
-              <kbd>←</kbd>
-              <kbd>→</kbd> 左右字段
-            </span>
-          </div>
-          {shortcutFeedback && (
-            <p className="shortcut-feedback" role="status">
-              {shortcutFeedback}
-            </p>
-          )}
-        </div>
-      </SettingsModal>
 
       {desktopUpdateOffer ? (
         <DesktopUpdatePrompt

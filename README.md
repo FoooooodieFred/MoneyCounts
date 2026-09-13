@@ -10,11 +10,18 @@
 
 注意：界面目前**仅有简体中文。** 英文及其他版本将在未来考虑陆续支持。
 
+## v1.3.0
+
+- **MoneyMore**：首页切到 AI 后，对话记账、查账、出统计卡片；设置里可允许改账 / 删账（仍要确认）
+- **统计看板** `/stats`：日流、分类、净资产；右侧常驻日历账单
+- **当日** `/day`：同一套日历账单，点日期或翻月即可换天；左侧是合计与分类
+- 本地 / AI 开关与 CNY / HKD 并排
+
 ---
 
 ## 网页还是桌面
 
-|        | 网页 / PWA                           | 桌面             |
+|        | 网页 / PWA                           | 桌面                          |
 | ------ | ------------------------------------ | ----------------------------- |
 | 数据   | 浏览器 LocalStorage（大约 5MB 上限） | 本机文件，不受该上限限制      |
 | 换设备 | 设置里导出 JSON，再导入              | 同样靠 JSON；两套存储互不相通 |
@@ -35,11 +42,11 @@ Windows 未签名：SmartScreen 里选「更多信息 → 仍要运行」。需�
 ## 能做什么
 
 - **自然语言记账**：中英句子生成预览，改日期 / 分类 / 金额 / 币种 / 备注，确认后才写入。识别方式可切换：
-  - **规则识别**（默认）：本地规则 + 关键词 + 浏览器内 n-gram 分类器，不走网络
-  - **LLM 识别**：调用「API 看台」里配置的 OpenAI 兼容接口；没配或失败则回退规则
+  - **本地**（默认）：本地规则 + 关键词 + 浏览器内 n-gram 分类器，不走网络；入口叫「记一笔」
+  - **AI / MoneyMore**：调用「API 看台」里配置的 OpenAI 兼容接口；可对话查账、出卡片，也可改账删账（需设置打开并确认）
 - **35 分类**：28 个支出、工资 / 副业、5 个负支出。对不上的进「日用百货」
 - **多日句子**：「今天明天」「这一周每天」等按天**复制同一金额**
-- 手动表格、日 / 周 / 月 / 年统计与图表
+- 手动表格、统计看板、当日日历账单
 - 多货币（HKD、CNY 为主），汇率公开 API 拉取并缓存
 - 月度与分类预算、旅游行程与分账、搜索、CSV、完整 JSON 备份、PWA
 
@@ -47,16 +54,18 @@ Windows 未签名：SmartScreen 里选「更多信息 → 仍要运行」。需�
 
 ## 页面
 
-| 路径                                     | 内容                                 |
-| ---------------------------------------- | ------------------------------------ |
-| `/`                                      | 自然语言记账                         |
-| `/today` `/day` `/week` `/month` `/year` | 今日明细与各周期统计                 |
-| `/search`                                | 筛选                                 |
-| `/travel`                                | 旅游模式                             |
-| `/data`                                  | CSV 与账本清理                       |
-| `/settings`                              | 区块、预算、汇率、JSON 备份          |
-| `/console`                               | API 看台：地址、密钥、提示词、试运行 |
-| `/entry`                                 | 转到 `/`                             |
+| 路径        | 内容                                          |
+| ----------- | --------------------------------------------- |
+| `/`         | 自然语言记账（本地 / MoneyMore）              |
+| `/today`    | 今日明细                                      |
+| `/day`      | 当日汇总 + 日历账单                           |
+| `/stats`    | 统计看板（`/week` `/month` `/year` 转到这里） |
+| `/search`   | 筛选                                          |
+| `/travel`   | 旅游模式                                      |
+| `/data`     | CSV 与账本清理                                |
+| `/settings` | 区块、预算、汇率、JSON 备份、MoneyMore 权限   |
+| `/console`  | API 看台：地址、密钥、提示词、试运行          |
+| `/entry`    | 转到 `/`                                      |
 
 ---
 
@@ -100,13 +109,13 @@ Windows 免安装 exe 可在 macOS 上交叉编译（`desktop/build/bin/MoneyCou
 
 ## 自然语言怎么解析
 
-|             | 规则识别（默认）             | LLM 识别                         |
+|             | 本地（默认）                 | AI / MoneyMore                   |
 | ----------- | ---------------------------- | -------------------------------- |
 | 切句        | 本地规则                     | 模型返回多条                     |
 | 金额 / 币种 | 正则                         | 模型 + 本地校验                  |
 | 日期        | `date_spec` 规则展开         | 模型给 `date_spec`，仍由规则展开 |
 | 分类        | 关键词，不够则 n-gram 分类器 | 映射到 35 类                     |
-| 写入        | 预览确认后                   | 同左                             |
+| 写入        | 预览确认后                   | 同左；改账删账另需确认           |
 
 分类器：`src/lib/nlLedgerClassifier.model.json`，语料 `data/nl-ledger/samples.jsonl`。改语料后：
 
@@ -153,6 +162,13 @@ Cloudflare Workers publishes `dist/` from **`main`**.
 
 Note: The interface currently supports **Simplified Chinese only**. English and other language versions will be considered for rollout in the future.
 
+## v1.3.0
+
+- **MoneyMore**: AI chat for ledger queries, stat cards, and optional edit/delete (confirm first)
+- **Stats** `/stats`: daily flow, categories, net worth, plus a persistent calendar ledger
+- **Day** `/day`: the same calendar; click a date to switch. Totals and categories on the left
+- Local / AI toggle sits next to CNY / HKD
+
 ## Web vs desktop
 
 |            | Web / PWA                       | Desktop                                     |
@@ -167,7 +183,9 @@ Unsigned macOS: **If Gatekeeper blocks it, go to Mac Settings → Privacy & Secu
 
 ## Features
 
-Natural-language entry (rules locally, or an OpenAI-compatible model from `/console`), 35 categories, multi-day `date_spec` phrases that **copy the same amount onto each day**, manual grid, period stats, FX cache, budgets, travel AA, search, CSV, JSON backup, PWA. Old 10-class books migrate in place (`monthly-smart-ledger:v1`).
+Natural-language entry (**Local** rules, or **AI / MoneyMore** via `/console`), 35 categories, multi-day `date_spec` phrases that **copy the same amount onto each day**, manual grid, stats dashboard, day calendar, FX cache, budgets, travel AA, search, CSV, JSON backup, PWA. Old 10-class books migrate in place (`monthly-smart-ledger:v1`).
+
+Routes: `/` entry · `/today` list · `/day` day + calendar · `/stats` dashboard (`/week` `/month` `/year` redirect here).
 
 ## Develop
 

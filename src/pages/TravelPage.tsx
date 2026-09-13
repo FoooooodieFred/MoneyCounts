@@ -154,6 +154,9 @@ export function TravelPage(props: TravelPageProps) {
           <p className="eyebrow">Travel Mode</p>
           <h1>{travelState.active && travelState.billName ? travelState.billName : "旅游模式"}</h1>
           <p className="muted">{props.travelRangeLabel}</p>
+          <p className="warning-text">
+            不推荐使用。旅游模式长期没有优化计划，新账请用普通记账和统计看板。
+          </p>
         </section>
 
         <div className="travel-mode-zone" data-section="travel-mode">

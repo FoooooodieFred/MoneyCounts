@@ -14,8 +14,8 @@ export const LEDGER_PARSE_MODE_OPTIONS: readonly {
   id: LedgerParseMode;
   label: string;
 }[] = [
-  { id: "rules", label: "规则识别·快且本地" },
-  { id: "llm", label: "LLM识别·精确有效" },
+  { id: "rules", label: "本地" },
+  { id: "llm", label: "AI" },
 ];
 
 export const DEFAULT_LEDGER_PARSE_MODE: LedgerParseMode = "rules";

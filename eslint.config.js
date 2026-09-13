@@ -17,6 +17,7 @@ export default tseslint.config(
       "desktop/build/**",
       "desktop/wailsjs/**",
       "wailsjs/**",
+      "src/lib/bloub/**",
     ],
   },
   eslint.configs.recommended,

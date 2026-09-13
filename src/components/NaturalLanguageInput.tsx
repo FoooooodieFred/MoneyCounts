@@ -1,11 +1,13 @@
-import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, KeyboardEvent, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { gsap } from "gsap";
 import { parseQuickExpenseLines, type QuickExpenseResult } from "../lib/quickExpenseParser";
 import type { LocalLedgerRecord } from "../lib/localLedgerParser";
 import { prefersReducedMotion } from "../hooks/useGsapContext";
-import { applyTemplateSlot, pickRandomTemplates } from "../lib/quickTemplates";
-import { fetchLlmQuickTemplates } from "../lib/llmQuickTemplates";
-import { isLlmApiVerified, readLlmApiSettings } from "../lib/llmApiSettings";
+import { formatElapsedMs } from "../lib/moneyMoreAgent";
+import { IconPen, IconSend } from "./MoneyMoreIcons";
+import { BloubAvatar } from "./BloubAvatar";
+import { RoseFourLoader } from "./RoseFourLoader";
 import {
   LEDGER_PARSE_MODE_OPTIONS,
   ledgerParseModeLabel,
@@ -35,6 +37,150 @@ function focusTextareaAfterScroll(textarea: HTMLTextAreaElement | null, cursor?:
     return;
   }
   setTimeout(focus, prefersReducedMotion() ? 0 : 480);
+}
+
+type SheetRect = { left: number; top: number; width: number; height: number };
+
+const captureSheetRect = (node: HTMLElement | null): SheetRect | null => {
+  if (!node) return null;
+  const rect = node.getBoundingClientRect();
+  if (rect.width < 1 || rect.height < 1) return null;
+  return { left: rect.left, top: rect.top, width: rect.width, height: rect.height };
+};
+
+const playComposerToUserBubbleMorph = (
+  bubble: HTMLElement,
+  thread: HTMLElement,
+  from: SheetRect,
+) => {
+  const to = bubble.getBoundingClientRect();
+  if (to.width < 1 || to.height < 1) return undefined;
+  const assistant = thread.querySelector<HTMLElement>(".nl-thread__row--assistant");
+  const actions = thread.querySelector<HTMLElement>(".nl-thread__actions");
+  const rest = [assistant, actions].filter((node): node is HTMLElement => Boolean(node));
+  const edit = bubble.querySelector<HTMLElement>(".nl-bubble__edit");
+  const text = bubble.querySelector("p")?.textContent ?? "";
+  gsap.killTweensOf([bubble, thread, ...rest, edit].filter(Boolean));
+  bubble.classList.add("is-morphing");
+  thread.classList.add("is-morphing");
+
+  const restHeights = rest.map((node) => node.getBoundingClientRect().height);
+  const threadGap =
+    Number.parseFloat(getComputedStyle(thread).rowGap || getComputedStyle(thread).gap) || 16;
+
+  const ghost = document.createElement("div");
+  ghost.className = "nl-morph-ghost";
+  ghost.setAttribute("aria-hidden", "true");
+  const ghostText = document.createElement("p");
+  ghostText.textContent = text;
+  ghost.appendChild(ghostText);
+  document.body.appendChild(ghost);
+
+  const bubbleStyle = getComputedStyle(bubble);
+  const fromRadius =
+    getComputedStyle(document.documentElement).getPropertyValue("--radius").trim() || "24px";
+
+  gsap.set(ghost, {
+    left: from.left,
+    top: from.top,
+    width: from.width,
+    height: from.height,
+    borderRadius: fromRadius,
+  });
+  gsap.set(bubble, { autoAlpha: 0 });
+  if (edit) gsap.set(edit, { autoAlpha: 0 });
+  gsap.set(thread, { gap: 0 });
+  rest.forEach((node) => {
+    gsap.set(node, { height: 0, autoAlpha: 0, overflow: "hidden", boxSizing: "border-box" });
+  });
+
+  const cleanup = () => {
+    gsap.killTweensOf(ghost);
+    ghost.remove();
+    bubble.classList.remove("is-morphing");
+    thread.classList.remove("is-morphing");
+    gsap.set(bubble, { clearProps: "opacity,visibility" });
+    gsap.set(thread, { clearProps: "gap" });
+    gsap.set(rest, { clearProps: "height,overflow,opacity,visibility,boxSizing" });
+    if (edit) gsap.set(edit, { clearProps: "opacity,visibility" });
+  };
+
+  const timeline = gsap.timeline({
+    defaults: { overwrite: "auto" },
+    onComplete: cleanup,
+  });
+  timeline.to(
+    ghost,
+    {
+      left: to.left,
+      top: to.top,
+      width: to.width,
+      height: to.height,
+      borderRadius: bubbleStyle.borderRadius,
+      backgroundColor: bubbleStyle.backgroundColor,
+      duration: 0.9,
+      ease: "power2.out",
+    },
+    0,
+  );
+  timeline.to(ghostText, { autoAlpha: 0, duration: 0.36, ease: "power1.out" }, 0.08);
+  timeline.to(ghost, { autoAlpha: 0, duration: 0.22, ease: "power1.out" }, 0.7);
+  timeline.to(bubble, { autoAlpha: 1, duration: 0.28, ease: "power1.out" }, 0.66);
+  rest.forEach((node, index) => {
+    timeline.to(
+      node,
+      {
+        height: restHeights[index],
+        autoAlpha: 1,
+        duration: 0.55,
+        ease: "power2.out",
+      },
+      0.58 + index * 0.08,
+    );
+  });
+  timeline.to(thread, { gap: threadGap, duration: 0.5, ease: "power2.out" }, 0.58);
+  if (edit) {
+    timeline.to(edit, { autoAlpha: 1, duration: 0.24, ease: "power1.out" }, 0.84);
+  }
+
+  return () => {
+    timeline.kill();
+    cleanup();
+  };
+};
+
+function ParseModeSwitch({
+  parseMode,
+  disabled,
+  onSelect,
+}: {
+  parseMode: LedgerParseMode;
+  disabled: boolean;
+  onSelect: (mode: LedgerParseMode) => void;
+}) {
+  return (
+    <div
+      className="nl-parse-switch nl-pill-switch"
+      role="radiogroup"
+      aria-label="记账方式"
+      data-selected={parseMode}
+    >
+      {LEDGER_PARSE_MODE_OPTIONS.map((option) => (
+        <button
+          key={option.id}
+          type="button"
+          role="radio"
+          className={`nl-parse-switch__option${parseMode === option.id ? " active" : ""}`}
+          aria-checked={parseMode === option.id}
+          aria-label={ledgerParseModeLabel(option.id)}
+          disabled={disabled}
+          onClick={() => onSelect(option.id)}
+        >
+          {option.label}
+        </button>
+      ))}
+    </div>
+  );
 }
 
 type NaturalLanguageInputProps = {
@@ -88,6 +234,9 @@ export function NaturalLanguageInput({
 }: NaturalLanguageInputProps) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const composerRef = useRef<HTMLFormElement | null>(null);
+  const threadRef = useRef<HTMLDivElement | null>(null);
+  const userBubbleRef = useRef<HTMLDivElement | null>(null);
+  const morphFromRef = useRef<SheetRect | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const pendingCompactScrollRef = useRef(false);
   const [input, setInput] = useState("");
@@ -95,18 +244,26 @@ export function NaturalLanguageInput({
   const [error, setError] = useState("");
   const [compactVisible, setCompactVisible] = useState(false);
   const [isComposing, setIsComposing] = useState(false);
-  const [templateSeed] = useState(() => Math.floor(Math.random() * 1_000_000));
-  const [visibleTemplates, setVisibleTemplates] = useState(() =>
-    pickRandomTemplates(3, templateSeed),
-  );
   const [parseMode, setParseMode] = useState<LedgerParseMode>(() => readLedgerParseMode());
-  const [parseMenuOpen, setParseMenuOpen] = useState(false);
-  const parseModeRef = useRef<HTMLDivElement | null>(null);
+  const [elapsedMs, setElapsedMs] = useState(0);
+  const [sheetView, setSheetView] = useState<"idle" | "thread">(
+    previewRecords.length > 0 ? "thread" : "idle",
+  );
 
   const previewMode = previewRecords.length > 0;
+  const isMoneyMore = parseMode === "llm";
   const bubbleText = submittedInput.trim() || input.trim();
   const canSubmit =
     !isParsing && (parseMode === "llm" ? Boolean(input.trim()) : Boolean(previews.length));
+  const llmWaiting = isParsing && parseMode === "llm";
+  const composerClassName = [
+    "nl-composer",
+    "surface-secondary",
+    isMoneyMore ? "nl-composer--mm" : "",
+    llmWaiting ? "is-parsing" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   useEffect(() => {
     if (!input.trim()) {
@@ -121,33 +278,35 @@ export function NaturalLanguageInput({
   }, [input, defaultCurrency, onClearStatus, parseMode]);
 
   useEffect(() => {
-    if (!apiConfigured) return;
-    const settings = readLlmApiSettings();
-    if (!isLlmApiVerified(settings)) return;
-    let cancelled = false;
-    void fetchLlmQuickTemplates(settings).then((templates) => {
-      if (!cancelled && templates.length) setVisibleTemplates(templates);
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [apiConfigured]);
+    if (!llmWaiting) {
+      setElapsedMs(0);
+      return;
+    }
+    const started = Date.now();
+    const timer = window.setInterval(() => setElapsedMs(Date.now() - started), 200);
+    return () => window.clearInterval(timer);
+  }, [llmWaiting]);
 
-  useEffect(() => {
-    if (!parseMenuOpen) return;
-    const onPointerDown = (event: PointerEvent) => {
-      if (!parseModeRef.current?.contains(event.target as Node)) setParseMenuOpen(false);
-    };
-    const onKeyDown = (event: globalThis.KeyboardEvent) => {
-      if (event.key === "Escape") setParseMenuOpen(false);
-    };
-    document.addEventListener("pointerdown", onPointerDown);
-    document.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.removeEventListener("pointerdown", onPointerDown);
-      document.removeEventListener("keydown", onKeyDown);
-    };
-  }, [parseMenuOpen]);
+  useLayoutEffect(() => {
+    if (previewMode && sheetView === "idle") {
+      morphFromRef.current = captureSheetRect(composerRef.current);
+      setSheetView("thread");
+      return;
+    }
+    if (!previewMode && sheetView === "thread") {
+      morphFromRef.current = null;
+      setSheetView("idle");
+      return;
+    }
+    if (sheetView !== "thread") return;
+    const thread = threadRef.current;
+    const bubble = userBubbleRef.current;
+    const from = morphFromRef.current;
+    morphFromRef.current = null;
+    if (!thread || !bubble) return;
+    if (!from || prefersReducedMotion()) return;
+    return playComposerToUserBubbleMorph(bubble, thread, from);
+  }, [previewMode, sheetView]);
 
   useEffect(() => {
     const updateCompactVisibility = () => {
@@ -212,9 +371,9 @@ export function NaturalLanguageInput({
   };
 
   const selectParseMode = (mode: LedgerParseMode) => {
+    if (isParsing) return;
     setParseMode(mode);
     saveLedgerParseMode(mode);
-    setParseMenuOpen(false);
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -222,14 +381,6 @@ export function NaturalLanguageInput({
       return;
     event.preventDefault();
     event.currentTarget.form?.requestSubmit();
-  };
-
-  const focusMainInput = (cursor?: number) => {
-    sectionRef.current?.scrollIntoView({
-      behavior: prefersReducedMotion() ? "auto" : "smooth",
-      block: "center",
-    });
-    requestAnimationFrame(() => focusTextareaAfterScroll(textareaRef.current, cursor));
   };
 
   const scrollToEntryFromCompact = () => {
@@ -246,17 +397,6 @@ export function NaturalLanguageInput({
     focusTextareaAfterScroll(textareaRef.current);
   };
 
-  const applyTemplate = (template: string) => {
-    const { text, cursor } = applyTemplateSlot(template);
-    setInput((current) => {
-      const trimmed = current.trim();
-      const next = trimmed ? `${trimmed}\n${text}` : text;
-      const focusAt = trimmed ? trimmed.length + 1 + cursor : cursor;
-      requestAnimationFrame(() => focusMainInput(focusAt));
-      return next;
-    });
-  };
-
   const handleEditPreview = () => {
     if (submittedInput.trim()) setInput(submittedInput);
     onCancel();
@@ -268,39 +408,159 @@ export function NaturalLanguageInput({
     setError("");
   };
 
+  const previewTable = (
+    <div className="nl-preview-table-wrap">
+      <table className="nl-preview-table">
+        <thead>
+          <tr>
+            <th scope="col">日期</th>
+            <th scope="col">分类</th>
+            <th scope="col">金额</th>
+            <th scope="col">货币</th>
+            <th scope="col">备注</th>
+            <th scope="col">
+              <span className="sr-only">操作</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {previewRecords.map((preview, index) => (
+            <tr key={`${preview.date}-${preview.amount}-${preview.note}-${index}`}>
+              <td>
+                <input
+                  type="date"
+                  aria-label={`第 ${index + 1} 笔日期`}
+                  value={preview.date}
+                  onChange={(event) => onPreviewChange(index, "date", event.target.value)}
+                />
+              </td>
+              <td>
+                <select
+                  aria-label={`第 ${index + 1} 笔分类`}
+                  value={preview.category}
+                  onChange={(event) => onPreviewChange(index, "category", event.target.value)}
+                >
+                  {categories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+              </td>
+              <td>
+                <input
+                  inputMode="decimal"
+                  aria-label={`第 ${index + 1} 笔金额`}
+                  value={preview.amount}
+                  onChange={(event) => onPreviewChange(index, "amount", event.target.value)}
+                />
+              </td>
+              <td>
+                <select
+                  aria-label={`第 ${index + 1} 笔货币`}
+                  value={preview.currency}
+                  onChange={(event) => onPreviewChange(index, "currency", event.target.value)}
+                >
+                  {currencies.map((currency) => (
+                    <option key={currency} value={currency}>
+                      {currency}
+                    </option>
+                  ))}
+                </select>
+              </td>
+              <td className="nl-preview-table__note">
+                <input
+                  aria-label={`第 ${index + 1} 笔备注`}
+                  value={preview.note}
+                  onChange={(event) => onPreviewChange(index, "note", event.target.value)}
+                />
+              </td>
+              <td className="nl-preview-table__actions">
+                <button
+                  type="button"
+                  className="delete-record-button"
+                  data-action="preview-delete-record"
+                  onClick={() => onPreviewDelete(index)}
+                  aria-label="删除预览记录"
+                >
+                  ×
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {previewRecords.some((_, index) => previewIssues[index]?.length) ? (
+        <div className="nl-preview-table__issues">
+          {previewRecords.map((preview, index) =>
+            previewIssues[index]?.length ? (
+              <p key={`issue-${index}`}>
+                第 {index + 1} 笔（{preview.category || "未分类"}）：
+                {previewIssues[index].join(" / ")}
+              </p>
+            ) : null,
+          )}
+        </div>
+      ) : null}
+    </div>
+  );
+
   return (
     <>
       <section
         ref={sectionRef}
-        className={`nl-section is-visible${previewMode ? " is-thread" : " is-idle"}`}
+        className={`nl-section is-visible${sheetView === "thread" ? " is-thread" : " is-idle"}${isMoneyMore ? " nl-section--mm" : ""}`}
         id="entry"
         data-section="quick-entry"
       >
-        {!previewMode ? (
-          <div className="nl-idle">
+        {sheetView !== "thread" ? (
+          <div className={`nl-idle${isMoneyMore ? " nl-idle--mm" : ""}`}>
             <div className="nl-idle__bar">
-              <h2 className="nl-idle__title">记一笔</h2>
-              <div className="nl-currency-toggle" role="group" aria-label="默认货币">
-                {(["CNY", "HKD"] as const).map((currency) => (
-                  <button
-                    key={currency}
-                    type="button"
-                    className={defaultCurrency === currency ? "active" : undefined}
-                    aria-pressed={defaultCurrency === currency}
-                    onClick={() => onDefaultCurrencyChange(currency)}
-                  >
-                    {currency}
-                  </button>
-                ))}
+              <div className="nl-idle__identity">
+                {isMoneyMore ? (
+                  <BloubAvatar size={40} mood={llmWaiting ? "loading" : "idle"} decorative />
+                ) : null}
+                <h2 className="nl-idle__title">{isMoneyMore ? "MoneyMore" : "记一笔"}</h2>
+              </div>
+              <div className="nl-idle__toggles">
+                <ParseModeSwitch
+                  parseMode={parseMode}
+                  disabled={isParsing}
+                  onSelect={selectParseMode}
+                />
+                <div
+                  className="nl-currency-toggle nl-pill-switch"
+                  role="group"
+                  aria-label="默认货币"
+                  data-selected={defaultCurrency}
+                >
+                  {(["CNY", "HKD"] as const).map((currency) => (
+                    <button
+                      key={currency}
+                      type="button"
+                      className={defaultCurrency === currency ? "active" : undefined}
+                      aria-pressed={defaultCurrency === currency}
+                      onClick={() => onDefaultCurrencyChange(currency)}
+                    >
+                      {currency}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
 
             <form
               ref={composerRef}
-              className="nl-composer surface-secondary"
+              className={composerClassName}
               onSubmit={handleSubmit}
               data-action="quick-entry-submit"
+              aria-busy={llmWaiting}
             >
+              {isMoneyMore ? (
+                <span className="nl-composer__orbit" aria-hidden="true">
+                  <span className="nl-composer__orbit-spin" />
+                </span>
+              ) : null}
               <label className="nl-composer__field">
                 <span className="sr-only">输入开销</span>
                 <textarea
@@ -310,112 +570,97 @@ export function NaturalLanguageInput({
                   onKeyDown={handleKeyDown}
                   onCompositionStart={() => setIsComposing(true)}
                   onCompositionEnd={() => setIsComposing(false)}
-                  placeholder="用一句话记下开销…"
+                  placeholder={
+                    isMoneyMore ? "问账本，或直接说今天午餐 45 港币" : "用一句话记下开销…"
+                  }
                   rows={3}
                   autoComplete="off"
+                  readOnly={llmWaiting}
                 />
               </label>
-              <div className="nl-composer__actions">
-                <div className="nl-parse-mode" ref={parseModeRef}>
-                  <button
-                    type="button"
-                    className="nl-parse-mode__trigger"
-                    aria-haspopup="menu"
-                    aria-expanded={parseMenuOpen}
-                    aria-label={`记账方式：${ledgerParseModeLabel(parseMode)}`}
-                    onClick={() => setParseMenuOpen((open) => !open)}
-                  >
-                    <span>{ledgerParseModeLabel(parseMode)}</span>
-                    <svg
-                      className={`nl-parse-mode__chevron${parseMenuOpen ? " is-open" : ""}`}
-                      width="12"
-                      height="12"
-                      viewBox="0 0 12 12"
-                      aria-hidden="true"
-                    >
-                      <path
-                        d="M3 4.5 6 7.5 9 4.5"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.4"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </button>
-                  {parseMenuOpen ? (
-                    <div className="nl-parse-mode__menu" role="menu">
-                      {LEDGER_PARSE_MODE_OPTIONS.map((option) => (
-                        <button
-                          key={option.id}
-                          type="button"
-                          role="menuitemradio"
-                          className="nl-parse-mode__option"
-                          aria-checked={parseMode === option.id}
-                          onClick={() => selectParseMode(option.id)}
-                        >
-                          {option.label}
-                        </button>
-                      ))}
-                    </div>
-                  ) : null}
+              {llmWaiting ? (
+                <div className="nl-composer__loader">
+                  <RoseFourLoader
+                    label="正在生成记账预览"
+                    elapsedLabel={formatElapsedMs(elapsedMs)}
+                  />
                 </div>
-                <button type="submit" className="nl-composer__submit" disabled={!canSubmit}>
-                  {isParsing ? "解析中…" : "生成记账预览"}
-                </button>
+              ) : null}
+              <div className="nl-composer__actions">
+                {isMoneyMore ? (
+                  <button
+                    type="submit"
+                    className="moneymore-orb-btn"
+                    disabled={!canSubmit}
+                    aria-label="发送"
+                    title="发送"
+                  >
+                    <span className="moneymore-orb-btn__icon" data-active="true">
+                      <IconSend />
+                    </span>
+                  </button>
+                ) : (
+                  <button type="submit" className="nl-composer__submit" disabled={!canSubmit}>
+                    {isParsing ? "解析中…" : "生成记账预览"}
+                  </button>
+                )}
               </div>
             </form>
 
-            <div className="nl-suggest" aria-label="快捷模板">
-              <div className="nl-suggest__chips">
-                {visibleTemplates.map((template) => (
-                  <button
-                    key={template}
-                    type="button"
-                    className="nl-chip"
-                    onClick={() => applyTemplate(template)}
-                  >
-                    {template}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <p className="nl-hint" role="status">
-              {parseMode === "llm" && apiConfigured ? (
-                "将用 API 看台中已验证的模型解析。"
-              ) : (
-                <>
-                  若要记账改为调用大模型。请先到{" "}
-                  <Link className="nl-hint__link" to="/console">
-                    API 看台
-                  </Link>{" "}
-                  填写接口与密钥。
-                </>
-              )}
-            </p>
+            {!apiConfigured ? (
+              <p className="nl-hint" role="status">
+                接入 API 后可召唤 MoneyMore。请先到{" "}
+                <Link className="nl-hint__link" to="/console">
+                  API 看台
+                </Link>{" "}
+                填写接口与密钥。
+              </p>
+            ) : !isMoneyMore ? (
+              <p className="nl-hint" role="status">
+                当前用本地规则识别。换成 AI 后，这里会变成 MoneyMore。
+              </p>
+            ) : null}
             {error ? <p className="nl-error">{error}</p> : null}
           </div>
         ) : (
-          <div className="nl-thread" role="log" aria-live="polite">
+          <div
+            className={`nl-thread${isMoneyMore ? " nl-thread--mm" : ""}`}
+            ref={threadRef}
+            role="log"
+            aria-live="polite"
+          >
             <div className="nl-thread__row nl-thread__row--user">
-              <div className="nl-bubble nl-bubble--user surface-secondary">
+              <div
+                className={`nl-bubble nl-bubble--user${isMoneyMore ? "" : " surface-secondary"}`}
+                ref={userBubbleRef}
+              >
+                {isMoneyMore ? <span className="moneymore-bubble-msg__who">我</span> : null}
                 <p>{bubbleText || "（已生成预览）"}</p>
                 <button
                   type="button"
-                  className="ghost-button nl-bubble__edit"
+                  className="nl-bubble__edit"
                   data-action="preview-edit-input"
+                  aria-label="修改语句"
+                  title="修改语句"
                   onClick={handleEditPreview}
                 >
-                  修改语句
+                  <IconPen />
                 </button>
               </div>
             </div>
 
             <div className="nl-thread__row nl-thread__row--assistant">
-              <div className="nl-bubble nl-bubble--assistant surface-secondary">
+              {isMoneyMore ? <BloubAvatar size={32} mood="idle" decorative /> : null}
+              <div
+                className={`nl-bubble nl-bubble--assistant${isMoneyMore ? "" : " surface-secondary"}`}
+              >
                 <header className="nl-bubble__header">
-                  <h3>识别结果</h3>
+                  <div>
+                    {isMoneyMore ? (
+                      <span className="moneymore-bubble-msg__who">MoneyMore</span>
+                    ) : null}
+                    <h3>{isMoneyMore ? "待确认记账" : "识别结果"}</h3>
+                  </div>
                   <button
                     type="button"
                     className="ghost-button"
@@ -426,110 +671,7 @@ export function NaturalLanguageInput({
                   </button>
                 </header>
 
-                <div className="nl-preview-table-wrap">
-                  <table className="nl-preview-table">
-                    <thead>
-                      <tr>
-                        <th scope="col">日期</th>
-                        <th scope="col">分类</th>
-                        <th scope="col">金额</th>
-                        <th scope="col">货币</th>
-                        <th scope="col">备注</th>
-                        <th scope="col">
-                          <span className="sr-only">操作</span>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {previewRecords.map((preview, index) => (
-                        <tr key={`${preview.date}-${preview.amount}-${preview.note}-${index}`}>
-                          <td>
-                            <input
-                              type="date"
-                              aria-label={`第 ${index + 1} 笔日期`}
-                              value={preview.date}
-                              onChange={(event) =>
-                                onPreviewChange(index, "date", event.target.value)
-                              }
-                            />
-                          </td>
-                          <td>
-                            <select
-                              aria-label={`第 ${index + 1} 笔分类`}
-                              value={preview.category}
-                              onChange={(event) =>
-                                onPreviewChange(index, "category", event.target.value)
-                              }
-                            >
-                              {categories.map((category) => (
-                                <option key={category} value={category}>
-                                  {category}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                          <td>
-                            <input
-                              inputMode="decimal"
-                              aria-label={`第 ${index + 1} 笔金额`}
-                              value={preview.amount}
-                              onChange={(event) =>
-                                onPreviewChange(index, "amount", event.target.value)
-                              }
-                            />
-                          </td>
-                          <td>
-                            <select
-                              aria-label={`第 ${index + 1} 笔货币`}
-                              value={preview.currency}
-                              onChange={(event) =>
-                                onPreviewChange(index, "currency", event.target.value)
-                              }
-                            >
-                              {currencies.map((currency) => (
-                                <option key={currency} value={currency}>
-                                  {currency}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                          <td className="nl-preview-table__note">
-                            <input
-                              aria-label={`第 ${index + 1} 笔备注`}
-                              value={preview.note}
-                              onChange={(event) =>
-                                onPreviewChange(index, "note", event.target.value)
-                              }
-                            />
-                          </td>
-                          <td className="nl-preview-table__actions">
-                            <button
-                              type="button"
-                              className="delete-record-button"
-                              data-action="preview-delete-record"
-                              onClick={() => onPreviewDelete(index)}
-                              aria-label="删除预览记录"
-                            >
-                              ×
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  {previewRecords.some((_, index) => previewIssues[index]?.length) ? (
-                    <div className="nl-preview-table__issues">
-                      {previewRecords.map((preview, index) =>
-                        previewIssues[index]?.length ? (
-                          <p key={`issue-${index}`}>
-                            第 {index + 1} 笔（{preview.category || "未分类"}）：
-                            {previewIssues[index].join(" / ")}
-                          </p>
-                        ) : null,
-                      )}
-                    </div>
-                  ) : null}
-                </div>
+                {previewTable}
 
                 {warnings.length ? (
                   <div className="nl-preview-warnings">
@@ -548,7 +690,7 @@ export function NaturalLanguageInput({
                 data-action="preview-cancel-import"
                 onClick={handleCancel}
               >
-                取消记账
+                {isMoneyMore ? "取消" : "取消记账"}
               </button>
               <button
                 type="button"
@@ -557,13 +699,15 @@ export function NaturalLanguageInput({
                 disabled={!canConfirm}
                 onClick={onConfirm}
               >
-                完成记账
+                {isMoneyMore ? "确认记账" : "完成记账"}
               </button>
             </div>
           </div>
         )}
 
-        {statusMessage ? <p className="status nl-status">{statusMessage}</p> : null}
+        {statusMessage && sheetView !== "thread" ? (
+          <p className="status nl-status">{statusMessage}</p>
+        ) : null}
       </section>
 
       {compactVisible && !previewMode ? (

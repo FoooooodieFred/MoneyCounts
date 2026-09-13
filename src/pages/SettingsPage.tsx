@@ -36,17 +36,20 @@ type SettingsPageProps = {
   onRefreshExchange: () => void;
   backupReminderLabel: string;
   importMessage: string;
-  importPreview: BackupImportPreview | null;
   jsonInputRef: RefObject<HTMLInputElement | null>;
   onSettingsChange: (settings: AppSettings) => void;
   getCurrencyLabel: (currency: string) => string;
   onExportJson: () => void;
   onPickJson: () => void;
   onJsonFileChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  onConfirmJsonImport: () => void;
-  onCancelJsonImport: () => void;
   onSnoozeBackupReminder: (days: number) => void;
   storageUsage: StorageUsageModel;
+  storageLocationMessage?: string;
+  webFileName?: string | null;
+  webFileSupported?: boolean;
+  onChooseDesktopPath?: () => void;
+  onResetDesktopPath?: () => void;
+  onChooseWebFile?: () => void;
 };
 
 export function SettingsPage({
@@ -61,17 +64,20 @@ export function SettingsPage({
   onRefreshExchange,
   backupReminderLabel,
   importMessage,
-  importPreview,
   jsonInputRef,
   onSettingsChange,
   getCurrencyLabel,
   onExportJson,
   onPickJson,
   onJsonFileChange,
-  onConfirmJsonImport,
-  onCancelJsonImport,
   onSnoozeBackupReminder,
   storageUsage,
+  storageLocationMessage,
+  webFileName,
+  webFileSupported,
+  onChooseDesktopPath,
+  onResetDesktopPath,
+  onChooseWebFile,
 }: SettingsPageProps) {
   const [includeLlmApiInBackup, setIncludeLlmApiInBackup] = useState(
     () => readLlmApiSettings().includeInBackup,
@@ -166,8 +172,8 @@ export function SettingsPage({
                     {key === "heroCards"
                       ? "开启后在记账页显示趣味小卡片"
                       : key === "tools"
-                        ? "控制「全年」趋势与预算卡片"
-                        : "控制对应统计页是否出现在导航中"}
+                        ? "旧全年趋势页已并入统计看板"
+                        : "旧周/月统计页已并入「统计」看板"}
                   </small>
                 </div>
                 <label className="settings-toggle-switch">
@@ -186,8 +192,65 @@ export function SettingsPage({
 
         <section className="settings-stack__section surface-secondary">
           <header className="settings-stack__heading">
+            <h2>旅游模式</h2>
+            <p className="muted">
+              默认隐藏，且不推荐使用。长期没有优化计划，只保留给仍在进行中的旧行程。
+            </p>
+          </header>
+          <div className="settings-option">
+            <span className="settings-option__copy">
+              <strong>显示旅游模式入口</strong>
+              <small>打开后导航会出现「旅游模式」。新账不建议依赖此功能。</small>
+            </span>
+            <label className="settings-toggle-switch">
+              <input
+                type="checkbox"
+                checked={settings.travelModeEnabled}
+                aria-label="显示旅游模式入口"
+                onChange={(event) =>
+                  onSettingsChange({ ...settings, travelModeEnabled: event.target.checked })
+                }
+              />
+              <span className="settings-toggle-switch__track" aria-hidden="true" />
+            </label>
+          </div>
+        </section>
+
+        <section className="settings-stack__section surface-secondary">
+          <header className="settings-stack__heading">
+            <h2>MoneyMore</h2>
+            <p className="muted">
+              对话记账始终可用。改账和删账默认关闭，打开后仍要在对话框里确认才会写入。
+            </p>
+          </header>
+          <div className="settings-option">
+            <span className="settings-option__copy">
+              <strong>允许修改和删除账本</strong>
+              <small>
+                MoneyMore 可以按你的话改金额、改分类、删错账。没有打开时，它只能查询和新增预览。
+              </small>
+            </span>
+            <label className="settings-toggle-switch">
+              <input
+                type="checkbox"
+                checked={settings.moneyMoreCanMutateLedger}
+                aria-label="允许 MoneyMore 修改和删除账本"
+                onChange={(event) =>
+                  onSettingsChange({
+                    ...settings,
+                    moneyMoreCanMutateLedger: event.target.checked,
+                  })
+                }
+              />
+              <span className="settings-toggle-switch__track" aria-hidden="true" />
+            </label>
+          </div>
+        </section>
+
+        <section className="settings-stack__section surface-secondary">
+          <header className="settings-stack__heading">
             <h2>预算管理</h2>
-            <p className="muted">默认关闭；开启后可在全年页查看月度与分类预算。</p>
+            <p className="muted">默认关闭；开启后可在统计看板查看月度与分类预算。</p>
           </header>
           <div className="budget-settings-stack">
             <div className="settings-option">
@@ -254,7 +317,9 @@ export function SettingsPage({
         <section className="settings-stack__section surface-secondary backup-panel">
           <header className="settings-stack__heading">
             <h2>完整 JSON 备份</h2>
-            <p className="muted">包含账本、汇率、主题、提醒、设置与旅游历史。导入前会展示预览。</p>
+            <p className="muted">
+              包含账本、汇率、主题、提醒、设置与旅游历史。选择文件后会立刻弹出确认框。
+            </p>
           </header>
           <div className="settings-option">
             <span className="settings-option__copy">
@@ -318,7 +383,15 @@ export function SettingsPage({
           {importMessage ? <p className="status">{importMessage}</p> : null}
         </section>
 
-        <StorageUsagePanel usage={storageUsage} />
+        <StorageUsagePanel
+          usage={storageUsage}
+          locationMessage={storageLocationMessage}
+          webFileName={webFileName}
+          webFileSupported={webFileSupported}
+          onChooseDesktopPath={onChooseDesktopPath}
+          onResetDesktopPath={onResetDesktopPath}
+          onChooseWebFile={onChooseWebFile}
+        />
 
         <section className="settings-stack__section surface-secondary">
           <ExchangeRatesPanel
@@ -333,69 +406,6 @@ export function SettingsPage({
             id="settings-rates"
           />
         </section>
-
-        {importPreview ? (
-          <section
-            className="settings-stack__section surface-secondary import-preview"
-            aria-live="polite"
-          >
-            <header className="settings-stack__heading">
-              <h2>导入前预览</h2>
-              <p className="muted">
-                文件：{importPreview.fileName} · 导出时间：
-                {new Date(importPreview.exportedAt).toLocaleString("zh-CN")}
-              </p>
-            </header>
-            <div className="import-preview-grid">
-              <div>
-                <span>将导入账本</span>
-                <strong>
-                  {importPreview.incomingLedger.dateCount} 天 /{" "}
-                  {importPreview.incomingLedger.recordCount} 条
-                </strong>
-              </div>
-              <div>
-                <span>当前账本</span>
-                <strong>
-                  {importPreview.currentLedger.dateCount} 天 /{" "}
-                  {importPreview.currentLedger.recordCount} 条
-                </strong>
-              </div>
-              <div>
-                <span>设置覆盖</span>
-                <strong>{importPreview.settingsWillOverwrite ? "会覆盖" : "无设置项"}</strong>
-              </div>
-              <div>
-                <span>旅游历史</span>
-                <strong>
-                  {importPreview.travelHistoryCount} 条（当前{" "}
-                  {importPreview.currentTravelHistoryCount} 条）
-                </strong>
-              </div>
-              <div>
-                <span>API 接口</span>
-                <strong>{importPreview.llmApiWillOverwrite ? "会覆盖密钥与接口" : "不改动"}</strong>
-              </div>
-            </div>
-            <p className="warning-text">
-              确认后会用备份文件替换当前账本、设置、旅游状态与相关本地缓存
-              {importPreview.llmApiWillOverwrite ? "，并覆盖本机 API 接口与密钥" : ""}。
-            </p>
-            <div className="action-row">
-              <button
-                type="button"
-                className="danger-button"
-                data-action="json-backup-confirm-import"
-                onClick={onConfirmJsonImport}
-              >
-                确认覆盖导入
-              </button>
-              <button type="button" className="secondary-button" onClick={onCancelJsonImport}>
-                取消
-              </button>
-            </div>
-          </section>
-        ) : null}
 
         <SiteFooter />
       </div>

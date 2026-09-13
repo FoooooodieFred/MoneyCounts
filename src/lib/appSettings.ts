@@ -41,6 +41,10 @@ export type AppSettings = {
   homeSections: Record<HomeSectionKey, boolean> & Partial<Record<LegacyHomeSectionKey, boolean>>;
   homeSectionOrder: Array<HomeSectionKey | LegacyHomeSectionKey>;
   budget: BudgetSettings;
+  /** Off by default. Travel mode is deprecated / not recommended. */
+  travelModeEnabled: boolean;
+  /** Off by default. When on, MoneyMore may stage edit/delete drafts for confirmation. */
+  moneyMoreCanMutateLedger: boolean;
 };
 
 export const HOME_SECTION_DEFAULT_ORDER = [
@@ -73,7 +77,6 @@ export const LOCKED_HOME_SECTIONS = [
   "todayDetails",
   "dayTotals",
   "footer",
-  "travelEntry",
 ] as const satisfies readonly HomeSectionKey[];
 
 export const isToggleableHomeSection = (
@@ -92,7 +95,7 @@ export const DEFAULT_APP_SETTINGS: AppSettings = {
     monthStats: true,
     tools: true,
     footer: true,
-    travelEntry: true,
+    travelEntry: false,
   },
   homeSectionOrder: [...HOME_SECTION_DEFAULT_ORDER],
   budget: {
@@ -101,6 +104,8 @@ export const DEFAULT_APP_SETTINGS: AppSettings = {
     monthlyLimit: null,
     categoryLimits: {},
   },
+  travelModeEnabled: false,
+  moneyMoreCanMutateLedger: false,
 };
 
 export const isMigratedHomeSection = (key: string): key is MigratedHomeSectionKey =>
@@ -160,9 +165,11 @@ export const normalizeAppSettings = (value: unknown): AppSettings => {
       key,
       LOCKED_HOME_SECTIONS.includes(key as (typeof LOCKED_HOME_SECTIONS)[number])
         ? true
-        : typeof rawSections[key] === "boolean"
-          ? rawSections[key]
-          : DEFAULT_APP_SETTINGS.homeSections[key],
+        : key === "travelEntry"
+          ? false
+          : typeof rawSections[key] === "boolean"
+            ? rawSections[key]
+            : DEFAULT_APP_SETTINGS.homeSections[key],
     ]),
   ) as Record<HomeSectionKey, boolean>;
 
@@ -180,6 +187,8 @@ export const normalizeAppSettings = (value: unknown): AppSettings => {
       monthlyLimit: normalizeBudgetAmount(rawBudget.monthlyLimit),
       categoryLimits,
     },
+    travelModeEnabled: source.travelModeEnabled === true,
+    moneyMoreCanMutateLedger: source.moneyMoreCanMutateLedger === true,
   };
 };
 

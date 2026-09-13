@@ -49,9 +49,44 @@ export const formatWeekday = (date: string) =>
 
 export const getMonthKey = (date: string) => date.slice(0, 7);
 
+export const isValidMonthKey = (monthKey: string) => /^\d{4}-\d{2}$/.test(monthKey);
+
+export const shiftMonthKey = (monthKey: string, offset: number) => {
+  const [year, month] = monthKey.split("-").map(Number);
+  const next = new Date(year, month - 1 + offset, 1);
+  return `${next.getFullYear()}-${String(next.getMonth() + 1).padStart(2, "0")}`;
+};
+
 export const getDaysInMonth = (monthKey: string) => {
   const [year, month] = monthKey.split("-").map(Number);
   return new Date(year, month, 0).getDate();
+};
+
+export const listMonthDateKeys = (monthKey: string) => {
+  const days = getDaysInMonth(monthKey);
+  return Array.from(
+    { length: days },
+    (_, index) => `${monthKey}-${String(index + 1).padStart(2, "0")}`,
+  );
+};
+
+/** Monday-first calendar cells, including leading/trailing days from adjacent months. */
+export const buildMonthCalendarCells = (monthKey: string) => {
+  const dates = listMonthDateKeys(monthKey);
+  const first = dates[0];
+  const last = dates[dates.length - 1];
+  const weekday = parseDateKey(first).getDay() || 7;
+  const leading = weekday - 1;
+  const trailing = (7 - ((leading + dates.length) % 7)) % 7;
+  const cells: Array<{ date: string; inMonth: boolean }> = [];
+  for (let i = leading; i > 0; i -= 1) {
+    cells.push({ date: shiftDateKey(first, -i), inMonth: false });
+  }
+  for (const date of dates) cells.push({ date, inMonth: true });
+  for (let i = 1; i <= trailing; i += 1) {
+    cells.push({ date: shiftDateKey(last, i), inMonth: false });
+  }
+  return cells;
 };
 
 export const getWeekRange = (date: string): DateRange => {

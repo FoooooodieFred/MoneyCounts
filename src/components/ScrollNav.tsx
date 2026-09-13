@@ -113,31 +113,41 @@ const Icons = {
   ),
 };
 
-const getLinks = (_settings: AppSettings): NavItem[] => {
+const getLinks = (_settings: AppSettings, options?: { showTravel?: boolean }): NavItem[] => {
   void _settings;
-  return [
+  const showTravel = options?.showTravel === true;
+  const items: NavItem[] = [
     { href: "/", label: "记账", icon: Icons.pen, group: "entry" },
     { href: "/today", label: "今日", icon: Icons.calendar, group: "primary" },
     { href: "/search", label: "搜索", icon: Icons.search, group: "primary" },
     { href: "/day", label: "当日", icon: Icons.day, group: "sections" },
-    { href: "/week", label: "本周", icon: Icons.week, group: "sections" },
-    { href: "/month", label: "本月", icon: Icons.month, group: "sections" },
-    { href: "/year", label: "全年", icon: Icons.year, group: "sections" },
-    { href: "/travel", label: "旅游模式", icon: Icons.travel, group: "tools" },
+    { href: "/stats", label: "统计", icon: Icons.month, group: "sections" },
+  ];
+  if (showTravel) {
+    items.push({ href: "/travel", label: "旅游模式", icon: Icons.travel, group: "tools" });
+  }
+  items.push(
     { href: "/data", label: "数据管理", icon: Icons.data, group: "tools" },
     { href: "/console", label: "API 看台", icon: Icons.console, group: "tools" },
     { href: "/settings", label: "设置", icon: Icons.settings, group: "tools" },
-  ];
+  );
+  return items;
 };
 
 function isActive(href: string, pathname: string) {
   if (href === "/") return pathname === "/";
+  if (href === "/stats") {
+    return (
+      pathname === "/stats" || pathname === "/week" || pathname === "/month" || pathname === "/year"
+    );
+  }
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
 type ScrollNavProps = {
   settings: AppSettings;
   travelAccent?: boolean;
+  showTravel?: boolean;
   themeMode: "light" | "dark";
   onToggleTheme: () => void;
 };
@@ -234,12 +244,13 @@ function applyCollapsedDataset(collapsed: boolean) {
 export function ScrollNav({
   settings,
   travelAccent = false,
+  showTravel = false,
   themeMode,
   onToggleTheme,
 }: ScrollNavProps) {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
-  const links = getLinks(settings);
+  const links = getLinks(settings, { showTravel });
   const entry = links.filter((l) => l.group === "entry");
   const primary = links.filter((l) => l.group === "primary");
   const sections = links.filter((l) => l.group === "sections");
@@ -304,12 +315,13 @@ export function ScrollNav({
 export function MobileScrollNav({
   settings,
   travelAccent = false,
+  showTravel = false,
   themeMode,
   onToggleTheme,
 }: ScrollNavProps) {
   const location = useLocation();
-  const links = getLinks(settings).filter((link) =>
-    ["/", "/today", "/search", "/travel", "/data", "/settings"].includes(link.href),
+  const links = getLinks(settings, { showTravel }).filter((link) =>
+    ["/", "/today", "/search", "/stats", "/travel", "/data", "/settings"].includes(link.href),
   );
 
   return (

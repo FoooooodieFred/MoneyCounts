@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	maxMessages         = 24
+	maxMessages         = 48
 	maxMessageChars     = 20_000
 	maxCompletionTokens = 16_384
 	requestTimeout      = 120 * time.Second
@@ -32,12 +32,14 @@ type chatMessage struct {
 }
 
 type chatBody struct {
-	BaseURL     string        `json:"baseUrl"`
-	Model       string        `json:"model"`
-	Messages    []chatMessage `json:"messages"`
-	Temperature *float64      `json:"temperature"`
-	JSONMode    *bool         `json:"jsonMode"`
-	MaxTokens   *int          `json:"maxTokens"`
+	BaseURL     string          `json:"baseUrl"`
+	Model       string          `json:"model"`
+	Messages    json.RawMessage `json:"messages"`
+	Temperature *float64        `json:"temperature"`
+	JSONMode    *bool           `json:"jsonMode"`
+	MaxTokens   *int            `json:"maxTokens"`
+	Tools       json.RawMessage `json:"tools"`
+	ToolChoice  string          `json:"toolChoice"`
 }
 
 func NormalizeChatCompletionsURL(baseURL string) string {
@@ -90,7 +92,7 @@ func jsonError(w http.ResponseWriter, message string, status int) {
 }
 
 func isChatRole(role string) bool {
-	return role == "system" || role == "user" || role == "assistant"
+	return role == "system" || role == "user" || role == "assistant" || role == "tool"
 }
 
 func HandleLlmChat(w http.ResponseWriter, r *http.Request) {
@@ -136,16 +138,32 @@ func HandleLlmChat(w http.ResponseWriter, r *http.Request) {
 		jsonError(w, "messages 不能为空。", http.StatusBadRequest)
 		return
 	}
-	if len(body.Messages) > maxMessages {
+	var messages []map[string]any
+	if err := json.Unmarshal(body.Messages, &messages); err != nil || len(messages) == 0 {
+		jsonError(w, "messages 不能为空。", http.StatusBadRequest)
+		return
+	}
+	if len(messages) > maxMessages {
 		jsonError(w, "messages 过多。", http.StatusBadRequest)
 		return
 	}
-	for _, message := range body.Messages {
-		if !isChatRole(message.Role) {
+	for _, message := range messages {
+		role, _ := message["role"].(string)
+		if !isChatRole(role) {
 			jsonError(w, "message.role / content 无效。", http.StatusBadRequest)
 			return
 		}
-		if len(message.Content) > maxMessageChars {
+		content := ""
+		switch value := message["content"].(type) {
+		case string:
+			content = value
+		case nil:
+			content = ""
+		default:
+			jsonError(w, "message.role / content 无效。", http.StatusBadRequest)
+			return
+		}
+		if len(content) > maxMessageChars {
 			jsonError(w, "单条 message 过长。", http.StatusBadRequest)
 			return
 		}
@@ -157,11 +175,21 @@ func HandleLlmChat(w http.ResponseWriter, r *http.Request) {
 	}
 	payload := map[string]any{
 		"model":       strings.TrimSpace(body.Model),
-		"messages":    body.Messages,
+		"messages":    messages,
 		"temperature": temperature,
 		"stream":      false,
 	}
-	jsonMode := true
+	hasTools := len(body.Tools) > 0 && string(body.Tools) != "null"
+	if hasTools {
+		var tools any
+		if err := json.Unmarshal(body.Tools, &tools); err == nil {
+			payload["tools"] = tools
+		}
+		if body.ToolChoice == "auto" || body.ToolChoice == "none" {
+			payload["tool_choice"] = body.ToolChoice
+		}
+	}
+	jsonMode := !hasTools
 	if body.JSONMode != nil {
 		jsonMode = *body.JSONMode
 	}

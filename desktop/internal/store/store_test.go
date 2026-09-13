@@ -43,6 +43,20 @@ func TestFileSizeMissingIsZero(t *testing.T) {
 	}
 }
 
+func TestResolveCustomPath(t *testing.T) {
+	def := "/tmp/default/store.json"
+	if got := ResolveCustomPath(def, ""); got != def {
+		t.Fatalf("empty: %s", got)
+	}
+	if got := ResolveCustomPath(def, "relative.json"); got != def {
+		t.Fatalf("relative: %s", got)
+	}
+	custom := "/var/ledger/store.json"
+	if got := ResolveCustomPath(def, custom); got != custom {
+		t.Fatalf("abs: %s", got)
+	}
+}
+
 func TestWriteRejectsInvalidJSON(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "store.json")
 	if err := Write(path, []byte("not-json")); err == nil {

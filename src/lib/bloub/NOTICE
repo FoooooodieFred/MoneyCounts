@@ -1,0 +1,2 @@
+Vendored from https://github.com/jeremy-prt/bloub (MIT).
+Framework-free engine only (`src/bot`); React wrapper lives in `src/components/BloubAvatar.tsx`.

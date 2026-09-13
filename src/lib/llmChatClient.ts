@@ -1,8 +1,15 @@
-import type { LlmChatMessage } from "./llmProxy";
+import type { LlmChatMessage, LlmToolCallPayload, LlmToolDefinition } from "./llmProxy";
 import type { LlmApiSettings } from "./llmApiSettings";
+
+export type LlmToolCall = {
+  id: string;
+  name: string;
+  arguments: string;
+};
 
 export type LlmChatCompletion = {
   content: string;
+  toolCalls: LlmToolCall[];
   raw: unknown;
 };
 
@@ -39,15 +46,54 @@ const contentFromCompletion = (payload: unknown) => {
   return "";
 };
 
+const toolCallsFromCompletion = (payload: unknown): LlmToolCall[] => {
+  if (!payload || typeof payload !== "object") return [];
+  const choices = (payload as { choices?: unknown }).choices;
+  if (!Array.isArray(choices) || !choices[0] || typeof choices[0] !== "object") return [];
+  const message = (
+    choices[0] as {
+      message?: {
+        tool_calls?: LlmToolCallPayload[];
+        function_call?: { name?: unknown; arguments?: unknown };
+      };
+    }
+  ).message;
+  const calls = message?.tool_calls;
+  if (Array.isArray(calls) && calls.length) {
+    return calls
+      .map((item, index) => ({
+        id: item.id || `call_${index + 1}`,
+        name: item.function?.name ?? "",
+        arguments: item.function?.arguments ?? "{}",
+      }))
+      .filter((item) => item.name);
+  }
+  const fn = message?.function_call;
+  if (fn && typeof fn.name === "string" && fn.name.trim()) {
+    return [
+      {
+        id: "call_1",
+        name: fn.name.trim(),
+        arguments: typeof fn.arguments === "string" ? fn.arguments : "{}",
+      },
+    ];
+  }
+  return [];
+};
+
 export const requestLlmChat = async (options: {
   settings: LlmApiSettings;
   messages: LlmChatMessage[];
   jsonMode?: boolean;
   maxTokens?: number;
   temperature?: number;
+  tools?: LlmToolDefinition[];
+  toolChoice?: "auto" | "none";
+  signal?: AbortSignal;
+  allowEmptyContent?: boolean;
 }): Promise<LlmChatCompletion> => {
   const { settings, messages } = options;
-  const jsonMode = options.jsonMode ?? settings.jsonMode;
+  const jsonMode = options.jsonMode ?? (options.tools?.length ? false : settings.jsonMode);
   const response = await fetch("/api/llm/chat", {
     method: "POST",
     headers: {
@@ -61,7 +107,10 @@ export const requestLlmChat = async (options: {
       temperature: options.temperature ?? 0,
       jsonMode,
       maxTokens: options.maxTokens,
+      tools: options.tools,
+      toolChoice: options.toolChoice,
     }),
+    signal: options.signal,
   });
 
   const rawText = await response.text();
@@ -77,8 +126,11 @@ export const requestLlmChat = async (options: {
   }
 
   const content = contentFromCompletion(payload).trim();
-  if (!content) throw new Error("模型没有返回内容。");
-  return { content, raw: payload };
+  const toolCalls = toolCallsFromCompletion(payload);
+  if (!content && !toolCalls.length && !options.allowEmptyContent) {
+    throw new Error("模型没有返回内容。");
+  }
+  return { content, toolCalls, raw: payload };
 };
 
 export const testLlmConnection = async (settings: LlmApiSettings) => {

@@ -21,14 +21,6 @@ type File struct {
 	Keys    map[string]string `json:"keys"`
 }
 
-func Path() (string, error) {
-	dir, err := os.UserConfigDir()
-	if err != nil {
-		return "", err
-	}
-	return filepath.Join(dir, AppName, StoreFileName), nil
-}
-
 func Read(path string) ([]byte, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {

@@ -34,8 +34,8 @@ describe("ledgerParseMode", () => {
   it("defaults to local rules and rejects unknown values", () => {
     expect(normalizeLedgerParseMode(undefined)).toBe("rules");
     expect(normalizeLedgerParseMode("gpt")).toBe(DEFAULT_LEDGER_PARSE_MODE);
-    expect(ledgerParseModeLabel("rules")).toBe("规则识别·快且本地");
-    expect(ledgerParseModeLabel("llm")).toBe("LLM识别·精确有效");
+    expect(ledgerParseModeLabel("rules")).toBe("本地");
+    expect(ledgerParseModeLabel("llm")).toBe("AI");
   });
 
   it("persists the selected parse mode", () => {

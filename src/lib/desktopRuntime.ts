@@ -5,6 +5,12 @@ export type DesktopOpenedFile = {
   cancelled?: boolean;
 };
 
+export type DesktopStoreRelocateResult = {
+  cancelled?: boolean;
+  path: string;
+  size: number;
+};
+
 export type DesktopAppBindings = {
   LoadStore: () => Promise<string>;
   SaveStore: (contents: string) => Promise<void>;
@@ -12,6 +18,8 @@ export type DesktopAppBindings = {
   OpenTextFile: (filterPattern: string) => Promise<DesktopOpenedFile>;
   NotifyFlushed: () => Promise<void>;
   StoreInfo?: () => Promise<{ path: string; size: number }>;
+  ChooseStorePath?: () => Promise<DesktopStoreRelocateResult>;
+  ResetStorePath?: () => Promise<DesktopStoreRelocateResult>;
   OpenURL?: (url: string) => Promise<void>;
 };
 

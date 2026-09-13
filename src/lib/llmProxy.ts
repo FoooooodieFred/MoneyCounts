@@ -2,9 +2,32 @@
  * OpenAI 兼容 Chat Completions 同源代理。
  * 浏览器把用户自己的 Key 放在 Authorization；本函数只转发，不落盘。
  */
+export type LlmChatRole = "system" | "user" | "assistant" | "tool";
+
+export type LlmToolCallPayload = {
+  id: string;
+  type?: "function";
+  function: {
+    name: string;
+    arguments: string;
+  };
+};
+
 export type LlmChatMessage = {
-  role: "system" | "user" | "assistant";
+  role: LlmChatRole;
   content: string;
+  name?: string;
+  tool_call_id?: string;
+  tool_calls?: LlmToolCallPayload[];
+};
+
+export type LlmToolDefinition = {
+  type: "function";
+  function: {
+    name: string;
+    description: string;
+    parameters: Record<string, unknown>;
+  };
 };
 
 export type LlmChatProxyBody = {
@@ -14,10 +37,12 @@ export type LlmChatProxyBody = {
   temperature?: number;
   jsonMode?: boolean;
   maxTokens?: number;
+  tools?: LlmToolDefinition[];
+  toolChoice?: "auto" | "none";
 };
 
 const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "[::1]", "::1"]);
-const MAX_MESSAGES = 24;
+const MAX_MESSAGES = 48;
 const MAX_MESSAGE_CHARS = 20_000;
 /** 表格导入等长输出；供应商若更低会自行截断或报错。 */
 export const MAX_COMPLETION_TOKENS = 16_384;
@@ -59,8 +84,40 @@ const jsonError = (message: string, status: number) =>
     },
   });
 
-const isChatRole = (value: unknown): value is LlmChatMessage["role"] =>
-  value === "system" || value === "user" || value === "assistant";
+const isChatRole = (value: unknown): value is LlmChatRole =>
+  value === "system" || value === "user" || value === "assistant" || value === "tool";
+
+const normalizeMessageContent = (value: unknown) => {
+  if (typeof value === "string") return value;
+  if (value == null) return "";
+  return null;
+};
+
+const sanitizeToolCalls = (value: unknown): LlmToolCallPayload[] | undefined => {
+  if (!Array.isArray(value) || !value.length) return undefined;
+  const calls: LlmToolCallPayload[] = [];
+  for (const item of value) {
+    if (!item || typeof item !== "object") continue;
+    const record = item as {
+      id?: unknown;
+      type?: unknown;
+      function?: { name?: unknown; arguments?: unknown };
+    };
+    const name = record.function?.name;
+    if (typeof name !== "string" || !name.trim()) continue;
+    const args = record.function?.arguments;
+    calls.push({
+      id:
+        typeof record.id === "string" && record.id.trim() ? record.id : `call_${calls.length + 1}`,
+      type: "function",
+      function: {
+        name: name.trim(),
+        arguments: typeof args === "string" ? args : JSON.stringify(args ?? {}),
+      },
+    });
+  }
+  return calls.length ? calls : undefined;
+};
 
 export const handleLlmChatRequest = async (request: Request): Promise<Response> => {
   const apiKey =
@@ -93,21 +150,37 @@ export const handleLlmChatRequest = async (request: Request): Promise<Response> 
   if (body.messages.length > MAX_MESSAGES) return jsonError("messages 过多。", 400);
 
   for (const message of body.messages) {
-    if (!message || !isChatRole(message.role) || typeof message.content !== "string") {
+    const content = normalizeMessageContent(message?.content);
+    if (!message || !isChatRole(message.role) || content == null) {
       return jsonError("message.role / content 无效。", 400);
     }
-    if (message.content.length > MAX_MESSAGE_CHARS) {
+    if (content.length > MAX_MESSAGE_CHARS) {
       return jsonError("单条 message 过长。", 400);
     }
+    message.content = content;
   }
 
   const payload: Record<string, unknown> = {
     model: body.model.trim(),
-    messages: body.messages.map((item) => ({ role: item.role, content: item.content })),
+    messages: body.messages.map((item) => {
+      const next: Record<string, unknown> = { role: item.role, content: item.content };
+      if (item.name) next.name = item.name;
+      if (item.tool_call_id) next.tool_call_id = item.tool_call_id;
+      if (item.tool_calls?.length) next.tool_calls = sanitizeToolCalls(item.tool_calls);
+      return next;
+    }),
     temperature: typeof body.temperature === "number" ? body.temperature : 0,
     stream: false,
   };
-  if (body.jsonMode !== false) {
+  const tools = Array.isArray(body.tools) ? body.tools : [];
+  const hasTools = tools.length > 0;
+  if (hasTools) {
+    payload.tools = tools.slice(0, 16);
+    if (body.toolChoice === "none" || body.toolChoice === "auto") {
+      payload.tool_choice = body.toolChoice;
+    }
+  }
+  if (body.jsonMode === true || (body.jsonMode !== false && !hasTools)) {
     payload.response_format = { type: "json_object" };
   }
   if (typeof body.maxTokens === "number" && body.maxTokens > 0) {
