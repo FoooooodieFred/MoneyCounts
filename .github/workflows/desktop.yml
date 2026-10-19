@@ -2,6 +2,12 @@ name: Desktop
 
 on:
   workflow_dispatch:
+    inputs:
+      release_tag:
+        description: "把 macOS 安装包挂到这个 Release（留空表示不挂）"
+        required: false
+        default: ""
+        type: string
   push:
     tags:
       - "v*"
@@ -12,6 +18,8 @@ env:
 jobs:
   macos:
     runs-on: macos-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
@@ -31,6 +39,29 @@ jobs:
           name: moneycounts-macos
           path: desktop/build/bin/
           if-no-files-found: error
+      # .app 必须打成保留可执行位的 zip，只有在 macOS 上打包才做得到
+      # （Windows 打的 zip 会丢掉 +x，解压后跑不起来）。
+      - name: Package macOS app
+        if: ${{ github.ref_type == 'tag' || inputs.release_tag != '' }}
+        working-directory: desktop/build/bin
+        run: ditto -c -k --keepParent MoneyCounts.app MoneyCounts-macos-arm64.zip
+      - name: Attach macOS package to the release
+        if: ${{ github.ref_type == 'tag' || inputs.release_tag != '' }}
+        working-directory: desktop/build/bin
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ inputs.release_tag || github.ref_name }}
+        run: |
+          for attempt in 1 2 3 4 5 6 7 8 9 10; do
+            if gh release upload "$TAG" MoneyCounts-macos-arm64.zip --clobber; then
+              echo "uploaded MoneyCounts-macos-arm64.zip to $TAG"
+              exit 0
+            fi
+            echo "release $TAG not ready yet, retry in 15s ($attempt/10)"
+            sleep 15
+          done
+          echo "could not attach the macOS package to $TAG"
+          exit 1
 
   windows:
     runs-on: windows-latest
