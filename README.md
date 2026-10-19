@@ -3,8 +3,8 @@
 本地优先的多币种智能记账本：自然语言入账、35 分类、多货币、旅游分账。
 
 **网页** · [moneycounts.freddyhu2007.workers.dev](https://moneycounts.freddyhu2007.workers.dev/)  
-**macOS（Apple 芯片）** · [下载 .app zip](https://github.com/FoooooodieFred/MoneyCounts/releases/download/v1.3.0/MoneyCounts-macos-arm64-v1.3.0.zip)  
-**Windows（64 位）** · [下载 .exe zip](https://github.com/FoooooodieFred/MoneyCounts/releases/latest/download/MoneyCounts-windows-amd64.zip)
+**macOS（Apple 芯片）** · [下载 .app zip](https://github.com/FoooooodieFred/MoneyCounts/releases/latest/download/MoneyCounts-macos-arm64.zip)  
+**Windows（64 位）** · [下载 .exe zip](https://github.com/FoooooodieFred/MoneyCounts/releases/latest/download/MoneyCounts-windows-amd64.zip) · [安装版](https://github.com/FoooooodieFred/MoneyCounts/releases/download/v1.4.0/MoneyCounts-windows-amd64-installer-v1.4.0.exe)
 
 网页由 Cloudflare Workers 发布 `main` 上的 `dist/`。
 
@@ -185,8 +185,8 @@ License: ISC
 Local‑first multi‑currency smart ledger: natural‑language entry, 35 categories, multi‑currency support, travel expense splitting.
 
 **Web** · [moneycounts.freddyhu2007.workers.dev](https://moneycounts.freddyhu2007.workers.dev/)  
-**macOS (Apple Silicon)** · [download .app zip](https://github.com/FoooooodieFred/MoneyCounts/releases/download/v1.3.0/MoneyCounts-macos-arm64-v1.3.0.zip)  
-**Windows (64-bit)** · [download .exe zip](https://github.com/FoooooodieFred/MoneyCounts/releases/latest/download/MoneyCounts-windows-amd64.zip)
+**macOS (Apple Silicon)** · [download .app zip](https://github.com/FoooooodieFred/MoneyCounts/releases/latest/download/MoneyCounts-macos-arm64.zip)  
+**Windows (64-bit)** · [download .exe zip](https://github.com/FoooooodieFred/MoneyCounts/releases/latest/download/MoneyCounts-windows-amd64.zip) · [installer](https://github.com/FoooooodieFred/MoneyCounts/releases/download/v1.4.0/MoneyCounts-windows-amd64-installer-v1.4.0.exe)
 
 Cloudflare Workers publishes `dist/` from **`main`**.
 
