@@ -142,7 +142,7 @@ export const runMoneyMoreTurn = async (options: {
     ...options.history,
     { role: "user", content: options.userText },
   ];
-  let toolsEnabled = true;
+  let toolsEnabled = options.settings.supportsTools;
   const collectedCards: MoneyMoreCard[] = [];
 
   for (let round = 0; round < MAX_TOOL_ROUNDS; round += 1) {
@@ -159,6 +159,7 @@ export const runMoneyMoreTurn = async (options: {
         toolChoice: toolsEnabled ? "auto" : "none",
         signal: options.signal,
         allowEmptyContent: true,
+        scene: "agent",
       });
     } catch (error) {
       const message = error instanceof Error ? error.message : "";

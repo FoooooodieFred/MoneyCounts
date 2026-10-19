@@ -16,6 +16,7 @@ export const LLM_API_SETTINGS_KEY = "monthly-smart-ledger:llm-api:v1";
 export const LEDGER_PARSE_MODE_KEY = "monthly-smart-ledger:ledger-parse-mode";
 export const SIDEBAR_COLLAPSED_KEY = "moneycounts:sidebar-collapsed";
 export const LLM_CALL_LOG_KEY = "monthly-smart-ledger:llm-call-log:v1";
+export const LLM_USAGE_KEY = "monthly-smart-ledger:llm-usage:v1";
 
 /** 清空全部数据时删除的 kv 项（不含 sessionStorage 的 LLM 调用日志）。 */
 export const PERSISTED_KV_KEYS = [
@@ -33,4 +34,5 @@ export const PERSISTED_KV_KEYS = [
   LLM_API_SETTINGS_KEY,
   LEDGER_PARSE_MODE_KEY,
   SIDEBAR_COLLAPSED_KEY,
+  LLM_USAGE_KEY,
 ] as const;

@@ -272,9 +272,15 @@ export function NaturalLanguageInput({
       onClearStatus();
       return;
     }
-    const parsed = parseQuickExpenseLines(input, defaultCurrency);
-    setPreviews(parsed);
-    setError(parseMode === "llm" || parsed.length ? "" : "需包含金额，例如「午餐 45 港币」");
+    let cancelled = false;
+    void parseQuickExpenseLines(input, defaultCurrency).then((parsed) => {
+      if (cancelled) return;
+      setPreviews(parsed);
+      setError(parseMode === "llm" || parsed.length ? "" : "需包含金额，例如「午餐 45 港币」");
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [input, defaultCurrency, onClearStatus, parseMode]);
 
   useEffect(() => {
@@ -345,7 +351,7 @@ export function NaturalLanguageInput({
     });
   }, [isParsing, previewRecords]);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const fromCompact = event.currentTarget.classList.contains("nl-compact-entry");
     const rawInput = input;
@@ -357,7 +363,7 @@ export function NaturalLanguageInput({
       onSubmit(previews, rawInput, parseMode);
       setError("");
     } else {
-      const parsed = parseQuickExpenseLines(rawInput, defaultCurrency);
+      const parsed = await parseQuickExpenseLines(rawInput, defaultCurrency);
       if (!parsed.length) {
         setError("无法解析，请检查是否包含金额");
         return;

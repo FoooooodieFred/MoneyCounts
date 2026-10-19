@@ -26,14 +26,8 @@ import { IconLedger } from "./components/MoneyMoreIcons";
 import { FloatingActions } from "./components/FloatingActions";
 import { StatsCurrencyPicker, SummaryModeToggle } from "./components/StatsControls";
 import { BudgetOverview } from "./components/BudgetOverview";
-import { TravelPage } from "./pages/TravelPage";
-import { SettingsPage, BackupImportPreview } from "./pages/SettingsPage";
-import { ApiConsolePage } from "./pages/ApiConsolePage";
-import { DataManagementPage } from "./pages/DataManagementPage";
-import { SearchPage, SearchableLedgerRecord } from "./pages/SearchPage";
-import { SectionPage } from "./pages/SectionPage";
-import { StatsDashboardPage } from "./pages/StatsDashboardPage";
-import { DaySummaryPage } from "./pages/DaySummaryPage";
+import type { BackupImportPreview } from "./pages/SettingsPage";
+import type { SearchableLedgerRecord } from "./pages/SearchPage";
 import { JsonImportModal } from "./components/JsonImportModal";
 import { MoneyMoreAgent } from "./components/MoneyMoreAgent";
 import { StorageQuotaGuard, type StorageQuotaGuardModel } from "./components/StorageQuotaGuard";
@@ -143,11 +137,13 @@ import {
   remapLegacyCategoryName,
 } from "./lib/nlLedgerCategories";
 import {
+  activeLlmProfile,
   isLlmApiVerified,
   llmApiForBackup,
-  normalizeLlmApiSettings,
-  readLlmApiSettings,
-  saveLlmApiSettings,
+  normalizeLlmApiStore,
+  readLlmApiStore,
+  saveLlmApiStore,
+  type LlmApiStore,
 } from "./lib/llmApiSettings";
 import { RouteEnter } from "./components/RouteEnter";
 import {
@@ -183,6 +179,40 @@ const LazyPieChart = lazy(() =>
 );
 const LazyTrendChart = lazy(() =>
   import("./components/LazyCharts").then((module) => ({ default: module.TrendChart })),
+);
+
+// Route-level code splitting: each page ships as its own chunk, so the entry
+// bundle only carries the home screen.
+const LazyTravelPage = lazy(() =>
+  import("./pages/TravelPage").then((module) => ({ default: module.TravelPage })),
+);
+const LazySettingsPage = lazy(() =>
+  import("./pages/SettingsPage").then((module) => ({ default: module.SettingsPage })),
+);
+const LazyApiConsolePage = lazy(() =>
+  import("./pages/ApiConsolePage").then((module) => ({ default: module.ApiConsolePage })),
+);
+const LazyDataManagementPage = lazy(() =>
+  import("./pages/DataManagementPage").then((module) => ({
+    default: module.DataManagementPage,
+  })),
+);
+const LazySearchPage = lazy(() =>
+  import("./pages/SearchPage").then((module) => ({ default: module.SearchPage })),
+);
+const LazySectionPage = lazy(() =>
+  import("./pages/SectionPage").then((module) => ({ default: module.SectionPage })),
+);
+const LazyStatsDashboardPage = lazy(() =>
+  import("./pages/StatsDashboardPage").then((module) => ({
+    default: module.StatsDashboardPage,
+  })),
+);
+const LazyDaySummaryPage = lazy(() =>
+  import("./pages/DaySummaryPage").then((module) => ({ default: module.DaySummaryPage })),
+);
+const LazyTokenConsolePage = lazy(() =>
+  import("./pages/TokenConsolePage").then((module) => ({ default: module.TokenConsolePage })),
 );
 
 type LedgerEntry = {
@@ -236,7 +266,7 @@ type PreparedBackupImport = {
   travelState: TravelState;
   travelHistory: TravelHistoryRecord[];
   pendingTravelDeletes: PendingTravelHistoryDelete[];
-  llmApi?: ReturnType<typeof readLlmApiSettings>;
+  llmApi?: LlmApiStore;
   preview: BackupImportPreview;
 };
 
@@ -630,6 +660,9 @@ const normalizeStoredEntries = (entries: Partial<LedgerEntry>[] | undefined): Le
     (entry) => sanitizeEntry(entry ?? {}, "CNY"),
   );
 };
+
+/** How long the ledger write waits for the user to stop typing. */
+const LEDGER_PERSIST_DEBOUNCE_MS = 400;
 
 const serializeLedger = (ledger: LedgerData) =>
   JSON.stringify(
@@ -1115,20 +1148,31 @@ function App() {
   const [isImportingSpreadsheet, setIsImportingSpreadsheet] = useState(false);
   const [quotaGuard, setQuotaGuard] = useState<StorageQuotaGuardModel | null>(null);
   const storageWarnShownRef = useRef(false);
+  const pendingLedgerRef = useRef<LedgerData | null>(null);
+  const persistTimerRef = useRef(0);
+  const [storageUsageVersion, setStorageUsageVersion] = useState(0);
   const [desktopStoreInfo, setDesktopStoreInfo] = useState<{ path: string; size: number } | null>(
     null,
   );
   const [desktopUpdateOffer, setDesktopUpdateOffer] = useState<DesktopUpdateOffer | null>(null);
-  const [llmSettings, setLlmSettings] = useState(() => readLlmApiSettings());
+  const [llmStore, setLlmStore] = useState<LlmApiStore>(() => readLlmApiStore());
+  const llmSettings = useMemo(() => activeLlmProfile(llmStore), [llmStore]);
   const [moneyMoreDraft, setMoneyMoreDraft] = useState<MoneyMoreLedgerDraft | null>(null);
   const [storageLocationMessage, setStorageLocationMessage] = useState("");
   const [webLedgerFileName, setWebLedgerFileName] = useState<string | null>(null);
 
-  const selectedEntries = ledger[selectedDate] ?? makeDayEntries(dailyDefaultCurrency);
+  // `makeDayEntries` allocates 35 categories x 50 rows, so rebuilding it on every
+  // render also invalidated every memo downstream of `selectedEntries`.
+  const selectedEntries = useMemo(
+    () => ledger[selectedDate] ?? makeDayEntries(dailyDefaultCurrency),
+    [ledger, selectedDate, dailyDefaultCurrency],
+  );
   const monthKey = getMonthKey(selectedDate);
-  const weekRange = getWeekRange(selectedDate);
-  const visibleRowCounts =
-    visibleRowCountsByDate[selectedDate] ?? getDefaultRowCounts(selectedEntries);
+  const weekRange = useMemo(() => getWeekRange(selectedDate), [selectedDate]);
+  const visibleRowCounts = useMemo(
+    () => visibleRowCountsByDate[selectedDate] ?? getDefaultRowCounts(selectedEntries),
+    [visibleRowCountsByDate, selectedDate, selectedEntries],
+  );
   const weekTitle = `${formatMonthDay(weekRange.start)}-${formatMonthDay(weekRange.end)} 本周统计`;
   const allCurrencies = useMemo(
     () => Array.from(new Set([...DEFAULT_CURRENCIES, ...customCurrencies])),
@@ -1136,10 +1180,11 @@ function App() {
   );
   const statVariant = Math.abs(parseDateKey(selectedDate).getDate()) % 3;
 
-  useEffect(() => {
-    const serialized = serializeLedger(ledger);
+  const persistLedger = useCallback((nextLedger: LedgerData) => {
+    const serialized = serializeLedger(nextLedger);
     if (isDesktopKv()) {
       kvSet(STORAGE_KEY, serialized);
+      setStorageUsageVersion((version) => version + 1);
       return;
     }
     const used = measureLocalStorageBytes();
@@ -1166,7 +1211,39 @@ function App() {
       });
     }
     void writeBoundLedgerFile();
-  }, [ledger]);
+    setStorageUsageVersion((version) => version + 1);
+  }, []);
+
+  // Writing on every keystroke re-serializes the whole ledger and rescans
+  // localStorage, which is what makes typing in the amount fields feel heavy.
+  // Debounce the write and flush it when the tab is hidden or closed.
+  useEffect(() => {
+    pendingLedgerRef.current = ledger;
+    window.clearTimeout(persistTimerRef.current);
+    persistTimerRef.current = window.setTimeout(() => {
+      persistTimerRef.current = 0;
+      persistLedger(ledger);
+    }, LEDGER_PERSIST_DEBOUNCE_MS);
+  }, [ledger, persistLedger]);
+
+  useEffect(() => {
+    const flush = () => {
+      if (!persistTimerRef.current) return;
+      window.clearTimeout(persistTimerRef.current);
+      persistTimerRef.current = 0;
+      if (pendingLedgerRef.current) persistLedger(pendingLedgerRef.current);
+    };
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "hidden") flush();
+    };
+    window.addEventListener("pagehide", flush);
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    return () => {
+      window.removeEventListener("pagehide", flush);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      flush();
+    };
+  }, [persistLedger]);
 
   useEffect(() => {
     if (!isDesktopKv()) return;
@@ -1179,7 +1256,7 @@ function App() {
   }, [ledger, appSettings, travelState, travelHistory]);
 
   useEffect(() => {
-    setLlmSettings(readLlmApiSettings());
+    setLlmStore(readLlmApiStore());
   }, [location.pathname]);
 
   useEffect(() => {
@@ -2179,7 +2256,7 @@ function App() {
   };
 
   const downloadJsonBackup = (ledgerToExport: LedgerData) => {
-    const llmSettings = readLlmApiSettings();
+    const llmStore = readLlmApiStore();
     const payload = buildBackupPayload({
       ledger: JSON.parse(serializeLedger(ledgerToExport)),
       exchange,
@@ -2192,7 +2269,7 @@ function App() {
       travelState,
       travelHistory,
       pendingTravelDeletes,
-      llmApi: llmApiForBackup(llmSettings),
+      llmApi: llmApiForBackup(llmStore),
     });
     void saveTextFile(
       makeBackupFilename(new Date(payload.exportedAt)),
@@ -2274,7 +2351,7 @@ function App() {
       payload.data.pendingTravelDeletes,
       currencyNormalizer,
     );
-    const llmApi = payload.data.llmApi ? normalizeLlmApiSettings(payload.data.llmApi) : undefined;
+    const llmApi = payload.data.llmApi ? normalizeLlmApiStore(payload.data.llmApi) : undefined;
 
     return {
       payload,
@@ -2377,7 +2454,7 @@ function App() {
     setTravelHistoryMergeMode(false);
 
     if (preparedJsonImport.llmApi) {
-      saveLlmApiSettings(preparedJsonImport.llmApi);
+      saveLlmApiStore(preparedJsonImport.llmApi);
     }
 
     if (preparedJsonImport.backupReminder) {
@@ -2708,7 +2785,7 @@ function App() {
   const importLegacySpreadsheet = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
-    const settings = readLlmApiSettings();
+    const settings = activeLlmProfile(readLlmApiStore());
     if (!isLlmApiVerified(settings)) {
       setImportMessage("请先到「API 看台」配置并验证 LLM 模型。");
       event.target.value = "";
@@ -2856,7 +2933,7 @@ function App() {
       remainingBytes: Math.max(0, LOCAL_STORAGE_QUOTA_BYTES - usedBytes),
       ledgerBytes: utf16ByteLength(kvGet(STORAGE_KEY) ?? ""),
     };
-  }, [customCurrencies, desktopStoreInfo, exchange, ledger, travelHistory, travelState]);
+  }, [customCurrencies, desktopStoreInfo, exchange, storageUsageVersion, travelHistory, travelState]);
 
   const renderStatsCard = (
     title: string,
@@ -3235,6 +3312,19 @@ function App() {
     });
     return items;
   }, [selectedEntries, visibleRowCounts]);
+
+  // Shared by /day and /stats. Mapping it inline produced a new array on every
+  // render, so both pages re-ran their own memos each time.
+  const todayDayEntries = useMemo(
+    () =>
+      todayActiveEntries.map((entry) => ({
+        category: entry.category,
+        amount: entry.amount,
+        currency: entry.currency,
+        note: entry.note,
+      })),
+    [todayActiveEntries],
+  );
 
   const travelEndDate = travelState.active
     ? selectedDate
@@ -4084,7 +4174,7 @@ function App() {
               currencies={allCurrencies}
               onDefaultCurrencyChange={(currency) => switchDailyDefaultCurrency(currency)}
               onSubmit={handleQuickExpenses}
-              apiConfigured={isLlmApiVerified(readLlmApiSettings())}
+              apiConfigured={isLlmApiVerified(llmSettings)}
               onConfirm={confirmNaturalLedgerImport}
               onCancel={cancelNaturalLedgerPreview}
               onClearStatus={clearQuickEntryStatus}
@@ -4587,6 +4677,34 @@ function App() {
   const navTravelAccent = location.pathname === "/travel" || travelState.active;
   const showTravelNav = appSettings.travelModeEnabled || travelState.active;
 
+  // A fresh object every render invalidated MoneyMoreAgent's own memo, so the
+  // tool layer was rebuilt on every keystroke anywhere in the app.
+  const moneyMoreContext = useMemo(
+    () => ({
+      selectedDate,
+      defaultCurrency: dailyDefaultCurrency,
+      currencies: allCurrencies,
+      records: moneyMoreRecords,
+      budget: appSettings.budget,
+      travelActive: travelState.active,
+      travelName: travelState.billName,
+      canMutateLedger: appSettings.moneyMoreCanMutateLedger,
+      convert: (amount: number, from: Currency, to: Currency) =>
+        convert(amount, from, to, exchange),
+    }),
+    [
+      allCurrencies,
+      appSettings.budget,
+      appSettings.moneyMoreCanMutateLedger,
+      dailyDefaultCurrency,
+      exchange,
+      moneyMoreRecords,
+      selectedDate,
+      travelState.active,
+      travelState.billName,
+    ],
+  );
+
   return (
     <>
       <div className="global-nav-host">
@@ -4605,8 +4723,11 @@ function App() {
         themeMode={themeMode}
         onToggleTheme={() => setThemeMode((mode) => (mode === "dark" ? "light" : "dark"))}
       />
-      <RouteEnter key={location.pathname}>
-        <Routes>
+      {/* Suspense 放在 RouteEnter 外面：这样 RouteEnter 挂载时页面内容已经就位，
+          入场动画才会作用在真正的卡片上，而不是作用在加载占位上。 */}
+      <Suspense fallback={<div className="chart-fallback chart-fallback--wide">页面载入中…</div>}>
+        <RouteEnter key={location.pathname}>
+          <Routes>
           <Route
             path="/"
             element={
@@ -4633,15 +4754,15 @@ function App() {
           <Route
             path="/today"
             element={
-              <SectionPage data-section="screen-today">
+              <LazySectionPage data-section="screen-today">
                 {renderHomeSection("todayDetails")}
-              </SectionPage>
+              </LazySectionPage>
             }
           />
           <Route
             path="/day"
             element={
-              <DaySummaryPage
+              <LazyDaySummaryPage
                 selectedDate={selectedDate}
                 weekdayLabel={formatWeekday(selectedDate)}
                 monthKey={monthKey}
@@ -4652,12 +4773,7 @@ function App() {
                 formatMoney={formatMoney}
                 getCurrencyLabel={(code) => getCurrencyMeta(code).shortName}
                 entries={dashboardEntries}
-                dayEntries={todayActiveEntries.map((entry) => ({
-                  category: entry.category,
-                  amount: entry.amount,
-                  currency: entry.currency,
-                  note: entry.note,
-                }))}
+                dayEntries={todayDayEntries}
                 onSummaryModeChange={setDailySummaryMode}
                 onSelectDate={commitDateChange}
                 onMonthChange={commitMonthChange}
@@ -4670,7 +4786,7 @@ function App() {
           <Route
             path="/stats"
             element={
-              <StatsDashboardPage
+              <LazyStatsDashboardPage
                 monthKey={monthKey}
                 selectedDate={selectedDate}
                 currency={dashboardCurrency}
@@ -4679,12 +4795,7 @@ function App() {
                 budgetEnabled={appSettings.budget.enabled}
                 monthlyLimit={appSettings.budget.monthlyLimit}
                 entries={dashboardEntries}
-                dayEntries={todayActiveEntries.map((entry) => ({
-                  category: entry.category,
-                  amount: entry.amount,
-                  currency: entry.currency,
-                  note: entry.note,
-                }))}
+                dayEntries={todayDayEntries}
                 formatMoney={formatMoney}
                 getCurrencyLabel={(code) => getCurrencyMeta(code).shortName}
                 onMonthChange={commitMonthChange}
@@ -4699,7 +4810,7 @@ function App() {
           <Route
             path="/search"
             element={
-              <SearchPage
+              <LazySearchPage
                 records={searchRecords}
                 categories={CATEGORIES}
                 currency={budgetCurrency}
@@ -4714,7 +4825,7 @@ function App() {
           <Route
             path="/travel"
             element={
-              <TravelPage
+              <LazyTravelPage
                 travelState={travelState}
                 travelHistory={travelHistory}
                 travelHistoryRailOpen={travelHistoryRailOpen}
@@ -4780,19 +4891,28 @@ function App() {
           <Route
             path="/data"
             element={
-              <DataManagementPage
+              <LazyDataManagementPage
                 selectedDate={selectedDate}
                 monthKey={monthKey}
                 importMessage={importMessage}
+                jsonImportMessage={jsonImportMessage}
                 fileInputRef={fileInputRef}
                 llmFileInputRef={llmFileInputRef}
-                llmConfigured={isLlmApiVerified(readLlmApiSettings())}
+                llmConfigured={isLlmApiVerified(llmSettings)}
                 llmImporting={isImportingSpreadsheet}
                 onExportCsv={exportCsv}
                 onPickCsv={() => void pickCsvImport()}
                 onCsvFileChange={importCsv}
                 onPickLlmSpreadsheet={() => void pickLlmSpreadsheet()}
                 onLlmSpreadsheetChange={(event) => void importLegacySpreadsheet(event)}
+                jsonInputRef={jsonInputRef}
+                backupReminderLabel={
+                  backupReminderVisible ? "每次记完账后会提醒备份" : "已暂缓提醒"
+                }
+                onExportJson={exportJson}
+                onPickJson={() => void pickJsonImport()}
+                onJsonFileChange={importJson}
+                onSnoozeBackupReminder={dismissBackupReminder}
                 onClearCurrentDay={clearCurrentDay}
                 onClearCurrentMonth={clearCurrentMonth}
                 onClearAllData={clearAllData}
@@ -4802,7 +4922,7 @@ function App() {
           <Route
             path="/settings"
             element={
-              <SettingsPage
+              <LazySettingsPage
                 settings={appSettings}
                 categories={CATEGORIES}
                 currencies={allCurrencies}
@@ -4812,17 +4932,8 @@ function App() {
                 exchangeRows={exchangeRows}
                 rateStatus={rateStatus}
                 onRefreshExchange={() => void refreshExchange()}
-                backupReminderLabel={
-                  backupReminderVisible ? "每次记完账后会提醒备份" : "已暂缓提醒"
-                }
-                importMessage={jsonImportMessage}
-                jsonInputRef={jsonInputRef}
                 onSettingsChange={setAppSettings}
                 getCurrencyLabel={(currency) => getCurrencyMeta(currency).shortName}
-                onExportJson={exportJson}
-                onPickJson={() => void pickJsonImport()}
-                onJsonFileChange={importJson}
-                onSnoozeBackupReminder={dismissBackupReminder}
                 storageUsage={storageUsage}
                 storageLocationMessage={storageLocationMessage}
                 webFileName={webLedgerFileName}
@@ -4833,9 +4944,11 @@ function App() {
               />
             }
           />
-          <Route path="/console" element={<ApiConsolePage />} />
-        </Routes>
-      </RouteEnter>
+          <Route path="/console" element={<LazyApiConsolePage />} />
+          <Route path="/tokens" element={<LazyTokenConsolePage />} />
+          </Routes>
+        </RouteEnter>
+      </Suspense>
 
       <FloatingActions
         onPrevDay={() => moveSelectedDate(-1)}
@@ -4847,17 +4960,7 @@ function App() {
         <div className="moneymore-host">
           <MoneyMoreAgent
             settings={llmSettings}
-            context={{
-              selectedDate,
-              defaultCurrency: dailyDefaultCurrency,
-              currencies: allCurrencies,
-              records: moneyMoreRecords,
-              budget: appSettings.budget,
-              travelActive: travelState.active,
-              travelName: travelState.billName,
-              canMutateLedger: appSettings.moneyMoreCanMutateLedger,
-              convert: (amount, from, to) => convert(amount, from, to, exchange),
-            }}
+            context={moneyMoreContext}
             draft={moneyMoreDraft}
             onStageDraft={setMoneyMoreDraft}
             onConfirmDraft={confirmMoneyMoreDraft}

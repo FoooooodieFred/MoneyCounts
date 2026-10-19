@@ -465,6 +465,7 @@ const completeSpreadsheetChunk = async (settings: LlmApiSettings, messages: LlmC
       jsonMode: settings.jsonMode,
       maxTokens: SPREADSHEET_CHUNK_MAX_TOKENS,
       temperature: 0,
+      scene: "import",
     });
   } catch (error) {
     if (settings.jsonMode && isJsonModeUnsupported(error)) {
@@ -474,6 +475,7 @@ const completeSpreadsheetChunk = async (settings: LlmApiSettings, messages: LlmC
         jsonMode: false,
         maxTokens: SPREADSHEET_CHUNK_MAX_TOKENS,
         temperature: 0,
+        scene: "import",
       });
     }
     throw error;

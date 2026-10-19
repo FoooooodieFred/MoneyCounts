@@ -2,13 +2,31 @@
  * In-browser 35-class category model (char n-grams + keyword features + logistic regression).
  * Weights come from `scripts/train_nl_ledger_classifier.py`. Keep normalize / n-gram
  * extraction in lockstep with that script. Amount, currency, and date stay rule-based.
+ *
+ * The weight matrix is ~2.5 MB of JSON, so it is fetched as a separate chunk the first
+ * time a ledger line is classified instead of riding along with the initial bundle.
+ * `preloadNlLedgerClassifier()` warms that chunk during idle time.
  */
-import model from "./nlLedgerClassifier.model.json";
-
 export type NlLedgerCategoryPrediction = {
   category: string;
   confidence: number;
   margin: number;
+};
+
+type NlLedgerModel = {
+  nMin: number;
+  nMax: number;
+  classes: string[];
+  vocab: string[];
+  idf: number[];
+  bias: number[];
+  weights: number[][];
+  keywords: [string, string[]][];
+};
+
+type LoadedClassifier = {
+  model: NlLedgerModel;
+  vocabIndex: Map<string, number>;
 };
 
 const NUM_RE = /\d+(?:\.\d+)?/g;
@@ -21,7 +39,19 @@ const AMOUNT_UNIT_RE = /0\s*(?:元|块钱|块|圆)/g;
 const WORD_RE = /[a-z]{2,}/g;
 const SPACE_RE = /\s+/g;
 
-const vocabIndex = new Map(model.vocab.map((token, index) => [token, index]));
+let loading: Promise<LoadedClassifier> | null = null;
+
+const loadClassifier = async (): Promise<LoadedClassifier> => {
+  const module = (await import("./nlLedgerClassifier.model.json")) as { default: unknown };
+  const model = module.default as NlLedgerModel;
+  return { model, vocabIndex: new Map(model.vocab.map((token, index) => [token, index])) };
+};
+
+/** Fetch (and cache) the weight matrix. Safe to call repeatedly. */
+export const preloadNlLedgerClassifier = (): Promise<LoadedClassifier> => {
+  loading ??= loadClassifier();
+  return loading;
+};
 
 const resetAndReplace = (source: string, pattern: RegExp, replacement: string) => {
   pattern.lastIndex = 0;
@@ -39,7 +69,7 @@ export const normalizeNlLedgerClassifierText = (text: string) => {
   return resetAndReplace(lowered, SPACE_RE, " ").trim();
 };
 
-const extractFeatureTokens = (text: string) => {
+const extractFeatureTokens = (text: string, model: NlLedgerModel) => {
   const originalLower = text.toLowerCase();
   const normalized = normalizeNlLedgerClassifierText(text);
   const chars = [...normalized];
@@ -81,12 +111,16 @@ const softmax = (scores: number[]) => {
   return shifted.map((value) => value / sum);
 };
 
-export const classifyNlLedgerCategory = (text: string): NlLedgerCategoryPrediction | null => {
+export const classifyNlLedgerCategory = async (
+  text: string,
+): Promise<NlLedgerCategoryPrediction | null> => {
   const trimmed = text.trim();
   if (!trimmed) return null;
 
+  const { model, vocabIndex } = await preloadNlLedgerClassifier();
+
   const active = new Map<number, number>();
-  for (const token of extractFeatureTokens(trimmed)) {
+  for (const token of extractFeatureTokens(trimmed, model)) {
     const column = vocabIndex.get(token);
     if (column === undefined) continue;
     active.set(column, model.idf[column] ?? 0);

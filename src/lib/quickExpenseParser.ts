@@ -35,14 +35,14 @@ function withWarnings(segment: ParsedExpenseSegment, text: string): QuickExpense
   return { ...segment, warnings };
 }
 
-export function parseQuickExpense(
+export async function parseQuickExpense(
   input: string,
   defaultCurrency: string,
-): QuickExpenseResult | null {
+): Promise<QuickExpenseResult | null> {
   const text = input.trim();
   if (!text) return null;
 
-  const parsed = parseExpenseSegment(
+  const parsed = await parseExpenseSegment(
     text,
     QUICK_PARSER_CATEGORIES,
     SUPPORTED_CURRENCIES,
@@ -53,20 +53,21 @@ export function parseQuickExpense(
   return withWarnings(parsed, text);
 }
 
-export function parseQuickExpenseLines(
+export async function parseQuickExpenseLines(
   input: string,
   defaultCurrency: string,
-): QuickExpenseResult[] {
+): Promise<QuickExpenseResult[]> {
   const trimmed = input.trim();
   if (!trimmed) return [];
 
   const sourceSegments = splitExpenseSegments(trimmed);
-  return parseExpenseSegments(
+  const parsed = await parseExpenseSegments(
     trimmed,
     QUICK_PARSER_CATEGORIES,
     SUPPORTED_CURRENCIES,
     defaultCurrency,
-  ).map((segment, index) => withWarnings(segment, sourceSegments[index] ?? trimmed));
+  );
+  return parsed.map((segment, index) => withWarnings(segment, sourceSegments[index] ?? trimmed));
 }
 
 export { QUICK_PARSER_CATEGORIES };

@@ -400,7 +400,11 @@ export function MoneyMoreAgent({
           >
             <header className="moneymore-panel__head">
               <div className="moneymore-panel__identity">
-                <BloubAvatar size={36} mood={busy ? "loading" : "idle"} decorative />
+                {/* The collapsed panel is transparent; keeping the avatar mounted would
+                    run a second animation loop for something nobody can see. */}
+                {size === "bubble" ? null : (
+                  <BloubAvatar size={36} mood={busy ? "loading" : "idle"} decorative />
+                )}
                 <div>
                   <p className="eyebrow">Agent</p>
                   <h2>MoneyMore</h2>

@@ -1,19 +1,32 @@
-import type { ChangeEvent, RefObject } from "react";
+import { useState, type ChangeEvent, type RefObject } from "react";
 import { Link } from "react-router-dom";
+import {
+  activeLlmProfile,
+  readLlmApiStore,
+  saveLlmApiStore,
+  updateLlmProfile,
+} from "../lib/llmApiSettings";
 
 type DataManagementPageProps = {
   selectedDate: string;
   monthKey: string;
   importMessage: string;
+  jsonImportMessage: string;
   fileInputRef: RefObject<HTMLInputElement | null>;
   llmFileInputRef: RefObject<HTMLInputElement | null>;
+  jsonInputRef: RefObject<HTMLInputElement | null>;
   llmConfigured: boolean;
   llmImporting: boolean;
+  backupReminderLabel: string;
   onExportCsv: () => void;
   onPickCsv: () => void;
   onCsvFileChange: (event: ChangeEvent<HTMLInputElement>) => void;
   onPickLlmSpreadsheet: () => void;
   onLlmSpreadsheetChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onExportJson: () => void;
+  onPickJson: () => void;
+  onJsonFileChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onSnoozeBackupReminder: (days: number) => void;
   onClearCurrentDay: () => void;
   onClearCurrentMonth: () => void;
   onClearAllData: () => void;
@@ -23,19 +36,37 @@ export function DataManagementPage({
   selectedDate,
   monthKey,
   importMessage,
+  jsonImportMessage,
   fileInputRef,
   llmFileInputRef,
+  jsonInputRef,
   llmConfigured,
   llmImporting,
+  backupReminderLabel,
   onExportCsv,
   onPickCsv,
   onCsvFileChange,
   onPickLlmSpreadsheet,
   onLlmSpreadsheetChange,
+  onExportJson,
+  onPickJson,
+  onJsonFileChange,
+  onSnoozeBackupReminder,
   onClearCurrentDay,
   onClearCurrentMonth,
   onClearAllData,
 }: DataManagementPageProps) {
+  const [includeLlmApiInBackup, setIncludeLlmApiInBackup] = useState(
+    () => activeLlmProfile(readLlmApiStore()).includeInBackup,
+  );
+
+  const updateIncludeLlmApiInBackup = (checked: boolean) => {
+    setIncludeLlmApiInBackup(checked);
+    const store = readLlmApiStore();
+    const active = activeLlmProfile(store);
+    saveLlmApiStore(updateLlmProfile(store, active.profileId, { includeInBackup: checked }));
+  };
+
   return (
     <main
       className="app-shell app-shell--below-nav data-page-shell"
@@ -47,7 +78,8 @@ export function DataManagementPage({
           <h1>导入、导出与清理</h1>
           <p className="muted">
             CSV 导入会按日期、类目和序号覆盖对应格子。已配置 LLM
-            时，也可上传旧账本表格，由模型映射后写入空格子。完整 JSON 备份与恢复仍在「设置」页。
+            时，也可上传旧账本表格，由模型映射后写入空格子。完整 JSON
+            备份与恢复也在这一页。
           </p>
         </header>
 
@@ -78,6 +110,78 @@ export function DataManagementPage({
               onChange={onCsvFileChange}
             />
           </div>
+        </section>
+
+        <section
+          className="surface-secondary data-management-card"
+          data-section="data-json-backup"
+        >
+          <header className="settings-stack__heading">
+            <h2>完整 JSON 备份</h2>
+            <p className="muted">
+              包含账本、汇率、主题、提醒、设置与旅游历史。选择文件后会立刻弹出确认框。
+            </p>
+          </header>
+          <div className="settings-option">
+            <span className="settings-option__copy">
+              <strong>把 API 接口写入备份</strong>
+              <small>
+                开启后导出的 JSON 会含 Base
+                URL、模型名和密钥，换设备导入即可直接用。请自行保管备份文件。
+              </small>
+            </span>
+            <label className="settings-toggle-switch">
+              <input
+                type="checkbox"
+                checked={includeLlmApiInBackup}
+                aria-label="把 API 接口写入备份"
+                onChange={(event) => updateIncludeLlmApiInBackup(event.target.checked)}
+              />
+              <span className="settings-toggle-switch__track" aria-hidden="true" />
+            </label>
+          </div>
+          <div className="backup-action-stack">
+            <div className="backup-action-stack__buttons">
+              <button type="button" data-action="json-backup-export" onClick={onExportJson}>
+                立即导出 JSON
+              </button>
+              <button
+                type="button"
+                className="secondary-button"
+                data-action="json-backup-pick-import"
+                onClick={onPickJson}
+              >
+                选择 JSON 导入
+              </button>
+            </div>
+            <input
+              ref={jsonInputRef}
+              type="file"
+              accept=".json,application/json"
+              hidden
+              onChange={onJsonFileChange}
+            />
+            <div className="backup-action-stack__nudge">
+              <p className="muted">当前提醒状态：{backupReminderLabel}</p>
+              <div className="action-row">
+                <button
+                  type="button"
+                  className="ghost-button"
+                  onClick={() => onSnoozeBackupReminder(1)}
+                >
+                  明天提醒
+                </button>
+                <button
+                  type="button"
+                  className="secondary-button"
+                  onClick={() => onSnoozeBackupReminder(3)}
+                >
+                  3 天内不提醒
+                </button>
+              </div>
+            </div>
+          </div>
+          {jsonImportMessage ? <p className="status">{jsonImportMessage}</p> : null}
         </section>
 
         <section className="surface-secondary data-management-card" data-section="data-llm-import">

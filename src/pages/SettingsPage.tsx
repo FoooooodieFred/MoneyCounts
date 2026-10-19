@@ -1,4 +1,3 @@
-import { ChangeEvent, RefObject, useState } from "react";
 import { Link } from "react-router-dom";
 import { ExchangeRatesPanel } from "../components/ExchangeRatesPanel";
 import { SiteFooter } from "../components/SiteFooter";
@@ -11,7 +10,6 @@ import {
   TOGGLEABLE_HOME_SECTIONS,
   isToggleableHomeSection,
 } from "../lib/appSettings";
-import { readLlmApiSettings, saveLlmApiSettings } from "../lib/llmApiSettings";
 
 export type BackupImportPreview = {
   fileName: string;
@@ -34,15 +32,8 @@ type SettingsPageProps = {
   exchangeRows: ExchangeRateRow[];
   rateStatus: string;
   onRefreshExchange: () => void;
-  backupReminderLabel: string;
-  importMessage: string;
-  jsonInputRef: RefObject<HTMLInputElement | null>;
   onSettingsChange: (settings: AppSettings) => void;
   getCurrencyLabel: (currency: string) => string;
-  onExportJson: () => void;
-  onPickJson: () => void;
-  onJsonFileChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  onSnoozeBackupReminder: (days: number) => void;
   storageUsage: StorageUsageModel;
   storageLocationMessage?: string;
   webFileName?: string | null;
@@ -62,15 +53,8 @@ export function SettingsPage({
   exchangeRows,
   rateStatus,
   onRefreshExchange,
-  backupReminderLabel,
-  importMessage,
-  jsonInputRef,
   onSettingsChange,
   getCurrencyLabel,
-  onExportJson,
-  onPickJson,
-  onJsonFileChange,
-  onSnoozeBackupReminder,
   storageUsage,
   storageLocationMessage,
   webFileName,
@@ -79,15 +63,6 @@ export function SettingsPage({
   onResetDesktopPath,
   onChooseWebFile,
 }: SettingsPageProps) {
-  const [includeLlmApiInBackup, setIncludeLlmApiInBackup] = useState(
-    () => readLlmApiSettings().includeInBackup,
-  );
-
-  const updateIncludeLlmApiInBackup = (checked: boolean) => {
-    setIncludeLlmApiInBackup(checked);
-    saveLlmApiSettings({ ...readLlmApiSettings(), includeInBackup: checked });
-  };
-
   const updateSection = (key: HomeSectionKey, checked: boolean) => {
     if (!isToggleableHomeSection(key)) return;
     onSettingsChange({
@@ -143,8 +118,9 @@ export function SettingsPage({
           <p className="eyebrow">Settings</p>
           <h1>设置</h1>
           <p className="muted">
-            管理可选区块、预算、汇率与完整 JSON 备份。自然语言记账的 API 密钥请到{" "}
-            <Link to="/console">API 看台</Link> 填写。CSV 导入导出请前往「数据管理」。
+            管理可选区块、预算、汇率与存储位置。自然语言记账的 API 密钥请到{" "}
+            <Link to="/console">API 看台</Link> 填写。CSV 与完整 JSON
+            备份的导入导出请前往「数据管理」。
           </p>
         </header>
 
@@ -312,75 +288,6 @@ export function SettingsPage({
               ))}
             </div>
           </div>
-        </section>
-
-        <section className="settings-stack__section surface-secondary backup-panel">
-          <header className="settings-stack__heading">
-            <h2>完整 JSON 备份</h2>
-            <p className="muted">
-              包含账本、汇率、主题、提醒、设置与旅游历史。选择文件后会立刻弹出确认框。
-            </p>
-          </header>
-          <div className="settings-option">
-            <span className="settings-option__copy">
-              <strong>把 API 接口写入备份</strong>
-              <small>
-                开启后导出的 JSON 会含 Base
-                URL、模型名和密钥，换设备导入即可直接用。请自行保管备份文件。
-              </small>
-            </span>
-            <label className="settings-toggle-switch">
-              <input
-                type="checkbox"
-                checked={includeLlmApiInBackup}
-                aria-label="把 API 接口写入备份"
-                onChange={(event) => updateIncludeLlmApiInBackup(event.target.checked)}
-              />
-              <span className="settings-toggle-switch__track" aria-hidden="true" />
-            </label>
-          </div>
-          <div className="backup-action-stack">
-            <div className="backup-action-stack__buttons">
-              <button type="button" data-action="json-backup-export" onClick={onExportJson}>
-                立即导出 JSON
-              </button>
-              <button
-                type="button"
-                className="secondary-button"
-                data-action="json-backup-pick-import"
-                onClick={onPickJson}
-              >
-                选择 JSON 导入
-              </button>
-            </div>
-            <input
-              ref={jsonInputRef}
-              type="file"
-              accept=".json,application/json"
-              hidden
-              onChange={onJsonFileChange}
-            />
-            <div className="backup-action-stack__nudge">
-              <p className="muted">当前提醒状态：{backupReminderLabel}</p>
-              <div className="action-row">
-                <button
-                  type="button"
-                  className="ghost-button"
-                  onClick={() => onSnoozeBackupReminder(1)}
-                >
-                  明天提醒
-                </button>
-                <button
-                  type="button"
-                  className="secondary-button"
-                  onClick={() => onSnoozeBackupReminder(3)}
-                >
-                  3 天内不提醒
-                </button>
-              </div>
-            </div>
-          </div>
-          {importMessage ? <p className="status">{importMessage}</p> : null}
         </section>
 
         <StorageUsagePanel

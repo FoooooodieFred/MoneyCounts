@@ -64,6 +64,7 @@ const restoreRecurringDescriptor = (segment: string, note: string) => {
     return `地铁${segment.includes("往返") ? "往返" : "来回"}`;
   }
   const lowerSegment = segment.toLowerCase();
+  // 只在本片段里找关键词。用整句来找的话，上一片的「午餐」会盖掉本片段的「地铁」。
   const keyword = CATEGORY_KEYWORDS.flatMap(([, keywords]) => keywords)
     .filter((item) => lowerSegment.includes(item.toLowerCase()))
     .sort((a, b) => b.length - a.length)[0];
@@ -91,24 +92,24 @@ export const parseNaturalLedger = async (
     : (context.currencies[0] ?? "");
   const globalFallbackSpec = resolveSingleDayFallbackSpec(trimmed, fallbackDate);
   const segments = splitExpenseSegments(trimmed);
-  const records = segments
-    .flatMap((segment) => {
+  const perSegment = await Promise.all(
+    segments.map(async (segment) => {
       const amount = detectAmount(segment);
       if (!amount) {
         warnings.push(`已跳过未识别金额的片段：${segment}`);
-        return [];
+        return [] as LocalLedgerRecord[];
       }
 
       const segmentSpec = detectNlLedgerDateSpec(segment);
       const spec = segmentSpec !== "anchor" ? segmentSpec : globalFallbackSpec;
       const targetDates = resolveNlLedgerDateSpec(spec, fallbackDate);
-      const parsed = parseExpenseSegment(
+      const parsed = await parseExpenseSegment(
         segment,
         context.categories,
         context.currencies,
         fallbackCurrency,
       );
-      if (!parsed) return [];
+      if (!parsed) return [] as LocalLedgerRecord[];
 
       return targetDates.map((targetDate) => ({
         date: targetDate,
@@ -117,11 +118,12 @@ export const parseNaturalLedger = async (
         currency: parsed.currency,
         note:
           targetDates.length > 1
-            ? restoreRecurringDescriptor(`${segment} ${trimmed}`, parsed.note)
+            ? restoreRecurringDescriptor(segment, parsed.note)
             : cleanRecurringNote(parsed.note),
       }));
-    })
-    .filter((record): record is LocalLedgerRecord => Boolean(record));
+    }),
+  );
+  const records = perSegment.flat();
 
   const normalizedRecords = records.map((record) => {
     if (record.note === "地铁" && /地铁.*(?:来回|往返)|(?:来回|往返).*地铁/u.test(trimmed)) {

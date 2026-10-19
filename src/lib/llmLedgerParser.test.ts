@@ -7,6 +7,7 @@ import {
   llmApiForBackup,
   LLM_PROVIDER_PRESETS,
   normalizeLlmApiSettings,
+  normalizeLlmApiStore,
 } from "./llmApiSettings";
 import { handleLlmChatRequest, isAllowedLlmBaseUrl, normalizeChatCompletionsUrl } from "./llmProxy";
 import { buildDefaultLedgerSystemPrompt, buildLedgerMessages } from "./llmLedgerPrompt";
@@ -57,15 +58,17 @@ describe("llmApiSettings", () => {
   });
 
   it("omits API settings from backup unless the user opts in", () => {
-    expect(llmApiForBackup(DEFAULT_LLM_API_SETTINGS)).toBeUndefined();
-    const opted = llmApiForBackup({
-      ...DEFAULT_LLM_API_SETTINGS,
-      apiKey: "sk-test",
-      model: "MiniMax-M2.5",
-      includeInBackup: true,
-    });
-    expect(opted?.apiKey).toBe("sk-test");
-    expect(opted?.includeInBackup).toBe(true);
+    expect(llmApiForBackup(normalizeLlmApiStore(DEFAULT_LLM_API_SETTINGS))).toBeUndefined();
+    const opted = llmApiForBackup(
+      normalizeLlmApiStore({
+        ...DEFAULT_LLM_API_SETTINGS,
+        apiKey: "sk-test",
+        model: "MiniMax-M2.5",
+        includeInBackup: true,
+      }),
+    );
+    expect(opted?.profiles[0].apiKey).toBe("sk-test");
+    expect(opted?.profiles[0].includeInBackup).toBe(true);
   });
 
   it("fills preset url and leaves model empty as placeholder", () => {

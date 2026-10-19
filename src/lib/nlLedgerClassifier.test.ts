@@ -38,25 +38,25 @@ describe("nl ledger classifier probes", () => {
     ["负30元交通", "交通出行"],
   ];
 
-  it("predicts the shipping probes", () => {
+  it("predicts the shipping probes", async () => {
     for (const [text, category] of probes) {
-      const prediction = classifyNlLedgerCategory(text);
+      const prediction = await classifyNlLedgerCategory(text);
       expect(prediction?.category, text).toBe(category);
     }
   });
 
-  it("is confident on branded and salary phrases", () => {
-    expect(classifyNlLedgerCategory("星巴克 38 HKD")?.confidence).toBeGreaterThan(0.6);
-    expect(classifyNlLedgerCategory("发工资 5000")?.confidence).toBeGreaterThan(0.7);
-    expect(classifyNlLedgerCategory("朋友还我100")?.confidence).toBeGreaterThan(0.8);
+  it("is confident on branded and salary phrases", async () => {
+    expect((await classifyNlLedgerCategory("星巴克 38 HKD"))?.confidence).toBeGreaterThan(0.6);
+    expect((await classifyNlLedgerCategory("发工资 5000"))?.confidence).toBeGreaterThan(0.7);
+    expect((await classifyNlLedgerCategory("朋友还我100"))?.confidence).toBeGreaterThan(0.8);
   });
 });
 
 describe("nl ledger classifier corpus", () => {
-  it("recovers most of the 3500 training utterances", () => {
+  it("recovers most of the 3500 training utterances", async () => {
     let hits = 0;
     for (const sample of samples) {
-      if (classifyNlLedgerCategory(sample.text)?.category === sample.category_zh) hits += 1;
+      if ((await classifyNlLedgerCategory(sample.text))?.category === sample.category_zh) hits += 1;
     }
     expect(hits / samples.length).toBeGreaterThan(0.8);
   });

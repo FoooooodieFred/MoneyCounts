@@ -36,6 +36,7 @@ export const fetchLlmQuickTemplates = async (
       jsonMode: settings.jsonMode,
       maxTokens: 200,
       temperature: 0.8,
+      scene: "templates",
     });
     const parsed = parseQuickTemplatePayload(extractJsonObject(completion.content));
     if (parsed.length === 3) return parsed;

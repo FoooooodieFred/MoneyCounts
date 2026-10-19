@@ -15,8 +15,11 @@ function readNodeBody(req) {
 }
 function llmChatProxyPlugin() {
     const middleware = async (req, res, next) => {
-        const path = (req.url ?? "").split("?")[0];
-        if (path !== "/api/llm/chat") {
+        const rawUrl = req.url ?? "";
+        const path = rawUrl.split("?")[0];
+        const isChat = path === "/api/llm/chat";
+        const isModels = path === "/api/llm/models";
+        if (!isChat && !isModels) {
             next();
             return;
         }
@@ -25,27 +28,31 @@ function llmChatProxyPlugin() {
             res.end();
             return;
         }
-        if (req.method !== "POST") {
+        const expectMethod = isChat ? "POST" : "GET";
+        if (req.method !== expectMethod) {
             res.statusCode = 405;
             res.setHeader("Content-Type", "application/json; charset=utf-8");
             res.end(JSON.stringify({ error: "Method not allowed" }));
             return;
         }
         try {
-            const { handleLlmChatRequest } = (await import(llmProxyHref));
-            const body = await readNodeBody(req);
+            const { handleLlmChatRequest, handleLlmModelsRequest } = (await import(llmProxyHref));
             const headers = new Headers();
             for (const [key, value] of Object.entries(req.headers)) {
                 if (!value)
                     continue;
                 headers.set(key, Array.isArray(value) ? value.join(", ") : value);
             }
-            const request = new Request("http://vite.local/api/llm/chat", {
-                method: "POST",
-                headers,
-                body: Uint8Array.from(body),
-            });
-            const response = await handleLlmChatRequest(request);
+            const request = isChat
+                ? new Request("http://vite.local/api/llm/chat", {
+                    method: "POST",
+                    headers,
+                    body: Uint8Array.from(await readNodeBody(req)),
+                })
+                : new Request(`http://vite.local${rawUrl}`, { method: "GET", headers });
+            const response = isChat
+                ? await handleLlmChatRequest(request)
+                : await handleLlmModelsRequest(request);
             res.statusCode = response.status;
             response.headers.forEach((value, key) => {
                 res.setHeader(key, value);
@@ -82,17 +89,5 @@ export default defineConfig({
     build: {
         outDir: isDesktopVite ? "desktop/dist" : "dist",
         emptyOutDir: true,
-        rollupOptions: {
-            output: {
-                manualChunks(id) {
-                    if (id.includes("LazyCharts") ||
-                        id.includes("TravelCharts") ||
-                        id.includes("travelCharts"))
-                        return "charts";
-                    if (id.includes("nlLedgerClassifier"))
-                        return "nl-classifier";
-                },
-            },
-        },
     },
 });

@@ -7,33 +7,33 @@ const COMPLEX_INPUT =
   "我今天吃了65USD的午餐，33块钱的充值。93元的公交车洗衣服花了78HKD，晚餐300HKD，但是有人A了我85块钱。";
 
 describe("parseQuickExpense note preservation", () => {
-  it("keeps merchant name when category keyword matches", () => {
-    const result = parseQuickExpense("星巴克 38 HKD", "HKD");
+  it("keeps merchant name when category keyword matches", async () => {
+    const result = await parseQuickExpense("星巴克 38 HKD", "HKD");
     expect(result?.category).toBe("餐饮美食");
     expect(result?.note).toBe("星巴克");
     expect(result?.amount).toBe("38");
   });
 
-  it("preserves note text not used for category detection", () => {
-    const result = parseQuickExpense("地铁 6元 去公司", "CNY");
+  it("preserves note text not used for category detection", async () => {
+    const result = await parseQuickExpense("地铁 6元 去公司", "CNY");
     expect(result?.category).toBe("交通出行");
     expect(result?.note).toBe("去公司");
   });
 
-  it("does not strip unrelated category keywords from note", () => {
-    const result = parseQuickExpense("午餐 45 和同事", "CNY");
+  it("does not strip unrelated category keywords from note", async () => {
+    const result = await parseQuickExpense("午餐 45 和同事", "CNY");
     expect(result?.note).toBe("和同事");
   });
 
-  it("falls back to descriptive text when only amount is removed", () => {
-    const result = parseQuickExpense("45", "CNY");
+  it("falls back to descriptive text when only amount is removed", async () => {
+    const result = await parseQuickExpense("45", "CNY");
     expect(result?.note).toBe("");
   });
 });
 
 describe("parseQuickExpenseLines — multi-clause Chinese", () => {
-  it("parses the canonical complex example (HKD default)", () => {
-    const results = parseQuickExpenseLines(COMPLEX_INPUT, "HKD");
+  it("parses the canonical complex example (HKD default)", async () => {
+    const results = await parseQuickExpenseLines(COMPLEX_INPUT, "HKD");
     expect(results).toHaveLength(6);
     expect(results[0]).toMatchObject({
       category: "餐饮美食",
@@ -73,21 +73,21 @@ describe("parseQuickExpenseLines — multi-clause Chinese", () => {
     });
   });
 
-  it("splits on Chinese and English punctuation in one blob", () => {
-    const results = parseQuickExpenseLines("午餐45;地铁6元，咖啡18 HKD!", "CNY");
+  it("splits on Chinese and English punctuation in one blob", async () => {
+    const results = await parseQuickExpenseLines("午餐45;地铁6元，咖啡18 HKD!", "CNY");
     expect(results).toHaveLength(3);
     expect(results.map((r) => r.category)).toEqual(["餐饮美食", "交通出行", "餐饮美食"]);
   });
 
-  it("handles mixed currencies in one sentence", () => {
-    const results = parseQuickExpenseLines("打车120 HKD和午餐88 CNY", "HKD");
+  it("handles mixed currencies in one sentence", async () => {
+    const results = await parseQuickExpenseLines("打车120 HKD和午餐88 CNY", "HKD");
     expect(results).toHaveLength(2);
     expect(results[0]).toMatchObject({ category: "交通出行", amount: "120", currency: "HKD" });
     expect(results[1]).toMatchObject({ category: "餐饮美食", amount: "88", currency: "CNY" });
   });
 
-  it("extracts two amounts from one clause", () => {
-    const results = parseQuickExpenseLines("93元的公交车洗衣服花了78HKD", "CNY");
+  it("extracts two amounts from one clause", async () => {
+    const results = await parseQuickExpenseLines("93元的公交车洗衣服花了78HKD", "CNY");
     expect(results).toHaveLength(2);
     expect(results[0]).toMatchObject({
       category: "交通出行",
@@ -103,8 +103,8 @@ describe("parseQuickExpenseLines — multi-clause Chinese", () => {
     });
   });
 
-  it("treats AA split-back as repayment from others", () => {
-    const results = parseQuickExpenseLines("晚餐300HKD，有人A了我85块钱", "HKD");
+  it("treats AA split-back as repayment from others", async () => {
+    const results = await parseQuickExpenseLines("晚餐300HKD，有人A了我85块钱", "HKD");
     expect(results).toHaveLength(2);
     expect(results[1]).toMatchObject({
       category: "他人还款",
@@ -113,33 +113,33 @@ describe("parseQuickExpenseLines — multi-clause Chinese", () => {
     });
   });
 
-  it("treats shopping refund keywords as negative_expense", () => {
-    const result = parseQuickExpense("淘宝退款50元", "CNY");
+  it("treats shopping refund keywords as negative_expense", async () => {
+    const result = await parseQuickExpense("淘宝退款50元", "CNY");
     expect(result?.category).toBe("购物退款");
     expect(result?.amount).toBe("-50");
   });
 
-  it("stores salary, repayment, and refunds as negative amounts", () => {
-    expect(parseQuickExpense("朋友还我100", "CNY")).toMatchObject({
+  it("stores salary, repayment, and refunds as negative amounts", async () => {
+    expect(await parseQuickExpense("朋友还我100", "CNY")).toMatchObject({
       category: "他人还款",
       amount: "-100",
     });
-    expect(parseQuickExpense("发工资 5000", "CNY")).toMatchObject({
+    expect(await parseQuickExpense("发工资 5000", "CNY")).toMatchObject({
       category: "工资收入",
       amount: "-5000",
     });
-    expect(parseQuickExpense("工资到账5000", "CNY")).toMatchObject({
+    expect(await parseQuickExpense("工资到账5000", "CNY")).toMatchObject({
       category: "工资收入",
       amount: "-5000",
     });
-    expect(parseQuickExpense("退款30", "CNY")).toMatchObject({
+    expect(await parseQuickExpense("退款30", "CNY")).toMatchObject({
       category: "购物退款",
       amount: "-30",
     });
   });
 
-  it("parses English mixed input", () => {
-    const result = parseQuickExpense("lunch 50 HKD", "HKD");
+  it("parses English mixed input", async () => {
+    const result = await parseQuickExpense("lunch 50 HKD", "HKD");
     expect(result).toMatchObject({
       category: "餐饮美食",
       amount: "50",
@@ -148,13 +148,13 @@ describe("parseQuickExpenseLines — multi-clause Chinese", () => {
     });
   });
 
-  it("infers category from amount-only clause with keyword", () => {
-    const result = parseQuickExpense("公交12", "CNY");
+  it("infers category from amount-only clause with keyword", async () => {
+    const result = await parseQuickExpense("公交12", "CNY");
     expect(result).toMatchObject({ category: "交通出行", amount: "12", currency: "CNY" });
   });
 
-  it("handles 花了X元Y doing Z pattern", () => {
-    const results = parseQuickExpenseLines("花了45元买水果", "CNY");
+  it("handles 花了X元Y doing Z pattern", async () => {
+    const results = await parseQuickExpenseLines("花了45元买水果", "CNY");
     expect(results).toHaveLength(1);
     expect(results[0]).toMatchObject({
       category: "商超购物",
@@ -164,44 +164,44 @@ describe("parseQuickExpenseLines — multi-clause Chinese", () => {
     });
   });
 
-  it("detects USD amounts", () => {
-    const result = parseQuickExpense("吃了65USD的午餐", "CNY");
+  it("detects USD amounts", async () => {
+    const result = await parseQuickExpense("吃了65USD的午餐", "CNY");
     expect(result).toMatchObject({ amount: "65", currency: "USD", category: "餐饮美食" });
   });
 
-  it("uses default currency when unit is ambiguous", () => {
-    const result = parseQuickExpense("会员 68", "HKD");
+  it("uses default currency when unit is ambiguous", async () => {
+    const result = await parseQuickExpense("会员 68", "HKD");
     expect(result?.currency).toBe("HKD");
     expect(result?.category).toBe("休闲娱乐");
   });
 
-  it("maps 元 to CNY even when default is HKD", () => {
-    const result = parseQuickExpense("地铁6元", "HKD");
+  it("maps 元 to CNY even when default is HKD", async () => {
+    const result = await parseQuickExpense("地铁6元", "HKD");
     expect(result?.currency).toBe("CNY");
   });
 
-  it("parses multiple newline-separated entries", () => {
-    const results = parseQuickExpenseLines("午餐 45\n地铁 6元\n星巴克 38 HKD", "CNY");
+  it("parses multiple newline-separated entries", async () => {
+    const results = await parseQuickExpenseLines("午餐 45\n地铁 6元\n星巴克 38 HKD", "CNY");
     expect(results).toHaveLength(3);
     expect(results[0]?.category).toBe("餐饮美食");
     expect(results[1]?.category).toBe("交通出行");
     expect(results[2]?.note).toBe("星巴克");
   });
 
-  it("parses reimbursement as negative_expense", () => {
-    const result = parseQuickExpense("报销到账200元", "CNY");
+  it("parses reimbursement as negative_expense", async () => {
+    const result = await parseQuickExpense("报销到账200元", "CNY");
     expect(result?.category).toBe("报销到账");
     expect(result?.amount).toBe("-200");
   });
 
-  it("handles explicit negative prefix", () => {
-    const result = parseQuickExpense("负30元交通", "CNY");
+  it("handles explicit negative prefix", async () => {
+    const result = await parseQuickExpense("负30元交通", "CNY");
     expect(result?.amount).toBe("-30");
     expect(result?.category).toBe("交通出行");
   });
 
-  it("splits 但是 conjunction clauses", () => {
-    const results = parseQuickExpenseLines("购物200元，但是退款30元", "CNY");
+  it("splits 但是 conjunction clauses", async () => {
+    const results = await parseQuickExpenseLines("购物200元，但是退款30元", "CNY");
     expect(results).toHaveLength(2);
     expect(results[1]?.amount).toBe("-30");
     expect(results[1]?.category).toBe("购物退款");
@@ -209,8 +209,8 @@ describe("parseQuickExpenseLines — multi-clause Chinese", () => {
 });
 
 describe("parseQuickExpenseLines", () => {
-  it("returns empty array for blank input", () => {
-    expect(parseQuickExpenseLines("  \n  ", "CNY")).toEqual([]);
+  it("returns empty array for blank input", async () => {
+    expect(await parseQuickExpenseLines("  \n  ", "CNY")).toEqual([]);
   });
 });
 
@@ -259,6 +259,16 @@ describe("parseNaturalLedger relative dates", () => {
     expect(result.records.every((record) => record.amount === "10.8")).toBe(true);
     expect(result.records.every((record) => record.currency === "HKD")).toBe(true);
     expect(result.records.every((record) => record.note === "地铁来回")).toBe(true);
+  });
+
+  it("keeps each segment's own note when a multi-day entry follows another one", async () => {
+    const result = await parseNaturalLedger("今天午餐 45 港币，这一周每天地铁来回 10.8HKD", context);
+    const lunch = result.records.find((record) => record.category === "餐饮美食");
+    const metro = result.records.filter((record) => record.category === "交通出行");
+    expect(lunch?.note).toBe("午餐");
+    expect(metro).toHaveLength(7);
+    // 关键词只在本片段里找，不能被上一段的「午餐」盖掉
+    expect(metro.every((record) => record.note === "地铁来回")).toBe(true);
   });
 
   it("expands today and tomorrow into separate preview records", async () => {

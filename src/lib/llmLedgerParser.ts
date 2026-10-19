@@ -213,7 +213,12 @@ export const parseNaturalLedgerViaLlm = async (
     return { records: [], warnings: [LLM_NOT_CONFIGURED_MESSAGE], source: "llm" };
   }
 
-  const messages = buildLedgerMessages(trimmed, context, settings.customSystemPrompt);
+  const messages = buildLedgerMessages(
+    trimmed,
+    context,
+    settings.customSystemPrompt,
+    settings.promptMode,
+  );
   const started = Date.now();
   const logBase = {
     model: settings.model,
@@ -228,6 +233,7 @@ export const parseNaturalLedgerViaLlm = async (
         settings,
         messages,
         jsonMode: settings.jsonMode,
+        scene: "parse",
       });
     } catch (error) {
       if (settings.jsonMode && isJsonModeUnsupported(error)) {
@@ -235,6 +241,7 @@ export const parseNaturalLedgerViaLlm = async (
           settings,
           messages,
           jsonMode: false,
+          scene: "parse",
         });
       } else {
         throw error;

@@ -8168,6 +8168,110 @@ button.nl-confirm-primary {
   gap: var(--space-3);
 }
 
+/* API 看台：多档案、生成参数、高级设置 */
+.console-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-3);
+}
+
+.console-subcard {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  background: var(--color-surface-strong);
+}
+
+.console-kv {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: start;
+}
+
+.console-kv__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) auto;
+  gap: var(--space-2);
+  width: 100%;
+  align-items: center;
+}
+
+.console-kv__row .ghost-button {
+  width: auto;
+  min-width: 2.5rem;
+}
+
+.console-kv__empty {
+  margin: 0;
+}
+
+/* Token 看台 */
+.token-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-3);
+}
+
+.token-kpi {
+  display: grid;
+  gap: 0.2rem;
+  padding: var(--space-3);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  background: var(--color-surface-strong);
+}
+
+.token-kpi__label {
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  font-weight: 600;
+}
+
+.token-kpi__value {
+  font-size: 1.6rem;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.token-day-list {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.token-day {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr) auto;
+  gap: var(--space-2);
+  align-items: center;
+  font-size: var(--text-sm);
+}
+
+.token-day__bar {
+  display: block;
+  height: 0.6rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-line);
+  overflow: hidden;
+}
+
+.token-day__fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-brand);
+}
+
+.token-day__value {
+  color: var(--color-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
 a.console-text-link {
   display: inline-flex;
   align-items: center;

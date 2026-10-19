@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import type { AppSettings } from "../lib/appSettings";
 import { kvGet, kvSet } from "../lib/kv";
+import { preloadRoute } from "../lib/routePreload";
 import { SIDEBAR_COLLAPSED_KEY } from "../lib/storageKeys";
 import { type ReactNode, useEffect, useState } from "react";
 
@@ -84,6 +85,11 @@ const Icons = {
       <path d="M7 9h.01M10 9h7M7 13h.01M10 13h5" />
     </svg>
   ),
+  tokens: (
+    <svg {...iconProps}>
+      <path d="M4 19V9M10 19V5M16 19v-7M22 19H2" />
+    </svg>
+  ),
   settings: (
     <svg {...iconProps}>
       <circle cx="12" cy="12" r="3" />
@@ -129,6 +135,7 @@ const getLinks = (_settings: AppSettings, options?: { showTravel?: boolean }): N
   items.push(
     { href: "/data", label: "数据管理", icon: Icons.data, group: "tools" },
     { href: "/console", label: "API 看台", icon: Icons.console, group: "tools" },
+    { href: "/tokens", label: "Token 看台", icon: Icons.tokens, group: "tools" },
     { href: "/settings", label: "设置", icon: Icons.settings, group: "tools" },
   );
   return items;
@@ -194,6 +201,8 @@ function NavLink({
       to={href}
       aria-current={active ? "page" : undefined}
       title={collapsed ? label : undefined}
+      onMouseEnter={() => preloadRoute(href)}
+      onFocus={() => preloadRoute(href)}
     >
       <span className="nav-item__icon">{icon}</span>
       <span className="nav-item__label">{label}</span>

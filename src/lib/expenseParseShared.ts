@@ -178,9 +178,9 @@ export const findLongestCategoryKeyword = (text: string, category: string) => {
 };
 
 /** Strong keywords (length ≥ 2) win; otherwise the n-gram classifier; else 日用百货. */
-export const detectCategory = (text: string, categories: readonly string[]) => {
+export const detectCategory = async (text: string, categories: readonly string[]) => {
   const keywordHit = detectCategoryWithKeyword(text, categories);
-  const prediction = classifyNlLedgerCategory(text);
+  const prediction = await classifyNlLedgerCategory(text);
   if (isStrongKeyword(keywordHit.matchedKeyword)) return keywordHit;
   if (
     prediction &&
@@ -339,16 +339,19 @@ export type ParsedExpenseSegment = {
   note: string;
 };
 
-export const parseExpenseSegment = (
+export const parseExpenseSegment = async (
   segment: string,
   categories: readonly string[],
   currencies: readonly string[],
   defaultCurrency: string,
-): ParsedExpenseSegment | null => {
+): Promise<ParsedExpenseSegment | null> => {
   const rawAmount = detectAmount(segment);
   if (!rawAmount) return null;
 
-  const { category: detectedCategory, matchedKeyword } = detectCategory(segment, categories);
+  const { category: detectedCategory, matchedKeyword } = await detectCategory(
+    segment,
+    categories,
+  );
   let category = detectedCategory;
   if (
     REPAY_FROM_OTHERS_PATTERN.test(segment) &&
@@ -370,12 +373,17 @@ export const parseExpenseSegment = (
   return { amount, currency, category, note };
 };
 
-export const parseExpenseSegments = (
+export const parseExpenseSegments = async (
   input: string,
   categories: readonly string[],
   currencies: readonly string[],
   defaultCurrency: string,
-): ParsedExpenseSegment[] =>
-  splitExpenseSegments(input)
-    .map((segment) => parseExpenseSegment(segment, categories, currencies, defaultCurrency))
-    .filter((record): record is ParsedExpenseSegment => Boolean(record));
+): Promise<ParsedExpenseSegment[]> => {
+  const segments = splitExpenseSegments(input);
+  const parsed = await Promise.all(
+    segments.map((segment) =>
+      parseExpenseSegment(segment, categories, currencies, defaultCurrency),
+    ),
+  );
+  return parsed.filter((record): record is ParsedExpenseSegment => Boolean(record));
+};

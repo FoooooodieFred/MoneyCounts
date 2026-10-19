@@ -16,6 +16,9 @@ const LOADING_CYCLE: Block[] = [makeBlock("orbit"), makeBlock("wink"), makeBlock
 
 export type BloubMood = "idle" | "loading";
 
+/** Commit interval for the decorative avatar; ~30fps. */
+const FRAME_INTERVAL_MS = 33;
+
 type BloubAvatarProps = {
   size?: number;
   mood?: BloubMood;
@@ -70,6 +73,9 @@ export function BloubAvatar({
   const clockRef = useRef(0);
   const blockRef = useRef(0);
   const blockStartRef = useRef(0);
+  const hostRef = useRef<HTMLSpanElement | null>(null);
+  const onScreenRef = useRef(true);
+  const pageVisibleRef = useRef(true);
 
   useEffect(() => {
     const blocks = cycleFor(mood);
@@ -82,8 +88,13 @@ export function BloubAvatar({
 
     let raf = 0;
     let last = 0;
+    let lastPaint = 0;
     const tick = (ms: number) => {
       raf = requestAnimationFrame(tick);
+      if (!onScreenRef.current || !pageVisibleRef.current) {
+        last = 0;
+        return;
+      }
       const dt = last ? Math.min((ms - last) / 1000, 0.064) : 0;
       last = ms;
       clockRef.current += dt;
@@ -95,10 +106,33 @@ export function BloubAvatar({
         const next = blocks[blockRef.current];
         if (next) engine.setState(next.state, clock);
       }
+      // The avatar is decorative; committing at 30fps instead of 60 halves the
+      // React work without a visible difference at this size.
+      if (ms - lastPaint < FRAME_INTERVAL_MS) return;
+      lastPaint = ms;
       setFrame(engine.sample(clock));
     };
     raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+
+    const onVisibilityChange = () => {
+      pageVisibleRef.current = document.visibilityState !== "hidden";
+    };
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
+    const host = hostRef.current;
+    const observer =
+      host && typeof IntersectionObserver !== "undefined"
+        ? new IntersectionObserver((entries) => {
+            onScreenRef.current = entries.some((entry) => entry.isIntersecting);
+          })
+        : null;
+    if (host && observer) observer.observe(host);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      observer?.disconnect();
+    };
   }, [engine, mood]);
 
   const view = mood === "loading" ? DEMI_VIEWBOX : RAYON + 10;
@@ -107,6 +141,7 @@ export function BloubAvatar({
 
   return (
     <span
+      ref={hostRef}
       className={`bloub-avatar${mood === "loading" ? " is-loading" : ""}`}
       style={{ width: size, height: size }}
       aria-hidden={decorative ? true : undefined}
