@@ -151,7 +151,6 @@ export function TravelPage(props: TravelPageProps) {
     >
       <div className="content-rail">
         <section className="travel-hero page-intro" data-section="travel-hero">
-          <p className="eyebrow">Travel Mode</p>
           <h1>{travelState.active && travelState.billName ? travelState.billName : "旅游模式"}</h1>
           <p className="muted">{props.travelRangeLabel}</p>
           <p className="warning-text">
@@ -288,7 +287,6 @@ export function TravelPage(props: TravelPageProps) {
             <div className="travel-phase4-grid">
               <section className="travel-subpanel">
                 <div>
-                  <p className="eyebrow">Split</p>
                   <h3>同行人与均分口径</h3>
                   <p className="muted">
                     每笔消费按勾选参与人均分；这里展示每人应承担金额，不追踪谁先垫付。
@@ -347,7 +345,6 @@ export function TravelPage(props: TravelPageProps) {
 
               <section className="travel-subpanel">
                 <div>
-                  <p className="eyebrow">Budget</p>
                   <h3>旅行预算</h3>
                   <p className="muted">
                     按旅行目标货币 {travelState.targetCurrency} 计算，支持每日预算和分类预算预警。
@@ -439,7 +436,6 @@ export function TravelPage(props: TravelPageProps) {
                   }}
                 >
                   <div className="travel-natural-entry__copy">
-                    <p className="eyebrow">AA Quick Entry</p>
                     <h3>整单自然语言分账</h3>
                     <p className="muted">
                       建议输入整单信息完成记账，例如：和 AB 在 XXX 餐厅吃饭，花了 300Jpy

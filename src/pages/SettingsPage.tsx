@@ -115,7 +115,6 @@ export function SettingsPage({
     >
       <div className="content-rail settings-stack">
         <header className="page-intro" data-section="settings-hero">
-          <p className="eyebrow">Settings</p>
           <h1>设置</h1>
           <p className="muted">
             管理可选区块、预算、汇率与存储位置。自然语言记账的 API 密钥请到{" "}
@@ -127,7 +126,7 @@ export function SettingsPage({
         <section className="settings-stack__section">
           <header className="settings-stack__heading">
             <h2>可选区块</h2>
-            <p className="muted">仅以下 4 项可隐藏；记账、今日明细等核心路径始终保留。</p>
+            <p className="muted">按习惯调整首页问候语与可选内容。</p>
           </header>
           <div className="settings-bulk-actions">
             <button
@@ -140,6 +139,23 @@ export function SettingsPage({
             </button>
           </div>
           <ul className="settings-option-list" data-section="home-section-toggles">
+            <li className="settings-option">
+              <div className="settings-option__copy">
+                <strong>首页问候语</strong>
+                <small>显示「今天也要轻松记账」等问候语；隐藏后仍可在这里恢复。</small>
+              </div>
+              <label className="settings-toggle-switch">
+                <input
+                  type="checkbox"
+                  checked={settings.showHomeGreeting}
+                  aria-label="显示首页问候语"
+                  onChange={(event) =>
+                    onSettingsChange({ ...settings, showHomeGreeting: event.target.checked })
+                  }
+                />
+                <span className="settings-toggle-switch__track" aria-hidden="true" />
+              </label>
+            </li>
             {TOGGLEABLE_HOME_SECTIONS.map((key) => (
               <li key={key} className="settings-option">
                 <div className="settings-option__copy">

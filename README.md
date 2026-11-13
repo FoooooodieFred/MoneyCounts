@@ -4,11 +4,20 @@
 
 **网页** · [moneycounts.freddyhu2007.workers.dev](https://moneycounts.freddyhu2007.workers.dev/)  
 **macOS（Apple 芯片）** · [下载 .app zip](https://github.com/FoooooodieFred/MoneyCounts/releases/latest/download/MoneyCounts-macos-arm64.zip)  
-**Windows（64 位）** · [下载 .exe zip](https://github.com/FoooooodieFred/MoneyCounts/releases/latest/download/MoneyCounts-windows-amd64.zip) · [安装版](https://github.com/FoooooodieFred/MoneyCounts/releases/download/v1.4.0/MoneyCounts-windows-amd64-installer-v1.4.0.exe)
+**Windows（64 位）** · [下载 .exe zip](https://github.com/FoooooodieFred/MoneyCounts/releases/latest/download/MoneyCounts-windows-amd64.zip) · [安装版](https://github.com/FoooooodieFred/MoneyCounts/releases/download/v1.5.0/MoneyCounts-windows-amd64-installer-v1.5.0.exe)
 
 网页由 Cloudflare Workers 发布 `main` 上的 `dist/`。
 
 注意：界面目前**仅有简体中文。** 英文及其他版本将在未来考虑陆续支持。
+
+## v1.5.0
+
+相对 v1.4.0：
+
+- 新增代码数学启动动画，问候语可在设置中隐藏。
+- 记账与今日共用右侧日历，日期原地切换；今日整合可编辑明细。
+- 搜索按需加载、分批显示，入口移至数据管理上方。
+- 合并 API 与 Token 看台，移除装饰性英文小标题。
 
 ## v1.4.0
 
@@ -60,19 +69,19 @@ Windows 未签名：SmartScreen 里选「更多信息 → 仍要运行」。需�
 
 ## 页面
 
-| 路径        | 内容                                          |
-| ----------- | --------------------------------------------- |
-| `/`         | 自然语言记账（本地 / MoneyMore）              |
-| `/today`    | 今日明细                                      |
-| `/day`      | 当日汇总 + 日历账单                           |
-| `/stats`    | 统计看板（`/week` `/month` `/year` 转到这里） |
-| `/search`   | 筛选                                          |
-| `/travel`   | 旅游模式                                      |
-| `/data`     | CSV、完整 JSON 备份与账本清理                 |
-| `/settings` | 区块、预算、汇率、存储位置、MoneyMore 权限     |
-| `/console`  | API 看台：档案、参数、提示词、试运行          |
-| `/tokens`   | Token 看台：用量、费用、按模型/场景统计      |
-| `/entry`    | 转到 `/`                                      |
+| 路径        | 内容                                                         |
+| ----------- | ------------------------------------------------------------ |
+| `/`         | 自然语言记账（本地 / MoneyMore）、日历账单，点击日期原地切换 |
+| `/today`    | 兼容旧链接，转到 `/day`                                      |
+| `/day`      | 今日：分币种汇总 + 可编辑的今日记账明细                      |
+| `/stats`    | 统计看板（`/week` `/month` `/year` 转到这里）                |
+| `/search`   | 点击搜索后加载，分批显示结果                                 |
+| `/travel`   | 旅游模式                                                     |
+| `/data`     | CSV、完整 JSON 备份与账本清理                                |
+| `/settings` | 区块、预算、汇率、存储位置、MoneyMore 权限                   |
+| `/console`  | 统一看台：接口设置、档案、试运行、用量统计                   |
+| `/tokens`   | 兼容旧链接，转到 `/console?tab=usage`                        |
+| `/entry`    | 转到 `/`                                                     |
 
 ---
 
@@ -86,7 +95,7 @@ Windows 未签名：SmartScreen 里选「更多信息 → 仍要运行」。需�
 - **生成参数**：temperature、max_tokens、top_p、上下文长度、输入/输出单价、是否支持工具调用。留空的项表示不发送，由模型自己决定
 - **高级**：额外请求头和额外请求体，供应商要什么特殊参数就填什么
 
-Token 花费记在 **Token 看台** `/tokens`：每次调用的输入输出 token、耗时、场景和估算费用，按模型 / 场景 / 天分组。上游没报用量时按字数估算，表格里会标出来。填了单价就能看真实花销。
+Token 花费记在 **API 看台 → 用量统计** `/console?tab=usage`：每次调用的输入输出 token、耗时、场景和估算费用，按模型 / 场景 / 天分组。上游没报用量时按字数估算，表格里会标出来。填了单价就能看真实花销。
 
 ---
 
@@ -186,7 +195,7 @@ Local‑first multi‑currency smart ledger: natural‑language entry, 35 catego
 
 **Web** · [moneycounts.freddyhu2007.workers.dev](https://moneycounts.freddyhu2007.workers.dev/)  
 **macOS (Apple Silicon)** · [download .app zip](https://github.com/FoooooodieFred/MoneyCounts/releases/latest/download/MoneyCounts-macos-arm64.zip)  
-**Windows (64-bit)** · [download .exe zip](https://github.com/FoooooodieFred/MoneyCounts/releases/latest/download/MoneyCounts-windows-amd64.zip) · [installer](https://github.com/FoooooodieFred/MoneyCounts/releases/download/v1.4.0/MoneyCounts-windows-amd64-installer-v1.4.0.exe)
+**Windows (64-bit)** · [download .exe zip](https://github.com/FoooooodieFred/MoneyCounts/releases/latest/download/MoneyCounts-windows-amd64.zip) · [installer](https://github.com/FoooooodieFred/MoneyCounts/releases/download/v1.5.0/MoneyCounts-windows-amd64-installer-v1.5.0.exe)
 
 Cloudflare Workers publishes `dist/` from **`main`**.
 
@@ -206,11 +215,11 @@ Since [v1.3.0](https://github.com/FoooooodieFred/MoneyCounts/releases/tag/v1.3.0
 
 ## Web vs desktop
 
-|            | Web / PWA                       | Desktop                                     |
-| ---------- | ------------------------------- | ------------------------------------------- |
-| Data       | Browser LocalStorage (~5MB cap) | A file on disk                              |
-| New device | Data management → export JSON → import | Same JSON flow; stores are not shared  |
-| Use when   | Quick capture, installable PWA  | Larger books, or the browser quota is tight |
+|            | Web / PWA                              | Desktop                                     |
+| ---------- | -------------------------------------- | ------------------------------------------- |
+| Data       | Browser LocalStorage (~5MB cap)        | A file on disk                              |
+| New device | Data management → export JSON → import | Same JSON flow; stores are not shared       |
+| Use when   | Quick capture, installable PWA         | Larger books, or the browser quota is tight |
 
 Store files: macOS `~/Library/Application Support/MoneyCounts/store.json` · Windows `%AppData%\MoneyCounts\store.json`.
 
@@ -220,7 +229,7 @@ Unsigned macOS: **If Gatekeeper blocks it, go to Mac Settings → Privacy & Secu
 
 Natural-language entry (**Local** rules, or **AI / MoneyMore** via `/console`), 35 categories, multi-day `date_spec` phrases that **copy the same amount onto each day**, manual grid, stats dashboard, day calendar, FX cache, budgets, search, CSV, JSON backup, PWA. Travel mode still exists but is hidden by default. Old 10-class books migrate in place (`monthly-smart-ledger:v1`).
 
-Routes: `/` entry · `/today` list · `/day` day + calendar · `/stats` dashboard (`/week` `/month` `/year` redirect here) · `/search` · `/travel` · `/data` CSV + JSON backup · `/settings` · `/console` API console · `/tokens` token console.
+Routes: `/` entry + calendar · `/today` redirects to `/day` · `/day` day summary + editable entries · `/stats` dashboard (`/week` `/month` `/year` redirect here) · `/search` · `/travel` · `/data` CSV + JSON backup · `/settings` · `/console` API settings + usage tabs · `/tokens` redirects to the usage tab.
 
 ## Develop
 

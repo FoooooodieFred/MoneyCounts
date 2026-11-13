@@ -25,7 +25,6 @@ export function DesktopUpdatePrompt({
       >
         <div className="modal-heading">
           <div>
-            <p className="eyebrow">Update</p>
             <h2 id="desktop-update-title">发现新版本 {offer.version}</h2>
           </div>
         </div>

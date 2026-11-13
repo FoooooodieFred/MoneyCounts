@@ -30,7 +30,6 @@ export function ExchangeRatesPanel({
     <section className={className} id={id} data-section="exchange-rates">
       <div className="rate-section-bottom__header">
         <div>
-          <p className="eyebrow">Exchange</p>
           <h2>1 {baseCurrency} 的兑换汇率</h2>
           <p className="muted">
             {source} · {new Date(updatedAt).toLocaleString("zh-CN")}

@@ -74,12 +74,10 @@ export function DataManagementPage({
     >
       <div className="content-rail data-stack">
         <header className="page-intro" data-section="data-hero">
-          <p className="eyebrow">Data</p>
           <h1>导入、导出与清理</h1>
           <p className="muted">
             CSV 导入会按日期、类目和序号覆盖对应格子。已配置 LLM
-            时，也可上传旧账本表格，由模型映射后写入空格子。完整 JSON
-            备份与恢复也在这一页。
+            时，也可上传旧账本表格，由模型映射后写入空格子。完整 JSON 备份与恢复也在这一页。
           </p>
         </header>
 
@@ -112,10 +110,7 @@ export function DataManagementPage({
           </div>
         </section>
 
-        <section
-          className="surface-secondary data-management-card"
-          data-section="data-json-backup"
-        >
+        <section className="surface-secondary data-management-card" data-section="data-json-backup">
           <header className="settings-stack__heading">
             <h2>完整 JSON 备份</h2>
             <p className="muted">

@@ -84,7 +84,7 @@ export function TodayEntriesList({
   if (!entries.length) {
     return (
       <p className="muted empty-state">
-        今天还没有记录，请打开侧栏「记一笔」或首页对话框添加第一笔。
+        这一天还没有记录，请回到「记账」页添加第一笔，或展开完整记账表格补记。
       </p>
     );
   }

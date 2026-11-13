@@ -67,7 +67,6 @@ export function StorageQuotaGuard({
       >
         <div className="modal-heading">
           <div>
-            <p className="eyebrow">Storage</p>
             <h2 id="storage-quota-guard-title">{titleFor(model)}</h2>
           </div>
         </div>

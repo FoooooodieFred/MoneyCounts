@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
 import {
   clearLlmUsage,
   formatCost,
@@ -62,17 +61,7 @@ export function TokenConsolePage() {
   const maxDayTokens = Math.max(1, ...summary.byDay.map((item) => item.totalTokens));
 
   return (
-    <main className="app-shell app-shell--below-nav settings-page-shell" data-section="token-console">
-      <div className="content-rail settings-stack">
-        <header className="page-intro" data-section="token-hero">
-          <p className="eyebrow">Tokens</p>
-          <h1>Token 看台</h1>
-          <p className="muted">
-            每次模型调用都记在这里：输入输出 token、耗时、场景和估算费用。数据只存在本机，不进 JSON
-            备份。上游没有报用量时按字数估算，表格里会标出来。
-          </p>
-        </header>
-
+    <>
         <section className="settings-stack__section surface-secondary console-card">
           <div className="console-presets" role="group" aria-label="时间范围">
             {RANGE_OPTIONS.map((option) => (
@@ -244,9 +233,6 @@ export function TokenConsolePage() {
             <p className="muted">这个范围内还没有调用。</p>
           )}
           <div className="action-row">
-            <Link to="/console" className="secondary-button console-text-link">
-              回到 API 看台
-            </Link>
             <button
               type="button"
               className="ghost-button"
@@ -259,7 +245,6 @@ export function TokenConsolePage() {
             </button>
           </div>
         </section>
-      </div>
-    </main>
+    </>
   );
 }

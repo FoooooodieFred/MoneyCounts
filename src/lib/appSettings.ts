@@ -45,6 +45,8 @@ export type AppSettings = {
   travelModeEnabled: boolean;
   /** Off by default. When on, MoneyMore may stage edit/delete drafts for confirmation. */
   moneyMoreCanMutateLedger: boolean;
+  /** Show the greeting above the home entry form. */
+  showHomeGreeting: boolean;
 };
 
 export const HOME_SECTION_DEFAULT_ORDER = [
@@ -106,6 +108,7 @@ export const DEFAULT_APP_SETTINGS: AppSettings = {
   },
   travelModeEnabled: false,
   moneyMoreCanMutateLedger: false,
+  showHomeGreeting: true,
 };
 
 export const isMigratedHomeSection = (key: string): key is MigratedHomeSectionKey =>
@@ -189,6 +192,7 @@ export const normalizeAppSettings = (value: unknown): AppSettings => {
     },
     travelModeEnabled: source.travelModeEnabled === true,
     moneyMoreCanMutateLedger: source.moneyMoreCanMutateLedger === true,
+    showHomeGreeting: source.showHomeGreeting !== false,
   };
 };
 

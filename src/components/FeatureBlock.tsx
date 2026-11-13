@@ -7,7 +7,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 type FeatureBlockProps = {
   id: string;
-  eyebrow: string;
   title: string;
   subtitle?: string;
   variant?: "mint" | "sunset" | "sky" | "violet" | "neutral";
@@ -17,7 +16,6 @@ type FeatureBlockProps = {
 
 export function FeatureBlock({
   id,
-  eyebrow,
   title,
   subtitle,
   variant = "neutral",
@@ -54,10 +52,13 @@ export function FeatureBlock({
   );
 
   return (
-    <section ref={blockRef} id={id} className={`feature-block feature-block--flat feature-block--${variant}`}>
+    <section
+      ref={blockRef}
+      id={id}
+      className={`feature-block feature-block--flat feature-block--${variant}`}
+    >
       <header className="feature-block__header page-intro">
         <div className="feature-block__heading">
-          <p className="eyebrow">{eyebrow}</p>
           <h2>{title}</h2>
           {subtitle ? <p className="muted">{subtitle}</p> : null}
         </div>

@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { buildStatsDashboard, extremeBarDates, isPendingReimbursement } from "./statsDashboard";
+import {
+  buildLedgerCalendar,
+  buildStatsDashboard,
+  extremeBarDates,
+  isPendingReimbursement,
+} from "./statsDashboard";
 
 describe("stats dashboard", () => {
   const entries = [
@@ -8,6 +13,32 @@ describe("stats dashboard", () => {
     { date: "2026-09-02", category: "交通出行", amount: 20, note: "待报销 地铁" },
     { date: "2026-09-03", category: "餐饮美食", amount: 90, note: "晚饭" },
   ];
+
+  it("keeps the home calendar consistent with statistics, including refunds and month boundaries", () => {
+    const records = [
+      ...entries,
+      { date: "2026-09-03", category: "购物退款", amount: -15.5, note: "退款" },
+      { date: "2026-09-04", category: "日用百货", amount: 0, note: "仅备注" },
+      { date: "2026-08-31", category: "日用百货", amount: 200, note: "上个月" },
+    ];
+    const calendar = buildLedgerCalendar("2026-09", records);
+    const dashboard = buildStatsDashboard({
+      monthKey: "2026-09",
+      entries: records,
+      budgetEnabled: false,
+      monthlyLimit: null,
+      remainingDays: 1,
+    });
+    expect(calendar).toEqual(dashboard.calendar);
+    expect(calendar.find((cell) => cell.date === "2026-09-03")).toMatchObject({
+      net: -74.5,
+      hasRecords: true,
+    });
+    expect(calendar.find((cell) => cell.date === "2026-08-31")).toMatchObject({
+      net: 0,
+      hasRecords: false,
+    });
+  });
 
   it("splits expense, income, reimbursement and net worth", () => {
     const dashboard = buildStatsDashboard({

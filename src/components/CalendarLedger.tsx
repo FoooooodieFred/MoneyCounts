@@ -63,7 +63,6 @@ export function CalendarLedger({
       ) : null}
       <header className="stats-module-card__head">
         <div>
-          <p className="eyebrow">Calendar</p>
           <h2>日历账单</h2>
         </div>
         {monthKey && onMonthChange ? (

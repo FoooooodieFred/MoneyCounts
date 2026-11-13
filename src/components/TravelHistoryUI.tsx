@@ -217,7 +217,6 @@ export function TravelHistoryPanel({
       >
         <div className="travel-history-rail-heading">
           <div className="travel-history-rail-title">
-            <span className="travel-history-rail-eyebrow">Travel Archive</span>
             <strong className="travel-history-rail-title-main">旅游记账历史</strong>
             <small className="travel-history-rail-meta muted">{records.length} 次旅程</small>
           </div>
@@ -399,7 +398,6 @@ export function TravelHistoryDetailModal({
       >
         <div className="modal-heading">
           <div>
-            <p className="eyebrow">Travel Archive</p>
             <h2 id="travel-history-modal-title">{record.name}</h2>
             <p className="muted">
               {record.startDate} 至 {record.endDate}
@@ -581,7 +579,6 @@ export function TravelMergeModal({
       >
         <div className="modal-heading">
           <div>
-            <p className="eyebrow">Merge Archive</p>
             <h2 id="travel-merge-modal-title">合并 {records.length} 条旅游记录</h2>
             <p className="muted">合并后会生成一条新历史，并删除被选中的旧条目。</p>
           </div>

@@ -1,6 +1,6 @@
 {
   "name": "accounting-book",
-  "version": "1.0.0",
+  "version": "1.5.0",
   "description": "Monthly smart accounting book web app",
   "private": true,
   "main": "index.js",

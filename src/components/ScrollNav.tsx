@@ -124,18 +124,16 @@ const getLinks = (_settings: AppSettings, options?: { showTravel?: boolean }): N
   const showTravel = options?.showTravel === true;
   const items: NavItem[] = [
     { href: "/", label: "记账", icon: Icons.pen, group: "entry" },
-    { href: "/today", label: "今日", icon: Icons.calendar, group: "primary" },
-    { href: "/search", label: "搜索", icon: Icons.search, group: "primary" },
-    { href: "/day", label: "当日", icon: Icons.day, group: "sections" },
+    { href: "/day", label: "今日", icon: Icons.day, group: "sections" },
     { href: "/stats", label: "统计", icon: Icons.month, group: "sections" },
   ];
   if (showTravel) {
     items.push({ href: "/travel", label: "旅游模式", icon: Icons.travel, group: "tools" });
   }
   items.push(
+    { href: "/search", label: "搜索", icon: Icons.search, group: "tools" },
     { href: "/data", label: "数据管理", icon: Icons.data, group: "tools" },
     { href: "/console", label: "API 看台", icon: Icons.console, group: "tools" },
-    { href: "/tokens", label: "Token 看台", icon: Icons.tokens, group: "tools" },
     { href: "/settings", label: "设置", icon: Icons.settings, group: "tools" },
   );
   return items;
@@ -330,7 +328,9 @@ export function MobileScrollNav({
 }: ScrollNavProps) {
   const location = useLocation();
   const links = getLinks(settings, { showTravel }).filter((link) =>
-    ["/", "/today", "/search", "/stats", "/travel", "/data", "/settings"].includes(link.href),
+    ["/", "/day", "/search", "/stats", "/travel", "/data", "/console", "/settings"].includes(
+      link.href,
+    ),
   );
 
   return (

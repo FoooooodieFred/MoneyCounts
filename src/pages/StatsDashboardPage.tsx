@@ -89,7 +89,6 @@ export function StatsDashboardPage({
         <div className="stats-dashboard__main">
           <header className="stats-dashboard__head">
             <div>
-              <p className="eyebrow">Statistics</p>
               <h1>统计看板</h1>
               <p className="muted">多币种口径可切换。金额已换算为 {currency}。</p>
             </div>
@@ -151,7 +150,6 @@ export function StatsDashboardPage({
             <section className="stats-module-card" data-section="stats-bars">
               <header className="stats-module-card__head">
                 <div>
-                  <p className="eyebrow">Daily flow</p>
                   <h2>支出统计图</h2>
                 </div>
                 <div className="summary-mode-toggle" role="group" aria-label="柱状图口径">
@@ -186,7 +184,6 @@ export function StatsDashboardPage({
             <section className="stats-module-card" data-section="stats-donut">
               <header className="stats-module-card__head">
                 <div>
-                  <p className="eyebrow">Categories</p>
                   <h2>支出分类详情</h2>
                 </div>
               </header>
@@ -217,7 +214,6 @@ export function StatsDashboardPage({
           <section className="stats-module-card" data-section="stats-net">
             <header className="stats-module-card__head">
               <div>
-                <p className="eyebrow">Net worth</p>
                 <h2>净资产趋势图</h2>
               </div>
               <div className="summary-mode-toggle" role="group" aria-label="折线图口径">

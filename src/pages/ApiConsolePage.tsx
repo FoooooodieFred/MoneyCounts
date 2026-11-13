@@ -352,18 +352,7 @@ export function ApiConsolePage() {
   const estimatedCost = estimateLlmCost(settings, 1000, 1000);
 
   return (
-    <main className="app-shell app-shell--below-nav settings-page-shell" data-section="api-console">
-      <div className="content-rail settings-stack">
-        <header className="page-intro" data-section="console-hero">
-          <p className="eyebrow">Console</p>
-          <h1>API 看台</h1>
-          <p className="muted">
-            记账默认仍用关键词解析。填好接口并测试连通后，首页快捷模板可由模型生成，看台里也可试运行。
-            可以建多套连接档案随时切换，接入新模型不必改代码。密钥默认只存在本机；若要换设备，可在下方勾选写入
-            JSON 备份。
-          </p>
-        </header>
-
+    <>
         <section className="settings-stack__section surface-secondary console-card">
           <header className="settings-stack__heading">
             <h2>档案</h2>
@@ -950,13 +939,7 @@ export function ApiConsolePage() {
           ) : (
             <p className="muted">还没有调用记录。</p>
           )}
-          <div className="action-row">
-            <Link to="/tokens" className="secondary-button console-text-link">
-              打开 Token 看台
-            </Link>
-          </div>
         </section>
-      </div>
-    </main>
+    </>
   );
 }

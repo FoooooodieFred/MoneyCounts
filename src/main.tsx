@@ -1,4 +1,4 @@
-import { StrictMode } from "react";
+import { StrictMode, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, HashRouter } from "react-router-dom";
 import App from "./App";
@@ -35,6 +35,24 @@ const warmRoutes = () => {
   window.setTimeout(start, 2000);
 };
 
+/** Dismiss only after React has committed the first screen; never delay boot. */
+function StartupReady() {
+  useEffect(() => {
+    const loader = document.getElementById("startup-loader");
+    if (!loader) return;
+    let timer = 0;
+    const frame = window.requestAnimationFrame(() => {
+      loader.classList.add("is-ready");
+      timer = window.setTimeout(() => loader.remove(), 320);
+    });
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(timer);
+    };
+  }, []);
+  return null;
+}
+
 const boot = async () => {
   await hydrateDesktopStore();
   const desktopShell = isDesktopRuntime();
@@ -51,6 +69,7 @@ const boot = async () => {
     <StrictMode>
       <Router>
         <App />
+        <StartupReady />
       </Router>
     </StrictMode>,
   );
@@ -67,4 +86,13 @@ const boot = async () => {
   }
 };
 
-void boot();
+void boot().catch((error) => {
+  console.error("App startup failed", error);
+  const status = document.getElementById("startup-status");
+  if (status) status.textContent = "账本暂时未能打开，请重新加载";
+  const retry = document.getElementById("startup-retry");
+  if (retry) {
+    retry.hidden = false;
+    retry.addEventListener("click", () => window.location.reload(), { once: true });
+  }
+});

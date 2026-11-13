@@ -17,6 +17,7 @@ import { parseNaturalLedgerViaLlm } from "./lib/llmLedgerParser";
 import { importSpreadsheetViaLlm, looksLikeBinarySpreadsheet } from "./lib/llmSpreadsheetImport";
 import type { LedgerParseMode } from "./lib/ledgerParseMode";
 import { HeroSection } from "./components/HeroSection";
+import { LedgerCalendarLayout } from "./components/LedgerCalendarLayout";
 import { NaturalLanguageInput } from "./components/NaturalLanguageInput";
 import { FeatureBlock } from "./components/FeatureBlock";
 import { ScrollNav, MobileScrollNav } from "./components/ScrollNav";
@@ -190,7 +191,7 @@ const LazySettingsPage = lazy(() =>
   import("./pages/SettingsPage").then((module) => ({ default: module.SettingsPage })),
 );
 const LazyApiConsolePage = lazy(() =>
-  import("./pages/ApiConsolePage").then((module) => ({ default: module.ApiConsolePage })),
+  import("./pages/ConsolePage").then((module) => ({ default: module.ConsolePage })),
 );
 const LazyDataManagementPage = lazy(() =>
   import("./pages/DataManagementPage").then((module) => ({
@@ -200,9 +201,6 @@ const LazyDataManagementPage = lazy(() =>
 const LazySearchPage = lazy(() =>
   import("./pages/SearchPage").then((module) => ({ default: module.SearchPage })),
 );
-const LazySectionPage = lazy(() =>
-  import("./pages/SectionPage").then((module) => ({ default: module.SectionPage })),
-);
 const LazyStatsDashboardPage = lazy(() =>
   import("./pages/StatsDashboardPage").then((module) => ({
     default: module.StatsDashboardPage,
@@ -210,9 +208,6 @@ const LazyStatsDashboardPage = lazy(() =>
 );
 const LazyDaySummaryPage = lazy(() =>
   import("./pages/DaySummaryPage").then((module) => ({ default: module.DaySummaryPage })),
-);
-const LazyTokenConsolePage = lazy(() =>
-  import("./pages/TokenConsolePage").then((module) => ({ default: module.TokenConsolePage })),
 );
 
 type LedgerEntry = {
@@ -1777,7 +1772,7 @@ function App() {
     [appSettings.budget.categoryLimits, budgetCurrency, exchange, monthEntries],
   );
 
-  const searchRecords = useMemo<SearchableLedgerRecord[]>(
+  const getSearchRecords = useCallback<() => SearchableLedgerRecord[]>(
     () =>
       allLedgerEntries
         .map((entry) => ({
@@ -2933,7 +2928,14 @@ function App() {
       remainingBytes: Math.max(0, LOCAL_STORAGE_QUOTA_BYTES - usedBytes),
       ledgerBytes: utf16ByteLength(kvGet(STORAGE_KEY) ?? ""),
     };
-  }, [customCurrencies, desktopStoreInfo, exchange, storageUsageVersion, travelHistory, travelState]);
+  }, [
+    customCurrencies,
+    desktopStoreInfo,
+    exchange,
+    storageUsageVersion,
+    travelHistory,
+    travelState,
+  ]);
 
   const renderStatsCard = (
     title: string,
@@ -4206,6 +4208,7 @@ function App() {
             onShuffleCards={() => setFunCardShuffleSalt((salt) => salt + 1)}
             onStatCardClick={handleStatCardClick}
             showStats={appSettings.homeSections.heroCards}
+            showGreeting={appSettings.showHomeGreeting}
           />
         );
       case "budgetOverview":
@@ -4213,7 +4216,6 @@ function App() {
           <FeatureBlock
             key={key}
             id="budget"
-            eyebrow="Budget"
             title="预算概览"
             subtitle="开启后可查看月预算、分类预算与日均可花"
             variant="mint"
@@ -4235,9 +4237,8 @@ function App() {
           <FeatureBlock
             key={key}
             id="today"
-            eyebrow="Today"
-            title={`${selectedDate} 今日明细`}
-            subtitle="在下方直接改金额、货币和备注；完整分类账默认收起"
+            title="今日记账明细"
+            subtitle={`${selectedDate} · 可直接修改金额、货币和备注，或展开完整分类账补记`}
             variant="mint"
             actions={
               <button
@@ -4268,7 +4269,6 @@ function App() {
                 <div className="today-ledger-card">
                   <div className="today-ledger-card__mast">
                     <div className="today-ledger-card__head">
-                      <p className="eyebrow">Ledger</p>
                       <h3>完整记账表格</h3>
                       <p className="muted">按分类补记、隐藏或删除</p>
                     </div>
@@ -4537,7 +4537,6 @@ function App() {
           <FeatureBlock
             key={key}
             id="totals"
-            eyebrow="Day Totals"
             title="当日汇总"
             subtitle="默认分币种展示，可切换单币种合并"
             variant="sky"
@@ -4604,7 +4603,6 @@ function App() {
           <FeatureBlock
             key={key}
             id="tools"
-            eyebrow="Year Trend"
             title="全年趋势图表"
             subtitle="从账本最早一条记录画到现在，预算卡片仍可在此页查看"
             variant="neutral"
@@ -4612,7 +4610,6 @@ function App() {
             <section className="card trend-card" data-section="year-trend">
               <div className="card-heading">
                 <div>
-                  <p className="eyebrow">Spending Strata</p>
                   <h2>从第一笔记账起的花费年层</h2>
                 </div>
                 <div className="trend-controls">
@@ -4731,8 +4728,15 @@ function App() {
           <Route
             path="/"
             element={
-              <div className="app-shell home-shell journal-scroll" ref={appRootRef}>
-                <main className="home-main content-rail">
+              <div className="app-shell app-shell--below-nav stats-dashboard-shell" ref={appRootRef}>
+                <LedgerCalendarLayout
+                  monthKey={monthKey}
+                  selectedDate={selectedDate}
+                  entries={dashboardEntries}
+                  dayEntries={todayDayEntries}
+                  onMonthChange={commitMonthChange}
+                  onSelectDate={commitDateChange}
+                >
                   {renderHomeSection("heroCards")}
                   {renderHomeSection("quickEntry")}
                   {!isLlmApiVerified(llmSettings) ? (
@@ -4746,41 +4750,37 @@ function App() {
                       </button>
                     </aside>
                   ) : null}
-                </main>
+                </LedgerCalendarLayout>
               </div>
             }
           />
           <Route path="/entry" element={<Navigate to="/" replace />} />
-          <Route
-            path="/today"
-            element={
-              <LazySectionPage data-section="screen-today">
-                {renderHomeSection("todayDetails")}
-              </LazySectionPage>
-            }
-          />
+          <Route path="/today" element={<Navigate to="/day" replace />} />
           <Route
             path="/day"
             element={
               <LazyDaySummaryPage
                 selectedDate={selectedDate}
-                weekdayLabel={formatWeekday(selectedDate)}
                 monthKey={monthKey}
+                entries={dashboardEntries}
+                dayEntries={todayDayEntries}
+                onSelectDate={commitDateChange}
+                onMonthChange={commitMonthChange}
+                weekdayLabel={formatWeekday(selectedDate)}
                 summaryMode={dailySummaryMode}
                 splitCurrencies={daySplitCurrencies}
                 dayTotals={dayTotals}
                 dailyDefaultCurrency={dailyDefaultCurrency}
                 formatMoney={formatMoney}
                 getCurrencyLabel={(code) => getCurrencyMeta(code).shortName}
-                entries={dashboardEntries}
-                dayEntries={todayDayEntries}
+                recordCount={todayActiveEntries.length}
                 onSummaryModeChange={setDailySummaryMode}
-                onSelectDate={commitDateChange}
-                onMonthChange={commitMonthChange}
                 onPrevDay={() => moveSelectedDate(-1)}
                 onToday={jumpToToday}
                 onNextDay={() => moveSelectedDate(1)}
-              />
+              >
+                {renderHomeSection("todayDetails")}
+              </LazyDaySummaryPage>
             }
           />
           <Route
@@ -4811,13 +4811,13 @@ function App() {
             path="/search"
             element={
               <LazySearchPage
-                records={searchRecords}
+                getRecords={getSearchRecords}
                 categories={CATEGORIES}
                 currency={budgetCurrency}
                 formatMoney={formatMoney}
                 onSelectDate={(date) => {
                   commitDateChange(date);
-                  navigate("/today");
+                  navigate("/day");
                 }}
               />
             }
@@ -4945,7 +4945,7 @@ function App() {
             }
           />
           <Route path="/console" element={<LazyApiConsolePage />} />
-          <Route path="/tokens" element={<LazyTokenConsolePage />} />
+          <Route path="/tokens" element={<Navigate to="/console?tab=usage" replace />} />
           </Routes>
         </RouteEnter>
       </Suspense>
@@ -5081,7 +5081,6 @@ function App() {
           >
             <div className="modal-heading">
               <div>
-                <p className="eyebrow">Close Travel Mode</p>
                 <h2 id="travel-exit-title">结束旅游模式前选择保留口径</h2>
                 <p className="muted">
                   当前版本没有独立远端账户系统，选择会写入旅游历史并在本地记录本次收尾口径。
@@ -5127,7 +5126,6 @@ function App() {
           >
             <div className="modal-heading">
               <div>
-                <p className="eyebrow">Date Console</p>
                 <h2 id="date-modal-title">选择记账日期</h2>
                 <p className="muted">
                   当前选择：{selectedDate} · {formatMonthDay(selectedDate)} ·{" "}
@@ -5195,7 +5193,6 @@ function App() {
           >
             <div className="modal-heading">
               <div>
-                <p className="eyebrow">Currency Palette</p>
                 <h2 id="currency-modal-title">
                   {currencyModal.type === "daily-default"
                     ? "选择今日默认货币"

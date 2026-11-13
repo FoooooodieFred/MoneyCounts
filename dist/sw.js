@@ -1,4 +1,4 @@
-const CACHE_NAME = "moneycounts-shell-v4";
+const CACHE_NAME = "moneycounts-shell-v5";
 const SHELL_ASSETS = ["/", "/index.html", "/manifest.webmanifest", "/pwa-icon.svg"];
 
 self.addEventListener("install", (event) => {

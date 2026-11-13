@@ -406,7 +406,6 @@ export function MoneyMoreAgent({
                   <BloubAvatar size={36} mood={busy ? "loading" : "idle"} decorative />
                 )}
                 <div>
-                  <p className="eyebrow">Agent</p>
                   <h2>MoneyMore</h2>
                 </div>
               </div>

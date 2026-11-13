@@ -77,6 +77,31 @@ export const isPendingReimbursement = (entry: Pick<DashboardSourceEntry, "note" 
   return /报销/.test(note) && getCategoryKind(entry.category) === "expense";
 };
 
+/** Calendar-only aggregation for home, without building charts and category rankings. */
+export const buildLedgerCalendar = (
+  monthKey: string,
+  entries: DashboardSourceEntry[],
+): DashboardCalendarCell[] => {
+  const totals = new Map<string, { expense: number; income: number }>();
+  for (const entry of entries) {
+    if (!entry.amount || !entry.date.startsWith(`${monthKey}-`)) continue;
+    const current = totals.get(entry.date) ?? { expense: 0, income: 0 };
+    const flow = splitFlow(entry);
+    current.expense += flow.expense;
+    current.income += flow.income;
+    totals.set(entry.date, current);
+  }
+  return buildMonthCalendarCells(monthKey).map((cell) => {
+    const total = cell.inMonth ? totals.get(cell.date) : undefined;
+    return {
+      date: cell.date,
+      inMonth: cell.inMonth,
+      net: total ? roundMoney(total.income - total.expense) : 0,
+      hasRecords: Boolean(total),
+    };
+  });
+};
+
 export const buildStatsDashboard = (options: {
   monthKey: string;
   entries: DashboardSourceEntry[];

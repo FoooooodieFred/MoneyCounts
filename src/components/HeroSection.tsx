@@ -26,6 +26,7 @@ type HeroSectionProps = {
   onShuffleCards: () => void;
   onStatCardClick?: (cardId: string) => void;
   showStats?: boolean;
+  showGreeting?: boolean;
   sloganVariant?: number;
 };
 
@@ -40,6 +41,7 @@ export function HeroSection({
   onShuffleCards,
   onStatCardClick,
   showStats = true,
+  showGreeting = true,
   sloganVariant,
 }: HeroSectionProps) {
   const heroRef = useRef<HTMLElement | null>(null);
@@ -81,33 +83,37 @@ export function HeroSection({
           clearProps: "transform,opacity,visibility",
         },
       );
-      gsap.fromTo(
-        "[data-motion='hero-card']",
-        { autoAlpha: 0, y: 28, scale: 0.94 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          scale: 1,
-          stagger: 0.09,
-          duration: 0.62,
-          ease: "back.out(1.6)",
-          delay: 0.12,
-          clearProps: "transform,opacity,visibility",
-        },
-      );
-      gsap.fromTo(
-        "[data-motion='hero-headline']",
-        { autoAlpha: 0, y: 22 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.55,
-          ease: "power3.out",
-          clearProps: "transform,opacity,visibility",
-        },
-      );
+      if (showStats && statCards.length > 0) {
+        gsap.fromTo(
+          "[data-motion='hero-card']",
+          { autoAlpha: 0, y: 28, scale: 0.94 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            scale: 1,
+            stagger: 0.09,
+            duration: 0.62,
+            ease: "back.out(1.6)",
+            delay: 0.12,
+            clearProps: "transform,opacity,visibility",
+          },
+        );
+      }
+      if (showGreeting) {
+        gsap.fromTo(
+          "[data-motion='hero-headline']",
+          { autoAlpha: 0, y: 22 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.55,
+            ease: "power3.out",
+            clearProps: "transform,opacity,visibility",
+          },
+        );
+      }
     },
-    [selectedDate, slogan, statCards.length],
+    [selectedDate, slogan, statCards.length, showStats, showGreeting],
   );
 
   useLayoutEffect(() => {
@@ -207,15 +213,16 @@ export function HeroSection({
         </div>
       </article>
 
-      <div className="hero-section__top">
-        <div className="hero-copy">
-          <p className="eyebrow">MoneyCounts</p>
-          <h1 className="hero-headline" data-motion="hero-headline">
-            {slogan}
-          </h1>
-          <p className="sr-only">可选文案：{sloganAlternates.join("；")}</p>
+      {showGreeting ? (
+        <div className="hero-section__top">
+          <div className="hero-copy">
+            <h1 className="hero-headline" data-motion="hero-headline">
+              {slogan}
+            </h1>
+            <p className="sr-only">可选文案：{sloganAlternates.join("；")}</p>
+          </div>
         </div>
-      </div>
+      ) : null}
 
       {showStats ? (
         <div className="hero-stats">

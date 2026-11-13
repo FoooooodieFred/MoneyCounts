@@ -9,14 +9,14 @@
  */
 
 const routeLoaders: Record<string, () => Promise<unknown>> = {
-  "/today": () => import("../pages/SectionPage"),
+  "/today": () => import("../pages/DaySummaryPage"),
   "/search": () => import("../pages/SearchPage"),
   "/day": () => import("../pages/DaySummaryPage"),
   "/stats": () => import("../pages/StatsDashboardPage"),
   "/travel": () => import("../pages/TravelPage"),
   "/data": () => import("../pages/DataManagementPage"),
-  "/console": () => import("../pages/ApiConsolePage"),
-  "/tokens": () => import("../pages/TokenConsolePage"),
+  "/console": () => import("../pages/ConsolePage"),
+  "/tokens": () => import("../pages/ConsolePage"),
   "/settings": () => import("../pages/SettingsPage"),
 };
 
@@ -27,9 +27,10 @@ export const preloadRoute = (href: string) => {
   void loader().catch(() => undefined);
 };
 
-/** 空闲时把所有页面分块预取回来（加起来只有几十 KB）。 */
+/** 空闲时只预取常用页面；搜索及看台等工具按访问意图加载。 */
 export const preloadAllRoutes = () => {
-  for (const loader of Object.values(routeLoaders)) {
+  for (const href of ["/day", "/stats"]) {
+    const loader = routeLoaders[href];
     void loader().catch(() => undefined);
   }
 };

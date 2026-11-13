@@ -11,8 +11,194 @@
     <title>MoneyCounts · 月度智能记账本</title>
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="icon" href="/pwa-icon.svg" type="image/svg+xml" />
+    <style>
+      .startup-loader {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: grid;
+        place-content: center;
+        justify-items: center;
+        gap: 24px;
+        padding: 24px;
+        color: var(--color-text, #393e41);
+        background: var(--color-page, #e2ebf0);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+        transition:
+          opacity 0.3s ease,
+          visibility 0.3s ease;
+      }
+      .startup-loader.is-ready {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      .startup-math {
+        position: relative;
+        width: 216px;
+        height: 216px;
+      }
+      .startup-math svg {
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+      }
+      .startup-orbit {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 0.7;
+        opacity: 0.22;
+      }
+      .startup-orbit--one {
+        transform-origin: 108px 108px;
+        animation: startup-turn 9s linear infinite;
+      }
+      .startup-orbit--two {
+        transform-origin: 108px 108px;
+        animation: startup-turn 13s linear infinite reverse;
+      }
+      .startup-core {
+        font:
+          40px ui-monospace,
+          monospace;
+        fill: currentColor;
+        text-anchor: middle;
+      }
+      .startup-brace {
+        font:
+          32px ui-monospace,
+          monospace;
+        fill: currentColor;
+        opacity: 0.45;
+      }
+      .startup-symbol {
+        font:
+          19px ui-monospace,
+          monospace;
+        fill: currentColor;
+        animation: startup-float 2.8s ease-in-out infinite alternate;
+      }
+      .startup-symbol--two {
+        animation-delay: -0.9s;
+      }
+      .startup-symbol--three {
+        animation-delay: -1.8s;
+      }
+      .startup-dot {
+        fill: currentColor;
+        offset-path: path("M 108 20 C 225 20 225 196 108 196 C -9 196 -9 20 108 20");
+        animation: startup-follow 3s linear infinite;
+      }
+      .startup-dot--two {
+        animation-delay: -1.5s;
+        opacity: 0.35;
+      }
+      .startup-loader p {
+        margin: 0;
+        font-size: 14px;
+        letter-spacing: 0.12em;
+      }
+      .startup-line {
+        width: 112px;
+        height: 2px;
+        overflow: hidden;
+        background: currentColor;
+        opacity: 0.35;
+      }
+      .startup-line::after {
+        content: "";
+        display: block;
+        width: 40%;
+        height: 100%;
+        background: var(--color-page, #e2ebf0);
+        animation: startup-scan 1.4s ease-in-out infinite;
+      }
+      #startup-retry {
+        padding: 10px 24px;
+        border: 1px solid currentColor;
+        border-radius: 9999px;
+        background: transparent;
+        color: inherit;
+        cursor: pointer;
+      }
+      @keyframes startup-turn {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes startup-float {
+        to {
+          transform: translateY(-9px);
+          opacity: 0.35;
+        }
+      }
+      @keyframes startup-follow {
+        to {
+          offset-distance: 100%;
+        }
+      }
+      @keyframes startup-scan {
+        from {
+          transform: translateX(-100%);
+        }
+        to {
+          transform: translateX(350%);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .startup-loader,
+        .startup-math *,
+        .startup-line::after {
+          animation: none;
+          transition: none;
+        }
+      }
+    </style>
   </head>
   <body>
+    <div id="startup-loader" class="startup-loader" role="status" aria-live="polite">
+      <div class="startup-math" aria-hidden="true">
+        <svg viewBox="0 0 216 216">
+          <g class="startup-orbit--one">
+            <ellipse
+              class="startup-orbit"
+              cx="108"
+              cy="108"
+              rx="88"
+              ry="46"
+              transform="rotate(-35 108 108)"
+            />
+            <ellipse
+              class="startup-orbit"
+              cx="108"
+              cy="108"
+              rx="88"
+              ry="46"
+              transform="rotate(35 108 108)"
+            />
+          </g>
+          <circle
+            class="startup-orbit startup-orbit--two"
+            cx="108"
+            cy="108"
+            r="88"
+            stroke-dasharray="2 12"
+          />
+          <text class="startup-brace" x="62" y="119">{</text>
+          <text class="startup-core" x="108" y="122">Σ</text>
+          <text class="startup-brace" x="140" y="119">}</text>
+          <text class="startup-symbol" x="24" y="53">∫</text>
+          <text class="startup-symbol startup-symbol--two" x="172" y="66">π</text>
+          <text class="startup-symbol startup-symbol--three" x="151" y="188">±</text>
+          <circle class="startup-dot" r="3" />
+          <circle class="startup-dot startup-dot--two" r="3" />
+        </svg>
+      </div>
+      <p id="startup-status">正在唤醒你的账本</p>
+      <div class="startup-line" aria-hidden="true"></div>
+      <button id="startup-retry" type="button" hidden>重新加载</button>
+      <noscript>请启用 JavaScript 后使用记账本。</noscript>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

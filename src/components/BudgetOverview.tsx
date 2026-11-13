@@ -38,7 +38,6 @@ export function BudgetOverview({
       <section className="card budget-overview budget-overview--empty">
         <div className="card-heading">
           <div>
-            <p className="eyebrow">Budget</p>
             <h2>预算管理未开启</h2>
             <p className="muted">可在设置页手动开启月度总预算和分类预算，旧数据会继续保持原样。</p>
           </div>
@@ -57,7 +56,6 @@ export function BudgetOverview({
     >
       <div className="card-heading">
         <div>
-          <p className="eyebrow">Budget · {currency}</p>
           <h2>{monthKey} 预算概览</h2>
           <p className="muted">负支出会抵扣消费；跨币种已按当前汇率换算。</p>
         </div>

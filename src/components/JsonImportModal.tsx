@@ -23,7 +23,6 @@ export function JsonImportModal({ preview, onConfirm, onCancel }: JsonImportModa
       >
         <div className="modal-heading">
           <div>
-            <p className="eyebrow">JSON backup</p>
             <h2 id="json-import-title">确认导入备份？</h2>
           </div>
         </div>

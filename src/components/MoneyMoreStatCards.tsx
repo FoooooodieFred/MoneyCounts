@@ -19,7 +19,6 @@ export function MoneyMoreStatCards({ cards, formatMoney }: MoneyMoreStatCardsPro
           return (
             <article key={`kpi-${card.month}-${index}`} className="mm-stat-card">
               <header>
-                <p className="eyebrow">Month</p>
                 <h3>{card.month} 统计</h3>
                 <p className="muted">金额已换算为 {card.currency}</p>
               </header>
@@ -60,7 +59,6 @@ export function MoneyMoreStatCards({ cards, formatMoney }: MoneyMoreStatCardsPro
           return (
             <article key={`cat-${card.month}-${index}`} className="mm-stat-card">
               <header>
-                <p className="eyebrow">Categories</p>
                 <h3>支出分类</h3>
               </header>
               <div className="mm-stat-card__cats">
@@ -89,7 +87,6 @@ export function MoneyMoreStatCards({ cards, formatMoney }: MoneyMoreStatCardsPro
           return (
             <article key={`rec-${index}`} className="mm-stat-card">
               <header>
-                <p className="eyebrow">Ledger</p>
                 <h3>账单 {card.total} 笔</h3>
               </header>
               {card.items.length ? (
@@ -113,7 +110,6 @@ export function MoneyMoreStatCards({ cards, formatMoney }: MoneyMoreStatCardsPro
         return (
           <article key={`calc-${index}`} className="mm-stat-card mm-stat-card--calc">
             <header>
-              <p className="eyebrow">Calculator</p>
               <h3>计算结果</h3>
             </header>
             <p className="mm-stat-card__expr">

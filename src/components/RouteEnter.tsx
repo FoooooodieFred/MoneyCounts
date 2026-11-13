@@ -14,6 +14,7 @@ export function RouteEnter({ children }: { children: ReactNode }) {
   const rootRef = useRef<HTMLDivElement | null>(null);
 
   useGsapContext(rootRef, () => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     const root = rootRef.current;
     if (!root) return;
     if (prefersReducedMotion()) {
